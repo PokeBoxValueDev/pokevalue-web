@@ -34,7 +34,16 @@
     <meta name="twitter:image"
         content="https://raw.githubusercontent.com/alejandrrolc/pokevalue-web/refs/heads/main/favicon.svg">
 
-    <!-- Tailwind CDN + Configuración en orden correcto -->
+    <!-- Silenciar aviso CDN de Tailwind -->
+    <script>
+        const origWarn = console.warn;
+        console.warn = function (...args) {
+            if (args[0] && typeof args[0] === 'string' && args[0].includes('cdn.tailwindcss.com')) return;
+            origWarn.apply(console, args);
+        };
+    </script>
+
+    <!-- Tailwind CDN + Configuración -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = { darkMode: 'class' };
