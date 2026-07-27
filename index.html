@@ -2,6 +2,32 @@
 <html lang="es" class="h-full">
 
 <head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@v3.0.0/dist/cookieconsent.css">
+    <script src="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@v3.0.0/dist/cookieconsent.umd.js" defer></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            CookieConsent.run({
+                categories: {
+                    necessary: { enabled: true, required: true },
+                    analytics: { enabled: false }
+                },
+                language: {
+                    default: 'es',
+                    translations: {
+                        es: {
+                            consentModal: {
+                                title: 'Uso de Cookies 🍪',
+                                description: 'Utilizamos cookies analíticas para entender cómo usas PokeBoxValue y mejorar la experiencia.',
+                                acceptAllBtn: 'Aceptar todas',
+                                acceptNecessaryBtn: 'Rechazar analíticas',
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-ES8GHFDWRP"></script>
     <script>
