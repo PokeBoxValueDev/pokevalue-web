@@ -10,6 +10,22 @@
     <link rel="stylesheet" href="css/styles.css">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="apple-touch-icon" href="favicon.svg">
+
+    <!-- Open Graph / Meta etiquetas para compartir enlaces -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="PokeValue - Calculadora de Cajas">
+    <meta property="og:description"
+        content="Calcula si las cajas de la tienda valen la pena y descubre cuánto ahorras.">
+    <meta property="og:image"
+        content="https://raw.githubusercontent.com/alejandrrolc/pokevalue-web/refs/heads/main/favicon.svg">
+    <meta property="og:url" content="https://alejandrrolc.github.io/pokevalue-web/">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="PokeValue - Calculadora de Cajas">
+    <meta name="twitter:description" content="Calcula el valor real de las cajas de la tienda.">
+    <meta name="twitter:image"
+        content="https://raw.githubusercontent.com/alejandrrolc/pokevalue-web/refs/heads/main/favicon.svg">
 </head>
 
 <body
@@ -68,37 +84,54 @@
         </section>
 
         <!-- Resultado -->
-        <section id="view-result"
-            class="hidden bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 space-y-6 border border-gray-100 dark:border-gray-700">
-            <div id="result-card" class="p-6 rounded-xl text-center space-y-4">
-                <h3 id="result-title" class="text-2xl font-bold"></h3>
-                <div class="grid grid-cols-3 gap-2 pt-4 border-t border-white/20 text-sm">
+        <!-- Vista de Resultados -->
+        <div id="view-result" class="hidden space-y-4">
+            <div id="result-card" class="p-6 rounded-xl text-center space-y-4 text-white">
+                <h2 id="result-title" class="text-xl font-bold"></h2>
+                <div class="grid grid-cols-2 gap-2 text-sm bg-black/20 p-3 rounded-lg backdrop-blur-sm">
                     <div>
-                        <p class="opacity-80 text-xs">Precio caja</p>
-                        <p id="res-box-price" class="font-bold text-base mt-1"></p>
+                        <span class="block text-xs opacity-80">Precio caja:</span>
+                        <strong id="res-box-price" class="text-base"></strong>
                     </div>
                     <div>
-                        <p class="opacity-80 text-xs">Valor real</p>
-                        <p id="res-real-value" class="font-bold text-base mt-1"></p>
+                        <span class="block text-xs opacity-80">Valor real:</span>
+                        <strong id="res-real-value" class="text-base"></strong>
                     </div>
-                    <div>
-                        <p id="res-diff-label" class="opacity-80 text-xs">Diferencia</p>
-                        <p id="res-diff-val" class="font-bold text-base mt-1"></p>
-                    </div>
+                </div>
+                <div class="pt-2 border-t border-white/20">
+                    <span id="res-diff-label"
+                        class="block text-xs uppercase tracking-wider font-semibold opacity-80"></span>
+                    <span id="res-diff-val" class="text-3xl font-extrabold"></span>
                 </div>
             </div>
 
-            <div class="flex gap-3">
+            <!-- Novedad: Desglose Gráfico del Valor por Categoría -->
+            <div
+                class="bg-white dark:bg-gray-800 p-4 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm space-y-3">
+                <h3 class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Desglose del
+                    Valor</h3>
+                <!-- Barra acumulativa -->
+                <div id="breakdown-bar"
+                    class="w-full h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden flex">
+                    <!-- Se rellenará dinámicamente -->
+                </div>
+                <!-- Leyenda de categorías -->
+                <div id="breakdown-legend" class="grid grid-cols-2 gap-2 text-xs">
+                    <!-- Se rellenará dinámicamente -->
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
                 <button id="btn-share"
-                    class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 rounded-xl transition shadow-sm flex items-center justify-center gap-2">
-                    <span>📋 Copiar / Compartir</span>
+                    class="py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl text-sm transition">
+                    📲 Compartir
                 </button>
                 <button id="btn-reset"
-                    class="flex-1 bg-gray-800 dark:bg-gray-700 hover:bg-gray-900 dark:hover:bg-gray-600 text-white font-semibold py-3 rounded-xl transition shadow-sm">
-                    Calcular otra
+                    class="py-2.5 px-4 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium rounded-xl text-sm transition">
+                    🔄 Calcular otra
                 </button>
             </div>
-        </section>
+        </div>
     </div>
 
     <!-- Footer -->

@@ -1,7 +1,6 @@
 // js/app.js
 import { APP_VERSION, JSON_URL, CATEGORY_CONFIG, state } from './config.js';
 
-// --- INICIALIZACIÓN ---
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('app-version').innerText = `v${APP_VERSION}`;
     initDarkMode();
@@ -48,7 +47,7 @@ async function fetchStoreData() {
         const response = await fetch(JSON_URL);
         const data = await response.json();
         state.storeData = data.objetos;
-        document.getElementById('last-updated').innerText = `Precios actualizados el ${data.last_updated}`;
+        document.getElementById('last-updated').innerText = `Actualizado: ${data.last_updated}`;
         renderItems(state.storeData);
         renderHistory();
     } catch (error) {
@@ -109,7 +108,6 @@ function renderItems(items) {
         container.appendChild(section);
     });
 
-    // Event listeners para los botones + y -
     container.querySelectorAll('button[data-action]').forEach(btn => {
         btn.addEventListener('click', (e) => {
             const action = e.currentTarget.getAttribute('data-action');
@@ -133,7 +131,7 @@ function filterItems() {
     renderItems(filtered);
 }
 
-// --- CÁLCULOS Y VISTAS ---
+// --- CÁLCULOS Y DESGROSE ---
 function calculate() {
     const boxPriceInput = document.getElementById('box-price');
     const boxPrice = parseFloat(boxPriceInput.value);
@@ -145,14 +143,23 @@ function calculate() {
 
     let totalValue = 0;
     const selectedItems = [];
+    const itemQuantitiesMap = {};
+    const categoryTotals = { pases: 0, incubadoras: 0, consumibles: 0, otros: 0 };
 
     document.querySelectorAll('.item-qty').forEach(input => {
         const qty = parseInt(input.value) || 0;
         const itemId = input.getAttribute('data-id');
         const item = state.storeData.find(i => i.id === itemId);
+
         if (item && qty > 0) {
-            totalValue += item.unit_price_eur * qty;
+            const itemVal = item.unit_price_eur * qty;
+            totalValue += itemVal;
+
+            const cat = getCategoryKey(item);
+            categoryTotals[cat] += itemVal;
+
             selectedItems.push(`${qty}x ${item.name}`);
+            itemQuantitiesMap[itemId] = qty;
         }
     });
 
@@ -168,6 +175,8 @@ function calculate() {
     document.getElementById('res-diff-label').innerText = isProfitable ? "Ahorras:" : "Pierdes:";
     document.getElementById('res-diff-val').innerText = Math.abs(diff).toFixed(2) + " €";
 
+    renderBreakdown(categoryTotals, totalValue);
+
     const actionText = isProfitable ? `¡Ahorras ${Math.abs(diff).toFixed(2)} €!` : `Pierdes ${Math.abs(diff).toFixed(2)} €`;
     state.lastCalculationText = `Caja de ${boxPrice.toFixed(2)} €: ${actionText} (Valor real: ${totalValue.toFixed(2)} €). Calcúlalo tú también en: ${window.location.href}`;
 
@@ -177,6 +186,7 @@ function calculate() {
         isProfitable,
         diff,
         items: selectedItems,
+        itemQuantitiesMap,
         date: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     });
 
@@ -184,9 +194,60 @@ function calculate() {
     document.getElementById('view-result').classList.remove('hidden');
 }
 
-function shareResult() {
-    if (navigator.clipboard) {
-        navigator.clipboard.writeText(state.lastCalculationText);
+function renderBreakdown(categoryTotals, totalValue) {
+    const bar = document.getElementById('breakdown-bar');
+    const legend = document.getElementById('breakdown-legend');
+    bar.innerHTML = '';
+    legend.innerHTML = '';
+
+    if (totalValue === 0) return;
+
+    const colors = {
+        pases: 'bg-indigo-500',
+        incubadoras: 'bg-amber-500',
+        consumibles: 'bg-emerald-500',
+        otros: 'bg-sky-500'
+    };
+
+    Object.keys(categoryTotals).forEach(cat => {
+        const val = categoryTotals[cat];
+        if (val <= 0) return;
+
+        const pct = Math.round((val / totalValue) * 100);
+        const title = CATEGORY_CONFIG[cat]?.title || cat;
+
+        // Añade segmento a la barra
+        const seg = document.createElement('div');
+        seg.className = `${colors[cat]} h-full transition-all duration-500`;
+        seg.style.width = `${pct}%`;
+        seg.title = `${title}: ${pct}%`;
+        bar.appendChild(seg);
+
+        // Añade ítem a la leyenda
+        const legItem = document.createElement('div');
+        legItem.className = 'flex items-center gap-1.5 text-gray-600 dark:text-gray-300';
+        legItem.innerHTML = `
+            <span class="w-2.5 h-2.5 rounded-full ${colors[cat]}"></span>
+            <span>${title}: <strong>${pct}%</strong></span>
+        `;
+        legend.appendChild(legItem);
+    });
+}
+
+// --- WEB SHARE API NATIVA ---
+async function shareResult() {
+    if (navigator.share) {
+        try {
+            await navigator.share({
+                title: 'PokeValue - Cálculo de Caja',
+                text: state.lastCalculationText,
+                url: window.location.href
+            });
+        } catch (err) {
+            // Si el usuario cancela la acción no mostramos error
+        }
+    } else if (navigator.clipboard) {
+        await navigator.clipboard.writeText(state.lastCalculationText);
         alert("¡Resultado copiado al portapapeles!");
     } else {
         alert(state.lastCalculationText);
@@ -204,7 +265,7 @@ function resetCalculator() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// --- LOCALSTORAGE & HISTORIAL ---
+// --- LOCALSTORAGE & RESTAURACIÓN ---
 function saveToHistory(entry) {
     let history = JSON.parse(localStorage.getItem('pokevalue_history') || '[]');
     history.unshift(entry);
@@ -224,22 +285,48 @@ function renderHistory() {
     }
 
     section.classList.remove('hidden');
-    container.innerHTML = history.map(item => {
-        const itemsText = item.items && item.items.length > 0
-            ? ` (${item.items.join(', ')})`
-            : '';
+    container.innerHTML = '';
 
-        return `
-            <div class="flex justify-between items-center p-2 rounded bg-gray-50 dark:bg-gray-700/50 border border-gray-100 dark:border-gray-700">
-                <span class="text-gray-600 dark:text-gray-300">
-                    ${item.date} - Caja: <strong>${item.boxPrice.toFixed(2)}€</strong><span class="text-gray-400 dark:text-gray-400 text-[11px]">${itemsText}</span>
-                </span>
-                <span class="${item.isProfitable ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-500'} font-bold ml-2">
-                    ${item.isProfitable ? '+' : ''}${(item.diff).toFixed(2)}€
+    history.forEach((item, index) => {
+        const itemsText = item.items && item.items.length > 0 ? ` (${item.items.join(', ')})` : '';
+
+        const card = document.createElement('div');
+        card.className = 'flex justify-between items-center p-2 rounded.lg bg-gray-50 dark:bg-gray-700/50 border border-gray-100 dark:border-gray-700 hover:border-indigo-300 dark:hover:border-indigo-500 cursor-pointer transition-colors group';
+        card.setAttribute('title', 'Haz clic para restaurar este cálculo');
+
+        card.innerHTML = `
+            <div class="flex-1 pr-2">
+                <span class="text-gray-600 dark:text-gray-300 text-xs">
+                    ${item.date} - Caja: <strong>${item.boxPrice.toFixed(2)}€</strong>
+                    <span class="text-gray-400 text-[11px]">${itemsText}</span>
                 </span>
             </div>
+            <div class="flex items-center gap-2">
+                <span class="${item.isProfitable ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-500'} font-bold text-xs">
+                    ${item.isProfitable ? '+' : ''}${(item.diff).toFixed(2)}€
+                </span>
+                <span class="text-xs text-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity">↩</span>
+            </div>
         `;
-    }).join('');
+
+        card.addEventListener('click', () => restoreCalculation(item));
+        container.appendChild(card);
+    });
+}
+
+function restoreCalculation(historyItem) {
+    resetCalculator();
+
+    document.getElementById('box-price').value = historyItem.boxPrice;
+
+    if (historyItem.itemQuantitiesMap) {
+        Object.entries(historyItem.itemQuantitiesMap).forEach(([itemId, qty]) => {
+            const input = document.getElementById(`qty-${itemId}`);
+            if (input) input.value = qty;
+        });
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function clearHistory() {
