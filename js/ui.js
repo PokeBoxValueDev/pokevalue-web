@@ -1,7 +1,7 @@
 // js/ui.js
 import { CATEGORY_CONFIG, CURRENCY_CONFIG, state } from './config.js';
 import { getCategoryKey } from './calculator.js';
-import { getHistory, clearHistoryStorage } from './storage.js';
+import { getHistory } from './storage.js';
 
 export function renderItems(items) {
     const container = document.getElementById('items-container');

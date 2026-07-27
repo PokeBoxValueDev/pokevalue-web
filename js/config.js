@@ -1,6 +1,6 @@
 // js/config.js
-export const APP_VERSION = '1.0.0';
-export const JSON_URL = 'https://raw.githubusercontent.com/alejandrrolc/pokevalue-web/main/items.json';
+export const APP_VERSION = '1.5.0';
+export const JSON_URL = 'https://raw.githubusercontent.com/alejandrrolc/pokevalue-data/refs/heads/main/items.json';
 
 export const CURRENCY_CONFIG = {
     EUR: { symbol: '€', rate: 1.0 },
