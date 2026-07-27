@@ -1,5 +1,5 @@
 import { APP_VERSION, JSON_URL, CURRENCY_CONFIG, state } from './config.js';
-import { calculateResult } from './calculator.js?v=2'; // <-- Añade ?v=2 aquí
+import { calculateResult } from './calculator.js';
 import { saveCalculation, clearHistory } from './storage.js';
 import { renderItems, renderBreakdown, renderHistory, setupModals } from './ui.js';
 import { setLanguage, updateDOMTranslations, t } from './i18n.js';

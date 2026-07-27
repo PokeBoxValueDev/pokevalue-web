@@ -9,14 +9,14 @@ export function getCategoryKey(item) {
 }
 
 export function calculateResult(boxPrice, quantities, storeData, currentCurrency) {
-    const curr = CURRENCY_CONFIG[currentCurrency];
+    const curr = CURRENCY_CONFIG[currentCurrency] || { rate: 1, symbol: '€' };
     let totalValue = 0;
     const itemSummary = [];
     const categoryTotals = { pases: 0, incubadoras: 0, consumibles: 0, otros: 0 };
 
     Object.keys(quantities).forEach(itemId => {
         const qty = quantities[itemId];
-        const item = storeData.find(i => i.id === itemId);
+        const item = storeData.find(i => String(i.id) === String(itemId));
 
         if (item && qty > 0) {
             const convertedUnitPrice = (item.unit_price_usd && currentCurrency === 'USD')
