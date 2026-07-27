@@ -1,51 +1,79 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="h-full">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PokeValue - Calculadora de Cajas</title>
-    <!-- Tailwind CSS para el diseño -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class'
+        }
+    </script>
 </head>
 
-<body class="bg-gray-100 text-gray-800 min-h-screen flex flex-col justify-between pb-6">
+<body
+    class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100 min-h-screen flex flex-col justify-between transition-colors duration-200">
 
-    <div class="max-w-xl mx-auto px-4 py-8 w-full">
-        <!-- Header fijo -->
-        <header class="text-center mb-6">
-            <h1 class="text-3xl font-bold text-indigo-600">PokeValue Web</h1>
-            <p id="last-updated" class="text-xs text-gray-500 mt-1">Cargando fecha de actualización...</p>
+    <div class="max-w-xl mx-auto px-4 py-6 w-full">
+        <!-- Header fijo con Selector de Modo Oscuro -->
+        <header class="flex justify-between items-center mb-6">
+            <div class="text-left">
+                <h1 class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">PokeValue Web</h1>
+                <p id="last-updated" class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Cargando fecha...</p>
+            </div>
+            <button onclick="toggleDarkMode()"
+                class="p-2 rounded-xl bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700 text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                <span id="dark-mode-icon">🌙 Dark</span>
+            </button>
         </header>
 
         <!-- VISTA 1: FORMULARIO DE CÁLCULO -->
-        <section id="view-form" class="bg-white rounded-2xl shadow-md p-6 space-y-6">
+        <section id="view-form"
+            class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 space-y-6 border border-gray-100 dark:border-gray-700">
             <!-- Precio de la caja -->
             <div>
-                <label for="box-price" class="block text-sm font-semibold text-gray-700 mb-1">Precio de la Caja
-                    (€)</label>
+                <label for="box-price" class="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1">Precio
+                    de la Caja (€)</label>
                 <input type="number" step="0.01" id="box-price" placeholder="Ej: 8.99"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                    class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
             </div>
 
-            <!-- Lista de Objetos -->
+            <!-- Lista de Objetos con Filtro/Buscador -->
             <div>
-                <h2 class="text-sm font-semibold text-gray-700 mb-3">Objetos incluidos</h2>
-                <div id="items-container" class="space-y-3">
+                <div class="flex justify-between items-center mb-2">
+                    <h2 class="text-sm font-semibold text-gray-700 dark:text-gray-200">Objetos incluidos</h2>
+                </div>
+                <input type="text" id="search-input" oninput="filterItems()" placeholder="🔍 Buscar objeto..."
+                    class="w-full px-3 py-1.5 text-sm mb-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+
+                <div id="items-container" class="space-y-3 max-h-80 overflow-y-auto pr-1">
                     <p class="text-sm text-gray-400">Cargando objetos desde GitHub...</p>
                 </div>
             </div>
 
             <!-- Botón de calcular -->
             <button onclick="calculate()"
-                class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl transition">
+                class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl transition shadow-sm">
                 Calcular Rentabilidad
             </button>
+
+            <!-- Historial de cálculos -->
+            <div id="history-section" class="pt-4 border-t border-gray-200 dark:border-gray-700 hidden">
+                <div class="flex justify-between items-center mb-2">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">Historial
+                        Reciente</h3>
+                    <button onclick="clearHistory()" class="text-xs text-rose-500 hover:underline">Borrar</button>
+                </div>
+                <div id="history-container" class="space-y-2 text-xs"></div>
+            </div>
         </section>
 
         <!-- VISTA 2: RESULTADO DE EVALUACIÓN (Oculta por defecto) -->
-        <section id="view-result" class="hidden bg-white rounded-2xl shadow-md p-6 space-y-6">
-
+        <section id="view-result"
+            class="hidden bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 space-y-6 border border-gray-100 dark:border-gray-700">
             <div id="result-card" class="p-6 rounded-xl text-center space-y-4">
                 <h3 id="result-title" class="text-2xl font-bold"></h3>
 
@@ -65,16 +93,22 @@
                 </div>
             </div>
 
-            <!-- Botón para volver a calcular -->
-            <button onclick="resetCalculator()"
-                class="w-full bg-gray-800 hover:bg-gray-900 text-white font-semibold py-3 rounded-xl transition">
-                Calcular otra caja
-            </button>
+            <div class="flex gap-3">
+                <button onclick="shareResult()"
+                    class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 rounded-xl transition shadow-sm flex items-center justify-center gap-2">
+                    <span>📋 Copiar / Compartir</span>
+                </button>
+                <button onclick="resetCalculator()"
+                    class="flex-1 bg-gray-800 dark:bg-gray-700 hover:bg-gray-900 dark:hover:bg-gray-600 text-white font-semibold py-3 rounded-xl transition shadow-sm">
+                    Calcular otra
+                </button>
+            </div>
         </section>
     </div>
 
+    <!-- Footer con disclaimer legal -->
     <footer class="text-center py-6 text-xs text-gray-400 max-w-xl mx-auto px-4 space-y-2">
-        <p>PokeValue Web • <span id="app-version">v1.0.0</span></p>
+        <p>PokeValue Web • <span id="app-version">v1.1.0</span></p>
         <p class="leading-relaxed">
             PokeValue es un proyecto independiente desarrollado por fans y no está afiliado, patrocinado ni respaldado
             por Scopely, Niantic, The Pokémon Company, Nintendo o GAME FREAK. Pokémon y los nombres de los objetos son
@@ -83,46 +117,113 @@
     </footer>
 
     <script>
-        const APP_VERSION = "1.0.0";
+        const APP_VERSION = "1.1.0";
         const JSON_URL = 'https://raw.githubusercontent.com/alejandrrolc/pokevalue-data/main/items.json';
         let storeData = [];
+        let lastCalculationText = "";
 
-        // Mostrar número de versión en el DOM
         document.getElementById('app-version').innerText = `v${APP_VERSION}`;
 
-        // Cargar JSON al iniciar
+        // MODO OSCURO
+        function initDarkMode() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+                document.getElementById('dark-mode-icon').innerText = '☀️ Light';
+            } else {
+                document.documentElement.classList.remove('dark');
+                document.getElementById('dark-mode-icon').innerText = '🌙 Dark';
+            }
+        }
+
+        function toggleDarkMode() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                document.getElementById('dark-mode-icon').innerText = '🌙 Dark';
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                document.getElementById('dark-mode-icon').innerText = '☀️ Light';
+            }
+        }
+
+        // CARGAR DATOS
         async function fetchStoreData() {
             try {
                 const response = await fetch(JSON_URL);
                 const data = await response.json();
                 storeData = data.objetos;
-                document.getElementById('last-updated').innerText = `Precios actualizados el: ${data.last_updated}`;
-                renderItems();
+                document.getElementById('last-updated').innerText = `Actualizado: ${data.last_updated}`;
+                renderItems(storeData);
+                renderHistory();
             } catch (error) {
                 document.getElementById('items-container').innerHTML = `<p class="text-red-500 text-sm">Error al cargar datos.</p>`;
             }
         }
 
-        // Renderizar lista de objetos
-        function renderItems() {
+        // CATEGORÍAS DE OBJETOS
+        function getCategoryStyle(item) {
+            const name = item.name.toLowerCase();
+            if (name.includes('pase') || name.includes('raid')) {
+                return { badge: 'Pase', bg: 'bg-emerald-100 dark:bg-emerald-950/40', text: 'text-emerald-700 dark:text-emerald-300', border: 'border-l-4 border-l-emerald-500' };
+            } else if (name.includes('incubadora')) {
+                return { badge: 'Incubadora', bg: 'bg-sky-100 dark:bg-sky-950/40', text: 'text-sky-700 dark:text-sky-300', border: 'border-l-4 border-l-sky-500' };
+            } else if (name.includes('poción') || name.includes('pocion') || name.includes('revivir')) {
+                return { badge: 'Consumible', bg: 'bg-amber-100 dark:bg-amber-950/40', text: 'text-amber-700 dark:text-amber-300', border: 'border-l-4 border-l-amber-500' };
+            }
+            return { badge: 'Otros', bg: 'bg-gray-100 dark:bg-gray-700', text: 'text-gray-600 dark:text-gray-300', border: 'border-l-4 border-l-gray-400' };
+        }
+
+        // RENDERIZAR OBJETOS
+        function renderItems(items) {
             const container = document.getElementById('items-container');
             container.innerHTML = '';
 
-            storeData.forEach(item => {
+            if (items.length === 0) {
+                container.innerHTML = `<p class="text-xs text-gray-400 py-2 text-center">No se encontraron objetos.</p>`;
+                return;
+            }
+
+            items.forEach(item => {
+                const style = getCategoryStyle(item);
                 const div = document.createElement('div');
-                div.className = 'flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-100';
+                div.className = `flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg ${style.border}`;
                 div.innerHTML = `
-                    <div>
-                        <p class="font-medium text-sm text-gray-800">${item.name}</p>
-                        <p class="text-xs text-gray-400">Unidad: ${item.unit_price_eur.toFixed(2)} €</p>
+                    <div class="space-y-0.5">
+                        <div class="flex items-center gap-2">
+                            <p class="font-medium text-sm text-gray-800 dark:text-gray-100">${item.name}</p>
+                            <span class="text-[10px] px-1.5 py-0.5 rounded font-semibold ${style.bg} ${style.text}">${style.badge}</span>
+                        </div>
+                        <p class="text-xs text-gray-400">${item.unit_price_eur.toFixed(2)} €/ud</p>
                     </div>
-                    <input type="number" min="0" value="0" data-id="${item.id}" class="item-qty w-16 px-2 py-1 border border-gray-300 rounded-md text-center text-sm font-semibold focus:ring-1 focus:ring-indigo-500">
+                    <div class="flex items-center gap-1.5">
+                        <button type="button" onclick="adjustQty('${item.id}', 5)" class="px-1.5 py-1 text-xs bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-gray-700 dark:text-gray-200 rounded font-bold">+5</button>
+                        <button type="button" onclick="adjustQty('${item.id}', 10)" class="px-1.5 py-1 text-xs bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-gray-700 dark:text-gray-200 rounded font-bold">+10</button>
+                        <input type="number" min="0" value="0" data-id="${item.id}" id="qty-${item.id}" class="item-qty w-14 px-1.5 py-1 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md text-center text-sm font-semibold focus:ring-1 focus:ring-indigo-500">
+                    </div>
                 `;
                 container.appendChild(div);
             });
         }
 
-        // Calcular y cambiar de pantalla
+        // INCREMENTO RÁPIDO
+        function adjustQty(id, amount) {
+            const input = document.getElementById(`qty-${id}`);
+            if (input) {
+                const current = parseInt(input.value) || 0;
+                input.value = current + amount;
+            }
+        }
+
+        // FILTRO DE BUSQUEDA
+        function filterItems() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const filtered = storeData.filter(i => i.name.toLowerCase().includes(query));
+            renderItems(filtered);
+        }
+
+        // CALCULAR
         function calculate() {
             const boxPriceInput = document.getElementById('box-price');
             const boxPrice = parseFloat(boxPriceInput.value);
@@ -149,7 +250,7 @@
 
             // Configurar tarjeta de resultado
             const resCard = document.getElementById('result-card');
-            resCard.className = `p-6 rounded-xl text-center space-y-4 text-white ${isProfitable ? 'bg-emerald-500' : 'bg-rose-500'}`;
+            resCard.className = `p-6 rounded-xl text-center space-y-4 text-white ${isProfitable ? 'bg-emerald-500 dark:bg-emerald-600' : 'bg-rose-500 dark:bg-rose-600'}`;
 
             document.getElementById('result-title').innerText = isProfitable ? "¡OFERTA RENTABLE! 🎉" : "NO VALE LA PENA ❌";
             document.getElementById('res-box-price').innerText = boxPrice.toFixed(2) + " €";
@@ -157,15 +258,34 @@
             document.getElementById('res-diff-label').innerText = isProfitable ? "Ahorras:" : "Pierdes:";
             document.getElementById('res-diff-val').innerText = Math.abs(diff).toFixed(2) + " €";
 
+            // Guardar texto de compartir
+            const actionText = isProfitable ? `¡Ahorras ${Math.abs(diff).toFixed(2)} €!` : `Pierdes ${Math.abs(diff).toFixed(2)} €`;
+            lastCalculationText = `Caja de ${boxPrice.toFixed(2)} €: ${actionText} (Valor real: ${totalValue.toFixed(2)} €). ¡Pruébala en PokeValue Web!`;
+
+            // Guardar en Historial
+            saveToHistory({ boxPrice, totalValue, isProfitable, diff, date: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) });
+
             // Transición de vistas
             document.getElementById('view-form').classList.add('hidden');
             document.getElementById('view-result').classList.remove('hidden');
         }
 
-        // Volver al formulario limpiando datos
+        // COMPARTIR RESULTADO
+        function shareResult() {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(lastCalculationText);
+                alert("¡Resultado copiado al portapapeles!");
+            } else {
+                alert(lastCalculationText);
+            }
+        }
+
+        // REINICIAR
         function resetCalculator() {
             document.getElementById('box-price').value = '';
             document.querySelectorAll('.item-qty').forEach(input => input.value = 0);
+            document.getElementById('search-input').value = '';
+            renderItems(storeData);
 
             document.getElementById('view-result').classList.add('hidden');
             document.getElementById('view-form').classList.remove('hidden');
@@ -173,6 +293,42 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        // LOCALSTORAGE - HISTORIAL
+        function saveToHistory(entry) {
+            let history = JSON.parse(localStorage.getItem('pokevalue_history') || '[]');
+            history.unshift(entry);
+            if (history.length > 5) history.pop();
+            localStorage.setItem('pokevalue_history', JSON.stringify(history));
+            renderHistory();
+        }
+
+        function renderHistory() {
+            const history = JSON.parse(localStorage.getItem('pokevalue_history') || '[]');
+            const container = document.getElementById('history-container');
+            const section = document.getElementById('history-section');
+
+            if (history.length === 0) {
+                section.classList.add('hidden');
+                return;
+            }
+
+            section.classList.remove('hidden');
+            container.innerHTML = history.map(item => `
+                <div class="flex justify-between items-center p-2 rounded bg-gray-50 dark:bg-gray-700/50 border border-gray-100 dark:border-gray-700">
+                    <span class="text-gray-600 dark:text-gray-300">${item.date} - Caja: <strong>${item.boxPrice.toFixed(2)}€</strong></span>
+                    <span class="${item.isProfitable ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-500'} font-bold">
+                        ${item.isProfitable ? '+' : ''}${(item.diff).toFixed(2)}€
+                    </span>
+                </div>
+            `).join('');
+        }
+
+        function clearHistory() {
+            localStorage.removeItem('pokevalue_history');
+            renderHistory();
+        }
+
+        initDarkMode();
         fetchStoreData();
     </script>
 </body>
