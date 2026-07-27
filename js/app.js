@@ -65,18 +65,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         const response = await fetch(JSON_URL);
         const data = await response.json();
 
-        let rawItems = Array.isArray(data) ? data : (data.items || data.storeData || []);
+        // Extraer array sin importar si viene envuelto en .items o .storeData
+        const list = Array.isArray(data) ? data : (data.items || data.storeData || []);
 
-        // Asignar id si la API devuelve objetos sin campo id explícito
-        state.storeData = rawItems.map((item, idx) => ({
-            ...item,
-            id: item.id || `item_${idx}`
+        state.storeData = list.map((item, index) => ({
+            id: item.id || `item-${index}`,
+            name: item.name || item.name_es || item.item || 'Objeto',
+            unit_price_eur: item.unit_price_eur ?? item.price_eur ?? item.unit_price ?? 0,
+            ...item
         }));
 
         const lastUpdatedEl = document.getElementById('last-updated');
         if (lastUpdatedEl) {
-            const dateVal = data.last_updated || data.updated_at || '';
-            lastUpdatedEl.innerHTML = `<span data-i18n="lastUpdated">${t('lastUpdated')}</span>: ${dateVal}`;
+            const updatedDate = data.last_updated || data.updated_at || '';
+            lastUpdatedEl.innerHTML = `<span data-i18n="lastUpdated">${t('lastUpdated')}</span>: ${updatedDate}`;
         }
 
         renderItems(state.storeData);
@@ -84,7 +86,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error('Error al cargar items:', error);
         const container = document.getElementById('items-container');
         if (container) {
-            container.innerHTML = `<p class="text-xs text-rose-500 py-2 text-center">${t('errorLoading') || 'Error al cargar objetos.'}</p>`;
+            container.innerHTML = `<p class="text-xs text-rose-500 py-2 text-center">Error al cargar objetos de la tienda.</p>`;
         }
     }
 
