@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <!-- Tailwind CSS para el diseño -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
 <body class="bg-gray-100 text-gray-800 min-h-screen flex flex-col justify-between pb-6">
 
     <div class="max-w-xl mx-auto px-4 py-8 w-full">
@@ -20,8 +22,10 @@
         <section id="view-form" class="bg-white rounded-2xl shadow-md p-6 space-y-6">
             <!-- Precio de la caja -->
             <div>
-                <label for="box-price" class="block text-sm font-semibold text-gray-700 mb-1">Precio de la Caja (€)</label>
-                <input type="number" step="0.01" id="box-price" placeholder="Ej: 8.99" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                <label for="box-price" class="block text-sm font-semibold text-gray-700 mb-1">Precio de la Caja
+                    (€)</label>
+                <input type="number" step="0.01" id="box-price" placeholder="Ej: 8.99"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
             </div>
 
             <!-- Lista de Objetos -->
@@ -33,17 +37,18 @@
             </div>
 
             <!-- Botón de calcular -->
-            <button onclick="calculate()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl transition">
+            <button onclick="calculate()"
+                class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl transition">
                 Calcular Rentabilidad
             </button>
         </section>
 
         <!-- VISTA 2: RESULTADO DE EVALUACIÓN (Oculta por defecto) -->
         <section id="view-result" class="hidden bg-white rounded-2xl shadow-md p-6 space-y-6">
-            
+
             <div id="result-card" class="p-6 rounded-xl text-center space-y-4">
                 <h3 id="result-title" class="text-2xl font-bold"></h3>
-                
+
                 <div class="grid grid-cols-3 gap-2 pt-4 border-t border-white/20 text-sm">
                     <div>
                         <p class="opacity-80 text-xs">Precio caja</p>
@@ -61,15 +66,20 @@
             </div>
 
             <!-- Botón para volver a calcular -->
-            <button onclick="resetCalculator()" class="w-full bg-gray-800 hover:bg-gray-900 text-white font-semibold py-3 rounded-xl transition">
+            <button onclick="resetCalculator()"
+                class="w-full bg-gray-800 hover:bg-gray-900 text-white font-semibold py-3 rounded-xl transition">
                 Calcular otra caja
             </button>
         </section>
     </div>
 
-    <!-- Footer con número de versión -->
-    <footer class="text-center py-4 text-xs text-gray-400">
-        PokeValue Web • <span id="app-version">v1.0.0</span>
+    <footer class="text-center py-6 text-xs text-gray-400 max-w-xl mx-auto px-4 space-y-2">
+        <p>PokeValue Web • <span id="app-version">v1.0.0</span></p>
+        <p class="leading-relaxed">
+            PokeValue es un proyecto independiente desarrollado por fans y no está afiliado, patrocinado ni respaldado
+            por Nintendo, GAME FREAK o The Pokémon Company. Pokémon y los nombres de los objetos son marcas registradas
+            de sus respectivos propietarios.
+        </p>
     </footer>
 
     <script>
@@ -124,7 +134,7 @@
 
             let totalValue = 0;
             const qtyInputs = document.querySelectorAll('.item-qty');
-            
+
             qtyInputs.forEach(input => {
                 const qty = parseInt(input.value) || 0;
                 const itemId = input.getAttribute('data-id');
@@ -166,4 +176,5 @@
         fetchStoreData();
     </script>
 </body>
+
 </html>
