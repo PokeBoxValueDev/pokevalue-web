@@ -10,15 +10,14 @@
 <body class="bg-gray-100 text-gray-800 min-h-screen pb-10">
 
     <div class="max-w-xl mx-auto px-4 py-8">
-        <!-- Header -->
+        <!-- Header fijo -->
         <header class="text-center mb-6">
             <h1 class="text-3xl font-bold text-indigo-600">PokeValue Web</h1>
             <p id="last-updated" class="text-xs text-gray-500 mt-1">Cargando fecha de actualización...</p>
         </header>
 
-        <!-- Formulario -->
-        <main class="bg-white rounded-2xl shadow-md p-6 space-y-6">
-            
+        <!-- VISTA 1: FORMULARIO DE CÁLCULO -->
+        <section id="view-form" class="bg-white rounded-2xl shadow-md p-6 space-y-6">
             <!-- Precio de la caja -->
             <div>
                 <label for="box-price" class="block text-sm font-semibold text-gray-700 mb-1">Precio de la Caja (€)</label>
@@ -37,34 +36,42 @@
             <button onclick="calculate()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl transition">
                 Calcular Rentabilidad
             </button>
+        </section>
 
-            <!-- Resultado -->
-            <div id="result-box" class="hidden p-4 rounded-xl text-center space-y-2">
-                <h3 id="result-title" class="text-lg font-bold"></h3>
-                <div class="flex justify-between text-sm pt-2 border-t border-white/20">
+        <!-- VISTA 2: RESULTADO DE EVALUACIÓN (Oculta por defecto) -->
+        <section id="view-result" class="hidden bg-white rounded-2xl shadow-md p-6 space-y-6">
+            
+            <div id="result-card" class="p-6 rounded-xl text-center space-y-4">
+                <h3 id="result-title" class="text-2xl font-bold"></h3>
+                
+                <div class="grid grid-cols-3 gap-2 pt-4 border-t border-white/20 text-sm">
                     <div>
-                        <p class="opacity-80">Precio caja:</p>
-                        <p id="res-box-price" class="font-semibold"></p>
+                        <p class="opacity-80 text-xs">Precio caja</p>
+                        <p id="res-box-price" class="font-bold text-base mt-1"></p>
                     </div>
                     <div>
-                        <p class="opacity-80">Valor real:</p>
-                        <p id="res-real-value" class="font-semibold"></p>
+                        <p class="opacity-80 text-xs">Valor real</p>
+                        <p id="res-real-value" class="font-bold text-base mt-1"></p>
                     </div>
                     <div>
-                        <p id="res-diff-label" class="opacity-80">Diferencia:</p>
-                        <p id="res-diff-val" class="font-semibold"></p>
+                        <p id="res-diff-label" class="opacity-80 text-xs">Diferencia</p>
+                        <p id="res-diff-val" class="font-bold text-base mt-1"></p>
                     </div>
                 </div>
             </div>
 
-        </main>
+            <!-- Botón para volver a calcular -->
+            <button onclick="resetCalculator()" class="w-full bg-gray-800 hover:bg-gray-900 text-white font-semibold py-3 rounded-xl transition">
+                Calcular otra caja
+            </button>
+        </section>
     </div>
 
     <script>
         const JSON_URL = 'https://raw.githubusercontent.com/alejandrrolc/pokevalue-data/main/items.json';
         let storeData = [];
 
-        // Cargar JSON
+        // Cargar JSON al iniciar
         async function fetchStoreData() {
             try {
                 const response = await fetch(JSON_URL);
@@ -77,7 +84,7 @@
             }
         }
 
-        // Renderizar lista con inputs de cantidad
+        // Renderizar lista de objetos
         function renderItems() {
             const container = document.getElementById('items-container');
             container.innerHTML = '';
@@ -96,11 +103,13 @@
             });
         }
 
-        // Calcular
+        // Calcular y cambiar de pantalla
         function calculate() {
-            const boxPrice = parseFloat(document.getElementById('box-price').value);
+            const boxPriceInput = document.getElementById('box-price');
+            const boxPrice = parseFloat(boxPriceInput.value);
+
             if (isNaN(boxPrice) || boxPrice <= 0) {
-                alert("Introduce un precio válido para la caja.");
+                alert("Por favor, introduce un precio válido para la caja.");
                 return;
             }
 
@@ -119,15 +128,33 @@
             const diff = totalValue - boxPrice;
             const isProfitable = diff > 0;
 
-            const resBox = document.getElementById('result-box');
-            resBox.classList.remove('hidden', 'bg-emerald-500', 'bg-rose-500', 'text-white');
-            resBox.classList.add(isProfitable ? 'bg-emerald-500' : 'bg-rose-500', 'text-white');
+            // Configurar tarjeta de resultado
+            const resCard = document.getElementById('result-card');
+            resCard.className = `p-6 rounded-xl text-center space-y-4 text-white ${isProfitable ? 'bg-emerald-500' : 'bg-rose-500'}`;
 
             document.getElementById('result-title').innerText = isProfitable ? "¡OFERTA RENTABLE! 🎉" : "NO VALE LA PENA ❌";
             document.getElementById('res-box-price').innerText = boxPrice.toFixed(2) + " €";
             document.getElementById('res-real-value').innerText = totalValue.toFixed(2) + " €";
             document.getElementById('res-diff-label').innerText = isProfitable ? "Ahorras:" : "Pierdes:";
             document.getElementById('res-diff-val').innerText = Math.abs(diff).toFixed(2) + " €";
+
+            // Transición de vistas
+            document.getElementById('view-form').classList.add('hidden');
+            document.getElementById('view-result').classList.remove('hidden');
+        }
+
+        // Volver al formulario limpiando datos
+        function resetCalculator() {
+            // Limpiar inputs
+            document.getElementById('box-price').value = '';
+            document.querySelectorAll('.item-qty').forEach(input => input.value = 0);
+
+            // Cambiar vista
+            document.getElementById('view-result').classList.add('hidden');
+            document.getElementById('view-form').classList.remove('hidden');
+
+            // Hacer scroll suave arriba
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         fetchStoreData();
