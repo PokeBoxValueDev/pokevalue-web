@@ -14,21 +14,29 @@ document.addEventListener('DOMContentLoaded', async () => {
     const themeIcon = document.getElementById('dark-mode-icon');
 
     function updateThemeUI(isDark) {
-        document.documentElement.classList.toggle('dark', isDark);
+        if (isDark) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
         if (themeIcon) {
             themeIcon.innerText = isDark ? '☀️ Light' : '🌙 Dark';
         }
     }
 
-    const isDarkMode = localStorage.getItem('theme') === 'dark' ||
-        (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    // Comprobar preferencia guardada o del sistema
+    const storedTheme = localStorage.getItem('theme');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const isDarkMode = storedTheme ? storedTheme === 'dark' : systemPrefersDark;
+
     updateThemeUI(isDarkMode);
 
     if (themeBtn) {
         themeBtn.addEventListener('click', () => {
-            const hasDark = document.documentElement.classList.toggle('dark');
-            localStorage.setItem('theme', hasDark ? 'dark' : 'light');
-            updateThemeUI(hasDark);
+            const currentIsDark = document.documentElement.classList.contains('dark');
+            const newIsDark = !currentIsDark;
+            localStorage.setItem('theme', newIsDark ? 'dark' : 'light');
+            updateThemeUI(newIsDark);
         });
     }
 
@@ -59,7 +67,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
         const response = await fetch(JSON_URL);
         const data = await response.json();
-        state.storeData = data.items || [];
+
+        // Asignar items soportando ambas claves ('items' o 'storeData')
+        state.storeData = data.items || data.storeData || (Array.isArray(data) ? data : []);
 
         const lastUpdatedEl = document.getElementById('last-updated');
         if (lastUpdatedEl && data.last_updated) {
@@ -80,7 +90,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     function getFilteredItems() {
         const query = searchInput?.value.toLowerCase().trim() || '';
         if (!query) return state.storeData;
-        return state.storeData.filter(i => i.name.toLowerCase().includes(query));
+        return state.storeData.filter(i => {
+            const itemName = i.name || i.item || '';
+            return itemName.toLowerCase().includes(query);
+        });
     }
 
     if (searchInput) {
@@ -119,7 +132,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             const res = calculateResult(boxPrice, quantities, state.storeData, state.currentCurrency);
-            const curr = CURRENCY_CONFIG[state.currentCurrency];
+            const curr = CURRENCY_CONFIG[state.currentCurrency] || { symbol: '€' };
 
             // Renderizar resultado
             const resCard = document.getElementById('result-card');
