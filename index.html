@@ -189,16 +189,50 @@
         </p>
 
         <div class="flex justify-center items-center gap-3 pt-1 text-gray-500 dark:text-gray-400">
-            <button onclick="toggleModal('legal-modal')" class="hover:underline">Aviso Legal</button>
+            <button id="btn-legal" class="hover:underline">Aviso Legal</button>
             <span>•</span>
-            <button onclick="toggleModal('privacy-modal')" class="hover:underline">Privacidad y Cookies</button>
+            <button id="btn-privacy" class="hover:underline">Privacidad y Cookies</button>
             <span>•</span>
-            <p>PokeBoxValue • <span id="app-version" class="font-mono"></span>
+            <p>PokeBoxValue • <span id="app-version" class="font-mono"></span></p>
         </div>
     </footer>
 
     <!-- JS Principal -->
     <script type="module" src="js/app.js"></script>
+
+    <!-- Modal Aviso Legal -->
+    <div id="legal-modal"
+        class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div
+            class="bg-white dark:bg-gray-800 rounded-2xl max-w-md w-full p-6 shadow-xl text-left border border-gray-200 dark:border-gray-700 max-h-[80vh] overflow-y-auto">
+            <h3 class="text-lg font-bold mb-3 text-gray-900 dark:text-white">Aviso Legal</h3>
+            <div class="text-xs text-gray-600 dark:text-gray-300 space-y-2">
+                <p><strong>PokeBoxValue</strong> es una herramienta independiente desarrollada por fans. No está
+                    vinculada, patrocinada ni afiliada a Niantic, The Pokémon Company, Nintendo ni GAME FREAK.</p>
+                <p>Esta web tiene un propósito meramente informativo y de cálculo de rentabilidad de cajas del juego.
+                </p>
+            </div>
+            <button onclick="toggleModal('legal-modal')"
+                class="mt-5 w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl text-xs transition">Cerrar</button>
+        </div>
+    </div>
+
+    <!-- Modal Privacidad y Cookies -->
+    <div id="privacy-modal"
+        class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div
+            class="bg-white dark:bg-gray-800 rounded-2xl max-w-md w-full p-6 shadow-xl text-left border border-gray-200 dark:border-gray-700 max-h-[80vh] overflow-y-auto">
+            <h3 class="text-lg font-bold mb-3 text-gray-900 dark:text-white">Privacidad y Cookies</h3>
+            <div class="text-xs text-gray-600 dark:text-gray-300 space-y-2">
+                <p><strong>Uso de Cookies:</strong> Utilizamos Google Analytics para medir visitas de forma anónima y
+                    mejorar la experiencia de uso.</p>
+                <p><strong>Almacenamiento Local:</strong> Guardamos tus preferencias (tema oscuro e historial de
+                    cálculos) únicamente en tu navegador (localStorage).</p>
+            </div>
+            <button onclick="toggleModal('privacy-modal')"
+                class="mt-5 w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl text-xs transition">Cerrar</button>
+        </div>
+    </div>
 </body>
 
 </html>

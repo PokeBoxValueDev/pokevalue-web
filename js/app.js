@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initDarkMode();
     fetchStoreData();
     bindEvents();
+    setupModals();
 });
 
 function bindEvents() {
@@ -131,7 +132,7 @@ function filterItems() {
     renderItems(filtered);
 }
 
-// --- CÁLCULOS Y DESGROSE ---
+// --- CÁLCULOS Y DESGLOSE ---
 function calculate() {
     const boxPriceInput = document.getElementById('box-price');
     const boxPrice = parseFloat(boxPriceInput.value);
@@ -174,7 +175,6 @@ function calculate() {
     document.getElementById('res-real-value').innerText = totalValue.toFixed(2) + " €";
     document.getElementById('res-diff-label').innerText = isProfitable ? "Ahorras:" : "Pierdes:";
     document.getElementById('res-diff-val').innerText = Math.abs(diff).toFixed(2) + " €";
-    document.getElementById('app-version').innerText = `v${APP_VERSION}`;
 
     renderBreakdown(categoryTotals, totalValue);
 
@@ -288,11 +288,11 @@ function renderHistory() {
     section.classList.remove('hidden');
     container.innerHTML = '';
 
-    history.forEach((item, index) => {
+    history.forEach((item) => {
         const itemsText = item.items && item.items.length > 0 ? ` (${item.items.join(', ')})` : '';
 
         const card = document.createElement('div');
-        card.className = 'flex justify-between items-center p-2 rounded.lg bg-gray-50 dark:bg-gray-700/50 border border-gray-100 dark:border-gray-700 hover:border-indigo-300 dark:hover:border-indigo-500 cursor-pointer transition-colors group';
+        card.className = 'flex justify-between items-center p-2 rounded-lg bg-gray-50 dark:bg-gray-700/50 border border-gray-100 dark:border-gray-700 hover:border-indigo-300 dark:hover:border-indigo-500 cursor-pointer transition-colors group';
         card.setAttribute('title', 'Haz clic para restaurar este cálculo');
 
         card.innerHTML = `
@@ -333,4 +333,35 @@ function restoreCalculation(historyItem) {
 function clearHistory() {
     localStorage.removeItem('pokevalue_history');
     renderHistory();
+}
+
+// --- MANEJO DE MODALES ---
+function setupModals() {
+    const legalModal = document.getElementById('legal-modal');
+    const privacyModal = document.getElementById('privacy-modal');
+
+    const closeModal = (modal) => modal?.classList.add('hidden');
+
+    // Abrir modales
+    document.getElementById('btn-legal')?.addEventListener('click', () => legalModal?.classList.remove('hidden'));
+    document.getElementById('btn-privacy')?.addEventListener('click', () => privacyModal?.classList.remove('hidden'));
+
+    // Cerrar al hacer clic en el fondo oscuro o en los botones internos
+    [legalModal, privacyModal].forEach(modal => {
+        if (!modal) return;
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal || e.target.tagName === 'BUTTON') {
+                closeModal(modal);
+            }
+        });
+    });
+
+    // Cerrar con la tecla Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeModal(legalModal);
+            closeModal(privacyModal);
+        }
+    });
 }
