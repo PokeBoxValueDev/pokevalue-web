@@ -48,7 +48,7 @@ async function fetchStoreData() {
         const response = await fetch(JSON_URL);
         const data = await response.json();
         state.storeData = data.objetos;
-        document.getElementById('last-updated').innerText = `Actualizado: ${data.last_updated}`;
+        document.getElementById('last-updated').innerText = `Precios actualizados el ${data.last_updated}`;
         renderItems(state.storeData);
         renderHistory();
     } catch (error) {
