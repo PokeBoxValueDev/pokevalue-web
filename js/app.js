@@ -47,7 +47,7 @@ async function fetchStoreData() {
         const response = await fetch(JSON_URL);
         const data = await response.json();
         state.storeData = data.objetos;
-        document.getElementById('last-updated').innerText = `Actualizado: ${data.last_updated}`;
+        document.getElementById('last-updated').innerText = `Data: ${data.last_updated}`;
         renderItems(state.storeData);
         renderHistory();
     } catch (error) {
@@ -174,6 +174,7 @@ function calculate() {
     document.getElementById('res-real-value').innerText = totalValue.toFixed(2) + " €";
     document.getElementById('res-diff-label').innerText = isProfitable ? "Ahorras:" : "Pierdes:";
     document.getElementById('res-diff-val').innerText = Math.abs(diff).toFixed(2) + " €";
+    document.getElementById('app-version').innerText = `v${APP_VERSION}`;
 
     renderBreakdown(categoryTotals, totalValue);
 

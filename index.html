@@ -73,7 +73,8 @@
                 <img src="favicon.svg" alt="PokeBoxValue Logo" class="w-9 h-9">
                 <div class="text-left">
                     <h1 class="text-2xl font-bold text-indigo-600 dark:text-indigo-400 leading-tight">PokeBoxValue</h1>
-                    <p id="last-updated" class="text-xs text-gray-500 dark:text-gray-400">Cargando fecha...</p>
+                    <p id="last-updated" class="text-[10px] text-gray-400 dark:text-gray-500 font-normal opacity-75">
+                        Data: --/--/----</p>
                 </div>
             </div>
             <button id="theme-toggle-btn"
@@ -178,19 +179,22 @@
     </div>
 
     <!-- Footer -->
-    <footer class="text-center py-6 text-xs text-gray-400 max-w-xl mx-auto px-4 space-y-2">
-        <p>PokeBoxValue • <span id="app-version">v1.3.0</span></p>
-        <div class="flex justify-center gap-4 text-gray-500">
-            <a href="#privacy"
-                onclick="alert('Esta web utiliza Google Analytics para medir visitas de forma anónima mediante cookies.');"
-                class="underline hover:text-gray-700 dark:hover:text-gray-300">Política de Cookies</a>
-        </div>
-        <p class="leading-relaxed">
+
+    <footer
+        class="mt-8 pt-4 border-t border-gray-200 dark:border-gray-800 text-center text-[11px] text-gray-400 dark:text-gray-500 space-y-2 max-w-xl mx-auto px-4">
+        <p>
             PokeBoxValue es un proyecto independiente desarrollado por fans y no está afiliado, patrocinado ni
-            respaldado
-            por Scopely, Niantic, The Pokémon Company, Nintendo o GAME FREAK. Pokémon y los nombres de los objetos son
-            marcas registradas de sus respectivos propietarios.
+            respaldado por Scopely, Niantic, The Pokémon Company, Nintendo o GAME FREAK. Pokémon y los nombres de los
+            objetos son marcas registradas de sus respectivos propietarios.
         </p>
+
+        <div class="flex justify-center items-center gap-3 pt-1 text-gray-500 dark:text-gray-400">
+            <button onclick="toggleModal('legal-modal')" class="hover:underline">Aviso Legal</button>
+            <span>•</span>
+            <button onclick="toggleModal('privacy-modal')" class="hover:underline">Privacidad y Cookies</button>
+            <span>•</span>
+            <p>PokeBoxValue • <span id="app-version" class="font-mono"></span>
+        </div>
     </footer>
 
     <!-- JS Principal -->
