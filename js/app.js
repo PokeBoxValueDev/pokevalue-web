@@ -193,6 +193,14 @@ function calculate() {
 
     document.getElementById('view-form').classList.add('hidden');
     document.getElementById('view-result').classList.remove('hidden');
+
+    if (window.gtag) {
+        gtag('event', 'calculate_box', {
+            'box_price': boxPrice,
+            'total_value': totalValue,
+            'is_profitable': isProfitable
+        });
+    }
 }
 
 function renderBreakdown(categoryTotals, totalValue) {
