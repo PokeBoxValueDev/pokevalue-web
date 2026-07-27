@@ -5,28 +5,25 @@ import { renderItems, renderBreakdown, renderHistory, setupModals } from './ui.j
 import { setLanguage, updateDOMTranslations, t } from './i18n.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
-    // Configurar versión en UI
+    // 1. Versión
     const verEl = document.getElementById('app-version');
     if (verEl) verEl.innerText = `v${APP_VERSION}`;
 
-    // --- 1. Modo Oscuro / Claro ---
+    // 2. Modo Oscuro / Claro
     const themeBtn = document.getElementById('theme-toggle-btn');
+    const themeIcon = document.getElementById('dark-mode-icon');
 
-    function applyTheme(isDark) {
-        if (isDark) {
+    function applyTheme(dark) {
+        if (dark) {
             document.documentElement.classList.add('dark');
-            document.body.classList.add('dark');
         } else {
             document.documentElement.classList.remove('dark');
-            document.body.classList.remove('dark');
         }
-
-        if (themeBtn) {
-            themeBtn.innerHTML = isDark ? '☀️ Light' : '🌙 Dark';
+        if (themeIcon) {
+            themeIcon.innerText = dark ? '☀️ Light' : '🌙 Dark';
         }
     }
 
-    // Inicializar tema
     const savedTheme = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     let isDark = savedTheme ? savedTheme === 'dark' : prefersDark;
@@ -40,7 +37,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // --- 2. Idioma ---
+    // 3. Idioma
     const langSelect = document.getElementById('lang-select');
     if (langSelect) {
         langSelect.value = state.currentLang;
@@ -51,7 +48,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     setLanguage(state.currentLang);
 
-    // --- 3. Selector de Divisa ---
+    // 4. Divisa
     const currSelect = document.getElementById('currency-select');
     if (currSelect) {
         currSelect.value = state.currentCurrency;
@@ -63,17 +60,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // --- 4. Carga de Datos JSON ---
+    // 5. Carga JSON
     try {
         const response = await fetch(JSON_URL);
         const data = await response.json();
 
-        // Extraer la lista de ítems sin importar la clave raíz usada
-        state.storeData = Array.isArray(data) ? data : (data.items || data.storeData || []);
+        let rawItems = Array.isArray(data) ? data : (data.items || data.storeData || []);
+
+        // Asignar id si la API devuelve objetos sin campo id explícito
+        state.storeData = rawItems.map((item, idx) => ({
+            ...item,
+            id: item.id || `item_${idx}`
+        }));
 
         const lastUpdatedEl = document.getElementById('last-updated');
-        if (lastUpdatedEl && data.last_updated) {
-            lastUpdatedEl.innerHTML = `<span data-i18n="lastUpdated">${t('lastUpdated')}</span>: ${data.last_updated}`;
+        if (lastUpdatedEl) {
+            const dateVal = data.last_updated || data.updated_at || '';
+            lastUpdatedEl.innerHTML = `<span data-i18n="lastUpdated">${t('lastUpdated')}</span>: ${dateVal}`;
         }
 
         renderItems(state.storeData);
@@ -85,7 +88,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // --- 5. Búsqueda y Filtro ---
+    // 6. Buscador
     const searchInput = document.getElementById('search-input');
     function getFilteredItems() {
         const query = searchInput?.value.toLowerCase().trim() || '';
@@ -102,7 +105,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // --- 6. Cálculo y Resultado ---
+    // 7. Cálculo
     const btnCalculate = document.getElementById('btn-calculate');
     const btnReset = document.getElementById('btn-reset');
     const viewForm = document.getElementById('view-form');
@@ -134,7 +137,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             const res = calculateResult(boxPrice, quantities, state.storeData, state.currentCurrency);
             const curr = CURRENCY_CONFIG[state.currentCurrency] || { symbol: '€' };
 
-            // Renderizar resultado
             const resCard = document.getElementById('result-card');
             const resTitle = document.getElementById('result-title');
             const resDiffLabel = document.getElementById('res-diff-label');
@@ -157,10 +159,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             }
 
-            // Desglose
             renderBreakdown(res.categoryTotals, res.totalValue);
 
-            // Guardar Historial
             saveCalculation({
                 boxPrice,
                 totalValue: res.totalValue,
@@ -170,9 +170,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 items: res.itemSummary
             });
 
-            state.lastCalculationText = `Caja PokeboxValue: Precio ${boxPrice.toFixed(2)}${curr.symbol} | Valor: ${res.totalValue.toFixed(2)}${curr.symbol} (${res.isProfitable ? 'Ahorras' : 'Pierdes'} ${Math.abs(res.diff).toFixed(2)}${curr.symbol})`;
+            state.lastCalculationText = `PokeBoxValue: Precio ${boxPrice.toFixed(2)}${curr.symbol} | Valor: ${res.totalValue.toFixed(2)}${curr.symbol}`;
 
-            // Cambiar vista
             if (viewForm) viewForm.classList.add('hidden');
             if (viewResult) viewResult.classList.remove('hidden');
         });
@@ -197,26 +196,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         btnClearHistory.addEventListener('click', () => {
             clearHistory();
             renderHistory(restoreFromHistory);
-        });
-    }
-
-    const btnShare = document.getElementById('btn-share');
-    if (btnShare) {
-        btnShare.addEventListener('click', async () => {
-            if (navigator.share) {
-                try {
-                    await navigator.share({
-                        title: 'PokeBoxValue',
-                        text: state.lastCalculationText,
-                        url: window.location.href
-                    });
-                } catch (e) {
-                    console.log('Compartir cancelado');
-                }
-            } else {
-                await navigator.clipboard.writeText(state.lastCalculationText);
-                alert(t('alertCopied') || '¡Resultado copiado al portapapeles!');
-            }
         });
     }
 
