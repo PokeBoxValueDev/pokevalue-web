@@ -7,9 +7,9 @@
     <!-- Tailwind CSS para el diseño -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 text-gray-800 min-h-screen pb-10">
+<body class="bg-gray-100 text-gray-800 min-h-screen flex flex-col justify-between pb-6">
 
-    <div class="max-w-xl mx-auto px-4 py-8">
+    <div class="max-w-xl mx-auto px-4 py-8 w-full">
         <!-- Header fijo -->
         <header class="text-center mb-6">
             <h1 class="text-3xl font-bold text-indigo-600">PokeValue Web</h1>
@@ -67,9 +67,18 @@
         </section>
     </div>
 
+    <!-- Footer con número de versión -->
+    <footer class="text-center py-4 text-xs text-gray-400">
+        PokeValue Web • <span id="app-version">v1.0.0</span>
+    </footer>
+
     <script>
+        const APP_VERSION = "1.0.0";
         const JSON_URL = 'https://raw.githubusercontent.com/alejandrrolc/pokevalue-data/main/items.json';
         let storeData = [];
+
+        // Mostrar número de versión en el DOM
+        document.getElementById('app-version').innerText = `v${APP_VERSION}`;
 
         // Cargar JSON al iniciar
         async function fetchStoreData() {
@@ -145,15 +154,12 @@
 
         // Volver al formulario limpiando datos
         function resetCalculator() {
-            // Limpiar inputs
             document.getElementById('box-price').value = '';
             document.querySelectorAll('.item-qty').forEach(input => input.value = 0);
 
-            // Cambiar vista
             document.getElementById('view-result').classList.add('hidden');
             document.getElementById('view-form').classList.remove('hidden');
 
-            // Hacer scroll suave arriba
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
