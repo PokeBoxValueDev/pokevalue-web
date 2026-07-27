@@ -239,7 +239,7 @@ async function shareResult() {
     if (navigator.share) {
         try {
             await navigator.share({
-                title: 'PokeValue - Cálculo de Caja',
+                title: 'PokeBoxValue - Cálculo de Caja',
                 text: state.lastCalculationText,
                 url: window.location.href
             });

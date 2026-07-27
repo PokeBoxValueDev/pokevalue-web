@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PokeValue - Calculadora de Cajas</title>
+    <title>PokeBoxValue - Calculadora de Cajas</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config = { darkMode: 'class' }</script>
     <link rel="stylesheet" href="css/styles.css">
@@ -13,7 +13,7 @@
 
     <!-- Open Graph / Meta etiquetas para compartir enlaces -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="PokeValue - Calculadora de Cajas">
+    <meta property="og:title" content="PokeBoxValue - Calculadora de Cajas">
     <meta property="og:description"
         content="Calcula si las cajas de la tienda valen la pena y descubre cuánto ahorras.">
     <meta property="og:image"
@@ -22,7 +22,7 @@
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="PokeValue - Calculadora de Cajas">
+    <meta name="twitter:title" content="PokeBoxValue - Calculadora de Cajas">
     <meta name="twitter:description" content="Calcula el valor real de las cajas de la tienda.">
     <meta name="twitter:image"
         content="https://raw.githubusercontent.com/alejandrrolc/pokevalue-web/refs/heads/main/favicon.svg">
@@ -36,9 +36,9 @@
         <header class="flex justify-between items-center mb-6">
             <div class="flex items-center gap-3">
                 <!-- Logo SVG -->
-                <img src="favicon.svg" alt="PokeValue Logo" class="w-9 h-9">
+                <img src="favicon.svg" alt="PokeBoxValue Logo" class="w-9 h-9">
                 <div class="text-left">
-                    <h1 class="text-2xl font-bold text-indigo-600 dark:text-indigo-400 leading-tight">PokeValue</h1>
+                    <h1 class="text-2xl font-bold text-indigo-600 dark:text-indigo-400 leading-tight">PokeBoxValue</h1>
                     <p id="last-updated" class="text-xs text-gray-500 dark:text-gray-400">Cargando fecha...</p>
                 </div>
             </div>
@@ -134,11 +134,30 @@
         </div>
     </div>
 
+    <!-- Sección de Donaciones / Apoyo -->
+    <div class="text-center my-6 max-w-xl mx-auto px-4">
+        <a href="https://ko-fi.com/tu_usuario" target="_blank" rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 bg-amber-400 hover:bg-amber-500 text-gray-900 font-bold px-4 py-2.5 rounded-xl shadow-sm text-sm transition transform hover:-translate-y-0.5">
+            <span>☕</span>
+            <span>¿Te ha servido? Invítame a un café</span>
+        </a>
+    </div>
+
+    <!-- Contenedor para Google AdSense -->
+    <div class="my-6 max-w-xl mx-auto px-4 text-center min-h-[90px]">
+        <!-- Reemplaza este comentario y bloque por tu código de anuncio de AdSense -->
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+            data-ad-slot="XXXXXXXXXX" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+
     <!-- Footer -->
     <footer class="text-center py-6 text-xs text-gray-400 max-w-xl mx-auto px-4 space-y-2">
-        <p>PokeValue • <span id="app-version">v1.3.0</span></p>
+        <p>PokeBoxValue • <span id="app-version">v1.3.0</span></p>
         <p class="leading-relaxed">
-            PokeValue es un proyecto independiente desarrollado por fans y no está afiliado, patrocinado ni respaldado
+            PokeBoxValue es un proyecto independiente desarrollado por fans y no está afiliado, patrocinado ni respaldado
             por Scopely, Niantic, The Pokémon Company, Nintendo o GAME FREAK. Pokémon y los nombres de los objetos son
             marcas registradas de sus respectivos propietarios.
         </p>
