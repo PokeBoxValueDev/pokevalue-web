@@ -65,10 +65,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         const response = await fetch(JSON_URL);
         const data = await response.json();
 
-        // Soporte para store_items, items, storeData o Array directo
+        // Mapea usando data.objetos del JSON
         const list = Array.isArray(data)
             ? data
-            : (data.store_items || data.items || data.storeData || []);
+            : (data.objetos || data.store_items || data.items || data.storeData || []);
 
         state.storeData = list.map((item, index) => ({
             id: item.id || `item-${index}`,
