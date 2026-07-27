@@ -152,13 +152,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (resCard && resTitle && resDiffLabel && resDiffVal) {
                 if (res.isProfitable) {
                     resCard.className = 'p-6 rounded-xl text-center space-y-4 text-white bg-emerald-600 shadow-lg';
-                    resTitle.innerText = `🎉 ${t('resProfitable') || '¡Renta comprarla!'}`;
-                    resDiffLabel.innerText = t('resSavings') || 'Ahorras:';
+                    resTitle.innerText = `🎉 ${t('titleProfitable') || '¡Renta comprarla!'}`;
+                    resDiffLabel.innerText = t('resDiffSave') || 'Ahorras:';
                     resDiffVal.innerText = `+${res.diff.toFixed(2)} ${curr.symbol}`;
                 } else {
                     resCard.className = 'p-6 rounded-xl text-center space-y-4 text-white bg-rose-600 shadow-lg';
-                    resTitle.innerText = `⚠️ ${t('resNotProfitable') || 'No renta comprarla'}`;
-                    resDiffLabel.innerText = t('resLoss') || 'Pierdes:';
+                    resTitle.innerText = `⚠️ ${t('titleNotProfitable') || 'No renta comprarla'}`;
+                    resDiffLabel.innerText = t('resDiffLose') || 'Pierdes:';
                     resDiffVal.innerText = `${res.diff.toFixed(2)} ${curr.symbol}`;
                 }
             }
