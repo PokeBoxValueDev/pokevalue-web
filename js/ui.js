@@ -28,16 +28,47 @@ export function renderItems(items) {
                         ${unitPrice.toFixed(2)} ${curr.symbol} / u.
                     </p>
                 </div>
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-1.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg p-1">
+                    <button type="button" 
+                        class="btn-decrement w-7 h-7 flex items-center justify-center text-sm font-bold text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white transition active:scale-95" 
+                        data-id="${item.id}">-</button>
+                    
                     <input type="number" 
                         min="0" 
                         value="0" 
                         data-id="${item.id}" 
-                        class="item-qty w-16 px-2 py-1 text-center text-xs font-bold bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 dark:text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                        class="item-qty w-10 text-center text-xs font-bold bg-transparent text-gray-800 dark:text-white focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                    
+                    <button type="button" 
+                        class="btn-increment w-7 h-7 flex items-center justify-center text-sm font-bold text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white transition active:scale-95" 
+                        data-id="${item.id}">+</button>
                 </div>
             </div>
         `;
     }).join('');
+
+    // Escuchadores para los botones + y -
+    container.querySelectorAll('.btn-decrement').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const id = btn.getAttribute('data-id');
+            const input = container.querySelector(`input[data-id="${id}"]`);
+            if (input) {
+                const currentVal = parseInt(input.value) || 0;
+                if (currentVal > 0) input.value = currentVal - 1;
+            }
+        });
+    });
+
+    container.querySelectorAll('.btn-increment').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const id = btn.getAttribute('data-id');
+            const input = container.querySelector(`input[data-id="${id}"]`);
+            if (input) {
+                const currentVal = parseInt(input.value) || 0;
+                input.value = currentVal + 1;
+            }
+        });
+    });
 }
 
 export function renderBreakdown(categoryTotals, totalValue) {
