@@ -5,38 +5,50 @@ import { t } from './i18n.js';
 
 export function renderItems(items) {
     const container = document.getElementById('items-container');
+    if (!container) return;
     container.innerHTML = '';
 
     if (!items || items.length === 0) {
-        container.innerHTML = `<p class="text-xs text-gray-400 py-2 text-center">${t('noItemsFound')}</p>`;
+        container.innerHTML = `<p class="text-xs text-gray-400 py-4 text-center">${t('noItemsFound') || 'No se encontraron objetos.'}</p>`;
         return;
     }
 
     const grouped = { pases: [], incubadoras: [], consumibles: [], otros: [] };
-    items.forEach(item => grouped[getCategoryKey(item)].push(item));
 
-    const curr = CURRENCY_CONFIG[state.currentCurrency];
+    items.forEach(item => {
+        const key = getCategoryKey(item);
+        if (grouped[key]) {
+            grouped[key].push(item);
+        } else {
+            grouped.otros.push(item);
+        }
+    });
+
+    const curr = CURRENCY_CONFIG[state.currentCurrency] || { rate: 1, symbol: '€' };
 
     Object.keys(CATEGORY_CONFIG).forEach(catKey => {
         const itemList = grouped[catKey];
-        if (itemList.length === 0) return;
+        if (!itemList || itemList.length === 0) return;
 
         const config = CATEGORY_CONFIG[catKey];
         const section = document.createElement('div');
-        section.className = 'space-y-2';
+        section.className = 'space-y-2 mb-4';
 
         const header = document.createElement('div');
         header.className = `px-2 py-1 rounded text-xs font-bold tracking-wide uppercase ${config.bg} ${config.text}`;
-        header.innerText = t(config.key);
+        header.innerText = t(config.key) || catKey;
         section.appendChild(header);
 
         itemList.forEach(item => {
-            const convertedUnitPrice = item.unit_price_eur * curr.rate;
+            const basePrice = item.unit_price_eur || item.price_eur || 0;
+            const convertedUnitPrice = basePrice * curr.rate;
+            const displayName = item.name || item.name_es || item.item || 'Objeto';
+
             const div = document.createElement('div');
             div.className = `flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg ${config.border}`;
             div.innerHTML = `
                 <div class="space-y-0.5">
-                    <p class="font-medium text-sm text-gray-800 dark:text-gray-100">${item.name}</p>
+                    <p class="font-medium text-sm text-gray-800 dark:text-gray-100">${displayName}</p>
                     <p class="text-xs text-gray-400">${convertedUnitPrice.toFixed(2)} ${curr.symbol}/ud</p>
                 </div>
                 <div class="flex items-center gap-1.5">
@@ -71,6 +83,8 @@ export function renderItems(items) {
 export function renderBreakdown(categoryTotals, totalValue) {
     const bar = document.getElementById('breakdown-bar');
     const legend = document.getElementById('breakdown-legend');
+    if (!bar || !legend) return;
+
     bar.innerHTML = '';
     legend.innerHTML = '';
 
@@ -111,6 +125,8 @@ export function renderHistory(restoreCallback) {
     const container = document.getElementById('history-container');
     const section = document.getElementById('history-section');
 
+    if (!container || !section) return;
+
     if (history.length === 0) {
         section.classList.add('hidden');
         return;
@@ -129,7 +145,7 @@ export function renderHistory(restoreCallback) {
         card.innerHTML = `
             <div class="flex-1 pr-2">
                 <span class="text-gray-600 dark:text-gray-300 text-xs">
-                    ${item.date} - ${item.boxPrice.toFixed(2)}${symbol}
+                    ${item.timestamp ? new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''} - ${item.boxPrice.toFixed(2)}${symbol}
                     <span class="text-gray-400 text-[11px]">${itemsText}</span>
                 </span>
             </div>

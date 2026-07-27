@@ -9,34 +9,34 @@ document.addEventListener('DOMContentLoaded', async () => {
     const verEl = document.getElementById('app-version');
     if (verEl) verEl.innerText = `v${APP_VERSION}`;
 
-    // --- 1. Modo Oscuro ---
+    // --- 1. Modo Oscuro / Claro ---
     const themeBtn = document.getElementById('theme-toggle-btn');
-    const themeIcon = document.getElementById('dark-mode-icon');
 
-    function updateThemeUI(isDark) {
+    function applyTheme(isDark) {
         if (isDark) {
             document.documentElement.classList.add('dark');
+            document.body.classList.add('dark');
         } else {
             document.documentElement.classList.remove('dark');
+            document.body.classList.remove('dark');
         }
-        if (themeIcon) {
-            themeIcon.innerText = isDark ? '☀️ Light' : '🌙 Dark';
+
+        if (themeBtn) {
+            themeBtn.innerHTML = isDark ? '☀️ Light' : '🌙 Dark';
         }
     }
 
-    // Comprobar preferencia guardada o del sistema
-    const storedTheme = localStorage.getItem('theme');
-    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const isDarkMode = storedTheme ? storedTheme === 'dark' : systemPrefersDark;
-
-    updateThemeUI(isDarkMode);
+    // Inicializar tema
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    let isDark = savedTheme ? savedTheme === 'dark' : prefersDark;
+    applyTheme(isDark);
 
     if (themeBtn) {
         themeBtn.addEventListener('click', () => {
-            const currentIsDark = document.documentElement.classList.contains('dark');
-            const newIsDark = !currentIsDark;
-            localStorage.setItem('theme', newIsDark ? 'dark' : 'light');
-            updateThemeUI(newIsDark);
+            isDark = !document.documentElement.classList.contains('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            applyTheme(isDark);
         });
     }
 
@@ -68,8 +68,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         const response = await fetch(JSON_URL);
         const data = await response.json();
 
-        // Asignar items soportando ambas claves ('items' o 'storeData')
-        state.storeData = data.items || data.storeData || (Array.isArray(data) ? data : []);
+        // Extraer la lista de ítems sin importar la clave raíz usada
+        state.storeData = Array.isArray(data) ? data : (data.items || data.storeData || []);
 
         const lastUpdatedEl = document.getElementById('last-updated');
         if (lastUpdatedEl && data.last_updated) {
@@ -91,8 +91,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         const query = searchInput?.value.toLowerCase().trim() || '';
         if (!query) return state.storeData;
         return state.storeData.filter(i => {
-            const itemName = i.name || i.item || '';
-            return itemName.toLowerCase().includes(query);
+            const name = (i.name || i.name_es || i.item || '').toLowerCase();
+            return name.includes(query);
         });
     }
 
@@ -140,19 +140,21 @@ document.addEventListener('DOMContentLoaded', async () => {
             const resDiffLabel = document.getElementById('res-diff-label');
             const resDiffVal = document.getElementById('res-diff-val');
 
-            document.getElementById('res-box-price').innerText = `${boxPrice.toFixed(2)} ${curr.symbol}`;
-            document.getElementById('res-real-value').innerText = `${res.totalValue.toFixed(2)} ${curr.symbol}`;
+            if (document.getElementById('res-box-price')) document.getElementById('res-box-price').innerText = `${boxPrice.toFixed(2)} ${curr.symbol}`;
+            if (document.getElementById('res-real-value')) document.getElementById('res-real-value').innerText = `${res.totalValue.toFixed(2)} ${curr.symbol}`;
 
-            if (res.isProfitable) {
-                resCard.className = 'p-6 rounded-xl text-center space-y-4 text-white bg-emerald-600 shadow-lg';
-                resTitle.innerText = `🎉 ${t('resProfitable') || '¡Renta comprarla!'}`;
-                resDiffLabel.innerText = t('resSavings') || 'Ahorras:';
-                resDiffVal.innerText = `+${res.diff.toFixed(2)} ${curr.symbol}`;
-            } else {
-                resCard.className = 'p-6 rounded-xl text-center space-y-4 text-white bg-rose-600 shadow-lg';
-                resTitle.innerText = `⚠️ ${t('resNotProfitable') || 'No renta comprarla'}`;
-                resDiffLabel.innerText = t('resLoss') || 'Pierdes:';
-                resDiffVal.innerText = `${res.diff.toFixed(2)} ${curr.symbol}`;
+            if (resCard && resTitle && resDiffLabel && resDiffVal) {
+                if (res.isProfitable) {
+                    resCard.className = 'p-6 rounded-xl text-center space-y-4 text-white bg-emerald-600 shadow-lg';
+                    resTitle.innerText = `🎉 ${t('resProfitable') || '¡Renta comprarla!'}`;
+                    resDiffLabel.innerText = t('resSavings') || 'Ahorras:';
+                    resDiffVal.innerText = `+${res.diff.toFixed(2)} ${curr.symbol}`;
+                } else {
+                    resCard.className = 'p-6 rounded-xl text-center space-y-4 text-white bg-rose-600 shadow-lg';
+                    resTitle.innerText = `⚠️ ${t('resNotProfitable') || 'No renta comprarla'}`;
+                    resDiffLabel.innerText = t('resLoss') || 'Pierdes:';
+                    resDiffVal.innerText = `${res.diff.toFixed(2)} ${curr.symbol}`;
+                }
             }
 
             // Desglose
@@ -171,27 +173,25 @@ document.addEventListener('DOMContentLoaded', async () => {
             state.lastCalculationText = `Caja PokeboxValue: Precio ${boxPrice.toFixed(2)}${curr.symbol} | Valor: ${res.totalValue.toFixed(2)}${curr.symbol} (${res.isProfitable ? 'Ahorras' : 'Pierdes'} ${Math.abs(res.diff).toFixed(2)}${curr.symbol})`;
 
             // Cambiar vista
-            viewForm.classList.add('hidden');
-            viewResult.classList.remove('hidden');
+            if (viewForm) viewForm.classList.add('hidden');
+            if (viewResult) viewResult.classList.remove('hidden');
         });
     }
 
     if (btnReset) {
         btnReset.addEventListener('click', () => {
-            viewResult.classList.add('hidden');
-            viewForm.classList.remove('hidden');
+            if (viewResult) viewResult.classList.add('hidden');
+            if (viewForm) viewForm.classList.remove('hidden');
             renderHistory(restoreFromHistory);
         });
     }
 
-    // Restaurar del historial
     function restoreFromHistory(item) {
         const priceInput = document.getElementById('box-price');
         if (priceInput) priceInput.value = item.boxPrice;
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Limpiar Historial
     const btnClearHistory = document.getElementById('btn-clear-history');
     if (btnClearHistory) {
         btnClearHistory.addEventListener('click', () => {
@@ -200,7 +200,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // Compartir
     const btnShare = document.getElementById('btn-share');
     if (btnShare) {
         btnShare.addEventListener('click', async () => {
@@ -221,7 +220,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // Modales y Render Historial Inicial
     setupModals();
     renderHistory(restoreFromHistory);
 });

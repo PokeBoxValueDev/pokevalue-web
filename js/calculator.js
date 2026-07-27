@@ -1,10 +1,10 @@
 import { CURRENCY_CONFIG } from './config.js';
 
 export function getCategoryKey(item) {
-    const name = (item.name || '').toLowerCase();
-    if (name.includes('pase') || name.includes('raid')) return 'pases';
-    if (name.includes('incubadora')) return 'incubadoras';
-    if (name.includes('poción') || name.includes('pocion') || name.includes('revivir')) return 'consumibles';
+    const name = (item.name || item.name_es || item.item || '').toLowerCase();
+    if (name.includes('pase') || name.includes('raid') || name.includes('pass')) return 'pases';
+    if (name.includes('incubadora') || name.includes('incubator')) return 'incubadoras';
+    if (name.includes('poción') || name.includes('pocion') || name.includes('revivir') || name.includes('potion')) return 'consumibles';
     return 'otros';
 }
 
@@ -21,7 +21,7 @@ export function calculateResult(boxPrice, quantities, storeData, currentCurrency
         if (item && qty > 0) {
             const convertedUnitPrice = (item.unit_price_usd && currentCurrency === 'USD')
                 ? item.unit_price_usd
-                : item.unit_price_eur * curr.rate;
+                : (item.unit_price_eur || item.price_eur || 0) * curr.rate;
 
             const itemVal = convertedUnitPrice * qty;
             totalValue += itemVal;
@@ -29,7 +29,8 @@ export function calculateResult(boxPrice, quantities, storeData, currentCurrency
             const cat = getCategoryKey(item);
             categoryTotals[cat] += itemVal;
 
-            itemSummary.push(`${qty}x ${item.name}`);
+            const itemName = item.name || item.name_es || item.item || 'Objeto';
+            itemSummary.push(`${qty}x ${itemName}`);
         }
     });
 
