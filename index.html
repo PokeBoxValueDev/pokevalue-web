@@ -49,7 +49,8 @@
                 <input type="text" id="search-input" oninput="filterItems()" placeholder="🔍 Buscar objeto..."
                     class="w-full px-3 py-1.5 text-sm mb-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
 
-                <div id="items-container" class="space-y-3 max-h-80 overflow-y-auto pr-1">
+                <!-- Contenedor con Scroll para las categorías -->
+                <div id="items-container" class="space-y-5 max-h-96 overflow-y-auto pr-1">
                     <p class="text-sm text-gray-400">Cargando objetos desde GitHub...</p>
                 </div>
             </div>
@@ -108,7 +109,7 @@
 
     <!-- Footer con disclaimer legal -->
     <footer class="text-center py-6 text-xs text-gray-400 max-w-xl mx-auto px-4 space-y-2">
-        <p>PokeValue Web • <span id="app-version">v1.1.0</span></p>
+        <p>PokeValue Web • <span id="app-version">v1.2.0</span></p>
         <p class="leading-relaxed">
             PokeValue es un proyecto independiente desarrollado por fans y no está afiliado, patrocinado ni respaldado
             por Scopely, Niantic, The Pokémon Company, Nintendo o GAME FREAK. Pokémon y los nombres de los objetos son
@@ -117,7 +118,7 @@
     </footer>
 
     <script>
-        const APP_VERSION = "1.1.0";
+        const APP_VERSION = "1.2.0";
         const JSON_URL = 'https://raw.githubusercontent.com/alejandrrolc/pokevalue-data/main/items.json';
         let storeData = [];
         let lastCalculationText = "";
@@ -162,20 +163,28 @@
             }
         }
 
-        // CATEGORÍAS DE OBJETOS
-        function getCategoryStyle(item) {
+        // ASIGNAR CATEGORÍA A UN OBJETO
+        function getCategoryKey(item) {
             const name = item.name.toLowerCase();
             if (name.includes('pase') || name.includes('raid')) {
-                return { badge: 'Pase', bg: 'bg-emerald-100 dark:bg-emerald-950/40', text: 'text-emerald-700 dark:text-emerald-300', border: 'border-l-4 border-l-emerald-500' };
+                return 'pases';
             } else if (name.includes('incubadora')) {
-                return { badge: 'Incubadora', bg: 'bg-sky-100 dark:bg-sky-950/40', text: 'text-sky-700 dark:text-sky-300', border: 'border-l-4 border-l-sky-500' };
+                return 'incubadoras';
             } else if (name.includes('poción') || name.includes('pocion') || name.includes('revivir')) {
-                return { badge: 'Consumible', bg: 'bg-amber-100 dark:bg-amber-950/40', text: 'text-amber-700 dark:text-amber-300', border: 'border-l-4 border-l-amber-500' };
+                return 'consumibles';
             }
-            return { badge: 'Otros', bg: 'bg-gray-100 dark:bg-gray-700', text: 'text-gray-600 dark:text-gray-300', border: 'border-l-4 border-l-gray-400' };
+            return 'otros';
         }
 
-        // RENDERIZAR OBJETOS
+        // CONFIGURACIÓN VISUAL POR CATEGORÍA
+        const categoryConfig = {
+            pases: { title: 'Pases de Incursión', bg: 'bg-emerald-100 dark:bg-emerald-950/40', text: 'text-emerald-700 dark:text-emerald-300', border: 'border-l-4 border-l-emerald-500' },
+            incubadoras: { title: 'Incubadoras', bg: 'bg-sky-100 dark:bg-sky-950/40', text: 'text-sky-700 dark:text-sky-300', border: 'border-l-4 border-l-sky-500' },
+            consumibles: { title: 'Consumibles (Pociones / Revivir)', bg: 'bg-amber-100 dark:bg-amber-950/40', text: 'text-amber-700 dark:text-amber-300', border: 'border-l-4 border-l-amber-500' },
+            otros: { title: 'Otros Objetos', bg: 'bg-gray-100 dark:bg-gray-700', text: 'text-gray-600 dark:text-gray-300', border: 'border-l-4 border-l-gray-400' }
+        };
+
+        // RENDERIZAR OBJETOS AGRUPADOS POR CATEGORÍA
         function renderItems(items) {
             const container = document.getElementById('items-container');
             container.innerHTML = '';
@@ -185,25 +194,49 @@
                 return;
             }
 
+            // Agrupar los ítems filtrados en sus categorías
+            const grouped = { pases: [], incubadoras: [], consumibles: [], otros: [] };
             items.forEach(item => {
-                const style = getCategoryStyle(item);
-                const div = document.createElement('div');
-                div.className = `flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg ${style.border}`;
-                div.innerHTML = `
-                    <div class="space-y-0.5">
-                        <div class="flex items-center gap-2">
+                const key = getCategoryKey(item);
+                grouped[key].push(item);
+            });
+
+            // Iterar sobre las categorías definidas en la configuración
+            Object.keys(categoryConfig).forEach(catKey => {
+                const itemList = grouped[catKey];
+                if (itemList.length === 0) return; // Si la categoría está vacía, no mostrar su título
+
+                const config = categoryConfig[catKey];
+
+                // Crear bloque de sección
+                const section = document.createElement('div');
+                section.className = 'space-y-2';
+
+                // Título de la categoría
+                const header = document.createElement('div');
+                header.className = `px-2 py-1 rounded text-xs font-bold tracking-wide uppercase ${config.bg} ${config.text}`;
+                header.innerText = config.title;
+                section.appendChild(header);
+
+                // Lista de ítems de esta categoría
+                itemList.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = `flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg ${config.border}`;
+                    div.innerHTML = `
+                        <div class="space-y-0.5">
                             <p class="font-medium text-sm text-gray-800 dark:text-gray-100">${item.name}</p>
-                            <span class="text-[10px] px-1.5 py-0.5 rounded font-semibold ${style.bg} ${style.text}">${style.badge}</span>
+                            <p class="text-xs text-gray-400">${item.unit_price_eur.toFixed(2)} €/ud</p>
                         </div>
-                        <p class="text-xs text-gray-400">${item.unit_price_eur.toFixed(2)} €/ud</p>
-                    </div>
-                    <div class="flex items-center gap-1.5">
-                        <button type="button" onclick="adjustQty('${item.id}', 5)" class="px-1.5 py-1 text-xs bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-gray-700 dark:text-gray-200 rounded font-bold">+5</button>
-                        <button type="button" onclick="adjustQty('${item.id}', 10)" class="px-1.5 py-1 text-xs bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-gray-700 dark:text-gray-200 rounded font-bold">+10</button>
-                        <input type="number" min="0" value="0" data-id="${item.id}" id="qty-${item.id}" class="item-qty w-14 px-1.5 py-1 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md text-center text-sm font-semibold focus:ring-1 focus:ring-indigo-500">
-                    </div>
-                `;
-                container.appendChild(div);
+                        <div class="flex items-center gap-1.5">
+                            <button type="button" onclick="adjustQty('${item.id}', 5)" class="px-1.5 py-1 text-xs bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-gray-700 dark:text-gray-200 rounded font-bold">+5</button>
+                            <button type="button" onclick="adjustQty('${item.id}', 10)" class="px-1.5 py-1 text-xs bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-gray-700 dark:text-gray-200 rounded font-bold">+10</button>
+                            <input type="number" min="0" value="0" data-id="${item.id}" id="qty-${item.id}" class="item-qty w-14 px-1.5 py-1 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md text-center text-sm font-semibold focus:ring-1 focus:ring-indigo-500">
+                        </div>
+                    `;
+                    section.appendChild(div);
+                });
+
+                container.appendChild(section);
             });
         }
 
@@ -216,7 +249,7 @@
             }
         }
 
-        // FILTRO DE BUSQUEDA
+        // FILTRO DE BÚSQUEDA
         function filterItems() {
             const query = document.getElementById('search-input').value.toLowerCase();
             const filtered = storeData.filter(i => i.name.toLowerCase().includes(query));
