@@ -65,8 +65,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         const response = await fetch(JSON_URL);
         const data = await response.json();
 
-        // Extraer array sin importar si viene envuelto en .items o .storeData
-        const list = Array.isArray(data) ? data : (data.items || data.storeData || []);
+        // Soporte para store_items, items, storeData o Array directo
+        const list = Array.isArray(data)
+            ? data
+            : (data.store_items || data.items || data.storeData || []);
 
         state.storeData = list.map((item, index) => ({
             id: item.id || `item-${index}`,
