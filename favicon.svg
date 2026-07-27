@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="100%" height="100%">
+  <!-- Fondo redondeado estilo app -->
+  <rect x="2" y="2" width="60" height="60" rx="16" fill="#4F46E5"/>
+  
+  <!-- Símbolo de la Pokéball / Moneda de Calculadora -->
+  <path d="M 12 32 A 20 20 0 0 1 52 32 Z" fill="#EF4444"/>
+  <path d="M 12 32 A 20 20 0 0 0 52 32 Z" fill="#FFFFFF"/>
+  <rect x="12" y="30" width="40" height="4" fill="#1F2937"/>
+  
+  <!-- Centro de la Pokéball -->
+  <circle cx="32" cy="32" r="7" fill="#1F2937"/>
+  <circle cx="32" cy="32" r="4" fill="#FFFFFF"/>
+  
+  <!-- Detalle de Sparkle / Valor (Esquina superior derecha) -->
+  <path d="M 48 10 L 50 16 L 56 18 L 50 20 L 48 26 L 46 20 L 40 18 L 46 16 Z" fill="#FBBF24"/>
+</svg>
