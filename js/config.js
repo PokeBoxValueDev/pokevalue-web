@@ -1,5 +1,5 @@
 // js/config.js
-export const APP_VERSION = "1.3.0";
+export const APP_VERSION = "1.3.1";
 export const JSON_URL = 'https://raw.githubusercontent.com/alejandrrolc/pokevalue-data/main/items.json';
 
 export const CATEGORY_CONFIG = {
