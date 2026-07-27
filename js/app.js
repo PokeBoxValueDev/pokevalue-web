@@ -144,11 +144,16 @@ function calculate() {
     }
 
     let totalValue = 0;
+    const selectedItems = [];
+
     document.querySelectorAll('.item-qty').forEach(input => {
         const qty = parseInt(input.value) || 0;
         const itemId = input.getAttribute('data-id');
         const item = state.storeData.find(i => i.id === itemId);
-        if (item && qty > 0) totalValue += item.unit_price_eur * qty;
+        if (item && qty > 0) {
+            totalValue += item.unit_price_eur * qty;
+            selectedItems.push(`${qty}x ${item.name}`);
+        }
     });
 
     const diff = totalValue - boxPrice;
@@ -164,9 +169,16 @@ function calculate() {
     document.getElementById('res-diff-val').innerText = Math.abs(diff).toFixed(2) + " €";
 
     const actionText = isProfitable ? `¡Ahorras ${Math.abs(diff).toFixed(2)} €!` : `Pierdes ${Math.abs(diff).toFixed(2)} €`;
-    state.lastCalculationText = `Caja de ${boxPrice.toFixed(2)} €: ${actionText} (Valor real: ${totalValue.toFixed(2)} €). ¡Pruébala en PokeValue Web!`;
+    state.lastCalculationText = `Caja de ${boxPrice.toFixed(2)} €: ${actionText} (Valor real: ${totalValue.toFixed(2)} €). Calcúlalo tú también en: ${window.location.href}`;
 
-    saveToHistory({ boxPrice, totalValue, isProfitable, diff, date: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) });
+    saveToHistory({
+        boxPrice,
+        totalValue,
+        isProfitable,
+        diff,
+        items: selectedItems,
+        date: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    });
 
     document.getElementById('view-form').classList.add('hidden');
     document.getElementById('view-result').classList.remove('hidden');
@@ -212,14 +224,22 @@ function renderHistory() {
     }
 
     section.classList.remove('hidden');
-    container.innerHTML = history.map(item => `
-        <div class="flex justify-between items-center p-2 rounded bg-gray-50 dark:bg-gray-700/50 border border-gray-100 dark:border-gray-700">
-            <span class="text-gray-600 dark:text-gray-300">${item.date} - Caja: <strong>${item.boxPrice.toFixed(2)}€</strong></span>
-            <span class="${item.isProfitable ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-500'} font-bold">
-                ${item.isProfitable ? '+' : ''}${(item.diff).toFixed(2)}€
-            </span>
-        </div>
-    `).join('');
+    container.innerHTML = history.map(item => {
+        const itemsText = item.items && item.items.length > 0
+            ? ` (${item.items.join(', ')})`
+            : '';
+
+        return `
+            <div class="flex justify-between items-center p-2 rounded bg-gray-50 dark:bg-gray-700/50 border border-gray-100 dark:border-gray-700">
+                <span class="text-gray-600 dark:text-gray-300">
+                    ${item.date} - Caja: <strong>${item.boxPrice.toFixed(2)}€</strong><span class="text-gray-400 dark:text-gray-400 text-[11px]">${itemsText}</span>
+                </span>
+                <span class="${item.isProfitable ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-500'} font-bold ml-2">
+                    ${item.isProfitable ? '+' : ''}${(item.diff).toFixed(2)}€
+                </span>
+            </div>
+        `;
+    }).join('');
 }
 
 function clearHistory() {
