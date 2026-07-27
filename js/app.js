@@ -1,9 +1,10 @@
 // js/app.js
-import { APP_VERSION, JSON_URL, CATEGORY_CONFIG, state } from './config.js';
+import { APP_VERSION, JSON_URL, CATEGORY_CONFIG, CURRENCY_CONFIG, state } from './config.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('app-version').innerText = `v${APP_VERSION}`;
     initDarkMode();
+    initCurrency();
     fetchStoreData();
     bindEvents();
     setupModals();
@@ -16,6 +17,13 @@ function bindEvents() {
     document.getElementById('btn-share').addEventListener('click', shareResult);
     document.getElementById('btn-reset').addEventListener('click', resetCalculator);
     document.getElementById('btn-clear-history').addEventListener('click', clearHistory);
+
+    document.getElementById('currency-select').addEventListener('change', (e) => {
+        state.currentCurrency = e.target.value;
+        localStorage.setItem('currency', state.currentCurrency);
+        updateCurrencyUI();
+        renderItems(state.storeData);
+    });
 }
 
 // --- MODO OSCURO ---
@@ -40,6 +48,20 @@ function toggleDarkMode() {
         localStorage.setItem('theme', 'dark');
         document.getElementById('dark-mode-icon').innerText = '☀️ Light';
     }
+}
+
+// --- MANEJO DE DIVISAS ---
+function initCurrency() {
+    const select = document.getElementById('currency-select');
+    if (select) select.value = state.currentCurrency;
+    updateCurrencyUI();
+}
+
+function updateCurrencyUI() {
+    const currency = CURRENCY_CONFIG[state.currentCurrency];
+    document.querySelectorAll('.currency-symbol').forEach(el => {
+        el.innerText = currency.symbol;
+    });
 }
 
 // --- DATOS Y API ---
@@ -76,6 +98,8 @@ function renderItems(items) {
     const grouped = { pases: [], incubadoras: [], consumibles: [], otros: [] };
     items.forEach(item => grouped[getCategoryKey(item)].push(item));
 
+    const curr = CURRENCY_CONFIG[state.currentCurrency];
+
     Object.keys(CATEGORY_CONFIG).forEach(catKey => {
         const itemList = grouped[catKey];
         if (itemList.length === 0) return;
@@ -90,12 +114,13 @@ function renderItems(items) {
         section.appendChild(header);
 
         itemList.forEach(item => {
+            const convertedUnitPrice = item.unit_price_eur * curr.rate;
             const div = document.createElement('div');
             div.className = `flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg ${config.border}`;
             div.innerHTML = `
                 <div class="space-y-0.5">
                     <p class="font-medium text-sm text-gray-800 dark:text-gray-100">${item.name}</p>
-                    <p class="text-xs text-gray-400">${item.unit_price_eur.toFixed(2)} €/ud</p>
+                    <p class="text-xs text-gray-400">${convertedUnitPrice.toFixed(2)} ${curr.symbol}/ud</p>
                 </div>
                 <div class="flex items-center gap-1.5">
                     <button type="button" data-action="decrement" data-id="${item.id}" class="w-8 h-8 flex items-center justify-center bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-gray-700 dark:text-gray-200 rounded-md font-bold text-base transition-colors">-</button>
@@ -142,6 +167,7 @@ function calculate() {
         return;
     }
 
+    const curr = CURRENCY_CONFIG[state.currentCurrency];
     let totalValue = 0;
     const selectedItems = [];
     const itemQuantitiesMap = {};
@@ -153,7 +179,7 @@ function calculate() {
         const item = state.storeData.find(i => i.id === itemId);
 
         if (item && qty > 0) {
-            const itemVal = item.unit_price_eur * qty;
+            const itemVal = (item.unit_price_eur * curr.rate) * qty;
             totalValue += itemVal;
 
             const cat = getCategoryKey(item);
@@ -171,36 +197,38 @@ function calculate() {
     resCard.className = `p-6 rounded-xl text-center space-y-4 text-white ${isProfitable ? 'bg-emerald-500 dark:bg-emerald-600' : 'bg-rose-500 dark:bg-rose-600'}`;
 
     document.getElementById('result-title').innerText = isProfitable ? "¡OFERTA RENTABLE! 🎉" : "NO VALE LA PENA ❌";
-    document.getElementById('res-box-price').innerText = boxPrice.toFixed(2) + " €";
-    document.getElementById('res-real-value').innerText = totalValue.toFixed(2) + " €";
+    document.getElementById('res-box-price').innerText = `${boxPrice.toFixed(2)} ${curr.symbol}`;
+    document.getElementById('res-real-value').innerText = `${totalValue.toFixed(2)} ${curr.symbol}`;
     document.getElementById('res-diff-label').innerText = isProfitable ? "Ahorras:" : "Pierdes:";
-    document.getElementById('res-diff-val').innerText = Math.abs(diff).toFixed(2) + " €";
+    document.getElementById('res-diff-val').innerText = `${Math.abs(diff).toFixed(2)} ${curr.symbol}`;
 
     renderBreakdown(categoryTotals, totalValue);
 
-    const actionText = isProfitable ? `¡Ahorras ${Math.abs(diff).toFixed(2)} €!` : `Pierdes ${Math.abs(diff).toFixed(2)} €`;
-    state.lastCalculationText = `Caja de ${boxPrice.toFixed(2)} €: ${actionText} (Valor real: ${totalValue.toFixed(2)} €). Calcúlalo tú también en: ${window.location.href}`;
+    const actionText = isProfitable ? `¡Ahorras ${Math.abs(diff).toFixed(2)} ${curr.symbol}!` : `Pierdes ${Math.abs(diff).toFixed(2)} ${curr.symbol}`;
+    state.lastCalculationText = `Caja de ${boxPrice.toFixed(2)} ${curr.symbol}: ${actionText} (Valor real: ${totalValue.toFixed(2)} ${curr.symbol}). Calcúlalo tú también en: ${window.location.href}`;
 
     saveToHistory({
         boxPrice,
         totalValue,
         isProfitable,
         diff,
+        currencySymbol: curr.symbol,
         items: selectedItems,
         itemQuantitiesMap,
         date: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     });
 
-    document.getElementById('view-form').classList.add('hidden');
-    document.getElementById('view-result').classList.remove('hidden');
-
     if (window.gtag) {
         gtag('event', 'calculate_box', {
             'box_price': boxPrice,
             'total_value': totalValue,
+            'currency': state.currentCurrency,
             'is_profitable': isProfitable
         });
     }
+
+    document.getElementById('view-form').classList.add('hidden');
+    document.getElementById('view-result').classList.remove('hidden');
 }
 
 function renderBreakdown(categoryTotals, totalValue) {
@@ -225,14 +253,12 @@ function renderBreakdown(categoryTotals, totalValue) {
         const pct = Math.round((val / totalValue) * 100);
         const title = CATEGORY_CONFIG[cat]?.title || cat;
 
-        // Añade segmento a la barra
         const seg = document.createElement('div');
         seg.className = `${colors[cat]} h-full transition-all duration-500`;
         seg.style.width = `${pct}%`;
         seg.title = `${title}: ${pct}%`;
         bar.appendChild(seg);
 
-        // Añade ítem a la leyenda
         const legItem = document.createElement('div');
         legItem.className = 'flex items-center gap-1.5 text-gray-600 dark:text-gray-300';
         legItem.innerHTML = `
@@ -253,7 +279,7 @@ async function shareResult() {
                 url: window.location.href
             });
         } catch (err) {
-            // Si el usuario cancela la acción no mostramos error
+            // Usuario cancela la acción
         }
     } else if (navigator.clipboard) {
         await navigator.clipboard.writeText(state.lastCalculationText);
@@ -298,6 +324,7 @@ function renderHistory() {
 
     history.forEach((item) => {
         const itemsText = item.items && item.items.length > 0 ? ` (${item.items.join(', ')})` : '';
+        const symbol = item.currencySymbol || '€';
 
         const card = document.createElement('div');
         card.className = 'flex justify-between items-center p-2 rounded-lg bg-gray-50 dark:bg-gray-700/50 border border-gray-100 dark:border-gray-700 hover:border-indigo-300 dark:hover:border-indigo-500 cursor-pointer transition-colors group';
@@ -306,13 +333,13 @@ function renderHistory() {
         card.innerHTML = `
             <div class="flex-1 pr-2">
                 <span class="text-gray-600 dark:text-gray-300 text-xs">
-                    ${item.date} - Caja: <strong>${item.boxPrice.toFixed(2)}€</strong>
+                    ${item.date} - Caja: <strong>${item.boxPrice.toFixed(2)}${symbol}</strong>
                     <span class="text-gray-400 text-[11px]">${itemsText}</span>
                 </span>
             </div>
             <div class="flex items-center gap-2">
                 <span class="${item.isProfitable ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-500'} font-bold text-xs">
-                    ${item.isProfitable ? '+' : ''}${(item.diff).toFixed(2)}€
+                    ${item.isProfitable ? '+' : ''}${(item.diff).toFixed(2)}${symbol}
                 </span>
                 <span class="text-xs text-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity">↩</span>
             </div>
@@ -350,11 +377,9 @@ function setupModals() {
 
     const closeModal = (modal) => modal?.classList.add('hidden');
 
-    // Abrir modales
     document.getElementById('btn-legal')?.addEventListener('click', () => legalModal?.classList.remove('hidden'));
     document.getElementById('btn-privacy')?.addEventListener('click', () => privacyModal?.classList.remove('hidden'));
 
-    // Cerrar al hacer clic en el fondo oscuro o en los botones internos
     [legalModal, privacyModal].forEach(modal => {
         if (!modal) return;
 
@@ -365,7 +390,6 @@ function setupModals() {
         });
     });
 
-    // Cerrar con la tecla Escape
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             closeModal(legalModal);

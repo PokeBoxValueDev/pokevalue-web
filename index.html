@@ -2,15 +2,78 @@
 <html lang="es" class="h-full">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PokeBoxValue - Calculadora de Cajas</title>
+
+    <!-- SEO & Meta -->
+    <meta name="description"
+        content="Calcula si las cajas de la tienda de Pokémon GO valen la pena. Descubre el valor real de los pases, incubadoras y objetos para ahorrar dinero.">
+    <meta name="keywords"
+        content="Pokemon Go, Calculadora Cajas, Rentabilidad Cajas, Tienda Pokemon, Pases de Incursión, Incubadoras">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4f46e5">
+
+    <!-- CSS & Styles -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@v3.0.0/dist/cookieconsent.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="apple-touch-icon" href="favicon.svg">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="PokeBoxValue - Calculadora de Cajas">
+    <meta property="og:description"
+        content="Calcula si las cajas de la tienda valen la pena y descubre cuánto ahorras.">
+    <meta property="og:image"
+        content="https://raw.githubusercontent.com/alejandrrolc/pokevalue-web/refs/heads/main/favicon.svg">
+    <meta property="og:url" content="https://alejandrrolc.github.io/pokevalue-web/">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="PokeBoxValue - Calculadora de Cajas">
+    <meta name="twitter:description" content="Calcula el valor real de las cajas de la tienda.">
+    <meta name="twitter:image"
+        content="https://raw.githubusercontent.com/alejandrrolc/pokevalue-web/refs/heads/main/favicon.svg">
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { darkMode: 'class' }</script>
+
+    <!-- Cookie Consent Library -->
     <script src="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@v3.0.0/dist/cookieconsent.umd.js" defer></script>
 
+    <!-- Google Consent Mode (denegado por defecto) -->
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('consent', 'default', {
+            'analytics_storage': 'denied'
+        });
+    </script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ES8GHFDWRP"></script>
+    <script>
+        gtag('js', new Date());
+        gtag('config', 'G-ES8GHFDWRP');
+    </script>
+
+    <!-- Inicialización de CookieConsent y actualización de permisos -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             CookieConsent.run({
                 categories: {
                     necessary: { enabled: true, required: true },
                     analytics: { enabled: false }
+                },
+                onConsent: function () {
+                    if (CookieConsent.acceptedCategory('analytics')) {
+                        gtag('consent', 'update', { 'analytics_storage': 'granted' });
+                    }
+                },
+                onChange: function () {
+                    if (!CookieConsent.acceptedCategory('analytics')) {
+                        gtag('consent', 'update', { 'analytics_storage': 'denied' });
+                    }
                 },
                 language: {
                     default: 'es',
@@ -28,45 +91,6 @@
             });
         });
     </script>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ES8GHFDWRP"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-
-        gtag('config', 'G-ES8GHFDWRP');
-    </script>
-    <meta charset="UTF-8">
-    <meta name="description"
-        content="Calcula si las cajas de la tienda de Pokémon GO valen la pena. Descubre el valor real de los pases, incubadoras y objetos para ahorrar dinero.">
-    <meta name="keywords"
-        content="Pokemon Go, Calculadora Cajas, Rentabilidad Cajas, Tienda Pokemon, Pases de Incursión, Incubadoras">
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#4f46e5">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PokeBoxValue - Calculadora de Cajas</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>tailwind.config = { darkMode: 'class' }</script>
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link rel="apple-touch-icon" href="favicon.svg">
-
-    <!-- Open Graph / Meta etiquetas para compartir enlaces -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="PokeBoxValue - Calculadora de Cajas">
-    <meta property="og:description"
-        content="Calcula si las cajas de la tienda valen la pena y descubre cuánto ahorras.">
-    <meta property="og:image"
-        content="https://raw.githubusercontent.com/alejandrrolc/pokevalue-web/refs/heads/main/favicon.svg">
-    <meta property="og:url" content="https://alejandrrolc.github.io/pokevalue-web/">
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="PokeBoxValue - Calculadora de Cajas">
-    <meta name="twitter:description" content="Calcula el valor real de las cajas de la tienda.">
-    <meta name="twitter:image"
-        content="https://raw.githubusercontent.com/alejandrrolc/pokevalue-web/refs/heads/main/favicon.svg">
 </head>
 
 <body
@@ -83,18 +107,27 @@
                         Data: --/--/----</p>
                 </div>
             </div>
-            <button id="theme-toggle-btn"
-                class="p-2 rounded-xl bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700 text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition">
-                <span id="dark-mode-icon">🌙 Dark</span>
-            </button>
+            <div class="flex items-center gap-2">
+                <!-- Selector de Divisa -->
+                <select id="currency-select"
+                    class="px-2 py-2 rounded-xl bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700 text-xs font-semibold hover:bg-gray-50 dark:hover:bg-gray-700 transition focus:outline-none dark:text-white cursor-pointer">
+                    <option value="EUR">🇪🇺 EUR (€)</option>
+                    <option value="USD">🇺🇸 USD ($)</option>
+                </select>
+                <button id="theme-toggle-btn"
+                    class="p-2 rounded-xl bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700 text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                    <span id="dark-mode-icon">🌙 Dark</span>
+                </button>
+            </div>
         </header>
 
         <!-- Formulario -->
         <section id="view-form"
             class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 space-y-6 border border-gray-100 dark:border-gray-700">
             <div>
-                <label for="box-price" class="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1">Precio
-                    de la Caja (€)</label>
+                <label for="box-price" class="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1">
+                    Precio de la Caja (<span class="currency-symbol">€</span>)
+                </label>
                 <input type="number" step="0.01" id="box-price" placeholder="Ej: 8.99"
                     class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
             </div>
@@ -224,16 +257,18 @@
     </div>
 
     <!-- Modal Privacidad y Cookies -->
+    <!-- Modal Privacidad y Cookies -->
     <div id="privacy-modal"
         class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
         <div
             class="bg-white dark:bg-gray-800 rounded-2xl max-w-md w-full p-6 shadow-xl text-left border border-gray-200 dark:border-gray-700 max-h-[80vh] overflow-y-auto">
             <h3 class="text-lg font-bold mb-3 text-gray-900 dark:text-white">Privacidad y Cookies</h3>
             <div class="text-xs text-gray-600 dark:text-gray-300 space-y-2">
-                <p><strong>Uso de Cookies:</strong> Utilizamos Google Analytics para medir visitas de forma anónima y
-                    mejorar la experiencia de uso.</p>
-                <p><strong>Almacenamiento Local:</strong> Guardamos tus preferencias (tema oscuro e historial de
-                    cálculos) únicamente en tu navegador (localStorage).</p>
+                <p><strong>Uso de Cookies:</strong> Utilizamos cookies y tecnologías similares (Google Analytics)
+                    únicamente para analizar el tráfico de forma anónima y mejorar la experiencia de usuario.</p>
+                <p><strong>Almacenamiento Local (localStorage):</strong> Guardamos únicamente en tu navegador tus
+                    preferencias personales: el tema visual (claro/oscuro), la divisa seleccionada y tu historial
+                    reciente de cálculos. No almacenamos datos personales en servidores externos.</p>
             </div>
             <button
                 class="mt-5 w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl text-xs transition">Cerrar</button>
