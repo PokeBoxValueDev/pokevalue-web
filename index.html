@@ -41,13 +41,11 @@
     <!-- Cookie Consent Library -->
     <script src="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@v3.0.0/dist/cookieconsent.umd.js" defer></script>
 
-    <!-- Google Consent Mode (denegado por defecto) -->
+    <!-- Google Consent Mode -->
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
-        gtag('consent', 'default', {
-            'analytics_storage': 'denied'
-        });
+        gtag('consent', 'default', { 'analytics_storage': 'denied' });
     </script>
 
     <!-- Google tag (gtag.js) -->
@@ -57,7 +55,7 @@
         gtag('config', 'G-ES8GHFDWRP');
     </script>
 
-    <!-- Inicialización de CookieConsent y actualización de permisos -->
+    <!-- Inicialización de CookieConsent -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             CookieConsent.run({
@@ -99,21 +97,30 @@
         <!-- Header -->
         <header class="flex justify-between items-center mb-6">
             <div class="flex items-center gap-3">
-                <!-- Logo SVG -->
                 <img src="favicon.svg" alt="PokeBoxValue Logo" class="w-9 h-9">
                 <div class="text-left">
                     <h1 class="text-2xl font-bold text-indigo-600 dark:text-indigo-400 leading-tight">PokeBoxValue</h1>
                     <p id="last-updated" class="text-[10px] text-gray-400 dark:text-gray-500 font-normal opacity-75">
-                        Data: --/--/----</p>
+                        <span data-i18n="lastUpdated">Data:</span> --/--/----
+                    </p>
                 </div>
             </div>
             <div class="flex items-center gap-2">
+                <!-- Selector de Idioma -->
+                <select id="lang-select"
+                    class="px-2 py-2 rounded-xl bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700 text-xs font-semibold focus:outline-none dark:text-white cursor-pointer">
+                    <option value="es">🇪🇸 ES</option>
+                    <option value="en">🇬🇧 EN</option>
+                </select>
+
                 <!-- Selector de Divisa -->
                 <select id="currency-select"
                     class="px-2 py-2 rounded-xl bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700 text-xs font-semibold hover:bg-gray-50 dark:hover:bg-gray-700 transition focus:outline-none dark:text-white cursor-pointer">
                     <option value="EUR">🇪🇺 EUR (€)</option>
                     <option value="USD">🇺🇸 USD ($)</option>
                 </select>
+
+                <!-- Botón Modo Oscuro -->
                 <button id="theme-toggle-btn"
                     class="p-2 rounded-xl bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700 text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition">
                     <span id="dark-mode-icon">🌙 Dark</span>
@@ -126,22 +133,26 @@
             class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 space-y-6 border border-gray-100 dark:border-gray-700">
             <div>
                 <label for="box-price" class="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1">
-                    Precio de la Caja (<span class="currency-symbol">€</span>)
+                    <span data-i18n="boxPriceLabel">Precio de la Caja</span> (<span class="currency-symbol">€</span>)
                 </label>
                 <input type="number" step="0.01" id="box-price" placeholder="Ej: 8.99"
-                    class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none text-base">
+                <p id="usd-disclaimer" data-i18n="disclaimerUSD"
+                    class="text-[11px] text-amber-600 dark:text-amber-400 mt-1 hidden"></p>
             </div>
 
             <div>
-                <h2 class="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">Objetos incluidos</h2>
-                <input type="text" id="search-input" placeholder="🔍 Buscar objeto..."
+                <h2 data-i18n="itemsIncluded" class="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
+                    Objetos incluidos</h2>
+                <input type="text" id="search-input" data-i18n-placeholder="searchPlaceholder"
+                    placeholder="🔍 Buscar objeto..."
                     class="w-full px-3 py-1.5 text-sm mb-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                 <div id="items-container" class="space-y-5 max-h-96 overflow-y-auto pr-1">
-                    <p class="text-sm text-gray-400">Cargando objetos...</p>
+                    <p data-i18n="loadingItems" class="text-sm text-gray-400">Cargando objetos...</p>
                 </div>
             </div>
 
-            <button id="btn-calculate"
+            <button id="btn-calculate" data-i18n="btnCalculate"
                 class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl transition shadow-sm">
                 Calcular Rentabilidad
             </button>
@@ -149,26 +160,27 @@
             <!-- Historial -->
             <div id="history-section" class="pt-4 border-t border-gray-200 dark:border-gray-700 hidden">
                 <div class="flex justify-between items-center mb-2">
-                    <h3 class="text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">Historial
+                    <h3 data-i18n="recentHistory"
+                        class="text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">Historial
                         Reciente</h3>
-                    <button id="btn-clear-history" class="text-xs text-rose-500 hover:underline">Borrar</button>
+                    <button id="btn-clear-history" data-i18n="btnClear"
+                        class="text-xs text-rose-500 hover:underline">Borrar</button>
                 </div>
                 <div id="history-container" class="space-y-2 text-xs"></div>
             </div>
         </section>
 
         <!-- Resultado -->
-        <!-- Vista de Resultados -->
         <div id="view-result" class="hidden space-y-4">
             <div id="result-card" class="p-6 rounded-xl text-center space-y-4 text-white">
                 <h2 id="result-title" class="text-xl font-bold"></h2>
                 <div class="grid grid-cols-2 gap-2 text-sm bg-black/20 p-3 rounded-lg backdrop-blur-sm">
                     <div>
-                        <span class="block text-xs opacity-80">Precio caja:</span>
+                        <span data-i18n="resBoxPrice" class="block text-xs opacity-80">Precio caja:</span>
                         <strong id="res-box-price" class="text-base"></strong>
                     </div>
                     <div>
-                        <span class="block text-xs opacity-80">Valor real:</span>
+                        <span data-i18n="resRealValue" class="block text-xs opacity-80">Valor real:</span>
                         <strong id="res-real-value" class="text-base"></strong>
                     </div>
                 </div>
@@ -179,28 +191,23 @@
                 </div>
             </div>
 
-            <!-- Novedad: Desglose Gráfico del Valor por Categoría -->
+            <!-- Desglose Gráfico -->
             <div
                 class="bg-white dark:bg-gray-800 p-4 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm space-y-3">
-                <h3 class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Desglose del
+                <h3 data-i18n="breakdownTitle"
+                    class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Desglose del
                     Valor</h3>
-                <!-- Barra acumulativa -->
                 <div id="breakdown-bar"
-                    class="w-full h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden flex">
-                    <!-- Se rellenará dinámicamente -->
-                </div>
-                <!-- Leyenda de categorías -->
-                <div id="breakdown-legend" class="grid grid-cols-2 gap-2 text-xs">
-                    <!-- Se rellenará dinámicamente -->
-                </div>
+                    class="w-full h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden flex"></div>
+                <div id="breakdown-legend" class="grid grid-cols-2 gap-2 text-xs"></div>
             </div>
 
             <div class="grid grid-cols-2 gap-3">
-                <button id="btn-share"
+                <button id="btn-share" data-i18n="btnShare"
                     class="py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl text-sm transition">
                     📲 Compartir
                 </button>
-                <button id="btn-reset"
+                <button id="btn-reset" data-i18n="btnReset"
                     class="py-2.5 px-4 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium rounded-xl text-sm transition">
                     🔄 Calcular otra
                 </button>
@@ -212,68 +219,58 @@
     <div class="text-center my-6 max-w-xl mx-auto px-4">
         <a href="https://ko-fi.com/pokeboxvalue" target="_blank" rel="noopener noreferrer"
             class="inline-flex items-center gap-2 bg-amber-400 hover:bg-amber-500 text-gray-900 font-bold px-4 py-2.5 rounded-xl shadow-sm text-sm transition transform hover:-translate-y-0.5">
-            <span>☕</span>
-            <span>¿Te ha servido? Invítame a un café</span>
+            <span data-i18n="coffeeBtn">☕ ¿Te ha servido? Invítame a un café</span>
         </a>
     </div>
 
     <!-- Footer -->
-
     <footer
         class="mt-8 pt-4 border-t border-gray-200 dark:border-gray-800 text-center text-[11px] text-gray-400 dark:text-gray-500 space-y-2 max-w-xl mx-auto px-4">
-        <p>
-            PokeBoxValue es un proyecto independiente desarrollado por fans y no está afiliado, patrocinado ni
-            respaldado por Scopely, Niantic, The Pokémon Company, Nintendo o GAME FREAK. Pokémon y los nombres de los
-            objetos son marcas registradas de sus respectivos propietarios.
+        <p data-i18n="footerText">
+            PokeBoxValue es un proyecto independiente desarrollado por fans y no está afiliado...
         </p>
-
         <div class="flex justify-center items-center gap-3 pt-1 text-gray-500 dark:text-gray-400">
-            <button id="btn-legal" class="hover:underline">Aviso Legal</button>
+            <button id="btn-legal" data-i18n="btnLegal" class="hover:underline">Aviso Legal</button>
             <span>•</span>
-            <button id="btn-privacy" class="hover:underline">Privacidad y Cookies</button>
+            <button id="btn-privacy" data-i18n="btnPrivacy" class="hover:underline">Privacidad y Cookies</button>
             <span>•</span>
             <p>PokeBoxValue • <span id="app-version" class="font-mono"></span></p>
         </div>
     </footer>
-
-    <!-- JS Principal -->
-    <script type="module" src="js/app.js"></script>
 
     <!-- Modal Aviso Legal -->
     <div id="legal-modal"
         class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
         <div
             class="bg-white dark:bg-gray-800 rounded-2xl max-w-md w-full p-6 shadow-xl text-left border border-gray-200 dark:border-gray-700 max-h-[80vh] overflow-y-auto">
-            <h3 class="text-lg font-bold mb-3 text-gray-900 dark:text-white">Aviso Legal</h3>
+            <h3 data-i18n="legalTitle" class="text-lg font-bold mb-3 text-gray-900 dark:text-white">Aviso Legal</h3>
             <div class="text-xs text-gray-600 dark:text-gray-300 space-y-2">
-                <p><strong>PokeBoxValue</strong> es una herramienta independiente desarrollada por fans. No está
-                    vinculada, patrocinada ni afiliada a Niantic, The Pokémon Company, Nintendo ni GAME FREAK.</p>
-                <p>Esta web tiene un propósito meramente informativo y de cálculo de rentabilidad de cajas del juego.
-                </p>
+                <p data-i18n="legalBody1"></p>
+                <p data-i18n="legalBody2"></p>
             </div>
-            <button
+            <button data-i18n="btnCloseModal"
                 class="mt-5 w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl text-xs transition">Cerrar</button>
         </div>
     </div>
 
     <!-- Modal Privacidad y Cookies -->
-    <!-- Modal Privacidad y Cookies -->
     <div id="privacy-modal"
         class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
         <div
             class="bg-white dark:bg-gray-800 rounded-2xl max-w-md w-full p-6 shadow-xl text-left border border-gray-200 dark:border-gray-700 max-h-[80vh] overflow-y-auto">
-            <h3 class="text-lg font-bold mb-3 text-gray-900 dark:text-white">Privacidad y Cookies</h3>
+            <h3 data-i18n="privacyTitle" class="text-lg font-bold mb-3 text-gray-900 dark:text-white">Privacidad y
+                Cookies</h3>
             <div class="text-xs text-gray-600 dark:text-gray-300 space-y-2">
-                <p><strong>Uso de Cookies:</strong> Utilizamos cookies y tecnologías similares (Google Analytics)
-                    únicamente para analizar el tráfico de forma anónima y mejorar la experiencia de usuario.</p>
-                <p><strong>Almacenamiento Local (localStorage):</strong> Guardamos únicamente en tu navegador tus
-                    preferencias personales: el tema visual (claro/oscuro), la divisa seleccionada y tu historial
-                    reciente de cálculos. No almacenamos datos personales en servidores externos.</p>
+                <p data-i18n="privacyBody1"></p>
+                <p data-i18n="privacyBody2"></p>
             </div>
-            <button
+            <button data-i18n="btnCloseModal"
                 class="mt-5 w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl text-xs transition">Cerrar</button>
         </div>
     </div>
+
+    <!-- JS Principal -->
+    <script type="module" src="js/app.js"></script>
 </body>
 
 </html>

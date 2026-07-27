@@ -1,14 +1,14 @@
-// js/ui.js
 import { CATEGORY_CONFIG, CURRENCY_CONFIG, state } from './config.js';
 import { getCategoryKey } from './calculator.js';
 import { getHistory } from './storage.js';
+import { t } from './i18n.js';
 
 export function renderItems(items) {
     const container = document.getElementById('items-container');
     container.innerHTML = '';
 
-    if (items.length === 0) {
-        container.innerHTML = `<p class="text-xs text-gray-400 py-2 text-center">No se encontraron objetos.</p>`;
+    if (!items || items.length === 0) {
+        container.innerHTML = `<p class="text-xs text-gray-400 py-2 text-center">${t('noItemsFound')}</p>`;
         return;
     }
 
@@ -27,7 +27,7 @@ export function renderItems(items) {
 
         const header = document.createElement('div');
         header.className = `px-2 py-1 rounded text-xs font-bold tracking-wide uppercase ${config.bg} ${config.text}`;
-        header.innerText = config.title;
+        header.innerText = t(config.key);
         section.appendChild(header);
 
         itemList.forEach(item => {
@@ -88,7 +88,7 @@ export function renderBreakdown(categoryTotals, totalValue) {
         if (val <= 0) return;
 
         const pct = Math.round((val / totalValue) * 100);
-        const title = CATEGORY_CONFIG[cat]?.title || cat;
+        const title = t(CATEGORY_CONFIG[cat]?.key) || cat;
 
         const seg = document.createElement('div');
         seg.className = `${colors[cat]} h-full transition-all duration-500`;
@@ -125,12 +125,11 @@ export function renderHistory(restoreCallback) {
 
         const card = document.createElement('div');
         card.className = 'flex justify-between items-center p-2 rounded-lg bg-gray-50 dark:bg-gray-700/50 border border-gray-100 dark:border-gray-700 hover:border-indigo-300 dark:hover:border-indigo-500 cursor-pointer transition-colors group';
-        card.setAttribute('title', 'Haz clic para restaurar este cálculo');
 
         card.innerHTML = `
             <div class="flex-1 pr-2">
                 <span class="text-gray-600 dark:text-gray-300 text-xs">
-                    ${item.date} - Caja: <strong>${item.boxPrice.toFixed(2)}${symbol}</strong>
+                    ${item.date} - ${item.boxPrice.toFixed(2)}${symbol}
                     <span class="text-gray-400 text-[11px]">${itemsText}</span>
                 </span>
             </div>
