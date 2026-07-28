@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="error_title">Error | PokeBoxValue</title>
+
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { darkMode: 'class' };
+
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+</head>
+
+<body
+    class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100 min-h-screen flex items-center justify-center p-4">
+    <div
+        class="max-w-md w-full text-center space-y-6 bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 relative">
+
+        <!-- Controles superiores (Tema e Idioma) -->
+        <div class="absolute top-4 right-4 flex items-center space-x-2">
+            <button id="theme-toggle-btn" type="button" aria-label="Cambiar tema"
+                class="p-1.5 text-xs bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition flex items-center justify-center">
+                <!-- Icono Sol (se muestra en modo oscuro) -->
+                <svg id="theme-toggle-light-icon" class="w-4 h-4 text-amber-400 hidden" fill="currentColor"
+                    viewBox="0 0 20 20">
+                    <path
+                        d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 100 2h1z">
+                    </path>
+                </svg>
+                <!-- Icono Luna (se muestra en modo claro) -->
+                <svg id="theme-toggle-dark-icon" class="w-4 h-4 text-slate-700 dark:text-slate-200 hidden"
+                    fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                </svg>
+            </button>
+
+            <select id="lang-select"
+                class="text-xs bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg p-1.5 focus:outline-none">
+                <option value="es">ES</option>
+                <option value="en">EN</option>
+            </select>
+        </div>
+
+        <!-- Logotipo -->
+        <div class="flex justify-center pt-2">
+            <img src="favicon.svg" alt="PokeBoxValue Logo" class="w-16 h-16 opacity-80 animate-bounce">
+        </div>
+
+        <!-- Contenido dinámico -->
+        <div class="space-y-2">
+            <h1 id="error-code" class="text-6xl font-extrabold text-indigo-600 dark:text-indigo-400">404</h1>
+            <h2 id="error-heading" class="text-xl font-bold text-gray-900 dark:text-white"></h2>
+            <p id="error-message" class="text-sm text-gray-500 dark:text-gray-400"></p>
+        </div>
+
+        <!-- Botón de regreso -->
+        <div class="pt-4">
+            <a href="./" data-i18n="error_back_btn"
+                class="inline-block w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-4 rounded-xl transition shadow-sm">
+                🏠 Volver al inicio
+            </a>
+        </div>
+    </div>
+
+    <!-- Script de control -->
+    <script type="module">
+        import { state } from './js/config.js';
+        import { setLanguage, translations } from './js/i18n.js';
+
+        // Modo Oscuro / Claro (con iconos SVG)
+        const themeBtn = document.getElementById('theme-toggle-btn');
+        const lightIcon = document.getElementById('theme-toggle-light-icon');
+        const darkIcon = document.getElementById('theme-toggle-dark-icon');
+
+        function applyTheme(dark) {
+            if (dark) {
+                document.documentElement.classList.add('dark');
+                if (lightIcon) lightIcon.classList.remove('hidden');
+                if (darkIcon) darkIcon.classList.add('hidden');
+            } else {
+                document.documentElement.classList.remove('dark');
+                if (lightIcon) lightIcon.classList.add('hidden');
+                if (darkIcon) darkIcon.classList.remove('hidden');
+            }
+        }
+
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        let isDark = savedTheme ? savedTheme === 'dark' : prefersDark;
+        applyTheme(isDark);
+
+        if (themeBtn) {
+            themeBtn.addEventListener('click', () => {
+                isDark = !document.documentElement.classList.contains('dark');
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+                applyTheme(isDark);
+            });
+        }
+
+        // Código de error
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code') || '404';
+        document.getElementById('error-code').textContent = code;
+
+        // Selección de Idioma
+        const langSelect = document.getElementById('lang-select');
+        const headingEl = document.getElementById('error-heading');
+        const messageEl = document.getElementById('error-message');
+
+        const initialLang = localStorage.getItem('lang') || 'es';
+        langSelect.value = initialLang;
+
+        function renderErrorTexts() {
+            setLanguage(langSelect.value);
+
+            const dict = translations[state.currentLang] || translations['es'];
+            headingEl.textContent = dict[`error_${code}_heading`] || dict['error_default_heading'];
+            messageEl.textContent = dict[`error_${code}_message`] || dict['error_default_message'];
+        }
+
+        langSelect.addEventListener('change', renderErrorTexts);
+        renderErrorTexts();
+    </script>
+</body>
+
+</html>
