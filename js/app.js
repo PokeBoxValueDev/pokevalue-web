@@ -58,7 +58,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         langSelect.addEventListener('change', (e) => {
             setLanguage(e.target.value);
             updateDOMTranslations();
+
+            // Refresca la interfaz de divisas para actualizar placeholders (Ej: / Ex:)
             updateCurrencyUI();
+
             renderItems(getFilteredItems());
         });
     }
