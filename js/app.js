@@ -1,4 +1,4 @@
-import { APP_VERSION, JSON_URL, CURRENCY_CONFIG, state } from './config.js';
+import { APP_VERSION, JSON_URL, FALLBACK_JSON_URL, CURRENCY_CONFIG, state } from './config.js';
 import { calculateResult } from './calculator.js';
 import { saveCalculation, clearHistory } from './storage.js';
 import { renderItems, renderBreakdown, renderHistory, setupModals, updateCurrencyUI, animateValue, triggerConfetti } from './ui.js';
@@ -88,11 +88,24 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Sincronizar UI inicial de la divisa seleccionada
     updateCurrencyUI();
 
-    // 5. Carga JSON
+    // 5. Carga JSON con Respaldo (GitHub RAW -> Service Worker Cache -> Local Fallback)
+    let data = null;
     try {
         const response = await fetch(JSON_URL);
-        const data = await response.json();
+        if (!response.ok) throw new Error(`HTTP Error ${response.status}`);
+        data = await response.json();
+    } catch (error) {
+        console.warn('Fallo al obtener items.json de la red, intentando cargar fallback local:', error);
+        try {
+            const fallbackRes = await fetch(FALLBACK_JSON_URL);
+            if (!fallbackRes.ok) throw new Error(`HTTP Fallback Error ${fallbackRes.status}`);
+            data = await fallbackRes.json();
+        } catch (fallbackErr) {
+            console.error('Error al cargar datos del respaldo local:', fallbackErr);
+        }
+    }
 
+    if (data) {
         const list = Array.isArray(data)
             ? data
             : (data.objetos || data.store_items || data.items || data.storeData || []);
@@ -112,8 +125,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         renderItems(getFilteredItems());
-    } catch (error) {
-        console.error('Error al cargar items:', error);
+    } else {
         const container = document.getElementById('items-container');
         if (container) {
             container.innerHTML = `<p class="text-xs text-rose-500 py-2 text-center">Error al cargar objetos de la tienda.</p>`;
@@ -293,4 +305,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     setupModals();
     renderHistory(restoreFromHistory);
+
+    // 10. Registro de Service Worker (PWA & Offline)
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js')
+                .catch(err => console.error('Error al registrar Service Worker:', err));
+        });
+    }
 });
