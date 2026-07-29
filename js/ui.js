@@ -172,7 +172,20 @@ export function updateCurrencyUI() {
     const currKey = state.currentCurrency || 'EUR';
     const curr = CURRENCY_CONFIG[currKey] || CURRENCY_CONFIG.EUR;
     const isCoins = currKey === 'POKECOINS';
+    const isUSD = currKey === 'USD';
 
+    // 1. Mostrar/Ocultar el aviso informativo de USD
+    const usdDisclaimer = document.getElementById('usd-disclaimer');
+    if (usdDisclaimer) {
+        if (isUSD) {
+            usdDisclaimer.innerText = t('disclaimerUSD') || '* Los precios se convierten en base a una tasa fija estimada respecto al Euro.';
+            usdDisclaimer.classList.remove('hidden');
+        } else {
+            usdDisclaimer.classList.add('hidden');
+        }
+    }
+
+    // 2. Actualizar símbolos generales
     document.querySelectorAll('.currency-symbol').forEach(el => {
         el.textContent = curr.symbol;
     });
@@ -181,9 +194,16 @@ export function updateCurrencyUI() {
         el.textContent = `${currKey} ${curr.symbol}`;
     });
 
+    // 3. Actualizar la etiqueta del campo de precio principal (Ej: "Precio del Pack (en €)")
+    const currencyLabel = document.getElementById('currency-label');
+    if (currencyLabel) {
+        currencyLabel.textContent = `(${curr.symbol})`;
+    }
+
+    // 4. Actualizar el input de precio (placeholder y step)
     const boxPriceInput = document.getElementById('box-price');
     if (boxPriceInput) {
-        boxPriceInput.placeholder = isCoins ? 'Ej: 550' : 'Ej: 8.99';
+        boxPriceInput.placeholder = isCoins ? 'Ej: 550' : (isUSD ? 'Ej: 9.99' : 'Ej: 8.99');
         boxPriceInput.step = isCoins ? '1' : '0.01';
     }
 }

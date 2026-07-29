@@ -39,6 +39,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
+    // Función auxiliar de filtrado para reutilizar en Búsqueda, Divisas e Idiomas
+    const searchInput = document.getElementById('search-input');
+    function getFilteredItems() {
+        const query = searchInput?.value.toLowerCase().trim() || '';
+        if (!query) return state.storeData;
+        return state.storeData.filter(i => {
+            const nameEs = (i.name_es || i.name || '').toLowerCase();
+            const nameEn = (i.name_en || i.name || '').toLowerCase();
+            return nameEs.includes(query) || nameEn.includes(query);
+        });
+    }
+
     // 3. Idioma
     const langSelect = document.getElementById('lang-select');
     if (langSelect) {
@@ -46,6 +58,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         langSelect.addEventListener('change', (e) => {
             setLanguage(e.target.value);
             updateDOMTranslations();
+            updateCurrencyUI();
             renderItems(getFilteredItems());
         });
     }
@@ -60,16 +73,16 @@ document.addEventListener('DOMContentLoaded', async () => {
             state.currentCurrency = e.target.value;
             localStorage.setItem('currency', state.currentCurrency);
 
-            // 1. Actualiza traducciones globales y la interfaz específica de la divisa (placeholder, label, warning USD)
+            // Actualiza traducciones del DOM, labels, placeholders y aviso de USD
             updateDOMTranslations();
             updateCurrencyUI();
 
-            // 2. Re-renderiza los objetos de la tienda con los nuevos precios convertidos
+            // Re-renderiza los objetos con los precios convertidos
             renderItems(getFilteredItems());
         });
     }
 
-    // Sincronizar UI inicial de divisa (.currency-symbol, placeholder, step y label full)
+    // Sincronizar UI inicial de la divisa seleccionada
     updateCurrencyUI();
 
     // 5. Carga JSON
@@ -77,7 +90,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         const response = await fetch(JSON_URL);
         const data = await response.json();
 
-        // Mapea usando data.objetos del JSON
         const list = Array.isArray(data)
             ? data
             : (data.objetos || data.store_items || data.items || data.storeData || []);
@@ -96,7 +108,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             lastUpdatedEl.innerHTML = `<span data-i18n="lastUpdated">${t('lastUpdated')}</span>: ${updatedDate}`;
         }
 
-        renderItems(state.storeData);
+        renderItems(getFilteredItems());
     } catch (error) {
         console.error('Error al cargar items:', error);
         const container = document.getElementById('items-container');
@@ -105,18 +117,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // 6. Buscador (busca tanto en nombre en español como en inglés)
-    const searchInput = document.getElementById('search-input');
-    function getFilteredItems() {
-        const query = searchInput?.value.toLowerCase().trim() || '';
-        if (!query) return state.storeData;
-        return state.storeData.filter(i => {
-            const nameEs = (i.name_es || i.name || '').toLowerCase();
-            const nameEn = (i.name_en || i.name || '').toLowerCase();
-            return nameEs.includes(query) || nameEn.includes(query);
-        });
-    }
-
+    // 6. Buscador
     if (searchInput) {
         searchInput.addEventListener('input', () => {
             renderItems(getFilteredItems());
