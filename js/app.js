@@ -45,10 +45,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         langSelect.value = state.currentLang;
         langSelect.addEventListener('change', (e) => {
             setLanguage(e.target.value);
+            updateDOMTranslations();
             renderItems(getFilteredItems());
         });
     }
     setLanguage(state.currentLang);
+    updateDOMTranslations();
 
     // 4. Divisa & Actualización Dinámica
     const currSelect = document.getElementById('currency-select');
