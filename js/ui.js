@@ -305,23 +305,38 @@ export function renderHistory(onRestore) {
  * Configuración de modales de la interfaz.
  */
 export function setupModals() {
-    const modalHistory = document.getElementById('modal-history');
-    const btnOpenHistory = document.getElementById('btn-open-history');
-    const btnCloseHistory = document.getElementById('btn-close-history');
+    const btnLegal = document.getElementById('btn-legal');
+    const btnPrivacy = document.getElementById('btn-privacy');
+    const legalModal = document.getElementById('legal-modal');
+    const privacyModal = document.getElementById('privacy-modal');
 
-    if (btnOpenHistory && modalHistory) {
-        btnOpenHistory.addEventListener('click', () => modalHistory.classList.remove('hidden'));
-    }
-
-    if (btnCloseHistory && modalHistory) {
-        btnCloseHistory.addEventListener('click', () => modalHistory.classList.add('hidden'));
-    }
-
-    if (modalHistory) {
-        modalHistory.addEventListener('click', (e) => {
-            if (e.target === modalHistory) modalHistory.classList.add('hidden');
+    // 1. Abrir Modal Legal
+    if (btnLegal && legalModal) {
+        btnLegal.addEventListener('click', () => {
+            legalModal.classList.remove('hidden');
         });
     }
+
+    // 2. Abrir Modal Privacidad
+    if (btnPrivacy && privacyModal) {
+        btnPrivacy.addEventListener('click', () => {
+            privacyModal.classList.remove('hidden');
+        });
+    }
+
+    // 3. Cerrar modales al pulsar en los botones de cierre
+    document.querySelectorAll('.btn-close-modal').forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (legalModal) legalModal.classList.add('hidden');
+            if (privacyModal) privacyModal.classList.add('hidden');
+        });
+    });
+
+    // 4. Cerrar modales al hacer clic en el fondo oscuro
+    window.addEventListener('click', (e) => {
+        if (e.target === legalModal) legalModal.classList.add('hidden');
+        if (e.target === privacyModal) privacyModal.classList.add('hidden');
+    });
 }
 
 /**
