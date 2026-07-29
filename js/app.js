@@ -1,7 +1,7 @@
 import { APP_VERSION, JSON_URL, CURRENCY_CONFIG, state } from './config.js';
 import { calculateResult } from './calculator.js';
 import { saveCalculation, clearHistory } from './storage.js';
-import { renderItems, renderBreakdown, renderHistory, setupModals, updateCurrencyUI } from './ui.js';
+import { renderItems, renderBreakdown, renderHistory, setupModals, updateCurrencyUI, animateValue, triggerConfetti } from './ui.js';
 import { setLanguage, updateDOMTranslations, t } from './i18n.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -179,31 +179,44 @@ document.addEventListener('DOMContentLoaded', async () => {
             const res = calculateResult(boxPrice, quantities, state.storeData, state.currentCurrency);
             const curr = CURRENCY_CONFIG[state.currentCurrency] || { symbol: '€' };
             const isCoins = state.currentCurrency === 'POKECOINS';
+            const decimals = isCoins ? 0 : 2;
 
-            // Formateadores según la divisa
+            // Formateadores según la divisa para el texto guardado
             const fmtBoxPrice = isCoins ? Math.round(boxPrice) : boxPrice.toFixed(2);
             const fmtTotalValue = isCoins ? Math.round(res.totalValue) : res.totalValue.toFixed(2);
-            const fmtDiff = isCoins ? Math.round(Math.abs(res.diff)) : Math.abs(res.diff).toFixed(2);
 
             const resCard = document.getElementById('result-card');
             const resTitle = document.getElementById('result-title');
             const resDiffLabel = document.getElementById('res-diff-label');
             const resDiffVal = document.getElementById('res-diff-val');
+            const resBoxPriceEl = document.getElementById('res-box-price');
+            const resRealValueEl = document.getElementById('res-real-value');
 
-            if (document.getElementById('res-box-price')) document.getElementById('res-box-price').innerText = `${fmtBoxPrice} ${curr.symbol}`;
-            if (document.getElementById('res-real-value')) document.getElementById('res-real-value').innerText = `${fmtTotalValue} ${curr.symbol}`;
+            if (viewForm) viewForm.classList.add('hidden');
+            if (viewResult) viewResult.classList.remove('hidden');
+
+            // Animación de conteo numérico (Count-Up)
+            if (resBoxPriceEl) animateValue(resBoxPriceEl, 0, boxPrice, 700, '', ` ${curr.symbol}`, decimals);
+            if (resRealValueEl) animateValue(resRealValueEl, 0, res.totalValue, 850, '', ` ${curr.symbol}`, decimals);
 
             if (resCard && resTitle && resDiffLabel && resDiffVal) {
                 if (res.isProfitable) {
                     resCard.className = 'p-6 rounded-xl text-center space-y-4 text-white bg-emerald-600 shadow-lg';
                     resTitle.innerText = `🎉 ${t('titleProfitable') || '¡Renta comprarla!'}`;
                     resDiffLabel.innerText = t('resDiffSave') || 'Ahorras:';
-                    resDiffVal.innerText = `+${fmtDiff} ${curr.symbol}`;
+                    animateValue(resDiffVal, 0, Math.abs(res.diff), 900, `+`, ` ${curr.symbol}`, decimals);
+
+                    // Lanzar efecto de confeti si la caja supera o iguala el 30% de ahorro
+                    if (res.savingsPercent >= 30) {
+                        setTimeout(() => {
+                            triggerConfetti();
+                        }, 250);
+                    }
                 } else {
                     resCard.className = 'p-6 rounded-xl text-center space-y-4 text-white bg-rose-600 shadow-lg';
                     resTitle.innerText = `⚠️ ${t('titleNotProfitable') || 'No renta comprarla'}`;
                     resDiffLabel.innerText = t('resDiffLose') || 'Pierdes:';
-                    resDiffVal.innerText = `-${fmtDiff} ${curr.symbol}`;
+                    animateValue(resDiffVal, 0, Math.abs(res.diff), 900, `-`, ` ${curr.symbol}`, decimals);
                 }
             }
 
@@ -219,9 +232,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
 
             state.lastCalculationText = `PokeBoxValue: Precio ${fmtBoxPrice}${curr.symbol} | Valor: ${fmtTotalValue}${curr.symbol}`;
-
-            if (viewForm) viewForm.classList.add('hidden');
-            if (viewResult) viewResult.classList.remove('hidden');
         });
     }
 

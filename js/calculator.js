@@ -36,11 +36,13 @@ export function calculateResult(boxPrice, quantities, storeData, currentCurrency
 
     const diff = totalValue - boxPrice;
     const isProfitable = diff > 0;
+    const savingsPercent = boxPrice > 0 ? (diff / boxPrice) * 100 : 0;
 
     return {
         boxPrice,
         totalValue,
         diff,
+        savingsPercent,
         isProfitable,
         categoryTotals,
         itemSummary
