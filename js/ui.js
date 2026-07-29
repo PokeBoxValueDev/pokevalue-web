@@ -3,12 +3,11 @@ import { getHistory } from './storage.js';
 import { t } from './i18n.js';
 
 /**
- * Normaliza y obtiene la clave i18n correcta para una categoría dada (ej: "pases", "Pases", "PASES" -> "catPases")
+ * Mapea y obtiene la clave i18n exacta para una categoría dada.
  */
 function getCategoryI18nKey(catKey) {
     if (!catKey) return 'catOtros';
 
-    // Quitar acentos y caracteres especiales
     const cleanKey = catKey
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
@@ -29,17 +28,18 @@ function getCategoryI18nKey(catKey) {
 }
 
 /**
- * Obtiene la traducción formateada de la categoría
+ * Obtiene la traducción formateada de la categoría usando el diccionario actual.
  */
 function getCategoryTranslation(catKey) {
     if (!catKey) return '';
     const i18nKey = getCategoryI18nKey(catKey);
-    const translation = t(i18nKey);
+    const translated = t(i18nKey);
 
-    // Si la traducción fue encontrada la usa, de lo contrario cae en CATEGORY_CONFIG o la clave en mayúsculas
-    return (translation && translation !== i18nKey)
-        ? translation
-        : (CATEGORY_CONFIG[catKey]?.label || catKey.toUpperCase());
+    if (translated && translated !== i18nKey) {
+        return translated;
+    }
+
+    return CATEGORY_CONFIG[catKey]?.label || catKey.toUpperCase();
 }
 
 /**
@@ -164,17 +164,14 @@ export function updateCurrencyUI() {
     const curr = CURRENCY_CONFIG[currKey] || CURRENCY_CONFIG.EUR;
     const isCoins = currKey === 'POKECOINS';
 
-    // 1. Actualizar símbolos simples (€, $, 🟡)
     document.querySelectorAll('.currency-symbol').forEach(el => {
         el.textContent = curr.symbol;
     });
 
-    // 2. Actualizar la etiqueta completa del precio
     document.querySelectorAll('.currency-label-full').forEach(el => {
         el.textContent = `${currKey} ${curr.symbol}`;
     });
 
-    // 3. Ajustar placeholder y step del input de precio de caja
     const boxPriceInput = document.getElementById('box-price');
     if (boxPriceInput) {
         boxPriceInput.placeholder = isCoins ? 'Ej: 550' : 'Ej: 8.99';
@@ -232,7 +229,7 @@ export function renderHistory(onRestore) {
     const history = getHistory();
 
     if (history.length === 0) {
-        container.innerHTML = `<p class="text-xs text-gray-400 text-center py-4" data-i18n="emptyHistory">No hay cálculos guardados aún.</p>`;
+        container.innerHTML = `<p class="text-xs text-gray-400 text-center py-4" data-i18n="emptyHistory">${t('emptyHistory') || 'No hay cálculos guardados aún.'}</p>`;
         return;
     }
 

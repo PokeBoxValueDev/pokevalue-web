@@ -1,37 +1,39 @@
-import { state } from './config.js';
-import { updateCurrencyUI } from './ui.js';
 import es from './locales/es.js';
 import en from './locales/en.js';
+import { state } from './config.js';
 
 export const translations = { es, en };
 
 export function t(key) {
-    return translations[state.currentLang]?.[key] || key;
+    const lang = state.currentLang || 'es';
+    return translations[lang]?.[key] || translations['es']?.[key] || key;
 }
 
 export function setLanguage(lang) {
-    state.currentLang = lang;
-    localStorage.setItem('lang', lang);
-    updateDOMTranslations();
+    if (translations[lang]) {
+        state.currentLang = lang;
+        localStorage.setItem('lang', lang);
+    }
 }
 
 export function updateDOMTranslations() {
+    const lang = state.currentLang || 'es';
+
+    // 1. Traducir elementos con atributo data-i18n
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
-        el.innerText = t(key);
+        const translation = t(key);
+        if (translation && translation !== key) {
+            el.innerText = translation;
+        }
     });
 
+    // 2. Traducir placeholders con atributo data-i18n-placeholder
     document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
         const key = el.getAttribute('data-i18n-placeholder');
-        el.placeholder = t(key);
+        const translation = t(key);
+        if (translation && translation !== key) {
+            el.placeholder = translation;
+        }
     });
-
-    // Visibilidad del disclaimer USD
-    const usdNotice = document.getElementById('usd-disclaimer');
-    if (usdNotice) {
-        usdNotice.classList.toggle('hidden', state.currentCurrency !== 'USD');
-    }
-
-    // Actualiza la UI de las divisas (.currency-symbol y .currency-label-full)
-    updateCurrencyUI();
 }
