@@ -4,7 +4,7 @@ export const JSON_URL = 'https://raw.githubusercontent.com/alejandrrolc/pokevalu
 export const CURRENCY_CONFIG = {
     EUR: { rate: 1, symbol: '€', label: 'Euros' },
     USD: { rate: 1.08, symbol: '$', label: 'Dólares' },
-    POKECOINS: { rate: 1 / 0.009083, symbol: '🪙', label: 'Pokémonedas' }
+    POKECOINS: { rate: 1 / 0.009083, symbol: '🟡', label: 'Pokémonedas' }
 };
 
 export const CATEGORY_CONFIG = {

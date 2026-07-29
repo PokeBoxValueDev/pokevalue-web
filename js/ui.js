@@ -179,7 +179,7 @@ export function renderHistory(onSelectHistory) {
 
     historySection.classList.remove('hidden');
     historyContainer.innerHTML = history.map((h, i) => {
-        const isCoins = h.currencySymbol === '🪙';
+        const isCoins = h.currencySymbol === '🟡';
         const formattedPrice = isCoins ? Math.round(h.boxPrice) : h.boxPrice.toFixed(2);
 
         return `
