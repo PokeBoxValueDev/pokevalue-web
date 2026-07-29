@@ -60,10 +60,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             state.currentCurrency = e.target.value;
             localStorage.setItem('currency', state.currentCurrency);
 
-            // Actualiza traducciones y etiquetas globales (.currency-label-full)
+            // 1. Actualiza traducciones globales y la interfaz específica de la divisa (placeholder, label, warning USD)
             updateDOMTranslations();
+            updateCurrencyUI();
 
-            // Re-renderiza los objetos de la tienda con la nueva divisa
+            // 2. Re-renderiza los objetos de la tienda con los nuevos precios convertidos
             renderItems(getFilteredItems());
         });
     }
