@@ -240,6 +240,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
+    // 9. Volver al inicio al hacer clic en el logo/título
+    const siteLogo = document.getElementById('site-logo');
+    if (siteLogo) {
+        siteLogo.addEventListener('click', () => {
+            if (viewResult) viewResult.classList.add('hidden');
+            if (viewForm) viewForm.classList.remove('hidden');
+
+            if (priceInput) priceInput.value = '';
+            document.querySelectorAll('.item-qty').forEach(input => input.value = '0');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+
     if (btnReset) {
         btnReset.addEventListener('click', () => {
             if (viewResult) viewResult.classList.add('hidden');
