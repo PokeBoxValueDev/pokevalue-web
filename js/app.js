@@ -81,7 +81,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         state.storeData = list.map((item, index) => ({
             id: item.id || `item-${index}`,
-            name: item.name || item.name_es || item.item || 'Objeto',
+            name_es: item.name_es || item.name || item.item || 'Objeto',
+            name_en: item.name_en || item.name || item.item || 'Item',
             unit_price_eur: item.unit_price_eur ?? item.price_eur ?? item.unit_price ?? 0,
             ...item
         }));
@@ -101,14 +102,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // 6. Buscador
+    // 6. Buscador (busca tanto en nombre en español como en inglés)
     const searchInput = document.getElementById('search-input');
     function getFilteredItems() {
         const query = searchInput?.value.toLowerCase().trim() || '';
         if (!query) return state.storeData;
         return state.storeData.filter(i => {
-            const name = (i.name || i.name_es || i.item || '').toLowerCase();
-            return name.includes(query);
+            const nameEs = (i.name_es || i.name || '').toLowerCase();
+            const nameEn = (i.name_en || i.name || '').toLowerCase();
+            return nameEs.includes(query) || nameEn.includes(query);
         });
     }
 

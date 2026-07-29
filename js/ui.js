@@ -55,7 +55,10 @@ export function renderItems(items) {
                 unitPriceStr = `${price.toFixed(2)} <span class="currency-symbol">${curr.symbol}</span> / u.`;
             }
 
-            const name = item.name || item.name_es || item.item || 'Objeto';
+            // Selección de nombre dinámico según idioma activo
+            const name = (state.currentLang === 'en' && item.name_en)
+                ? item.name_en
+                : (item.name_es || item.name || item.item || 'Objeto');
 
             return `
                             <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-100 dark:border-gray-700">
