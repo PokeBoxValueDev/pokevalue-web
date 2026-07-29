@@ -26,9 +26,12 @@ export default {
     btnReset: "🔄 Calcular otra",
     copiedToClipboard: "¡Resultado copiado al portapapeles!",
 
-    // Categorías
+    // Categorías (sincronizadas con las categorías del store.json)
     catPases: "Pases de Incursión",
     catIncubadoras: "Incubadoras",
+    catPotenciadores: "Potenciadores",
+    catMejoras: "Mejoras de Espacio",
+    catCombates: "Combates y Partículas",
     catConsumibles: "Consumibles",
     catOtros: "Otros Objetos",
 

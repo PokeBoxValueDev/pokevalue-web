@@ -3,6 +3,17 @@ import { getHistory } from './storage.js';
 import { t } from './i18n.js';
 
 /**
+ * Obtiene la traducción de una categoría formateando la clave (ej: pases -> catPases)
+ */
+function getCategoryTranslation(catKey) {
+    if (!catKey) return '';
+    const formattedKey = 'cat' + catKey.charAt(0).toUpperCase() + catKey.slice(1);
+    const translation = t(formattedKey);
+    // Si encuentra la traducción (y no devuelve la misma clave), la usa; si no, recurre al valor por defecto
+    return (translation && translation !== formattedKey) ? translation : (CATEGORY_CONFIG[catKey]?.label || catKey.toUpperCase());
+}
+
+/**
  * Renderiza la lista de objetos agrupados por categoría.
  */
 export function renderItems(items) {
@@ -10,7 +21,7 @@ export function renderItems(items) {
     if (!container) return;
 
     if (!items || items.length === 0) {
-        container.innerHTML = `<p class="text-xs text-gray-400 py-2 text-center" data-i18n="noItemsFound">No se encontraron objetos.</p>`;
+        container.innerHTML = `<p class="text-xs text-gray-400 py-2 text-center" data-i18n="noItemsFound">${t('noItemsFound')}</p>`;
         return;
     }
 
@@ -28,14 +39,15 @@ export function renderItems(items) {
     // 2. Generar el HTML agrupado por categorías
     container.innerHTML = Object.entries(grouped).map(([catKey, categoryItems]) => {
         const config = CATEGORY_CONFIG[catKey] || { color: 'bg-gray-500', label: catKey };
-        const categoryLabel = t(catKey) || config.label || catKey.toUpperCase();
+        const categoryLabel = getCategoryTranslation(catKey);
+        const i18nKey = 'cat' + catKey.charAt(0).toUpperCase() + catKey.slice(1);
 
         return `
             <div class="space-y-2">
                 <!-- Cabecera / Badge de la Categoría -->
                 <div class="flex items-center gap-2 pt-2 border-b border-gray-200 dark:border-gray-700 pb-1">
                     <span class="w-2.5 h-2.5 rounded-full ${config.color}"></span>
-                    <span class="text-[11px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400" data-i18n="${i18nKey}">
                         ${categoryLabel}
                     </span>
                 </div>
@@ -128,7 +140,7 @@ export function updateCurrencyUI() {
         el.textContent = curr.symbol;
     });
 
-    // 2. Actualizar la etiqueta completa del precio (ej: "EUR €", "USD $", "POKECOINS 🟡")
+    // 2. Actualizar la etiqueta completa del precio
     document.querySelectorAll('.currency-label-full').forEach(el => {
         el.textContent = `${currKey} ${curr.symbol}`;
     });
@@ -157,13 +169,14 @@ export function renderBreakdown(categoryTotals, totalValue) {
         if (total > 0) {
             const percentage = totalValue > 0 ? ((total / totalValue) * 100).toFixed(0) : 0;
             const config = CATEGORY_CONFIG[catKey] || { color: 'bg-gray-500', label: catKey };
-            const label = t(catKey) || config.label || catKey.toUpperCase();
+            const label = getCategoryTranslation(catKey);
+            const i18nKey = 'cat' + catKey.charAt(0).toUpperCase() + catKey.slice(1);
             const formattedVal = isCoins ? Math.round(total) : total.toFixed(2);
 
             html += `
                 <div class="space-y-1">
                     <div class="flex justify-between text-xs font-semibold">
-                        <span class="text-gray-700 dark:text-gray-300 flex items-center gap-1.5">
+                        <span class="text-gray-700 dark:text-gray-300 flex items-center gap-1.5" data-i18n="${i18nKey}">
                             <span class="w-2 h-2 rounded-full ${config.color}"></span>
                             ${label}
                         </span>
@@ -177,7 +190,7 @@ export function renderBreakdown(categoryTotals, totalValue) {
         }
     });
 
-    breakdownContainer.innerHTML = html || `<p class="text-xs text-gray-400 text-center">${t('noItemsSelected') || 'Sin deslose disponible'}</p>`;
+    breakdownContainer.innerHTML = html || `<p class="text-xs text-gray-400 text-center" data-i18n="noItemsSelected">${t('noItemsSelected') || 'Sin desglose disponible'}</p>`;
 }
 
 /**

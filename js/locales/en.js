@@ -26,9 +26,12 @@ export default {
     btnReset: "🔄 Calculate another",
     copiedToClipboard: "Result copied to clipboard!",
 
-    // Categorías
+    // Categorías (sincronizadas con las categorías del store.json)
     catPases: "Raid Passes",
     catIncubadoras: "Incubators",
+    catPotenciadores: "Boosters",
+    catMejoras: "Storage Upgrades",
+    catCombates: "Battles & Particles",
     catConsumibles: "Consumables",
     catOtros: "Other Items",
 
