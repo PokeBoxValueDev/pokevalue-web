@@ -312,21 +312,25 @@ export function setupModals() {
 
     // 1. Abrir Modal Legal
     if (btnLegal && legalModal) {
-        btnLegal.addEventListener('click', () => {
+        btnLegal.addEventListener('click', (e) => {
+            e.preventDefault();
             legalModal.classList.remove('hidden');
         });
     }
 
     // 2. Abrir Modal Privacidad
     if (btnPrivacy && privacyModal) {
-        btnPrivacy.addEventListener('click', () => {
+        btnPrivacy.addEventListener('click', (e) => {
+            e.preventDefault();
             privacyModal.classList.remove('hidden');
         });
     }
 
-    // 3. Cerrar modales al pulsar en los botones de cierre
-    document.querySelectorAll('.btn-close-modal').forEach(btn => {
-        btn.addEventListener('click', () => {
+    // 3. Cerrar modales al pulsar cualquier botón que esté dentro de la modal
+    const closeButtons = document.querySelectorAll('#legal-modal button, #privacy-modal button, .btn-close-modal');
+    closeButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
             if (legalModal) legalModal.classList.add('hidden');
             if (privacyModal) privacyModal.classList.add('hidden');
         });

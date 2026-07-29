@@ -20,7 +20,7 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="apple-touch-icon" href="favicon.svg">
 
-    <!-- Open Graph / Social Media (Anonimizado con tu dominio propio) -->
+    <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="PokeBoxValue - Calculadora de Cajas">
     <meta property="og:description"
@@ -141,7 +141,6 @@
     <div class="max-w-xl mx-auto px-4 py-6 w-full">
         <!-- Header -->
         <header class="flex justify-between items-center mb-6">
-            <!-- Le ponemos el id y cursor-pointer al contenedor completo -->
             <div id="site-logo" class="flex items-center gap-3 cursor-pointer select-none">
                 <img src="favicon.svg" alt="PokeBoxValue Logo" class="w-9 h-9">
                 <div class="text-left">
@@ -152,10 +151,9 @@
                     </p>
                 </div>
             </div>
-            <!-- Contenedor compacto con gap reducido en móvil -->
-            <div class="flex items-center gap-1 sm:gap-2">
 
-                <!-- Selector de Idioma (Compacto) -->
+            <div class="flex items-center gap-1 sm:gap-2">
+                <!-- Selector de Idioma -->
                 <div class="relative">
                     <select id="lang-select"
                         class="appearance-none bg-transparent py-1 pl-2 pr-6 text-xs sm:text-sm font-medium rounded-md border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none cursor-pointer">
@@ -170,13 +168,13 @@
                     </div>
                 </div>
 
-                <!-- Selector de Moneda (Compacto) -->
+                <!-- Selector de Moneda -->
                 <div class="relative">
                     <select id="currency-select"
                         class="appearance-none bg-transparent py-1 pl-2 pr-6 text-xs sm:text-sm font-medium rounded-md border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none cursor-pointer">
                         <option value="EUR">€</option>
                         <option value="USD">$</option>
-                        <option value="POKECOINS">🟡</option> <!-- Opción Pokémonedas agregada -->
+                        <option value="POKECOINS">🟡</option>
                     </select>
                     <div class="pointer-events-none absolute inset-y-0 right-1 flex items-center px-1 text-gray-500">
                         <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -186,23 +184,20 @@
                     </div>
                 </div>
 
-                <!-- Botón Modo Oscuro (Solo Icono) -->
+                <!-- Botón Modo Oscuro -->
                 <button id="theme-toggle-btn" type="button" aria-label="Cambiar tema"
                     class="p-1.5 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md focus:outline-none">
-                    <!-- Icono Sol (Modo Claro) -->
                     <svg id="theme-toggle-light-icon" aria-hidden="true" class="hidden w-4 h-4 sm:w-5 sm:h-5"
                         fill="currentColor" viewBox="0 0 20 20">
                         <path
                             d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 100 2h1z"
                             fill-rule="evenodd" clip-rule="evenodd"></path>
                     </svg>
-                    <!-- Icono Luna (Modo Oscuro) -->
                     <svg id="theme-toggle-dark-icon" aria-hidden="true" class="hidden w-4 h-4 sm:w-5 sm:h-5"
                         fill="currentColor" viewBox="0 0 20 20">
                         <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
                     </svg>
                 </button>
-
             </div>
         </header>
 
@@ -311,6 +306,7 @@
             PokeBoxValue es un proyecto independiente desarrollado por fans y no está afiliado...
         </p>
         <div class="flex justify-center items-center gap-3 pt-1 text-gray-500 dark:text-gray-400">
+            <!-- SE AÑADIERON LOS ID QUE FALTABAN AQUÍ -->
             <button id="btn-legal" data-i18n="btnLegal" class="hover:underline">Aviso Legal</button>
             <span>•</span>
             <button id="btn-privacy" data-i18n="btnPrivacy" class="hover:underline">Política de Privacidad</button>
