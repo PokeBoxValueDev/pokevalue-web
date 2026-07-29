@@ -13,35 +13,64 @@ export function renderItems(items) {
 
     const curr = CURRENCY_CONFIG[state.currentCurrency] || { rate: 1, symbol: '€' };
 
-    container.innerHTML = items.map(item => {
-        const unitPrice = (item.unit_price_usd && state.currentCurrency === 'USD')
-            ? item.unit_price_usd
-            : (item.unit_price_eur || item.price_eur || 0) * curr.rate;
+    // 1. Agrupar items por categoría
+    const grouped = items.reduce((acc, item) => {
+        const catKey = (item.category || item.categoria || 'otros').toLowerCase();
+        if (!acc[catKey]) acc[catKey] = [];
+        acc[catKey].push(item);
+        return acc;
+    }, {});
 
-        const name = item.name || item.name_es || item.item || 'Objeto';
+    // 2. Generar el HTML agrupado por categorías
+    container.innerHTML = Object.entries(grouped).map(([catKey, categoryItems]) => {
+        const config = CATEGORY_CONFIG[catKey] || { color: 'bg-gray-500', label: catKey };
+        const categoryLabel = t(catKey) || config.label || catKey.toUpperCase();
 
         return `
-            <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-100 dark:border-gray-700">
-                <div class="flex-1 pr-2">
-                    <p class="text-xs font-semibold text-gray-800 dark:text-gray-200">${name}</p>
-                    <p class="text-[10px] text-gray-400 dark:text-gray-400">
-                        ${unitPrice.toFixed(2)} ${curr.symbol} / u.
-                    </p>
+            <div class="space-y-2">
+                <!-- Cabecera / Badge de la Categoría -->
+                <div class="flex items-center gap-2 pt-2 border-b border-gray-200 dark:border-gray-700 pb-1">
+                    <span class="w-2.5 h-2.5 rounded-full ${config.color}"></span>
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+                        ${categoryLabel}
+                    </span>
                 </div>
-                <div class="flex items-center gap-1.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg p-1">
-                    <button type="button" 
-                        class="btn-decrement w-7 h-7 flex items-center justify-center text-sm font-bold text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white transition active:scale-95" 
-                        data-id="${item.id}">-</button>
-                    
-                    <input type="number" 
-                        min="0" 
-                        value="0" 
-                        data-id="${item.id}" 
-                        class="item-qty w-10 text-center text-xs font-bold bg-transparent text-gray-800 dark:text-white focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
-                    
-                    <button type="button" 
-                        class="btn-increment w-7 h-7 flex items-center justify-center text-sm font-bold text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white transition active:scale-95" 
-                        data-id="${item.id}">+</button>
+
+                <!-- Lista de Objetos -->
+                <div class="space-y-2">
+                    ${categoryItems.map(item => {
+            const unitPrice = (item.unit_price_usd && state.currentCurrency === 'USD')
+                ? item.unit_price_usd
+                : (item.unit_price_eur || item.price_eur || 0) * curr.rate;
+
+            const name = item.name || item.name_es || item.item || 'Objeto';
+
+            return `
+                            <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-100 dark:border-gray-700">
+                                <div class="flex-1 pr-2">
+                                    <p class="text-xs font-semibold text-gray-800 dark:text-gray-200">${name}</p>
+                                    <p class="text-[10px] text-gray-400 dark:text-gray-400">
+                                        ${unitPrice.toFixed(2)} ${curr.symbol} / u.
+                                    </p>
+                                </div>
+                                <div class="flex items-center gap-1.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg p-1">
+                                    <button type="button" 
+                                        class="btn-decrement w-7 h-7 flex items-center justify-center text-sm font-bold text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white transition active:scale-95" 
+                                        data-id="${item.id}">-</button>
+                                    
+                                    <input type="number" 
+                                        min="0" 
+                                        value="0" 
+                                        data-id="${item.id}" 
+                                        class="item-qty w-10 text-center text-xs font-bold bg-transparent text-gray-800 dark:text-white focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                                    
+                                    <button type="button" 
+                                        class="btn-increment w-7 h-7 flex items-center justify-center text-sm font-bold text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white transition active:scale-95" 
+                                        data-id="${item.id}">+</button>
+                                </div>
+                            </div>
+                        `;
+        }).join('')}
                 </div>
             </div>
         `;
