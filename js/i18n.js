@@ -1,4 +1,5 @@
 import { state } from './config.js';
+import { updateCurrencyUI } from './ui.js';
 import es from './locales/es.js';
 import en from './locales/en.js';
 
@@ -31,7 +32,6 @@ export function updateDOMTranslations() {
         usdNotice.classList.toggle('hidden', state.currentCurrency !== 'USD');
     }
 
-    // Actualiza los símbolos de divisa en la plantilla
-    const currSymbol = state.currentCurrency === 'USD' ? '$' : '€';
-    document.querySelectorAll('.currency-symbol').forEach(el => el.innerText = currSymbol);
+    // Actualiza la UI de las divisas (.currency-symbol y .currency-label-full)
+    updateCurrencyUI();
 }

@@ -3,19 +3,28 @@ import { getHistory } from './storage.js';
 import { t } from './i18n.js';
 
 export function updateCurrencyUI() {
-    const curr = CURRENCY_CONFIG[state.currentCurrency] || CURRENCY_CONFIG.EUR;
-    const isCoins = state.currentCurrency === 'POKECOINS';
+    const currKey = state.currentCurrency; // "EUR", "USD", "POKECOINS"
+    const curr = CURRENCY_CONFIG[currKey] || CURRENCY_CONFIG.EUR;
+    const isCoins = currKey === 'POKECOINS';
 
+    // 1. Actualizar spans simples de símbolo (€, $, 🪙)
     document.querySelectorAll('.currency-symbol').forEach(el => {
         el.textContent = curr.symbol;
     });
 
+    // 2. Actualizar la etiqueta del precio con Código + Símbolo (ej: "EUR €")
+    document.querySelectorAll('.currency-label-full').forEach(el => {
+        el.textContent = `${currKey} ${curr.symbol}`;
+    });
+
+    // 3. Ajustar placeholder y step del input de precio
     const boxPriceInput = document.getElementById('box-price');
     if (boxPriceInput) {
         boxPriceInput.placeholder = isCoins ? 'Ej: 550' : 'Ej: 8.99';
         boxPriceInput.step = isCoins ? '1' : '0.01';
     }
 
+    // 4. Volver a renderizar los items si existen en el estado
     if (state.storeData && state.storeData.length > 0) {
         renderItems(state.storeData);
     }
