@@ -26,7 +26,7 @@ export default {
     btnReset: "🔄 Calculate another",
     copiedToClipboard: "Result copied to clipboard!",
 
-    // Categorías (sincronizadas con las categorías del store.json)
+    // Categorías (Normalizadas para coincidir con cualquier entrada del JSON)
     catPases: "Raid Passes",
     catIncubadoras: "Incubators",
     catPotenciadores: "Boosters",

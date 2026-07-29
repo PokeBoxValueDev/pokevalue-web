@@ -3,14 +3,43 @@ import { getHistory } from './storage.js';
 import { t } from './i18n.js';
 
 /**
- * Obtiene la traducción de una categoría formateando la clave (ej: pases -> catPases)
+ * Normaliza y obtiene la clave i18n correcta para una categoría dada (ej: "pases", "Pases", "PASES" -> "catPases")
+ */
+function getCategoryI18nKey(catKey) {
+    if (!catKey) return 'catOtros';
+
+    // Quitar acentos y caracteres especiales
+    const cleanKey = catKey
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .trim();
+
+    const map = {
+        'pases': 'catPases',
+        'incubadoras': 'catIncubadoras',
+        'potenciadores': 'catPotenciadores',
+        'mejoras': 'catMejoras',
+        'combates': 'catCombates',
+        'consumibles': 'catConsumibles',
+        'otros': 'catOtros'
+    };
+
+    return map[cleanKey] || ('cat' + cleanKey.charAt(0).toUpperCase() + cleanKey.slice(1));
+}
+
+/**
+ * Obtiene la traducción formateada de la categoría
  */
 function getCategoryTranslation(catKey) {
     if (!catKey) return '';
-    const formattedKey = 'cat' + catKey.charAt(0).toUpperCase() + catKey.slice(1);
-    const translation = t(formattedKey);
-    // Si encuentra la traducción (y no devuelve la misma clave), la usa; si no, recurre al valor por defecto
-    return (translation && translation !== formattedKey) ? translation : (CATEGORY_CONFIG[catKey]?.label || catKey.toUpperCase());
+    const i18nKey = getCategoryI18nKey(catKey);
+    const translation = t(i18nKey);
+
+    // Si la traducción fue encontrada la usa, de lo contrario cae en CATEGORY_CONFIG o la clave en mayúsculas
+    return (translation && translation !== i18nKey)
+        ? translation
+        : (CATEGORY_CONFIG[catKey]?.label || catKey.toUpperCase());
 }
 
 /**
@@ -40,7 +69,7 @@ export function renderItems(items) {
     container.innerHTML = Object.entries(grouped).map(([catKey, categoryItems]) => {
         const config = CATEGORY_CONFIG[catKey] || { color: 'bg-gray-500', label: catKey };
         const categoryLabel = getCategoryTranslation(catKey);
-        const i18nKey = 'cat' + catKey.charAt(0).toUpperCase() + catKey.slice(1);
+        const i18nKey = getCategoryI18nKey(catKey);
 
         return `
             <div class="space-y-2">
@@ -157,7 +186,7 @@ export function updateCurrencyUI() {
  * Muestra el desglose por categorías en la tarjeta de resultados.
  */
 export function renderBreakdown(categoryTotals, totalValue) {
-    const breakdownContainer = document.getElementById('result-breakdown');
+    const breakdownContainer = document.getElementById('breakdown-legend');
     if (!breakdownContainer) return;
 
     const curr = CURRENCY_CONFIG[state.currentCurrency] || { symbol: '€' };
@@ -170,7 +199,7 @@ export function renderBreakdown(categoryTotals, totalValue) {
             const percentage = totalValue > 0 ? ((total / totalValue) * 100).toFixed(0) : 0;
             const config = CATEGORY_CONFIG[catKey] || { color: 'bg-gray-500', label: catKey };
             const label = getCategoryTranslation(catKey);
-            const i18nKey = 'cat' + catKey.charAt(0).toUpperCase() + catKey.slice(1);
+            const i18nKey = getCategoryI18nKey(catKey);
             const formattedVal = isCoins ? Math.round(total) : total.toFixed(2);
 
             html += `
@@ -197,7 +226,7 @@ export function renderBreakdown(categoryTotals, totalValue) {
  * Historial de cálculos previos.
  */
 export function renderHistory(onRestore) {
-    const container = document.getElementById('history-list');
+    const container = document.getElementById('history-container');
     if (!container) return;
 
     const history = getHistory();
