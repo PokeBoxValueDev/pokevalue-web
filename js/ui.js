@@ -1,41 +1,16 @@
-import { CATEGORY_CONFIG, CURRENCY_CONFIG, state } from './config.js';
+import { CURRENCY_CONFIG, CATEGORY_CONFIG, state } from './config.js';
 import { getHistory } from './storage.js';
 import { t } from './i18n.js';
 
-export function updateCurrencyUI() {
-    const currKey = state.currentCurrency; // "EUR", "USD", "POKECOINS"
-    const curr = CURRENCY_CONFIG[currKey] || CURRENCY_CONFIG.EUR;
-    const isCoins = currKey === 'POKECOINS';
-
-    // 1. Actualizar spans simples de símbolo (€, $, 🪙)
-    document.querySelectorAll('.currency-symbol').forEach(el => {
-        el.textContent = curr.symbol;
-    });
-
-    // 2. Actualizar la etiqueta del precio con Código + Símbolo (ej: "EUR €")
-    document.querySelectorAll('.currency-label-full').forEach(el => {
-        el.textContent = `${currKey} ${curr.symbol}`;
-    });
-
-    // 3. Ajustar placeholder y step del input de precio
-    const boxPriceInput = document.getElementById('box-price');
-    if (boxPriceInput) {
-        boxPriceInput.placeholder = isCoins ? 'Ej: 550' : 'Ej: 8.99';
-        boxPriceInput.step = isCoins ? '1' : '0.01';
-    }
-
-    // 4. Volver a renderizar los items si existen en el estado
-    if (state.storeData && state.storeData.length > 0) {
-        renderItems(state.storeData);
-    }
-}
-
+/**
+ * Renderiza la lista de objetos agrupados por categoría.
+ */
 export function renderItems(items) {
     const container = document.getElementById('items-container');
     if (!container) return;
 
     if (!items || items.length === 0) {
-        container.innerHTML = `<p class="text-xs text-gray-400 py-2 text-center">No se encontraron objetos.</p>`;
+        container.innerHTML = `<p class="text-xs text-gray-400 py-2 text-center" data-i18n="noItemsFound">No se encontraron objetos.</p>`;
         return;
     }
 
@@ -72,12 +47,12 @@ export function renderItems(items) {
 
             if (isCoins) {
                 const coins = item.unit_price_coins ?? Math.round((item.unit_price_eur || 0) * curr.rate);
-                unitPriceStr = `${coins} ${curr.symbol} / u.`;
+                unitPriceStr = `${coins} <span class="currency-symbol">${curr.symbol}</span> / u.`;
             } else if (state.currentCurrency === 'USD' && item.unit_price_usd) {
-                unitPriceStr = `${item.unit_price_usd.toFixed(2)} ${curr.symbol} / u.`;
+                unitPriceStr = `${item.unit_price_usd.toFixed(2)} <span class="currency-symbol">${curr.symbol}</span> / u.`;
             } else {
                 const price = (item.unit_price_eur || item.price_eur || 0) * curr.rate;
-                unitPriceStr = `${price.toFixed(2)} ${curr.symbol} / u.`;
+                unitPriceStr = `${price.toFixed(2)} <span class="currency-symbol">${curr.symbol}</span> / u.`;
             }
 
             const name = item.name || item.name_es || item.item || 'Objeto';
@@ -113,7 +88,7 @@ export function renderItems(items) {
         `;
     }).join('');
 
-    // Escuchadores + / -
+    // Escuchadores de botones + / -
     container.querySelectorAll('.btn-decrement').forEach(btn => {
         btn.addEventListener('click', () => {
             const id = btn.getAttribute('data-id');
@@ -137,104 +112,144 @@ export function renderItems(items) {
     });
 }
 
+/**
+ * Actualiza etiquetas globales de divisa, placeholders y steps en el DOM.
+ */
+export function updateCurrencyUI() {
+    const currKey = state.currentCurrency || 'EUR';
+    const curr = CURRENCY_CONFIG[currKey] || CURRENCY_CONFIG.EUR;
+    const isCoins = currKey === 'POKECOINS';
+
+    // 1. Actualizar símbolos simples (€, $, 🟡)
+    document.querySelectorAll('.currency-symbol').forEach(el => {
+        el.textContent = curr.symbol;
+    });
+
+    // 2. Actualizar la etiqueta completa del precio (ej: "EUR €", "USD $", "POKECOINS 🟡")
+    document.querySelectorAll('.currency-label-full').forEach(el => {
+        el.textContent = `${currKey} ${curr.symbol}`;
+    });
+
+    // 3. Ajustar placeholder y step del input de precio de caja
+    const boxPriceInput = document.getElementById('box-price');
+    if (boxPriceInput) {
+        boxPriceInput.placeholder = isCoins ? 'Ej: 550' : 'Ej: 8.99';
+        boxPriceInput.step = isCoins ? '1' : '0.01';
+    }
+}
+
+/**
+ * Muestra el desglose por categorías en la tarjeta de resultados.
+ */
 export function renderBreakdown(categoryTotals, totalValue) {
-    const bar = document.getElementById('breakdown-bar');
-    const legend = document.getElementById('breakdown-legend');
-    if (!bar || !legend) return;
-
-    bar.innerHTML = '';
-    legend.innerHTML = '';
-
-    if (totalValue <= 0) return;
+    const breakdownContainer = document.getElementById('result-breakdown');
+    if (!breakdownContainer) return;
 
     const curr = CURRENCY_CONFIG[state.currentCurrency] || { symbol: '€' };
     const isCoins = state.currentCurrency === 'POKECOINS';
 
-    Object.keys(categoryTotals).forEach(cat => {
-        const val = categoryTotals[cat];
-        if (val > 0) {
-            const pct = ((val / totalValue) * 100).toFixed(1);
-            const config = CATEGORY_CONFIG[cat] || { color: 'bg-gray-500', label: cat };
-            const formattedVal = isCoins ? Math.round(val) : val.toFixed(2);
+    let html = '';
 
-            const segment = document.createElement('div');
-            segment.className = `${config.color} h-full transition-all duration-300`;
-            segment.style.width = `${pct}%`;
-            bar.appendChild(segment);
+    Object.entries(categoryTotals).forEach(([catKey, total]) => {
+        if (total > 0) {
+            const percentage = totalValue > 0 ? ((total / totalValue) * 100).toFixed(0) : 0;
+            const config = CATEGORY_CONFIG[catKey] || { color: 'bg-gray-500', label: catKey };
+            const label = t(catKey) || config.label || catKey.toUpperCase();
+            const formattedVal = isCoins ? Math.round(total) : total.toFixed(2);
 
-            const legendItem = document.createElement('div');
-            legendItem.className = 'flex items-center gap-1.5';
-            legendItem.innerHTML = `
-                <span class="w-2.5 h-2.5 rounded-full ${config.color}"></span>
-                <span class="text-gray-600 dark:text-gray-300 font-medium">${t(cat) || config.label}:</span>
-                <span class="font-bold text-gray-800 dark:text-gray-100">${formattedVal} ${curr.symbol} (${pct}%)</span>
+            html += `
+                <div class="space-y-1">
+                    <div class="flex justify-between text-xs font-semibold">
+                        <span class="text-gray-700 dark:text-gray-300 flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full ${config.color}"></span>
+                            ${label}
+                        </span>
+                        <span class="text-gray-900 dark:text-white font-bold">${formattedVal} ${curr.symbol} (${percentage}%)</span>
+                    </div>
+                    <div class="w-full bg-gray-100 dark:bg-gray-700 h-2 rounded-full overflow-hidden">
+                        <div class="${config.color} h-full rounded-full transition-all duration-500" style="width: ${percentage}%"></div>
+                    </div>
+                </div>
             `;
-            legend.appendChild(legendItem);
         }
     });
+
+    breakdownContainer.innerHTML = html || `<p class="text-xs text-gray-400 text-center">${t('noItemsSelected') || 'Sin deslose disponible'}</p>`;
 }
 
-export function renderHistory(onSelectHistory) {
-    const historyContainer = document.getElementById('history-container');
-    const historySection = document.getElementById('history-section');
-    if (!historyContainer || !historySection) return;
+/**
+ * Historial de cálculos previos.
+ */
+export function renderHistory(onRestore) {
+    const container = document.getElementById('history-list');
+    if (!container) return;
 
     const history = getHistory();
 
     if (history.length === 0) {
-        historySection.classList.add('hidden');
+        container.innerHTML = `<p class="text-xs text-gray-400 text-center py-4" data-i18n="emptyHistory">No hay cálculos guardados aún.</p>`;
         return;
     }
 
-    historySection.classList.remove('hidden');
-    historyContainer.innerHTML = history.map((h, i) => {
-        const isCoins = h.currencySymbol === '🟡';
-        const formattedPrice = isCoins ? Math.round(h.boxPrice) : h.boxPrice.toFixed(2);
+    container.innerHTML = history.map((item) => {
+        const dateStr = new Date(item.timestamp).toLocaleDateString(undefined, {
+            day: '2-digit',
+            month: 'short',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+
+        const statusColor = item.isProfitable ? 'text-emerald-500 bg-emerald-50 dark:bg-emerald-950/30' : 'text-rose-500 bg-rose-50 dark:bg-rose-950/30';
+        const badgeText = item.isProfitable ? (t('badgeProfitable') || 'Rentable') : (t('badgeNotProfitable') || 'No rentable');
 
         return `
-            <div data-index="${i}" class="history-item p-2.5 bg-gray-50 dark:bg-gray-700/40 rounded-xl cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition flex justify-between items-center">
-                <div>
-                    <span class="font-bold ${h.isProfitable ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-500'}">
-                        ${formattedPrice}${h.currencySymbol}
-                    </span>
-                    <span class="text-gray-400 mx-1">•</span>
-                    <span class="text-gray-600 dark:text-gray-300">${h.items ? h.items.join(', ') : ''}</span>
+            <div class="p-3 bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 flex items-center justify-between shadow-sm">
+                <div class="space-y-0.5">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-bold ${statusColor} px-2 py-0.5 rounded-full">${badgeText}</span>
+                        <span class="text-[10px] text-gray-400">${dateStr}</span>
+                    </div>
+                    <p class="text-xs text-gray-600 dark:text-gray-300">
+                        Precio: <b>${item.boxPrice}${item.currencySymbol}</b> | Valor: <b>${item.totalValue.toFixed(2)}${item.currencySymbol}</b>
+                    </p>
                 </div>
-                <span class="text-[10px] text-gray-400">${new Date(h.timestamp).toLocaleDateString()}</span>
+                <button 
+                    type="button" 
+                    class="btn-restore text-xs text-indigo-600 dark:text-indigo-400 font-semibold hover:underline"
+                    data-price="${item.boxPrice}">
+                    ${t('btnRestore') || 'Cargar'}
+                </button>
             </div>
         `;
     }).join('');
 
-    document.querySelectorAll('.history-item').forEach(el => {
-        el.addEventListener('click', () => {
-            const idx = parseInt(el.getAttribute('data-index'));
-            if (history[idx] && onSelectHistory) {
-                onSelectHistory(history[idx]);
-            }
+    container.querySelectorAll('.btn-restore').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const price = btn.getAttribute('data-price');
+            if (onRestore) onRestore({ boxPrice: price });
         });
     });
 }
 
+/**
+ * Configuración de modales de la interfaz.
+ */
 export function setupModals() {
-    const legalModal = document.getElementById('legal-modal');
-    const privacyModal = document.getElementById('privacy-modal');
+    const modalHistory = document.getElementById('modal-history');
+    const btnOpenHistory = document.getElementById('btn-open-history');
+    const btnCloseHistory = document.getElementById('btn-close-history');
 
-    const closeModal = (modal) => modal?.classList.add('hidden');
+    if (btnOpenHistory && modalHistory) {
+        btnOpenHistory.addEventListener('click', () => modalHistory.classList.remove('hidden'));
+    }
 
-    document.getElementById('btn-legal')?.addEventListener('click', () => legalModal?.classList.remove('hidden'));
-    document.getElementById('btn-privacy')?.addEventListener('click', () => privacyModal?.classList.remove('hidden'));
+    if (btnCloseHistory && modalHistory) {
+        btnCloseHistory.addEventListener('click', () => modalHistory.classList.add('hidden'));
+    }
 
-    [legalModal, privacyModal].forEach(modal => {
-        if (!modal) return;
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal || e.target.tagName === 'BUTTON') closeModal(modal);
+    if (modalHistory) {
+        modalHistory.addEventListener('click', (e) => {
+            if (e.target === modalHistory) modalHistory.classList.add('hidden');
         });
-    });
-
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            closeModal(legalModal);
-            closeModal(privacyModal);
-        }
-    });
+    }
 }

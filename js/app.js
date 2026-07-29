@@ -57,12 +57,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         currSelect.addEventListener('change', (e) => {
             state.currentCurrency = e.target.value;
             localStorage.setItem('currency', state.currentCurrency);
+
+            // Actualiza traducciones y etiquetas globales (.currency-label-full)
             updateDOMTranslations();
-            updateCurrencyUI();
+
+            // Re-renderiza los objetos de la tienda con la nueva divisa
+            renderItems(getFilteredItems());
         });
     }
 
-    // Sincronizar UI inicial de divisa (.currency-symbol, placeholder y step)
+    // Sincronizar UI inicial de divisa (.currency-symbol, placeholder, step y label full)
     updateCurrencyUI();
 
     // 5. Carga JSON
@@ -133,8 +137,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (btnCalculate) {
         btnCalculate.addEventListener('click', () => {
-            const priceInput = document.getElementById('box-price');
-            const priceError = document.getElementById('box-price-error');
             const boxPrice = parseFloat(priceInput.value);
 
             priceInput.classList.remove('border-rose-500', 'focus:ring-rose-500');
