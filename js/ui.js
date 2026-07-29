@@ -102,30 +102,39 @@ export function renderItems(items) {
                 : (item.name_es || item.name || item.item || 'Objeto');
 
             return `
-                            <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-100 dark:border-gray-700">
-                                <div class="flex-1 pr-2">
-                                    <p class="text-xs font-semibold text-gray-800 dark:text-gray-200">${name}</p>
-                                    <p class="text-[10px] text-gray-400 dark:text-gray-400">
-                                        ${unitPriceStr}
-                                    </p>
-                                </div>
-                                <div class="flex items-center gap-1.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg p-1">
-                                    <button type="button" 
-                                        class="btn-decrement w-7 h-7 flex items-center justify-center text-sm font-bold text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white transition active:scale-95" 
-                                        data-id="${item.id}">-</button>
-                                    
-                                    <input type="number" 
-                                        min="0" 
-                                        value="0" 
-                                        data-id="${item.id}" 
-                                        class="item-qty w-10 text-center text-xs font-bold bg-transparent text-gray-800 dark:text-white focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
-                                    
-                                    <button type="button" 
-                                        class="btn-increment w-7 h-7 flex items-center justify-center text-sm font-bold text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white transition active:scale-95" 
-                                        data-id="${item.id}">+</button>
-                                </div>
-                            </div>
-                        `;
+    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-100 dark:border-gray-700">
+        
+        <!-- Icono SVG / Imagen del Item + Información -->
+        <div class="flex items-center gap-3 flex-1 pr-2">
+            <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 shadow-sm">
+                ${item.svg ? item.svg : (item.image ? `<img src="${item.image}" alt="${name}" class="w-full h-full object-contain">` : '')}
+            </div>
+            <div>
+                <p class="text-xs font-semibold text-gray-800 dark:text-gray-200">${name}</p>
+                <p class="text-[10px] text-gray-400 dark:text-gray-400">
+                    ${unitPriceStr}
+                </p>
+            </div>
+        </div>
+
+        <!-- Controles de Cantidad (+ / -) -->
+        <div class="flex items-center gap-1.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg p-1">
+            <button type="button" 
+                class="btn-decrement w-7 h-7 flex items-center justify-center text-sm font-bold text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white transition active:scale-95" 
+                data-id="${item.id}">-</button>
+            
+            <input type="number" 
+                min="0" 
+                value="0" 
+                data-id="${item.id}" 
+                class="item-qty w-10 text-center text-xs font-bold bg-transparent text-gray-800 dark:text-white focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+            
+            <button type="button" 
+                class="btn-increment w-7 h-7 flex items-center justify-center text-sm font-bold text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white transition active:scale-95" 
+                data-id="${item.id}">+</button>
+        </div>
+    </div>
+`;
         }).join('')}
                 </div>
             </div>
