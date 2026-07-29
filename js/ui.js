@@ -2,6 +2,25 @@ import { CATEGORY_CONFIG, CURRENCY_CONFIG, state } from './config.js';
 import { getHistory } from './storage.js';
 import { t } from './i18n.js';
 
+export function updateCurrencyUI() {
+    const curr = CURRENCY_CONFIG[state.currentCurrency] || CURRENCY_CONFIG.EUR;
+    const isCoins = state.currentCurrency === 'POKECOINS';
+
+    document.querySelectorAll('.currency-symbol').forEach(el => {
+        el.textContent = curr.symbol;
+    });
+
+    const boxPriceInput = document.getElementById('box-price');
+    if (boxPriceInput) {
+        boxPriceInput.placeholder = isCoins ? 'Ej: 550' : 'Ej: 8.99';
+        boxPriceInput.step = isCoins ? '1' : '0.01';
+    }
+
+    if (state.storeData && state.storeData.length > 0) {
+        renderItems(state.storeData);
+    }
+}
+
 export function renderItems(items) {
     const container = document.getElementById('items-container');
     if (!container) return;
@@ -12,6 +31,7 @@ export function renderItems(items) {
     }
 
     const curr = CURRENCY_CONFIG[state.currentCurrency] || { rate: 1, symbol: '€' };
+    const isCoins = state.currentCurrency === 'POKECOINS';
 
     // 1. Agrupar items por categoría
     const grouped = items.reduce((acc, item) => {
@@ -39,9 +59,17 @@ export function renderItems(items) {
                 <!-- Lista de Objetos -->
                 <div class="space-y-2">
                     ${categoryItems.map(item => {
-            const unitPrice = (item.unit_price_usd && state.currentCurrency === 'USD')
-                ? item.unit_price_usd
-                : (item.unit_price_eur || item.price_eur || 0) * curr.rate;
+            let unitPriceStr = '';
+
+            if (isCoins) {
+                const coins = item.unit_price_coins ?? Math.round((item.unit_price_eur || 0) * curr.rate);
+                unitPriceStr = `${coins} ${curr.symbol} / u.`;
+            } else if (state.currentCurrency === 'USD' && item.unit_price_usd) {
+                unitPriceStr = `${item.unit_price_usd.toFixed(2)} ${curr.symbol} / u.`;
+            } else {
+                const price = (item.unit_price_eur || item.price_eur || 0) * curr.rate;
+                unitPriceStr = `${price.toFixed(2)} ${curr.symbol} / u.`;
+            }
 
             const name = item.name || item.name_es || item.item || 'Objeto';
 
@@ -50,7 +78,7 @@ export function renderItems(items) {
                                 <div class="flex-1 pr-2">
                                     <p class="text-xs font-semibold text-gray-800 dark:text-gray-200">${name}</p>
                                     <p class="text-[10px] text-gray-400 dark:text-gray-400">
-                                        ${unitPrice.toFixed(2)} ${curr.symbol} / u.
+                                        ${unitPriceStr}
                                     </p>
                                 </div>
                                 <div class="flex items-center gap-1.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg p-1">
@@ -76,7 +104,7 @@ export function renderItems(items) {
         `;
     }).join('');
 
-    // Escuchadores para los botones + y -
+    // Escuchadores + / -
     container.querySelectorAll('.btn-decrement').forEach(btn => {
         btn.addEventListener('click', () => {
             const id = btn.getAttribute('data-id');
@@ -111,12 +139,14 @@ export function renderBreakdown(categoryTotals, totalValue) {
     if (totalValue <= 0) return;
 
     const curr = CURRENCY_CONFIG[state.currentCurrency] || { symbol: '€' };
+    const isCoins = state.currentCurrency === 'POKECOINS';
 
     Object.keys(categoryTotals).forEach(cat => {
         const val = categoryTotals[cat];
         if (val > 0) {
             const pct = ((val / totalValue) * 100).toFixed(1);
             const config = CATEGORY_CONFIG[cat] || { color: 'bg-gray-500', label: cat };
+            const formattedVal = isCoins ? Math.round(val) : val.toFixed(2);
 
             const segment = document.createElement('div');
             segment.className = `${config.color} h-full transition-all duration-300`;
@@ -128,7 +158,7 @@ export function renderBreakdown(categoryTotals, totalValue) {
             legendItem.innerHTML = `
                 <span class="w-2.5 h-2.5 rounded-full ${config.color}"></span>
                 <span class="text-gray-600 dark:text-gray-300 font-medium">${t(cat) || config.label}:</span>
-                <span class="font-bold text-gray-800 dark:text-gray-100">${val.toFixed(2)} ${curr.symbol} (${pct}%)</span>
+                <span class="font-bold text-gray-800 dark:text-gray-100">${formattedVal} ${curr.symbol} (${pct}%)</span>
             `;
             legend.appendChild(legendItem);
         }
@@ -148,18 +178,23 @@ export function renderHistory(onSelectHistory) {
     }
 
     historySection.classList.remove('hidden');
-    historyContainer.innerHTML = history.map((h, i) => `
-        <div data-index="${i}" class="history-item p-2.5 bg-gray-50 dark:bg-gray-700/40 rounded-xl cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition flex justify-between items-center">
-            <div>
-                <span class="font-bold ${h.isProfitable ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-500'}">
-                    ${h.boxPrice.toFixed(2)}${h.currencySymbol}
-                </span>
-                <span class="text-gray-400 mx-1">•</span>
-                <span class="text-gray-600 dark:text-gray-300">${h.items ? h.items.join(', ') : ''}</span>
+    historyContainer.innerHTML = history.map((h, i) => {
+        const isCoins = h.currencySymbol === '🪙';
+        const formattedPrice = isCoins ? Math.round(h.boxPrice) : h.boxPrice.toFixed(2);
+
+        return `
+            <div data-index="${i}" class="history-item p-2.5 bg-gray-50 dark:bg-gray-700/40 rounded-xl cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition flex justify-between items-center">
+                <div>
+                    <span class="font-bold ${h.isProfitable ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-500'}">
+                        ${formattedPrice}${h.currencySymbol}
+                    </span>
+                    <span class="text-gray-400 mx-1">•</span>
+                    <span class="text-gray-600 dark:text-gray-300">${h.items ? h.items.join(', ') : ''}</span>
+                </div>
+                <span class="text-[10px] text-gray-400">${new Date(h.timestamp).toLocaleDateString()}</span>
             </div>
-            <span class="text-[10px] text-gray-400">${new Date(h.timestamp).toLocaleDateString()}</span>
-        </div>
-    `).join('');
+        `;
+    }).join('');
 
     document.querySelectorAll('.history-item').forEach(el => {
         el.addEventListener('click', () => {

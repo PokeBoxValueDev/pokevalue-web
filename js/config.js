@@ -2,15 +2,54 @@ export const APP_VERSION = '1.6.0';
 export const JSON_URL = 'https://raw.githubusercontent.com/alejandrrolc/pokevalue-data/refs/heads/main/items.json';
 
 export const CURRENCY_CONFIG = {
-    EUR: { symbol: '€', rate: 1.0 },
-    USD: { symbol: '$', rate: 1.08 }
+    EUR: { rate: 1, symbol: '€', label: 'Euros' },
+    USD: { rate: 1.08, symbol: '$', label: 'Dólares' },
+    POKECOINS: { rate: 1 / 0.009083, symbol: '🪙', label: 'Pokémonedas' }
 };
 
 export const CATEGORY_CONFIG = {
-    pases: { key: 'catPases', bg: 'bg-indigo-100 dark:bg-indigo-900/50', text: 'text-indigo-700 dark:text-indigo-300', border: 'border-indigo-100 dark:border-indigo-900/30' },
-    incubadoras: { key: 'catIncubadoras', bg: 'bg-amber-100 dark:bg-amber-900/50', text: 'text-amber-700 dark:text-amber-300', border: 'border-amber-100 dark:border-amber-900/30' },
-    consumibles: { key: 'catConsumibles', bg: 'bg-emerald-100 dark:bg-emerald-900/50', text: 'text-emerald-700 dark:text-emerald-300', border: 'border-emerald-100 dark:border-emerald-900/30' },
-    otros: { key: 'catOtros', bg: 'bg-sky-100 dark:bg-sky-900/50', text: 'text-sky-700 dark:text-sky-300', border: 'border-sky-100 dark:border-sky-900/30' }
+    pases: {
+        color: 'bg-indigo-500',
+        label: 'Pases',
+        bg: 'bg-indigo-100 dark:bg-indigo-900/50',
+        text: 'text-indigo-700 dark:text-indigo-300',
+        border: 'border-indigo-100 dark:border-indigo-900/30'
+    },
+    incubadoras: {
+        color: 'bg-amber-500',
+        label: 'Incubadoras',
+        bg: 'bg-amber-100 dark:bg-amber-900/50',
+        text: 'text-amber-700 dark:text-amber-300',
+        border: 'border-amber-100 dark:border-amber-900/30'
+    },
+    potenciadores: {
+        color: 'bg-purple-500',
+        label: 'Potenciadores',
+        bg: 'bg-purple-100 dark:bg-purple-900/50',
+        text: 'text-purple-700 dark:text-purple-300',
+        border: 'border-purple-100 dark:border-purple-900/30'
+    },
+    mejoras: {
+        color: 'bg-emerald-500',
+        label: 'Mejoras',
+        bg: 'bg-emerald-100 dark:bg-emerald-900/50',
+        text: 'text-emerald-700 dark:text-emerald-300',
+        border: 'border-emerald-100 dark:border-emerald-900/30'
+    },
+    combates: {
+        color: 'bg-rose-500',
+        label: 'Combates',
+        bg: 'bg-rose-100 dark:bg-rose-900/50',
+        text: 'text-rose-700 dark:text-rose-300',
+        border: 'border-rose-100 dark:border-rose-900/30'
+    },
+    otros: {
+        color: 'bg-sky-500',
+        label: 'Otros',
+        bg: 'bg-sky-100 dark:bg-sky-900/50',
+        text: 'text-sky-700 dark:text-sky-300',
+        border: 'border-sky-100 dark:border-sky-900/30'
+    }
 };
 
 export const state = {

@@ -1,7 +1,7 @@
 import { APP_VERSION, JSON_URL, CURRENCY_CONFIG, state } from './config.js';
 import { calculateResult } from './calculator.js';
 import { saveCalculation, clearHistory } from './storage.js';
-import { renderItems, renderBreakdown, renderHistory, setupModals } from './ui.js';
+import { renderItems, renderBreakdown, renderHistory, setupModals, updateCurrencyUI } from './ui.js';
 import { setLanguage, updateDOMTranslations, t } from './i18n.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     setLanguage(state.currentLang);
 
-    // 4. Divisa
+    // 4. Divisa & Actualización Dinámica
     const currSelect = document.getElementById('currency-select');
     if (currSelect) {
         currSelect.value = state.currentCurrency;
@@ -58,9 +58,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             state.currentCurrency = e.target.value;
             localStorage.setItem('currency', state.currentCurrency);
             updateDOMTranslations();
-            renderItems(getFilteredItems());
+            updateCurrencyUI();
         });
     }
+
+    // Sincronizar UI inicial de divisa (.currency-symbol, placeholder y step)
+    updateCurrencyUI();
 
     // 5. Carga JSON
     try {
@@ -164,26 +167,32 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             const res = calculateResult(boxPrice, quantities, state.storeData, state.currentCurrency);
             const curr = CURRENCY_CONFIG[state.currentCurrency] || { symbol: '€' };
+            const isCoins = state.currentCurrency === 'POKECOINS';
+
+            // Formateadores según la divisa
+            const fmtBoxPrice = isCoins ? Math.round(boxPrice) : boxPrice.toFixed(2);
+            const fmtTotalValue = isCoins ? Math.round(res.totalValue) : res.totalValue.toFixed(2);
+            const fmtDiff = isCoins ? Math.round(Math.abs(res.diff)) : Math.abs(res.diff).toFixed(2);
 
             const resCard = document.getElementById('result-card');
             const resTitle = document.getElementById('result-title');
             const resDiffLabel = document.getElementById('res-diff-label');
             const resDiffVal = document.getElementById('res-diff-val');
 
-            if (document.getElementById('res-box-price')) document.getElementById('res-box-price').innerText = `${boxPrice.toFixed(2)} ${curr.symbol}`;
-            if (document.getElementById('res-real-value')) document.getElementById('res-real-value').innerText = `${res.totalValue.toFixed(2)} ${curr.symbol}`;
+            if (document.getElementById('res-box-price')) document.getElementById('res-box-price').innerText = `${fmtBoxPrice} ${curr.symbol}`;
+            if (document.getElementById('res-real-value')) document.getElementById('res-real-value').innerText = `${fmtTotalValue} ${curr.symbol}`;
 
             if (resCard && resTitle && resDiffLabel && resDiffVal) {
                 if (res.isProfitable) {
                     resCard.className = 'p-6 rounded-xl text-center space-y-4 text-white bg-emerald-600 shadow-lg';
                     resTitle.innerText = `🎉 ${t('titleProfitable') || '¡Renta comprarla!'}`;
                     resDiffLabel.innerText = t('resDiffSave') || 'Ahorras:';
-                    resDiffVal.innerText = `+${res.diff.toFixed(2)} ${curr.symbol}`;
+                    resDiffVal.innerText = `+${fmtDiff} ${curr.symbol}`;
                 } else {
                     resCard.className = 'p-6 rounded-xl text-center space-y-4 text-white bg-rose-600 shadow-lg';
                     resTitle.innerText = `⚠️ ${t('titleNotProfitable') || 'No renta comprarla'}`;
                     resDiffLabel.innerText = t('resDiffLose') || 'Pierdes:';
-                    resDiffVal.innerText = `${res.diff.toFixed(2)} ${curr.symbol}`;
+                    resDiffVal.innerText = `-${fmtDiff} ${curr.symbol}`;
                 }
             }
 
@@ -198,7 +207,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 items: res.itemSummary
             });
 
-            state.lastCalculationText = `PokeBoxValue: Precio ${boxPrice.toFixed(2)}${curr.symbol} | Valor: ${res.totalValue.toFixed(2)}${curr.symbol}`;
+            state.lastCalculationText = `PokeBoxValue: Precio ${fmtBoxPrice}${curr.symbol} | Valor: ${fmtTotalValue}${curr.symbol}`;
 
             if (viewForm) viewForm.classList.add('hidden');
             if (viewResult) viewResult.classList.remove('hidden');
@@ -212,8 +221,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (navigator.share) {
                 try {
                     await navigator.share({
-                        title: 'PokéBoxValue',
-                        text: state.lastCalculationText || '¡Calcula el valor de las cajas en PokéBoxValue!',
+                        title: 'PokeBoxValue',
+                        text: state.lastCalculationText || '¡Calcula el valor de las cajas en PokeBoxValue!',
                         url: window.location.href
                     });
                 } catch (err) {
