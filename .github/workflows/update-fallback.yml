@@ -1,0 +1,33 @@
+name: Sync Items Fallback
+
+on:
+  schedule:
+    - cron: '0 */12 * * *' # Ejecutar cada 12 horas
+  workflow_dispatch: # Permite lanzar la acción manualmente desde GitHub
+
+permissions:
+  contents: write
+
+jobs:
+  sync-fallback:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repositorio
+        uses: actions/checkout@v4
+
+      - name: Descargar último items.json de pokevalue-data
+        run: |
+          curl -sSL https://raw.githubusercontent.com/alejandrrolc/pokevalue-data/refs/heads/main/items.json -o js/items-fallback.json
+
+      - name: Hacer commit y push si hay cambios
+        run: |
+          if [ -n "$(git status --porcelain js/items-fallback.json)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add js/items-fallback.json
+            git commit -m "chore: auto-update local items-fallback.json from pokevalue-data"
+            git push
+          else
+            echo "No hay cambios en items-fallback.json"
+          fi
