@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { getCategoryKey, calculateResult } from '../../js/calculator.js';
+import { getCategoryKey, calculateResult } from '../calculator.js';
 
 test('getCategoryKey - categorizes items correctly based on category property or name', () => {
     assert.equal(getCategoryKey({ category: 'incubadoras' }), 'incubadoras');

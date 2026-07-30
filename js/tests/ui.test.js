@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { renderBreakdown, renderHistory, renderItems } from '../../js/ui.js';
-import { setLanguage } from '../../js/i18n.js';
-import { state } from '../../js/config.js';
+import { renderBreakdown, renderHistory, renderItems } from '../ui.js';
+import { setLanguage } from '../i18n.js';
+import { state } from '../config.js';
 
 // Setup Mock DOM and localStorage for UI component tests
 const mockStore = new Map();
@@ -27,7 +27,6 @@ function createMockElement(id = '', classList = []) {
         },
         querySelectorAll: (selector) => {
             if (selector === '.btn-restore') {
-                // Return mock restore buttons if rendered
                 return Array.from(children).filter(c => c.className && c.className.includes('btn-restore'));
             }
             return [];
@@ -37,6 +36,9 @@ function createMockElement(id = '', classList = []) {
 }
 
 test('ui - renderBreakdown outputs breakdown bars correctly', () => {
+    setLanguage('es');
+    state.currentCurrency = 'EUR';
+
     const mockContainer = createMockElement('breakdown-legend');
     globalThis.document = {
         getElementById: (id) => id === 'breakdown-legend' ? mockContainer : null
@@ -51,6 +53,7 @@ test('ui - renderBreakdown outputs breakdown bars correctly', () => {
 });
 
 test('ui - renderHistory handles empty history state', () => {
+    setLanguage('es');
     localStorage.clear();
     const mockSection = createMockElement('history-section');
     const mockContainer = createMockElement('history-container');

@@ -1,9 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { Item } from '../../src/domain/models/Item.js';
-import { CalculationResult } from '../../src/domain/models/CalculationResult.js';
-import { Category } from '../../src/domain/valueObjects/Category.js';
-import { ValuationService } from '../../src/domain/services/ValuationService.js';
+import { Item } from '../models/Item.js';
+import { CalculationResult } from '../models/CalculationResult.js';
+import { Category } from '../valueObjects/Category.js';
+import { ValuationService } from '../services/ValuationService.js';
 
 test('domain/Item - constructs and calculates unit prices correctly', () => {
     const item = new Item({

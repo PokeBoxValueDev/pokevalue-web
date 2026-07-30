@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { APP_VERSION, JSON_URL, FALLBACK_JSON_URL, CURRENCY_CONFIG, CATEGORY_CONFIG, state } from '../../js/config.js';
+import { APP_VERSION, JSON_URL, FALLBACK_JSON_URL, CURRENCY_CONFIG, CATEGORY_CONFIG, state } from '../../../js/config.js';
 
 test('config - exports valid constants', () => {
     assert.ok(typeof APP_VERSION === 'string' && APP_VERSION.length > 0);

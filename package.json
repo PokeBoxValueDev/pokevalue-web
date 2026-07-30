@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "build:html": "node scripts/build-components.js",
-    "test": "node scripts/build-components.js && node --test tests/contract/*.test.js tests/unit/*.test.js tests/visual/*.test.js",
-    "lint": "node --check js/*.js src/config/*.js src/domain/models/*.js src/domain/services/*.js src/domain/valueObjects/*.js src/infrastructure/mappers/*.js src/infrastructure/repositories/*.js src/ui/ios/*.js tests/contract/*.js tests/unit/*.js tests/visual/*.js sw.js",
+    "test": "node scripts/build-components.js && node --test src/**/tests/*.test.js js/tests/*.test.js tests/contract/*.test.js tests/visual/*.test.js",
+    "lint": "node --check js/*.js js/tests/*.js src/config/*.js src/config/tests/*.js src/domain/*/*.js src/domain/tests/*.js src/infrastructure/*/*.js src/infrastructure/repositories/tests/*.js src/ui/components/*.js src/ui/ios/*.js src/ui/ios/tests/*.js tests/contract/*.js tests/visual/*.js sw.js",
     "prepare": "node scripts/build-components.js && node scripts/setup-hooks.js"
   }
 }

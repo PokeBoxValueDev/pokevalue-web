@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { getHistory, saveCalculation, clearHistory } from '../../js/storage.js';
+import { getHistory, saveCalculation, clearHistory } from '../storage.js';
 
 // Setup Mock localStorage for Node test runner
 const mockStore = new Map();

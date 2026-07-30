@@ -1,9 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { t, setLanguage, updateDOMTranslations, translations } from '../../js/i18n.js';
-import { state } from '../../js/config.js';
-import es from '../../js/locales/es.js';
-import en from '../../js/locales/en.js';
+import { t, setLanguage, updateDOMTranslations } from '../i18n.js';
+import { state } from '../config.js';
+import es from '../locales/es.js';
+import en from '../locales/en.js';
 
 test('i18n - key parity between Spanish and English dictionaries', () => {
     const esKeys = Object.keys(es).sort();
@@ -24,6 +24,8 @@ test('i18n - t() returns correct translation for Spanish and English', () => {
     setLanguage('en');
     assert.equal(t('btnCalculate'), 'Calculate Value');
     assert.equal(t('badgeProfitable'), 'Profitable');
+
+    setLanguage('es'); // Restaurar idioma por defecto
 });
 
 test('i18n - t() fallback behavior for missing key or unknown language', () => {
@@ -32,6 +34,8 @@ test('i18n - t() fallback behavior for missing key or unknown language', () => {
 
     state.currentLang = 'fr'; // Unsupported language
     assert.equal(t('btnCalculate'), 'Calcular Rentabilidad'); // Fallback to Spanish
+
+    setLanguage('es'); // Restaurar idioma por defecto
 });
 
 test('i18n - updateDOMTranslations updates elements with data-i18n and data-i18n-placeholder', () => {
@@ -59,4 +63,6 @@ test('i18n - updateDOMTranslations updates elements with data-i18n and data-i18n
     assert.equal(mockElements[0].innerText, 'Rentable');
     assert.equal(mockElements[1].innerText, 'Restaurar');
     assert.equal(mockPlaceholders[0].placeholder, '🔍 Buscar objeto...');
+
+    setLanguage('es'); // Restaurar estado
 });
