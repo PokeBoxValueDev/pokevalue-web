@@ -112,6 +112,8 @@ export function renderItems(items) {
                 value="0" 
                 data-id="${item.id}"
                 aria-label="Cantidad de ${name}"
+                inputmode="numeric"
+                pattern="[0-9]*"
                 class="item-qty w-10 text-center text-sm font-extrabold bg-transparent text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
             
             <button type="button" 
