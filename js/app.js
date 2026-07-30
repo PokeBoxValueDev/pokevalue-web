@@ -74,17 +74,29 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     updateCurrencyUI();
 
-    // 5. Cargar datos
+    // 5. Cargar datos con Repositorio (Red -> Cache -> Fallback -> Mapeo a Dominio)
     const itemsContainer = document.getElementById('items-container');
     const searchInput = document.getElementById('search-input');
 
     try {
-        state.storeData = await ItemsRepository.getItems();
-        updateLastUpdatedDate(state.storeData);
-        renderItems(state.storeData);
+        const repo = new ItemsRepository();
+        const { items, lastUpdated } = await repo.getItems();
+
+        if (items && items.length > 0) {
+            state.storeData = items;
+
+            const lastUpdatedEl = document.getElementById('last-updated');
+            if (lastUpdatedEl) {
+                lastUpdatedEl.innerHTML = `<span data-i18n="lastUpdated">${t('lastUpdated')}</span>: ${lastUpdated || '--/--/----'}`;
+            }
+
+            renderItems(getFilteredItems());
+        } else {
+            throw new Error('No items returned');
+        }
     } catch (err) {
         console.error("Error al cargar los objetos:", err);
-        if (itemsContainer) itemsContainer.innerHTML = '<p class="text-sm text-rose-500">Error al cargar datos.</p>';
+        if (itemsContainer) itemsContainer.innerHTML = '<p class="text-xs text-rose-500 py-2 text-center">Error al cargar datos de la tienda.</p>';
     }
 
     function getFilteredItems() {
@@ -92,10 +104,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
         if (!query) return state.storeData;
         return state.storeData.filter(item => {
-            const name = (state.currentLang === 'en' && item.name_en)
-                ? item.name_en
-                : (item.name_es || item.name || '');
-            return name.toLowerCase().includes(query);
+            const name = (item.getLocalizedName
+                ? item.getLocalizedName(state.currentLang)
+                : ((state.currentLang === 'en' && item.name_en) ? item.name_en : (item.name_es || item.name || ''))
+            ).toLowerCase();
+            return name.includes(query);
         });
     }
 

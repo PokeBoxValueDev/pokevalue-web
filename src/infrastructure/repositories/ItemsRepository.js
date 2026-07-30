@@ -12,6 +12,15 @@ export class ItemsRepository {
     }
 
     /**
+     * Acceso estático rápido para obtener items mapeados a entidades de dominio.
+     * @returns {Promise<{ items: Item[], lastUpdated: string }>}
+     */
+    static async getItems(jsonUrl = JSON_URL, fallbackUrl = FALLBACK_JSON_URL) {
+        const repo = new ItemsRepository(jsonUrl, fallbackUrl);
+        return repo.getItems();
+    }
+
+    /**
      * Obtiene los objetos de la tienda mapeados a entidades de dominio.
      * @returns {Promise<{ items: Item[], lastUpdated: string }>}
      */
