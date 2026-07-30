@@ -37,7 +37,12 @@ if [ $TEST_STATUS -ne 0 ]; then
     exit 1
 fi
 
-echo "✅ [Git Pre-Push Hook] Sintaxis impecable y 100% de los tests pasados en verde. Procediendo a subir a GitHub..."
+echo "✅ [Git Pre-Push Hook] Sintaxis impecable y 100% de los tests pasados en verde. Verificando versión y tags de GitHub..."
+
+# 3. Autocreate y subir tag de versión a GitHub si no existe
+$NODE_BIN scripts/tag-release.js
+
+echo "🚀 Procediendo a subir a GitHub..."
 exit 0
 `;
 
