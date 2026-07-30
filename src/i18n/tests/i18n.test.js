@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { t, setLanguage, updateDOMTranslations } from '../i18n.js';
-import { state } from '../config.js';
+import { state } from '../../config/config.js';
 import es from '../locales/es.js';
 import en from '../locales/en.js';
 
