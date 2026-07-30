@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const rootDir = process.cwd();
-const componentsDir = path.join(rootDir, 'components');
+const componentsDir = path.join(rootDir, 'src', 'components');
 const indexHtmlPath = path.join(rootDir, 'index.html');
 
 console.log('🔨 Ensamblando index.html desde componentes...');
