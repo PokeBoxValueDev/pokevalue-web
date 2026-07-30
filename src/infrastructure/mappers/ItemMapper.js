@@ -27,6 +27,21 @@ export class ItemMapper {
     }
 
     /**
+     * Sanitiza cadenas SVG eliminando etiquetas de script, manejadores de eventos (on*) y URLs javascript:.
+     * @param {string} svgString - Código SVG sin procesar.
+     * @returns {string} SVG limpio y seguro.
+     */
+    static sanitizeSvg(svgString) {
+        if (!svgString || typeof svgString !== 'string') return '';
+        return svgString
+            .replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, '')
+            .replace(/on\w+\s*=\s*(['"]).*?\1/gi, '')
+            .replace(/on\w+\s*=\s*[^ >]+/gi, '')
+            .replace(/href\s*=\s*(['"])javascript:.*?\1/gi, '')
+            .replace(/src\s*=\s*(['"])javascript:.*?\1/gi, '');
+    }
+
+    /**
      * Convierte un objeto DTO crudo a una entidad Item del Dominio.
      * @param {Object} dto - Objeto DTO.
      * @param {number} index - Índice de respaldo.
@@ -54,7 +69,7 @@ export class ItemMapper {
             unitPriceEur,
             unitPriceUsd,
             unitPriceCoins,
-            svg: dto.svg || ''
+            svg: this.sanitizeSvg(dto.svg)
         });
     }
 }

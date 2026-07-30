@@ -78,3 +78,13 @@ test('contract/items - ItemMapper handles corrupt or missing data gracefully', (
     assert.equal(invalidItem.nameEs, 'Objeto');
     assert.equal(invalidItem.unitPriceEur, 0);
 });
+
+test('security - ItemMapper.sanitizeSvg strips script tags and event handlers to prevent XSS', () => {
+    const maliciousSvg = '<svg onload="alert(1)"><script>alert("xss")</script><circle cx="10" cy="10" r="5" onclick="bad()"/></svg>';
+    const cleanSvg = ItemMapper.sanitizeSvg(maliciousSvg);
+
+    assert.equal(cleanSvg.includes('<script>'), false);
+    assert.equal(cleanSvg.includes('onload='), false);
+    assert.equal(cleanSvg.includes('onclick='), false);
+    assert.ok(cleanSvg.includes('<circle cx="10" cy="10" r="5" />') || cleanSvg.includes('<circle'));
+});

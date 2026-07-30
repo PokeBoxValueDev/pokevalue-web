@@ -105,9 +105,10 @@
             });
         }
 
-        // Código de error
+        // Código de error (validación estricta de 3 dígitos)
         const urlParams = new URLSearchParams(window.location.search);
-        const code = urlParams.get('code') || '404';
+        const rawCode = urlParams.get('code') || '404';
+        const code = /^\d{3}$/.test(rawCode) ? rawCode : '404';
         document.getElementById('error-code').textContent = code;
 
         // Selección de Idioma
