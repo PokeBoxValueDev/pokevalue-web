@@ -9,3 +9,25 @@ input[type=number]::-webkit-outer-spin-button {
 input[type=number] {
     -moz-appearance: textfield;
 }
+
+/* Transiciones suaves de vistas */
+.fade-in {
+    animation: fadeIn 0.25s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Anillos de foco visibles para accesibilidad por teclado */
+:focus-visible {
+    outline: 2px solid #6366f1;
+    outline-offset: 2px;
+}

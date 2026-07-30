@@ -14,6 +14,7 @@ export default {
     noItemsFound: "No items found.",
     enterValidPrice: "Please enter a valid box price.",
     alertNoItems: "Select at least one item.",
+    btnResetQty: "🧹 Clear selection",
 
     // Historial
     badgeProfitable: "Profitable",

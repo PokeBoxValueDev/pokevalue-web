@@ -84,7 +84,7 @@ export function renderItems(items) {
                 : ((state.currentLang === 'en' && item.name_en) ? item.name_en : (item.name_es || item.name || 'Objeto'));
 
             return `
-    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-100 dark:border-gray-700">
+    <div class="item-card flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-100 dark:border-gray-700 transition-all duration-200" data-card-id="${item.id}">
         
         <!-- Icono SVG / Imagen del Item + Información -->
         <div class="flex items-center gap-3 flex-1 pr-2">
@@ -93,27 +93,30 @@ export function renderItems(items) {
             </div>
             <div>
                 <p class="text-xs font-semibold text-gray-800 dark:text-gray-200">${name}</p>
-                <p class="text-[10px] text-gray-400 dark:text-gray-400">
+                <p class="text-[10px] text-gray-500 dark:text-gray-400">
                     ${unitPriceStr}
                 </p>
             </div>
         </div>
 
-        <!-- Controles de Cantidad (+ / -) -->
-        <div class="flex items-center gap-1.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg p-1">
+        <!-- Controles de Cantidad (+ / -) con Touch Targets Accesibles (>= 40px) -->
+        <div class="flex items-center gap-1.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-xl p-1 shadow-sm">
             <button type="button" 
-                class="btn-decrement w-7 h-7 flex items-center justify-center text-sm font-bold text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white transition active:scale-95" 
-                data-id="${item.id}">-</button>
+                class="btn-decrement w-10 h-10 flex items-center justify-center text-base font-extrabold text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition active:scale-95" 
+                data-id="${item.id}"
+                aria-label="Disminuir cantidad de ${name}">-</button>
             
             <input type="number" 
                 min="0" 
                 value="0" 
-                data-id="${item.id}" 
-                class="item-qty w-10 text-center text-xs font-bold bg-transparent text-gray-800 dark:text-white focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                data-id="${item.id}"
+                aria-label="Cantidad de ${name}"
+                class="item-qty w-10 text-center text-sm font-extrabold bg-transparent text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
             
             <button type="button" 
-                class="btn-increment w-7 h-7 flex items-center justify-center text-sm font-bold text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white transition active:scale-95" 
-                data-id="${item.id}">+</button>
+                class="btn-increment w-10 h-10 flex items-center justify-center text-base font-extrabold text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition active:scale-95" 
+                data-id="${item.id}"
+                aria-label="Aumentar cantidad de ${name}">+</button>
         </div>
     </div>
 `;
@@ -123,7 +126,25 @@ export function renderItems(items) {
         `;
     }).join('');
 
-    // Escuchadores de botones + / -
+    function updateCardHighlight(input) {
+        if (!input) return;
+        const id = input.getAttribute('data-id');
+        const card = container.querySelector(`.item-card[data-card-id="${id}"]`);
+        const val = parseInt(input.value) || 0;
+        if (card) {
+            if (val > 0) {
+                card.className = 'item-card flex items-center justify-between p-3 bg-indigo-50/80 dark:bg-indigo-950/40 rounded-xl border border-indigo-400 dark:border-indigo-600 shadow-sm transition-all duration-200';
+            } else {
+                card.className = 'item-card flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-100 dark:border-gray-700 transition-all duration-200';
+            }
+        }
+    }
+
+    // Escuchadores de botones + / - e inputs
+    container.querySelectorAll('.item-qty').forEach(input => {
+        input.addEventListener('input', () => updateCardHighlight(input));
+    });
+
     container.querySelectorAll('.btn-decrement').forEach(btn => {
         btn.addEventListener('click', () => {
             const id = btn.getAttribute('data-id');
@@ -131,6 +152,7 @@ export function renderItems(items) {
             if (input) {
                 const currentVal = parseInt(input.value) || 0;
                 if (currentVal > 0) input.value = currentVal - 1;
+                updateCardHighlight(input);
             }
         });
     });
@@ -142,6 +164,7 @@ export function renderItems(items) {
             if (input) {
                 const currentVal = parseInt(input.value) || 0;
                 input.value = currentVal + 1;
+                updateCardHighlight(input);
             }
         });
     });
@@ -339,6 +362,14 @@ export function setupModals() {
     window.addEventListener('click', (e) => {
         if (e.target === legalModal) legalModal.classList.add('hidden');
         if (e.target === privacyModal) privacyModal.classList.add('hidden');
+    });
+
+    // 5. Cerrar modales al pulsar la tecla Escape (Accesibilidad por teclado)
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            if (legalModal && !legalModal.classList.contains('hidden')) legalModal.classList.add('hidden');
+            if (privacyModal && !privacyModal.classList.contains('hidden')) privacyModal.classList.add('hidden');
+        }
     });
 }
 

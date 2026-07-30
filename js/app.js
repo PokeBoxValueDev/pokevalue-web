@@ -110,9 +110,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // 6. Buscador
+    // 6. Buscador & Botón de Limpiar Selección
     if (searchInput) {
         searchInput.addEventListener('input', () => {
+            renderItems(getFilteredItems());
+        });
+    }
+
+    const btnResetQty = document.getElementById('btn-reset-qty');
+    if (btnResetQty) {
+        btnResetQty.addEventListener('click', () => {
+            document.querySelectorAll('.item-qty').forEach(input => input.value = '0');
             renderItems(getFilteredItems());
         });
     }
@@ -184,6 +192,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             if (viewForm) viewForm.classList.add('hidden');
             if (viewResult) viewResult.classList.remove('hidden');
+
+            // Mover el foco accesible al título del resultado
+            if (resTitle) resTitle.focus();
 
             // Animación de conteo numérico (Count-Up)
             if (resBoxPriceEl) animateValue(resBoxPriceEl, 0, boxPrice, 700, '', ` ${curr.symbol}`, decimals);

@@ -14,6 +14,7 @@ export default {
     noItemsFound: "No se encontraron objetos.",
     enterValidPrice: "Por favor, introduce un precio válido para la caja.",
     alertNoItems: "Selecciona al menos un objeto.",
+    btnResetQty: "🧹 Limpiar selección",
 
     // Historial
     badgeProfitable: "Rentable",
