@@ -2,6 +2,7 @@ import { CURRENCY_CONFIG, CATEGORY_CONFIG, state } from './config.js';
 import { getHistory } from './storage.js';
 import { t } from './i18n.js';
 import { Category } from '../src/domain/valueObjects/Category.js';
+import { IOSDeviceDetector } from '../src/ui/ios/IOSDeviceDetector.js';
 
 /**
  * Obtiene la traducción formateada de la categoría usando el diccionario actual.
@@ -139,7 +140,6 @@ export function renderItems(items) {
             }
         }
     }
-
     // Escuchadores de botones + / - e inputs
     container.querySelectorAll('.item-qty').forEach(input => {
         input.addEventListener('input', () => updateCardHighlight(input));
@@ -147,6 +147,7 @@ export function renderItems(items) {
 
     container.querySelectorAll('.btn-decrement').forEach(btn => {
         btn.addEventListener('click', () => {
+            IOSDeviceDetector.triggerHapticFeedback(10);
             const id = btn.getAttribute('data-id');
             const input = container.querySelector(`input[data-id="${id}"]`);
             if (input) {
@@ -159,6 +160,7 @@ export function renderItems(items) {
 
     container.querySelectorAll('.btn-increment').forEach(btn => {
         btn.addEventListener('click', () => {
+            IOSDeviceDetector.triggerHapticFeedback(10);
             const id = btn.getAttribute('data-id');
             const input = container.querySelector(`input[data-id="${id}"]`);
             if (input) {

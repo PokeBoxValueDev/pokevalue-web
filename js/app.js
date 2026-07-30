@@ -4,9 +4,13 @@ import { saveCalculation, clearHistory, getHistory } from './storage.js';
 import { renderItems, renderBreakdown, renderHistory, setupModals, updateCurrencyUI, animateValue, triggerConfetti, renderGradeBadge, renderKeyMetrics, generateSocialCardCanvas } from './ui.js';
 import { setLanguage, updateDOMTranslations, t } from './i18n.js';
 import { ItemsRepository } from '../src/infrastructure/repositories/ItemsRepository.js';
+import { IOSDeviceDetector } from '../src/ui/ios/IOSDeviceDetector.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
-    // 1. Versión
+    // 0. Detección automática de iOS (Aplica clase .is-ios si es iPhone, iPad o iPod)
+    IOSDeviceDetector.applyIOSClassIfNeeded();
+
+    // 1. Versión (Siempre visible en footer en escritorios y navegadores web)
     const verEl = document.getElementById('app-version');
     if (verEl) verEl.innerText = `v${APP_VERSION}`;
 
