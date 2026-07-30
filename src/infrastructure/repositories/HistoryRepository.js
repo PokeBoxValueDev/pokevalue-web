@@ -1,0 +1,53 @@
+const STORAGE_KEY = 'pokevalue_history';
+const MAX_HISTORY_ITEMS = 10;
+
+/**
+ * Repositorio de Infraestructura para el historial de cálculos almacenado localmente.
+ */
+export class HistoryRepository {
+    /**
+     * Lee la lista de cálculos guardados.
+     * @returns {Array} Array de registros de historial.
+     */
+    static getHistory() {
+        try {
+            if (typeof localStorage === 'undefined') return [];
+            const data = localStorage.getItem(STORAGE_KEY);
+            return data ? JSON.parse(data) : [];
+        } catch (e) {
+            console.error('Error al leer el historial:', e);
+            return [];
+        }
+    }
+
+    /**
+     * Guarda un cálculo en el historial del usuario.
+     * @param {Object} entry Registro a guardar.
+     */
+    static saveCalculation(entry) {
+        try {
+            if (typeof localStorage === 'undefined') return;
+            const history = this.getHistory();
+            history.unshift({
+                ...entry,
+                timestamp: new Date().toISOString()
+            });
+            const trimmedHistory = history.slice(0, MAX_HISTORY_ITEMS);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(trimmedHistory));
+        } catch (e) {
+            console.error('Error al guardar en el historial:', e);
+        }
+    }
+
+    /**
+     * Limpia completamente el historial del almacenamiento local.
+     */
+    static clearHistory() {
+        try {
+            if (typeof localStorage === 'undefined') return;
+            localStorage.removeItem(STORAGE_KEY);
+        } catch (e) {
+            console.error('Error al borrar el historial:', e);
+        }
+    }
+}

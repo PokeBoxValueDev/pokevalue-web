@@ -1,8 +1,9 @@
-import { APP_VERSION, JSON_URL, FALLBACK_JSON_URL, CURRENCY_CONFIG, state } from './config.js';
+import { APP_VERSION, CURRENCY_CONFIG, state } from './config.js';
 import { calculateResult } from './calculator.js';
 import { saveCalculation, clearHistory, getHistory } from './storage.js';
 import { renderItems, renderBreakdown, renderHistory, setupModals, updateCurrencyUI, animateValue, triggerConfetti } from './ui.js';
 import { setLanguage, updateDOMTranslations, t } from './i18n.js';
+import { ItemsRepository } from '../src/infrastructure/repositories/ItemsRepository.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     // 1. Versión
@@ -45,8 +46,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         const query = searchInput?.value.toLowerCase().trim() || '';
         if (!query) return state.storeData;
         return state.storeData.filter(i => {
-            const nameEs = (i.name_es || i.name || '').toLowerCase();
-            const nameEn = (i.name_en || i.name || '').toLowerCase();
+            const nameEs = (i.getLocalizedName ? i.getLocalizedName('es') : (i.name_es || i.name || '')).toLowerCase();
+            const nameEn = (i.getLocalizedName ? i.getLocalizedName('en') : (i.name_en || i.name || '')).toLowerCase();
             return nameEs.includes(query) || nameEn.includes(query);
         });
     }
@@ -89,40 +90,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Sincronizar UI inicial de la divisa seleccionada
     updateCurrencyUI();
 
-    // 5. Carga JSON con Respaldo (GitHub RAW -> Service Worker Cache -> Local Fallback)
-    let data = null;
-    try {
-        const response = await fetch(JSON_URL);
-        if (!response.ok) throw new Error(`HTTP Error ${response.status}`);
-        data = await response.json();
-    } catch (error) {
-        console.warn('Fallo al obtener items.json de la red, intentando cargar fallback local:', error);
-        try {
-            const fallbackRes = await fetch(FALLBACK_JSON_URL);
-            if (!fallbackRes.ok) throw new Error(`HTTP Fallback Error ${fallbackRes.status}`);
-            data = await fallbackRes.json();
-        } catch (fallbackErr) {
-            console.error('Error al cargar datos del respaldo local:', fallbackErr);
-        }
-    }
+    // 5. Carga de datos con Repositorio (Red -> Cache -> Fallback -> Mapeo a Dominio)
+    const repository = new ItemsRepository();
+    const { items, lastUpdated } = await repository.getItems();
 
-    if (data) {
-        const list = Array.isArray(data)
-            ? data
-            : (data.objetos || data.store_items || data.items || data.storeData || []);
-
-        state.storeData = list.map((item, index) => ({
-            id: item.id || `item-${index}`,
-            name_es: item.name_es || item.name || item.item || 'Objeto',
-            name_en: item.name_en || item.name || item.item || 'Item',
-            unit_price_eur: item.unit_price_eur ?? item.price_eur ?? item.unit_price ?? 0,
-            ...item
-        }));
+    if (items && items.length > 0) {
+        state.storeData = items;
 
         const lastUpdatedEl = document.getElementById('last-updated');
         if (lastUpdatedEl) {
-            const updatedDate = data.last_updated || data.updated_at || '';
-            lastUpdatedEl.innerHTML = `<span data-i18n="lastUpdated">${t('lastUpdated')}</span>: ${updatedDate}`;
+            lastUpdatedEl.innerHTML = `<span data-i18n="lastUpdated">${t('lastUpdated')}</span>: ${lastUpdated}`;
         }
 
         renderItems(getFilteredItems());
@@ -234,15 +211,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             renderBreakdown(res.categoryTotals, res.totalValue);
-
-            saveCalculation({
-                boxPrice,
-                totalValue: res.totalValue,
-                diff: res.diff,
-                isProfitable: res.isProfitable,
-                currencySymbol: curr.symbol,
-                items: res.itemSummary
-            });
 
             saveCalculation({
                 boxPrice,

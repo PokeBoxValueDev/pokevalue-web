@@ -4,6 +4,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test tests/unit/*.test.js tests/visual/*.test.js"
+    "test": "node --test tests/contract/*.test.js tests/unit/*.test.js tests/visual/*.test.js"
   }
 }

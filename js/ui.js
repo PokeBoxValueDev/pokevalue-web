@@ -1,45 +1,22 @@
 import { CURRENCY_CONFIG, CATEGORY_CONFIG, state } from './config.js';
 import { getHistory } from './storage.js';
 import { t } from './i18n.js';
-
-/**
- * Mapea y obtiene la clave i18n exacta para una categoría dada.
- */
-function getCategoryI18nKey(catKey) {
-    if (!catKey) return 'catOtros';
-
-    const cleanKey = catKey
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .toLowerCase()
-        .trim();
-
-    const map = {
-        'pases': 'catPases',
-        'incubadoras': 'catIncubadoras',
-        'potenciadores': 'catPotenciadores',
-        'mejoras': 'catMejoras',
-        'combates': 'catCombates',
-        'consumibles': 'catConsumibles',
-        'otros': 'catOtros'
-    };
-
-    return map[cleanKey] || ('cat' + cleanKey.charAt(0).toUpperCase() + cleanKey.slice(1));
-}
+import { Category } from '../src/domain/valueObjects/Category.js';
 
 /**
  * Obtiene la traducción formateada de la categoría usando el diccionario actual.
  */
 function getCategoryTranslation(catKey) {
     if (!catKey) return '';
-    const i18nKey = getCategoryI18nKey(catKey);
+    const i18nKey = Category.getI18nKey(catKey);
     const translated = t(i18nKey);
 
     if (translated && translated !== i18nKey) {
         return translated;
     }
 
-    return CATEGORY_CONFIG[catKey]?.label || catKey.toUpperCase();
+    const normKey = Category.normalizeKey(catKey);
+    return CATEGORY_CONFIG[normKey]?.label || catKey.toUpperCase();
 }
 
 /**
@@ -59,7 +36,7 @@ export function renderItems(items) {
 
     // 1. Agrupar items por categoría
     const grouped = items.reduce((acc, item) => {
-        const catKey = (item.category || item.categoria || 'otros').toLowerCase();
+        const catKey = Category.normalizeKey(item.category || item.categoria || 'otros');
         if (!acc[catKey]) acc[catKey] = [];
         acc[catKey].push(item);
         return acc;
@@ -69,7 +46,7 @@ export function renderItems(items) {
     container.innerHTML = Object.entries(grouped).map(([catKey, categoryItems]) => {
         const config = CATEGORY_CONFIG[catKey] || { color: 'bg-gray-500', label: catKey };
         const categoryLabel = getCategoryTranslation(catKey);
-        const i18nKey = getCategoryI18nKey(catKey);
+        const i18nKey = Category.getI18nKey(catKey);
 
         return `
             <div class="space-y-2">
@@ -86,20 +63,25 @@ export function renderItems(items) {
                     ${categoryItems.map(item => {
             let unitPriceStr = '';
 
-            if (isCoins) {
-                const coins = item.unit_price_coins ?? Math.round((item.unit_price_eur || 0) * curr.rate);
-                unitPriceStr = `${coins} <span class="currency-symbol">${curr.symbol}</span> / u.`;
-            } else if (state.currentCurrency === 'USD' && item.unit_price_usd) {
-                unitPriceStr = `${item.unit_price_usd.toFixed(2)} <span class="currency-symbol">${curr.symbol}</span> / u.`;
+            if (typeof item.calculateUnitPrice === 'function') {
+                const unitPrice = item.calculateUnitPrice(state.currentCurrency, CURRENCY_CONFIG);
+                const priceFormatted = isCoins ? Math.round(unitPrice) : unitPrice.toFixed(2);
+                unitPriceStr = `${priceFormatted} <span class="currency-symbol">${curr.symbol}</span> / u.`;
             } else {
-                const price = (item.unit_price_eur || item.price_eur || 0) * curr.rate;
-                unitPriceStr = `${price.toFixed(2)} <span class="currency-symbol">${curr.symbol}</span> / u.`;
+                if (isCoins) {
+                    const coins = item.unit_price_coins ?? Math.round((item.unit_price_eur || 0) * curr.rate);
+                    unitPriceStr = `${coins} <span class="currency-symbol">${curr.symbol}</span> / u.`;
+                } else if (state.currentCurrency === 'USD' && item.unit_price_usd) {
+                    unitPriceStr = `${item.unit_price_usd.toFixed(2)} <span class="currency-symbol">${curr.symbol}</span> / u.`;
+                } else {
+                    const price = (item.unit_price_eur || item.price_eur || 0) * curr.rate;
+                    unitPriceStr = `${price.toFixed(2)} <span class="currency-symbol">${curr.symbol}</span> / u.`;
+                }
             }
 
-            // Selección de nombre dinámico según idioma activo
-            const name = (state.currentLang === 'en' && item.name_en)
-                ? item.name_en
-                : (item.name_es || item.name || item.item || 'Objeto');
+            const name = typeof item.getLocalizedName === 'function'
+                ? item.getLocalizedName(state.currentLang)
+                : ((state.currentLang === 'en' && item.name_en) ? item.name_en : (item.name_es || item.name || 'Objeto'));
 
             return `
     <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-100 dark:border-gray-700">
@@ -224,7 +206,7 @@ export function renderBreakdown(categoryTotals, totalValue) {
             const percentage = totalValue > 0 ? ((total / totalValue) * 100).toFixed(0) : 0;
             const config = CATEGORY_CONFIG[catKey] || { color: 'bg-gray-500', label: catKey };
             const label = getCategoryTranslation(catKey);
-            const i18nKey = getCategoryI18nKey(catKey);
+            const i18nKey = Category.getI18nKey(catKey);
             const formattedVal = isCoins ? Math.round(total) : total.toFixed(2);
 
             html += `
