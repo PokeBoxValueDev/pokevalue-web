@@ -88,3 +88,29 @@ test('visual/harness - category breakdown visual color coding and percentage wid
     assert.ok(html.includes('style="width: 30%"'));
     assert.ok(html.includes('style="width: 20%"'));
 });
+
+test('visual/harness - item increment/decrement buttons have touch-manipulation class for mobile zoom prevention', () => {
+    state.currentCurrency = 'EUR';
+    state.currentLang = 'es';
+    
+    const mockContainer = createMockElement('items-container');
+    
+    globalThis.document = {
+        getElementById: (id) => {
+            if (id === 'items-container') return mockContainer;
+            return null;
+        }
+    };
+    
+    const items = [
+        { id: 1, name: 'Pase Premium', category: 'pases', unit_price_eur: 1 }
+    ];
+    
+    renderItems(items);
+    
+    const html = mockContainer.innerHTML;
+    
+    assert.ok(html.includes('btn-decrement'), 'btn-decrement must be present');
+    assert.ok(html.includes('btn-increment'), 'btn-increment must be present');
+    assert.ok(html.includes('touch-manipulation'), 'touch-manipulation class must be present to prevent mobile double-tap zoom');
+});
