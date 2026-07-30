@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pokeboxvalue-v1.13.0';
+const CACHE_NAME = 'pokeboxvalue-v1.14.0';
 const STATIC_ASSETS = [
     './',
     './index.html',
@@ -21,7 +21,14 @@ const STATIC_ASSETS = [
     './src/domain/services/ValuationService.js',
     './src/infrastructure/mappers/ItemMapper.js',
     './src/infrastructure/repositories/ItemsRepository.js',
-    './src/infrastructure/repositories/HistoryRepository.js'
+    './src/infrastructure/repositories/HistoryRepository.js',
+    './src/ui/components/ItemCardRenderer.js',
+    './src/ui/components/BreakdownRenderer.js',
+    './src/ui/components/HistoryRenderer.js',
+    './src/ui/components/ValuationBadgesRenderer.js',
+    './src/ui/components/SocialCardGenerator.js',
+    './src/ui/components/ModalManager.js',
+    './src/ui/ios/IOSDeviceDetector.js'
 ];
 
 // Instalación: Cachear App Shell
