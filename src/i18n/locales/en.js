@@ -59,7 +59,7 @@ export default {
 
     // SEO / Descripción
     seoTitle: "About PokeBoxValue",
-    seoDesc1: "PokeBoxValue is a specialized calculator designed to help players analyze the profitability of in-game item boxes. Enter the box price and select its contents to get a detailed breakdown of its real value compared to buying items individually.",
+    seoDesc1: "PokeBoxValue is a specialized calculator designed to help players analyze the profitability of item boxes in Pokémon GO. Enter the box price and select the items it contains to get a detailed breakdown of its real value compared to buying items individually.",
     seoDesc2: "Our tool uses standard in-game shop base prices to calculate if you are getting a good deal, displaying key metrics, discount percentages, and assigning a rating (Grade S, A, B, or F) so you always make the smartest choice with your coins.",
 
     // Footer & Donaciones

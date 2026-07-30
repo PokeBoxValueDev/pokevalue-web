@@ -23,7 +23,7 @@ const assembledIndexHtml = `<!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PokeBoxValue - Calculadora de Cajas</title>
+    <title>PokeBoxValue - Calculadora de Cajas para Pokémon GO</title>
 
     <!-- SEO & Meta -->
     <meta name="description"
@@ -44,14 +44,14 @@ const assembledIndexHtml = `<!DOCTYPE html>
 
     <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="PokeBoxValue - Calculadora de Cajas">
+    <meta property="og:title" content="PokeBoxValue - Calculadora de Cajas para Pokémon GO">
     <meta property="og:description"
-        content="Calcula si las cajas de la tienda valen la pena y descubre cuánto ahorras.">
+        content="Calcula si las cajas de la tienda de Pokémon GO valen la pena y descubre cuánto ahorras.">
     <meta property="og:image" content="https://pokeboxvalue.com/favicon.svg">
     <meta property="og:url" content="https://pokeboxvalue.com/">
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="PokeBoxValue - Calculadora de Cajas">
-    <meta name="twitter:description" content="Calcula el valor real de las cajas de la tienda.">
+    <meta name="twitter:title" content="PokeBoxValue - Calculadora de Cajas para Pokémon GO">
+    <meta name="twitter:description" content="Calcula si las cajas de la tienda de Pokémon GO valen la pena y descubre cuánto ahorras.">
     <meta name="twitter:image" content="https://pokeboxvalue.com/favicon.svg">
 
     <!-- Silenciar aviso CDN de Tailwind -->
