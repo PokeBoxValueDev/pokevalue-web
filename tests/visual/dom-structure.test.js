@@ -32,7 +32,8 @@ test('visual/dom - index.html contains all critical UI containers and IDs', () =
         'lang-select',
         'currency-select',
         'legal-modal',
-        'privacy-modal'
+        'privacy-modal',
+        'kofi-widget-container'
     ];
 
     requiredIds.forEach(id => {
@@ -69,6 +70,20 @@ test('visual/dom - index.html elements contain data-i18n attributes for localiza
     requiredI18nKeys.forEach(key => {
         assert.ok(html.includes(`data-i18n="${key}"`) || html.includes(`data-i18n-placeholder="${key}"`), `index.html missing data-i18n attribute for key: "${key}"`);
     });
+});
+
+test('visual/dom - Content Security Policy (CSP) header includes required domains for GA4 region1 and Ko-fi widget safety', () => {
+    const htmlPath = path.resolve('index.html');
+    const html = fs.readFileSync(htmlPath, 'utf8');
+
+    assert.ok(html.includes('Content-Security-Policy'), 'index.html must specify Content-Security-Policy meta header');
+    assert.ok(html.includes('https://storage.ko-fi.com'), 'CSP must allow Ko-fi storage CDN');
+    assert.ok(html.includes('https://ko-fi.com'), 'CSP must allow Ko-fi domain');
+    assert.ok(html.includes('https://region1.google-analytics.com'), 'CSP connect-src must allow region1.google-analytics.com');
+    assert.ok(html.includes('https://*.google-analytics.com'), 'CSP connect-src must allow *.google-analytics.com');
+
+    // Safe Ko-fi widget script evaluation
+    assert.ok(html.includes("typeof kofiwidget2 !== 'undefined'"), 'Ko-fi widget script must guard against ReferenceError if script is blocked');
 });
 
 test('visual/dom - 404.html contains data-i18n localization attributes', () => {
