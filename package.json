@@ -1,11 +1,12 @@
 {
   "name": "pokevalue-web",
-  "version": "1.12.0",
+  "version": "1.13.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test tests/contract/*.test.js tests/unit/*.test.js tests/visual/*.test.js",
+    "build:html": "node scripts/build-components.js",
+    "test": "node scripts/build-components.js && node --test tests/contract/*.test.js tests/unit/*.test.js tests/visual/*.test.js",
     "lint": "node --check js/*.js src/config/*.js src/domain/models/*.js src/domain/services/*.js src/domain/valueObjects/*.js src/infrastructure/mappers/*.js src/infrastructure/repositories/*.js src/ui/ios/*.js tests/contract/*.js tests/unit/*.js tests/visual/*.js sw.js",
-    "prepare": "node scripts/setup-hooks.js"
+    "prepare": "node scripts/build-components.js && node scripts/setup-hooks.js"
   }
 }
