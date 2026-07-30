@@ -32,13 +32,23 @@ export class ItemsRepository {
             if (!response.ok) throw new Error(`HTTP Error ${response.status}`);
             rawData = await response.json();
         } catch (netErr) {
-            console.warn('Fallo al obtener items.json de la red, usando fallback local:', netErr);
+            console.warn('Fallo al obtener items.json de la red, usando fallback local:', netErr?.message || netErr);
             try {
-                const fallbackRes = await fetch(this.fallbackUrl);
-                if (!fallbackRes.ok) throw new Error(`HTTP Fallback Error ${fallbackRes.status}`);
-                rawData = await fallbackRes.json();
+                if (typeof window === 'undefined') {
+                    // Entorno Node.js (Pruebas unitarias): Cargar fallback mediante fs
+                    const fs = await import('node:fs');
+                    const path = await import('node:path');
+                    const filePath = path.resolve(this.fallbackUrl);
+                    const fileContent = fs.readFileSync(filePath, 'utf8');
+                    rawData = JSON.parse(fileContent);
+                } else {
+                    // Entorno Navegador / ServiceWorker
+                    const fallbackRes = await fetch(this.fallbackUrl);
+                    if (!fallbackRes.ok) throw new Error(`HTTP Fallback Error ${fallbackRes.status}`);
+                    rawData = await fallbackRes.json();
+                }
             } catch (fallbackErr) {
-                console.error('Error al cargar datos del respaldo local:', fallbackErr);
+                console.error('Error al cargar datos del respaldo local:', fallbackErr?.message || fallbackErr);
             }
         }
 
