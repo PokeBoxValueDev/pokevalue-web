@@ -11,6 +11,7 @@ test('visual/dom - index.html contains all critical UI containers and IDs', () =
         'box-price',
         'items-container',
         'btn-calculate',
+        'btn-reset-qty',
         'history-section',
         'history-container',
         'btn-clear-history',
@@ -42,6 +43,7 @@ test('visual/dom - index.html elements contain data-i18n attributes for localiza
     const requiredI18nKeys = [
         'boxPriceLabel',
         'itemsIncluded',
+        'btnResetQty',
         'loadingItems',
         'btnCalculate',
         'recentHistory',
@@ -71,11 +73,17 @@ test('visual/dom - 404.html contains data-i18n localization attributes', () => {
     assert.ok(html.includes('data-i18n="error_back_btn"'));
 });
 
-test('visual/dom - verify Tailwind dark mode classes are present on key containers', () => {
+test('visual/dom - verify Tailwind dark mode classes and ARIA accessibility attributes are present', () => {
     const htmlPath = path.resolve('index.html');
     const html = fs.readFileSync(htmlPath, 'utf8');
 
     assert.ok(html.includes('dark:bg-gray-900'));
     assert.ok(html.includes('dark:text-white'));
     assert.ok(html.includes('dark:bg-gray-800'));
+
+    // ARIA & Focus Accessibility
+    assert.ok(html.includes('aria-label="Seleccionar idioma"'));
+    assert.ok(html.includes('aria-label="Seleccionar divisa"'));
+    assert.ok(html.includes('aria-label="Buscar objetos"'));
+    assert.ok(html.includes('tabindex="-1"'));
 });

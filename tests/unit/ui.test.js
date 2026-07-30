@@ -99,7 +99,7 @@ test('ui - renderHistory renders profitable and non-profitable entries with form
     assert.ok(mockContainer.innerHTML.includes('data-i18n="btnRestore"'));
 });
 
-test('ui - renderItems renders item list grouped by category', () => {
+test('ui - renderItems renders item list grouped by category with ARIA labels and touch targets', () => {
     setLanguage('es');
     state.currentCurrency = 'EUR';
 
@@ -119,4 +119,9 @@ test('ui - renderItems renders item list grouped by category', () => {
     assert.ok(mockItemsContainer.innerHTML.includes('Super Incubadora'));
     assert.ok(mockItemsContainer.innerHTML.includes('1.00 <span class="currency-symbol">€</span>'));
     assert.ok(mockItemsContainer.innerHTML.includes('1.50 <span class="currency-symbol">€</span>'));
+
+    // ARIA & Mobile Touch Targets (>= 40px)
+    assert.ok(mockItemsContainer.innerHTML.includes('aria-label="Aumentar cantidad de Pase de Incursión"'));
+    assert.ok(mockItemsContainer.innerHTML.includes('aria-label="Disminuir cantidad de Pase de Incursión"'));
+    assert.ok(mockItemsContainer.innerHTML.includes('w-10 h-10'));
 });
