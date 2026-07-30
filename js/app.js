@@ -1,7 +1,7 @@
 import { APP_VERSION, CURRENCY_CONFIG, state } from './config.js';
 import { calculateResult } from './calculator.js';
 import { saveCalculation, clearHistory, getHistory } from './storage.js';
-import { renderItems, renderBreakdown, renderHistory, setupModals, updateCurrencyUI, animateValue, triggerConfetti } from './ui.js';
+import { renderItems, renderBreakdown, renderHistory, setupModals, updateCurrencyUI, animateValue, triggerConfetti, renderGradeBadge, renderKeyMetrics, generateSocialCardCanvas } from './ui.js';
 import { setLanguage, updateDOMTranslations, t } from './i18n.js';
 import { ItemsRepository } from '../src/infrastructure/repositories/ItemsRepository.js';
 
@@ -40,74 +40,63 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // Función auxiliar de filtrado para reutilizar en Búsqueda, Divisas e Idiomas
-    const searchInput = document.getElementById('search-input');
-    function getFilteredItems() {
-        const query = searchInput?.value.toLowerCase().trim() || '';
-        if (!query) return state.storeData;
-        return state.storeData.filter(i => {
-            const nameEs = (i.getLocalizedName ? i.getLocalizedName('es') : (i.name_es || i.name || '')).toLowerCase();
-            const nameEn = (i.getLocalizedName ? i.getLocalizedName('en') : (i.name_en || i.name || '')).toLowerCase();
-            return nameEs.includes(query) || nameEn.includes(query);
-        });
-    }
-
-    // 3. Idioma
+    // 3. Selección de Idioma
     const langSelect = document.getElementById('lang-select');
+    const initialLang = localStorage.getItem('lang') || 'es';
     if (langSelect) {
-        langSelect.value = state.currentLang;
-        langSelect.addEventListener('change', (e) => {
-            setLanguage(e.target.value);
+        langSelect.value = initialLang;
+        setLanguage(initialLang);
+        langSelect.addEventListener('change', () => {
+            setLanguage(langSelect.value);
             updateDOMTranslations();
-
-            // Refresca la interfaz de divisas para actualizar placeholders (Ej: / Ex:)
             updateCurrencyUI();
-
             renderItems(getFilteredItems());
-            renderHistory(restoreFromHistory);
+            if (state.lastResult) {
+                renderGradeBadge(state.lastResult.grade);
+                renderKeyMetrics(state.lastResult.keyMetrics);
+            }
         });
     }
-    setLanguage(state.currentLang);
-    updateDOMTranslations();
 
-    // 4. Divisa & Actualización Dinámica
+    // 4. Selección de Divisa
     const currSelect = document.getElementById('currency-select');
+    const initialCurrency = localStorage.getItem('currency') || 'EUR';
     if (currSelect) {
-        currSelect.value = state.currentCurrency;
-        currSelect.addEventListener('change', (e) => {
-            state.currentCurrency = e.target.value;
-            localStorage.setItem('currency', state.currentCurrency);
-
-            // Actualiza traducciones del DOM, labels, placeholders y aviso de USD
-            updateDOMTranslations();
+        currSelect.value = initialCurrency;
+        state.currentCurrency = initialCurrency;
+        currSelect.addEventListener('change', () => {
+            state.currentCurrency = currSelect.value;
+            localStorage.setItem('currency', currSelect.value);
             updateCurrencyUI();
-
-            // Re-renderiza los objetos con los precios convertidos
             renderItems(getFilteredItems());
         });
     }
 
-    // Sincronizar UI inicial de la divisa seleccionada
     updateCurrencyUI();
 
-    // 5. Carga de datos con Repositorio (Red -> Cache -> Fallback -> Mapeo a Dominio)
-    const repository = new ItemsRepository();
-    const { items, lastUpdated } = await repository.getItems();
+    // 5. Cargar datos
+    const itemsContainer = document.getElementById('items-container');
+    const searchInput = document.getElementById('search-input');
 
-    if (items && items.length > 0) {
-        state.storeData = items;
+    try {
+        state.storeData = await ItemsRepository.getItems();
+        updateLastUpdatedDate(state.storeData);
+        renderItems(state.storeData);
+    } catch (err) {
+        console.error("Error al cargar los objetos:", err);
+        if (itemsContainer) itemsContainer.innerHTML = '<p class="text-sm text-rose-500">Error al cargar datos.</p>';
+    }
 
-        const lastUpdatedEl = document.getElementById('last-updated');
-        if (lastUpdatedEl) {
-            lastUpdatedEl.innerHTML = `<span data-i18n="lastUpdated">${t('lastUpdated')}</span>: ${lastUpdated}`;
-        }
-
-        renderItems(getFilteredItems());
-    } else {
-        const container = document.getElementById('items-container');
-        if (container) {
-            container.innerHTML = `<p class="text-xs text-rose-500 py-2 text-center">Error al cargar objetos de la tienda.</p>`;
-        }
+    function getFilteredItems() {
+        if (!state.storeData) return [];
+        const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
+        if (!query) return state.storeData;
+        return state.storeData.filter(item => {
+            const name = (state.currentLang === 'en' && item.name_en)
+                ? item.name_en
+                : (item.name_es || item.name || '');
+            return name.toLowerCase().includes(query);
+        });
     }
 
     // 6. Buscador & Botón de Limpiar Selección
@@ -175,6 +164,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             const res = calculateResult(boxPrice, quantities, state.storeData, state.currentCurrency);
+            state.lastResult = res;
+            state.lastBoxPrice = boxPrice;
             const curr = CURRENCY_CONFIG[state.currentCurrency] || { symbol: '€' };
             const isCoins = state.currentCurrency === 'POKECOINS';
             const decimals = isCoins ? 0 : 2;
@@ -202,7 +193,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             if (resCard && resTitle && resDiffLabel && resDiffVal) {
                 if (res.isProfitable) {
-                    resCard.className = 'p-6 rounded-xl text-center space-y-4 text-white bg-emerald-600 shadow-lg';
+                    resCard.className = 'p-6 rounded-xl text-center space-y-4 text-white bg-emerald-600 shadow-lg relative';
                     resTitle.innerText = `🎉 ${t('titleProfitable') || '¡Renta comprarla!'}`;
                     resDiffLabel.innerText = t('resDiffSave') || 'Ahorras:';
                     animateValue(resDiffVal, 0, Math.abs(res.diff), 900, `+`, ` ${curr.symbol}`, decimals);
@@ -214,13 +205,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                         }, 250);
                     }
                 } else {
-                    resCard.className = 'p-6 rounded-xl text-center space-y-4 text-white bg-rose-600 shadow-lg';
+                    resCard.className = 'p-6 rounded-xl text-center space-y-4 text-white bg-rose-600 shadow-lg relative';
                     resTitle.innerText = `⚠️ ${t('titleNotProfitable') || 'No renta comprarla'}`;
                     resDiffLabel.innerText = t('resDiffLose') || 'Pierdes:';
                     animateValue(resDiffVal, 0, Math.abs(res.diff), 900, `-`, ` ${curr.symbol}`, decimals);
                 }
             }
 
+            renderGradeBadge(res.grade);
+            renderKeyMetrics(res.keyMetrics);
             renderBreakdown(res.categoryTotals, res.totalValue);
 
             saveCalculation({
@@ -236,25 +229,79 @@ document.addEventListener('DOMContentLoaded', async () => {
             const historySection = document.getElementById('history-section');
             if (historySection) historySection.classList.remove('hidden');
 
-            state.lastCalculationText = `PokeBoxValue: Precio ${fmtBoxPrice}${curr.symbol} | Valor: ${fmtTotalValue}${curr.symbol}`;
+            state.lastCalculationText = `PokeBoxValue: Precio ${fmtBoxPrice}${curr.symbol} | Valor: ${fmtTotalValue}${curr.symbol} (${t('grade' + res.grade) || res.grade})`;
         });
     }
 
-    // 8. Compartir nativo
+    if (btnReset) {
+        btnReset.addEventListener('click', () => {
+            if (viewResult) viewResult.classList.add('hidden');
+            if (viewForm) viewForm.classList.remove('hidden');
+
+            const priceInput = document.getElementById('box-price');
+            if (priceInput) {
+                priceInput.value = '';
+                priceInput.focus();
+            }
+        });
+    }
+
+    // 8. Botón Compartir Texto
     const btnShare = document.getElementById('btn-share');
     if (btnShare) {
         btnShare.addEventListener('click', async () => {
+            const shareText = state.lastCalculationText || 'PokeBoxValue - Calculadora de Cajas de Pokémon GO';
             if (navigator.share) {
                 try {
                     await navigator.share({
-                        title: 'PokeBoxValue',
-                        text: state.lastCalculationText || '¡Calcula el valor de las cajas en PokeBoxValue!',
+                        title: t('shareTitle') || 'PokeBoxValue',
+                        text: shareText,
                         url: window.location.href
                     });
+                    return;
+                } catch (e) {
+                    console.log('Web share error:', e);
+                }
+            }
+
+            try {
+                await navigator.clipboard.writeText(`${shareText}\n${window.location.href}`);
+                alert(t('copiedToClipboard') || '¡Resultado copiado al portapapeles!');
+            } catch (e) {
+                alert(shareText);
+            }
+        });
+    }
+
+    // 9. Botón Compartir Tarjeta PNG (Social Card Generator)
+    const btnShareCard = document.getElementById('btn-share-card');
+    if (btnShareCard) {
+        btnShareCard.addEventListener('click', async () => {
+            if (!state.lastResult) return;
+            const res = state.lastResult;
+            const boxPrice = state.lastBoxPrice || res.boxPrice;
+            const curr = CURRENCY_CONFIG[state.currentCurrency] || { symbol: '€' };
+            const isCoins = state.currentCurrency === 'POKECOINS';
+
+            const blob = await generateSocialCardCanvas({
+                boxPrice: isCoins ? Math.round(boxPrice) : boxPrice.toFixed(2),
+                totalValue: isCoins ? Math.round(res.totalValue) : res.totalValue.toFixed(2),
+                diff: isCoins ? Math.round(res.diff) : res.diff.toFixed(2),
+                isProfitable: res.isProfitable,
+                grade: res.grade,
+                currencySymbol: curr.symbol
+            });
+
+            if (blob && navigator.share && window.File) {
+                try {
+                    const file = new File([blob], 'pokeboxvalue-card.png', { type: 'image/png' });
+                    await navigator.share({
+                        title: t('shareTitle') || 'PokeBoxValue Card',
+                        text: t('shareText') || 'Mira la rentabilidad de esta caja en PokeBoxValue:',
+                        files: [file]
+                    });
+                    return;
                 } catch (err) {
-                    if (err.name !== 'AbortError') {
-                        console.error('Error al compartir:', err);
-                    }
                 }
             }
         });

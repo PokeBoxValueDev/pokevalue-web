@@ -32,8 +32,17 @@ export default {
     resDiffLose: "Pierdes:",
     breakdownTitle: "Desglose del Valor",
     btnShare: "📲 Compartir",
+    btnShareCard: "🖼️ Compartir Tarjeta",
     btnReset: "🔄 Calcular otra",
     copiedToClipboard: "¡Resultado copiado al portapapeles!",
+    keyMetricsTitle: "⚡ Métricas Clave (Coste Efectivo)",
+    habitualLabel: "Habitual",
+
+    // Rangos de Oferta (Rating Badges)
+    gradeS: "🌟 Grado S (Chollo Total)",
+    gradeA: "🟢 Grado A (Muy Buena)",
+    gradeB: "🟡 Grado B (Aceptable)",
+    gradeF: "🔴 Grado F (Pésima Compra)",
 
     // Categorías (Normalizadas para coincidir con cualquier entrada del JSON)
     catPases: "Pases de Incursión",

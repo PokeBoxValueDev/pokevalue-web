@@ -32,8 +32,17 @@ export default {
     resDiffLose: "You lose:",
     breakdownTitle: "Value Breakdown",
     btnShare: "📲 Share",
+    btnShareCard: "🖼️ Share Card",
     btnReset: "🔄 Calculate another",
     copiedToClipboard: "Result copied to clipboard!",
+    keyMetricsTitle: "⚡ Key Metrics (Effective Cost)",
+    habitualLabel: "Standard",
+
+    // Rangos de Oferta (Rating Badges)
+    gradeS: "🌟 Grade S (Super Deal)",
+    gradeA: "🟢 Grade A (Great Deal)",
+    gradeB: "🟡 Grade B (Decent Deal)",
+    gradeF: "🔴 Grade F (Bad Deal)",
 
     // Categorías (Normalizadas para coincidir con cualquier entrada del JSON)
     catPases: "Raid Passes",

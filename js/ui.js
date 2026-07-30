@@ -448,3 +448,123 @@ export function triggerConfetti() {
         startVelocity: 45,
     });
 }
+
+/**
+ * Muestra la insignia del Rango de Oferta (Grade Badge S/A/B/F).
+ */
+export function renderGradeBadge(grade) {
+    const badgeEl = document.getElementById('res-grade-badge');
+    if (!badgeEl) return;
+
+    let key = 'gradeF';
+    if (grade === 'S') key = 'gradeS';
+    else if (grade === 'A') key = 'gradeA';
+    else if (grade === 'B') key = 'gradeB';
+
+    badgeEl.setAttribute('data-i18n', key);
+    badgeEl.innerText = t(key);
+}
+
+/**
+ * Renderiza la sección de Métricas Clave (KVI) de coste efectivo.
+ */
+export function renderKeyMetrics(keyMetrics) {
+    const sectionEl = document.getElementById('key-metrics-section');
+    const containerEl = document.getElementById('key-metrics-container');
+    if (!sectionEl || !containerEl) return;
+
+    if (!keyMetrics || keyMetrics.length === 0) {
+        sectionEl.classList.add('hidden');
+        containerEl.innerHTML = '';
+        return;
+    }
+
+    sectionEl.classList.remove('hidden');
+    containerEl.innerHTML = keyMetrics.map(metric => `
+        <div class="flex justify-between items-center py-1.5 border-b border-gray-100 dark:border-gray-700/50 last:border-0 text-xs">
+            <span class="font-medium text-gray-800 dark:text-gray-200">
+                ${metric.count}x ${metric.name}
+            </span>
+            <span class="font-bold text-indigo-600 dark:text-indigo-400">
+                ${metric.formattedText}
+            </span>
+        </div>
+    `).join('');
+}
+
+/**
+ * Genera una tarjeta visual PNG mediante HTML5 Canvas para compartir en redes sociales.
+ */
+export async function generateSocialCardCanvas({ boxPrice, totalValue, diff, isProfitable, grade, currencySymbol }) {
+    if (typeof document === 'undefined') return null;
+
+    const canvas = document.createElement('canvas');
+    canvas.width = 600;
+    canvas.height = 400;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return null;
+
+    // Fondo degradado
+    const grad = ctx.createLinearGradient(0, 0, 600, 400);
+    if (isProfitable) {
+        grad.addColorStop(0, '#059669');
+        grad.addColorStop(1, '#047857');
+    } else {
+        grad.addColorStop(0, '#e11d48');
+        grad.addColorStop(1, '#be123c');
+    }
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 600, 400);
+
+    // Borde decorativo interior
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+    ctx.lineWidth = 6;
+    ctx.strokeRect(16, 16, 568, 368);
+
+    // Título principal
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 28px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('PokeBoxValue', 300, 65);
+
+    // Insignia Rango
+    let gradeLabel = '🔴 Grado F (Pésima Compra)';
+    if (grade === 'S') gradeLabel = '🌟 Grado S (Chollo Total)';
+    else if (grade === 'A') gradeLabel = '🟢 Grado A (Muy Buena)';
+    else if (grade === 'B') gradeLabel = '🟡 Grado B (Aceptable)';
+
+    ctx.font = 'bold 18px sans-serif';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+    ctx.fillText(gradeLabel, 300, 100);
+
+    // Panel de Valores
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
+    ctx.beginPath();
+    if (typeof ctx.roundRect === 'function') {
+        ctx.roundRect(50, 130, 500, 150, 16);
+    } else {
+        ctx.rect(50, 130, 500, 150);
+    }
+    ctx.fill();
+
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '16px sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText(`Precio Caja: ${boxPrice} ${currencySymbol}`, 80, 175);
+    ctx.fillText(`Valor Real: ${totalValue} ${currencySymbol}`, 80, 215);
+
+    ctx.font = 'bold 24px sans-serif';
+    ctx.textAlign = 'right';
+    const diffText = isProfitable ? `+${Math.abs(diff)} ${currencySymbol}` : `-${Math.abs(diff)} ${currencySymbol}`;
+    ctx.fillText(diffText, 520, 195);
+
+    // Marca de agua footer
+    ctx.font = '14px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+    ctx.fillText('pokeboxvalue.com | Calculadora de Cajas de Pokémon GO', 300, 345);
+
+    return new Promise((resolve) => {
+        canvas.toBlob((blob) => resolve(blob), 'image/png');
+    });
+}

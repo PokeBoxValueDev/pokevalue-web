@@ -9,7 +9,9 @@ export class CalculationResult {
         savingsPercent,
         isProfitable,
         categoryTotals = {},
-        itemSummary = []
+        itemSummary = [],
+        grade = 'F',
+        keyMetrics = []
     }) {
         this.boxPrice = Number(boxPrice) || 0;
         this.totalValue = Number(totalValue) || 0;
@@ -18,5 +20,17 @@ export class CalculationResult {
         this.isProfitable = Boolean(isProfitable);
         this.categoryTotals = { ...categoryTotals };
         this.itemSummary = [...itemSummary];
+        this.grade = grade || this.calculateGrade(this.savingsPercent, this.isProfitable);
+        this.keyMetrics = keyMetrics || [];
+    }
+
+    /**
+     * Calcula la letra del rango de oferta según el porcentaje de ahorro.
+     */
+    calculateGrade(savingsPercent, isProfitable) {
+        if (!isProfitable || savingsPercent < 5) return 'F';
+        if (savingsPercent >= 40) return 'S';
+        if (savingsPercent >= 20) return 'A';
+        return 'B';
     }
 }

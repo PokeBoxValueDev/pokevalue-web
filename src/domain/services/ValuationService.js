@@ -60,6 +60,34 @@ export class ValuationService {
         const diff = totalValue - parsedPrice;
         const isProfitable = diff > 0;
         const savingsPercent = parsedPrice > 0 ? (diff / parsedPrice) * 100 : 0;
+        const grade = (!isProfitable || savingsPercent < 5) ? 'F' : (savingsPercent >= 40 ? 'S' : (savingsPercent >= 20 ? 'A' : 'B'));
+
+        const keyMetrics = [];
+        const currConfig = CURRENCY_CONFIG[currentCurrency] || CURRENCY_CONFIG.EUR;
+        const symbol = currConfig.symbol;
+        const isCoins = currentCurrency === 'POKECOINS';
+
+        Object.entries(quantities).forEach(([itemId, qty]) => {
+            const count = Number(qty) || 0;
+            const item = itemMap.get(String(itemId));
+            if (item && count > 0 && totalValue > 0) {
+                const unitPrice = item.calculateUnitPrice(currentCurrency, CURRENCY_CONFIG);
+                const effectiveUnitPrice = (unitPrice / totalValue) * parsedPrice;
+                const localizedName = item.getLocalizedName(currentLang);
+
+                const fmtEffective = isCoins ? Math.round(effectiveUnitPrice) : effectiveUnitPrice.toFixed(2);
+                const fmtStandard = isCoins ? Math.round(unitPrice) : unitPrice.toFixed(2);
+
+                keyMetrics.push({
+                    itemId: item.id,
+                    name: localizedName,
+                    count,
+                    effectiveUnitPrice,
+                    standardUnitPrice: unitPrice,
+                    formattedText: `${localizedName}: ${fmtEffective} ${symbol} (${currentLang === 'en' ? 'Standard' : 'Habitual'}: ${fmtStandard} ${symbol})`
+                });
+            }
+        });
 
         return new CalculationResult({
             boxPrice: parsedPrice,
@@ -68,7 +96,9 @@ export class ValuationService {
             savingsPercent,
             isProfitable,
             categoryTotals,
-            itemSummary
+            itemSummary,
+            grade,
+            keyMetrics
         });
     }
 }

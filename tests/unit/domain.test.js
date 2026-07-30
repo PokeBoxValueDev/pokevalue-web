@@ -35,12 +35,13 @@ test('domain/Category - normalizes categories and maps i18n keys correctly', () 
     assert.equal(Category.getI18nKey('consumibles'), 'catConsumibles');
 });
 
-test('domain/ValuationService - calculates box valuation and returns CalculationResult entity', () => {
+test('domain/ValuationService - calculates box valuation, grade rating, and key metrics (KVI)', () => {
     const items = [
-        new Item({ id: '1', nameEs: 'Pase', category: 'pases', unitPriceEur: 1.00 }),
-        new Item({ id: '2', nameEs: 'Incubadora', category: 'incubadoras', unitPriceEur: 1.50 })
+        new Item({ id: '1', nameEs: 'Pase de Incursión', category: 'pases', unitPriceEur: 1.00 }),
+        new Item({ id: '2', nameEs: 'Super Incubadora', category: 'incubadoras', unitPriceEur: 1.50 })
     ];
 
+    // 20% ahorro -> Grado A
     const result = ValuationService.calculate(5.00, { '1': 3, '2': 2 }, items, 'EUR', 'es');
 
     assert.ok(result instanceof CalculationResult);
@@ -48,7 +49,21 @@ test('domain/ValuationService - calculates box valuation and returns Calculation
     assert.equal(result.totalValue, 6.00);
     assert.equal(result.diff, 1.00);
     assert.equal(result.isProfitable, true);
+    assert.equal(result.grade, 'A');
     assert.equal(result.categoryTotals.pases, 3.00);
     assert.equal(result.categoryTotals.incubadoras, 3.00);
-    assert.deepEqual(result.itemSummary, ['3x Pase', '2x Incubadora']);
+    assert.deepEqual(result.itemSummary, ['3x Pase de Incursión', '2x Super Incubadora']);
+
+    // Verificar Métricas Clave KVI
+    assert.equal(result.keyMetrics.length, 2);
+    assert.equal(result.keyMetrics[0].name, 'Pase de Incursión');
+    assert.ok(result.keyMetrics[0].formattedText.includes('Pase de Incursión'));
+
+    // Test Grado S (>= 40% ahorro)
+    const resultS = ValuationService.calculate(3.00, { '1': 3, '2': 2 }, items, 'EUR', 'es');
+    assert.equal(resultS.grade, 'S');
+
+    // Test Grado F (No rentable)
+    const resultF = ValuationService.calculate(10.00, { '1': 1 }, items, 'EUR', 'es');
+    assert.equal(resultF.grade, 'F');
 });
