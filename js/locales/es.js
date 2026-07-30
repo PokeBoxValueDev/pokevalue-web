@@ -61,11 +61,11 @@ export default {
 
     // Modales
     legalTitle: "Aviso Legal",
-    legalBody1: "PokeBoxValue es una herramienta independiente desarrollada por fans. No está vinculada, patrocinada ni afiliada a Niantic, The Pokémon Company, Nintendo ni GAME FREAK.",
-    legalBody2: "Esta web tiene un propósito meramente informativo y de cálculo de rentabilidad de cajas del juego.",
-    privacyTitle: "Privacidad y Cookies",
-    privacyBody1: "Uso de Cookies: Utilizamos cookies y tecnologías similares únicamente para analizar el tráfico de forma anónima y mejorar la experiencia de usuario.",
-    privacyBody2: "Almacenamiento Local (localStorage): Guardamos únicamente en tu navegador tus preferencias personales: tema visual, divisa, idioma e historial reciente.",
+    legalBody1: "PokeBoxValue es una herramienta independiente desarrollada por fans. No está vinculada, patrocinada, asociada ni respaldada por Niantic, Inc., The Pokémon Company, Nintendo Co., Ltd. ni GAME FREAK Inc.",
+    legalBody2: "Esta web tiene un propósito meramente informativo y de cálculo de rentabilidad de cajas del juego. Todos los nombres de objetos o marcas son propiedad registrada de sus respectivos dueños.",
+    privacyTitle: "Privacidad y Almacenamiento Local",
+    privacyBody1: "Sin Cookies de Rastreo: PokeBoxValue NO utiliza cookies de rastreo, cookies analíticas de terceros ni cookies publicitarias. No se recaba ni rastrea ningún dato personal sobre los usuarios.",
+    privacyBody2: "Almacenamiento Local (localStorage): Se utiliza exclusivamente el almacenamiento local técnico de tu navegador para guardar tus preferencias esenciales (tema claro/oscuro, divisa, idioma e historial reciente de cálculos). Todos los datos permanecen 100% en tu propio dispositivo.",
     btnCloseModal: "Cerrar",
 
     // Página de error
