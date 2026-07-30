@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pokeboxvalue-v1.10.5';
+const CACHE_NAME = 'pokeboxvalue-v1.11.0';
 const STATIC_ASSETS = [
     './',
     './index.html',
@@ -52,51 +52,44 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
     const url = new URL(event.request.url);
 
-    // 1. Network-First para datos dinámicos (items.json)
-    // Garantiza que el usuario reciba siempre los datos nuevos de GitHub si está online
-    if (url.href.includes('items.json')) {
+    // 1. Network-First para navegación (HTML index) y datos dinámicos (items.json)
+    // Garantiza que en iPhone/Móvil se cargue siempre la última versión desplegada si hay red
+    const isNavigation = event.request.mode === 'navigate' || event.request.headers.get('accept')?.includes('text/html');
+    const isItemsJson = url.href.includes('items.json');
+
+    if (isNavigation || isItemsJson) {
         event.respondWith(
             fetch(event.request)
                 .then((networkResponse) => {
                     if (networkResponse && networkResponse.status === 200) {
                         const responseClone = networkResponse.clone();
-                        caches.open(CACHE_NAME).then((cache) => {
-                            cache.put(event.request, responseClone);
-                        });
+                        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseClone));
                     }
                     return networkResponse;
                 })
                 .catch(() => {
-                    // Si falla la red, intentar devolver items.json de la caché
                     return caches.match(event.request).then((cachedResponse) => {
                         if (cachedResponse) return cachedResponse;
-                        // Si tampoco hay en caché, devolver el fallback local
-                        return caches.match('./js/items-fallback.json');
+                        if (isItemsJson) return caches.match('./js/items-fallback.json');
+                        return caches.match('./index.html');
                     });
                 })
         );
         return;
     }
 
-    // 2. Cache-First con Stale-While-Revalidate para App Shell y recursos estáticos
+    // 2. Stale-While-Revalidate para assets estáticos (CSS, JS, imágenes)
     event.respondWith(
         caches.match(event.request).then((cachedResponse) => {
-            if (cachedResponse) {
-                // Actualizar caché en segundo plano si hay red
-                fetch(event.request).then((networkResponse) => {
-                    if (networkResponse && networkResponse.status === 200 && event.request.method === 'GET') {
-                        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, networkResponse));
-                    }
-                }).catch(() => { });
-                return cachedResponse;
-            }
-            return fetch(event.request).then((networkResponse) => {
+            const fetchPromise = fetch(event.request).then((networkResponse) => {
                 if (networkResponse && networkResponse.status === 200 && event.request.method === 'GET') {
                     const responseClone = networkResponse.clone();
                     caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseClone));
                 }
                 return networkResponse;
-            });
+            }).catch(() => { });
+
+            return cachedResponse || fetchPromise;
         })
     );
 });

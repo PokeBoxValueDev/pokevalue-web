@@ -368,10 +368,21 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (historySection) historySection.classList.remove('hidden');
     }
 
-    // 10. Registro de Service Worker (PWA & Offline)
+    // 10. Registro de Service Worker con auto-actualización inmediata (PWA & Offline)
     if ('serviceWorker' in navigator) {
+        let refreshing = false;
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+            if (!refreshing) {
+                refreshing = true;
+                window.location.reload();
+            }
+        });
+
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('./sw.js')
+                .then(reg => {
+                    reg.update();
+                })
                 .catch(err => console.error('Error al registrar Service Worker:', err));
         });
     }
