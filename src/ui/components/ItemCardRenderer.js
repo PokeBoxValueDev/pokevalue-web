@@ -102,7 +102,7 @@ export function renderItems(items) {
         <!-- Controles de Cantidad (+ / -) con Touch Targets Accesibles (>= 40px) -->
         <div class="flex items-center gap-1.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-xl p-1 shadow-sm">
             <button type="button" 
-                class="btn-decrement w-10 h-10 flex items-center justify-center text-base font-extrabold text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition active:scale-95" 
+                class="btn-decrement w-10 h-10 flex items-center justify-center text-base font-extrabold text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition active:scale-95 touch-manipulation" 
                 data-id="${item.id}"
                 aria-label="Disminuir cantidad de ${name}">-</button>
             
@@ -116,7 +116,7 @@ export function renderItems(items) {
                 class="item-qty w-10 text-center text-sm font-extrabold bg-transparent text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
             
             <button type="button" 
-                class="btn-increment w-10 h-10 flex items-center justify-center text-base font-extrabold text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition active:scale-95" 
+                class="btn-increment w-10 h-10 flex items-center justify-center text-base font-extrabold text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition active:scale-95 touch-manipulation" 
                 data-id="${item.id}"
                 aria-label="Aumentar cantidad de ${name}">+</button>
         </div>
