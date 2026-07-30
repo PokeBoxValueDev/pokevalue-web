@@ -243,6 +243,19 @@ document.addEventListener('DOMContentLoaded', async () => {
                 items: res.itemSummary
             });
 
+            saveCalculation({
+                boxPrice,
+                totalValue: res.totalValue,
+                diff: res.diff,
+                isProfitable: res.isProfitable,
+                currencySymbol: curr.symbol,
+                items: res.itemSummary
+            });
+
+            renderHistory(restoreFromHistory);
+            const historySection = document.getElementById('history-section');
+            if (historySection) historySection.classList.remove('hidden');
+
             state.lastCalculationText = `PokeBoxValue: Precio ${fmtBoxPrice}${curr.symbol} | Valor: ${fmtTotalValue}${curr.symbol}`;
         });
     }
@@ -305,6 +318,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     setupModals();
     renderHistory(restoreFromHistory);
+
+    if (getHistory().length > 0) {
+        const historySection = document.getElementById('history-section');
+        if (historySection) historySection.classList.remove('hidden');
+    }
 
     // 10. Registro de Service Worker (PWA & Offline)
     if ('serviceWorker' in navigator) {

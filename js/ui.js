@@ -251,15 +251,19 @@ export function renderBreakdown(categoryTotals, totalValue) {
  * Historial de cálculos previos.
  */
 export function renderHistory(onRestore) {
+    const historySection = document.getElementById('history-section');
     const container = document.getElementById('history-container');
-    if (!container) return;
-
     const history = getHistory();
 
+    if (!container) return;
+
     if (history.length === 0) {
-        container.innerHTML = `<p class="text-xs text-gray-400 text-center py-4" data-i18n="emptyHistory">${t('emptyHistory') || 'No hay cálculos guardados aún.'}</p>`;
+        if (historySection) historySection.classList.add('hidden');
+        container.innerHTML = '';
         return;
     }
+
+    if (historySection) historySection.classList.remove('hidden');
 
     container.innerHTML = history.map((item) => {
         const dateStr = new Date(item.timestamp).toLocaleDateString(undefined, {
