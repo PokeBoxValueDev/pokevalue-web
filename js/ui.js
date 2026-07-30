@@ -273,25 +273,38 @@ export function renderHistory(onRestore) {
             minute: '2-digit'
         });
 
-        const statusColor = item.isProfitable ? 'text-emerald-500 bg-emerald-50 dark:bg-emerald-950/30' : 'text-rose-500 bg-rose-50 dark:bg-rose-950/30';
-        const badgeText = item.isProfitable ? (t('badgeProfitable') || 'Rentable') : (t('badgeNotProfitable') || 'No rentable');
+        // Formatear decimales según la divisa del registro
+        const isCoins = item.currencySymbol === '🟡' || item.currencySymbol === 'coins';
+        const formattedBoxPrice = isCoins ? Math.round(item.boxPrice) : Number(item.boxPrice).toFixed(2);
+        const formattedTotalValue = isCoins ? Math.round(item.totalValue) : Number(item.totalValue).toFixed(2);
+
+        const statusColor = item.isProfitable
+            ? 'text-emerald-500 bg-emerald-50 dark:bg-emerald-950/30'
+            : 'text-rose-500 bg-rose-50 dark:bg-rose-950/30';
+
+        const badgeKey = item.isProfitable ? 'badgeProfitable' : 'badgeNotProfitable';
+        const badgeText = t(badgeKey) || (item.isProfitable ? 'Rentable' : 'No rentable');
 
         return `
             <div class="p-3 bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 flex items-center justify-between shadow-sm">
                 <div class="space-y-0.5">
                     <div class="flex items-center gap-2">
-                        <span class="text-xs font-bold ${statusColor} px-2 py-0.5 rounded-full">${badgeText}</span>
+                        <span class="text-xs font-bold ${statusColor} px-2 py-0.5 rounded-full" data-i18n="${badgeKey}">
+                            ${badgeText}
+                        </span>
                         <span class="text-[10px] text-gray-400">${dateStr}</span>
                     </div>
                     <p class="text-xs text-gray-600 dark:text-gray-300">
-                        Precio: <b>${item.boxPrice}${item.currencySymbol}</b> | Valor: <b>${item.totalValue.toFixed(2)}${item.currencySymbol}</b>
+                        <span data-i18n="resBoxPrice">Precio</span>: <b>${formattedBoxPrice}${item.currencySymbol}</b> | 
+                        <span data-i18n="resRealValue">Valor</span>: <b>${formattedTotalValue}${item.currencySymbol}</b>
                     </p>
                 </div>
                 <button 
                     type="button" 
                     class="btn-restore text-xs text-indigo-600 dark:text-indigo-400 font-semibold hover:underline"
-                    data-price="${item.boxPrice}">
-                    ${t('btnRestore') || 'Cargar'}
+                    data-price="${item.boxPrice}"
+                    data-i18n="btnRestore">
+                    ${t('btnRestore') || 'Restaurar'}
                 </button>
             </div>
         `;
