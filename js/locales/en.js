@@ -62,10 +62,10 @@ export default {
     // Modales
     legalTitle: "Legal Notice",
     legalBody1: "PokeBoxValue is an independent fan-made tool. It is not affiliated with, sponsored, associated, or endorsed by Niantic, Inc., The Pokémon Company, Nintendo Co., Ltd., or GAME FREAK Inc.",
-    legalBody2: "This website is strictly for informational and calculation purposes regarding in-game box valuations. All Pokémon and item names are registered trademarks of their respective owners.",
-    privacyTitle: "Privacy & Local Storage",
-    privacyBody1: "No Tracking Cookies: PokeBoxValue does NOT use tracking cookies, third-party analytics cookies, or advertising cookies. No personal data is collected or tracked.",
-    privacyBody2: "Local Technical Storage (localStorage): We only use your browser's local technical storage to save your essential preferences (visual theme, currency, language, and local calculation history). All data remains strictly 100% on your device.",
+    legalBody2: "This website is strictly for informational and calculation purposes regarding in-game box valuations. All item names, logos, or trademarks belong to their respective owners.",
+    privacyTitle: "Privacy & Cookie Policy (Google Consent Mode v2)",
+    privacyBody1: "Google Analytics & Advertising (AdSense): We use Google Tag (GA4) and Google Consent Mode v2 for traffic analytics and Google service integration (including AdSense). By default, all analytics and advertising cookies are denied until you grant consent via the cookie banner.",
+    privacyBody2: "Local Technical Storage (localStorage): We store your theme, currency, language, and recent calculation history in your browser. You can accept, reject, or revoke consent for analytics and ad cookies at any time.",
     btnCloseModal: "Close",
 
     // Página de error
