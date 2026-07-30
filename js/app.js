@@ -54,6 +54,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (langSelect) {
         langSelect.value = initialLang;
         setLanguage(initialLang);
+        updateDOMTranslations();
         langSelect.addEventListener('change', () => {
             setLanguage(langSelect.value);
             updateDOMTranslations();

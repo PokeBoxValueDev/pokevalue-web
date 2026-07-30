@@ -7,14 +7,18 @@ export function setupModals() {
 
     // Delegación de eventos en document para asegurar la apertura en cualquier dispositivo
     document.addEventListener('click', (e) => {
-        const targetBtn = e.target.closest('#btn-legal, #btn-privacy, [data-i18n="btnLegal"], [data-i18n="btnPrivacy"]');
+        const targetBtn = e.target.closest('#btn-legal, #btn-privacy, #btn-cookies, [data-i18n="btnLegal"], [data-i18n="btnPrivacy"], [data-cc="show-preferencesModal"]');
         if (targetBtn) {
             e.preventDefault();
-            const id = targetBtn.id || targetBtn.getAttribute('data-i18n');
+            const id = targetBtn.id || targetBtn.getAttribute('data-i18n') || targetBtn.getAttribute('data-cc');
             if ((id === 'btn-legal' || id === 'btnLegal') && legalModal) {
                 legalModal.classList.remove('hidden');
             } else if ((id === 'btn-privacy' || id === 'btnPrivacy') && privacyModal) {
                 privacyModal.classList.remove('hidden');
+            } else if (id === 'btn-cookies' || id === 'show-preferencesModal') {
+                if (typeof window.CookieConsent !== 'undefined' && typeof window.CookieConsent.showPreferences === 'function') {
+                    window.CookieConsent.showPreferences();
+                }
             }
         }
     });
