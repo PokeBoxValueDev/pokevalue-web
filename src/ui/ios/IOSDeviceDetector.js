@@ -13,11 +13,23 @@ export class IOSDeviceDetector {
         const nav = customWindow.navigator;
         const ua = nav.userAgent || '';
         const platform = nav.platform || '';
+        const vendor = nav.vendor || '';
 
         const isIOSUA = /iPhone|iPad|iPod/i.test(ua);
-        const isIPadOS = (/Mac/i.test(platform) || /Macintosh/i.test(ua)) && nav.maxTouchPoints > 1;
+        const isAppleVendor = /Apple/i.test(vendor);
+        const isTouchMac = (/Mac/i.test(platform) || /Macintosh/i.test(ua)) && (nav.maxTouchPoints && nav.maxTouchPoints > 0);
+        const isStandaloneIOS = (customWindow.matchMedia && customWindow.matchMedia('(display-mode: standalone)').matches && isAppleVendor);
 
-        return isIOSUA || isIPadOS;
+        // Permitir forzar/probar el modo iOS si el usuario guarda la preferencia
+        try {
+            if (typeof localStorage !== 'undefined') {
+                const manualIOS = localStorage.getItem('force-ios-mode');
+                if (manualIOS === 'true') return true;
+                if (manualIOS === 'false') return false;
+            }
+        } catch (e) { }
+
+        return Boolean(isIOSUA || isTouchMac || isStandaloneIOS);
     }
 
     /**

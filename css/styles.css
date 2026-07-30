@@ -32,42 +32,59 @@ input[type=number] {
     outline-offset: 2px;
 }
 
-/* Estilos Nativos iOS 26 (Se aplican automáticamente al detectar un dispositivo iOS) */
+/* Estilos Nativos iOS 26 (Se aplican automáticamente al detectar un dispositivo iOS o activar el modo iOS) */
 html.is-ios body {
-    -webkit-tap-highlight-color: transparent;
-    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-touch-callout: none !important;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif !important;
+}
+
+html.is-ios header {
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    background-color: rgba(255, 255, 255, 0.75) !important;
+    border-radius: 1.5rem !important;
+}
+
+html.is-ios.dark header {
+    background-color: rgba(17, 24, 39, 0.75) !important;
 }
 
 html.is-ios #view-form,
 html.is-ios #view-result {
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
-    background-color: rgba(255, 255, 255, 0.78);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    border-radius: 1.75rem;
-    box-shadow: 0 20px 40px -15px rgba(99, 102, 241, 0.08);
+    backdrop-filter: blur(24px) saturate(190%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
+    background-color: rgba(255, 255, 255, 0.75) !important;
+    border: 1px solid rgba(255, 255, 255, 0.5) !important;
+    border-radius: 2rem !important;
+    box-shadow: 0 25px 50px -12px rgba(99, 102, 241, 0.15) !important;
 }
 
 html.is-ios.dark #view-form,
 html.is-ios.dark #view-result {
-    background-color: rgba(17, 24, 39, 0.78);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+    background-color: rgba(17, 24, 39, 0.75) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6) !important;
 }
 
 html.is-ios .item-card {
-    border-radius: 1.25rem;
-    transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s ease, border-color 0.2s ease;
+    border-radius: 1.25rem !important;
+    transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s ease, border-color 0.2s ease !important;
 }
 
 html.is-ios .btn-increment,
 html.is-ios .btn-decrement {
-    border-radius: 9999px;
-    transition: transform 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 9999px !important;
+    transition: transform 0.12s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 html.is-ios .btn-increment:active,
 html.is-ios .btn-decrement:active,
 html.is-ios button:active {
-    transform: scale(0.92);
+    transform: scale(0.92) !important;
+}
+
+html.is-ios #btn-calculate {
+    border-radius: 1.25rem !important;
+    box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.4) !important;
 }

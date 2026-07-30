@@ -8,7 +8,11 @@ import { IOSDeviceDetector } from '../src/ui/ios/IOSDeviceDetector.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     // 0. Detección automática de iOS (Aplica clase .is-ios si es iPhone, iPad o iPod)
-    IOSDeviceDetector.applyIOSClassIfNeeded();
+    const isIOSDevice = IOSDeviceDetector.applyIOSClassIfNeeded();
+    const iosBadge = document.getElementById('ios-badge');
+    if (iosBadge && isIOSDevice) {
+        iosBadge.classList.remove('hidden');
+    }
 
     // 1. Versión (Siempre visible en footer en escritorios y navegadores web)
     const verEl = document.getElementById('app-version');
