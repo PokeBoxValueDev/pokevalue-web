@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pokeboxvalue-v1.11.1';
+const CACHE_NAME = 'pokeboxvalue-v1.11.2';
 const STATIC_ASSETS = [
     './',
     './index.html',
@@ -51,6 +51,11 @@ self.addEventListener('activate', (event) => {
 // Estrategia de Peticiones Fetch
 self.addEventListener('fetch', (event) => {
     const url = new URL(event.request.url);
+
+    // Ignorar esquemas no soportados por Cache API (chrome-extension://, moz-extension://, file://, etc.)
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+        return;
+    }
 
     // 1. Network-First para navegación (HTML index) y datos dinámicos (items.json)
     // Garantiza que en iPhone/Móvil se cargue siempre la última versión desplegada si hay red
