@@ -251,7 +251,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const historySection = document.getElementById('history-section');
             if (historySection) historySection.classList.remove('hidden');
 
-            state.lastCalculationText = `PokeBoxValue: Precio ${fmtBoxPrice}${curr.symbol} | Valor: ${fmtTotalValue}${curr.symbol} (${t('grade' + res.grade) || res.grade})`;
+            state.lastCalculationText = `PokeBoxValue: ${t('resBoxPrice')} ${fmtBoxPrice}${curr.symbol} | ${t('resRealValue')} ${fmtTotalValue}${curr.symbol} (${t('grade' + res.grade) || res.grade})`;
         });
     }
 
@@ -272,7 +272,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const btnShare = document.getElementById('btn-share');
     if (btnShare) {
         btnShare.addEventListener('click', async () => {
-            const shareText = state.lastCalculationText || 'PokeBoxValue - Calculadora de Cajas de Pokémon GO';
+            const shareText = state.lastCalculationText || t('shareNativeTextFallback');
             if (navigator.share) {
                 try {
                     await navigator.share({

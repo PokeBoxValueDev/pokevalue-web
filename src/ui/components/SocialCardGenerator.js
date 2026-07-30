@@ -1,6 +1,8 @@
 /**
  * Genera una tarjeta visual PNG mediante HTML5 Canvas para compartir en redes sociales.
  */
+import { t } from '../../../js/i18n.js';
+
 export async function generateSocialCardCanvas({ boxPrice, totalValue, diff, isProfitable, grade, currencySymbol }) {
     if (typeof document === 'undefined') return null;
 
@@ -34,10 +36,7 @@ export async function generateSocialCardCanvas({ boxPrice, totalValue, diff, isP
     ctx.fillText('PokeBoxValue', 300, 65);
 
     // Insignia Rango
-    let gradeLabel = '🔴 Grado F (Pésima Compra)';
-    if (grade === 'S') gradeLabel = '🌟 Grado S (Chollo Total)';
-    else if (grade === 'A') gradeLabel = '🟢 Grado A (Muy Buena)';
-    else if (grade === 'B') gradeLabel = '🟡 Grado B (Aceptable)';
+    let gradeLabel = t('grade' + grade) || '🔴 Grado F (Pésima Compra)';
 
     ctx.font = 'bold 18px sans-serif';
     ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
@@ -56,8 +55,8 @@ export async function generateSocialCardCanvas({ boxPrice, totalValue, diff, isP
     ctx.fillStyle = '#ffffff';
     ctx.font = '16px sans-serif';
     ctx.textAlign = 'left';
-    ctx.fillText(`Precio Caja: ${boxPrice} ${currencySymbol}`, 80, 175);
-    ctx.fillText(`Valor Real: ${totalValue} ${currencySymbol}`, 80, 215);
+    ctx.fillText(`${t('resBoxPrice')} ${boxPrice} ${currencySymbol}`, 80, 175);
+    ctx.fillText(`${t('resRealValue')} ${totalValue} ${currencySymbol}`, 80, 215);
 
     ctx.font = 'bold 24px sans-serif';
     ctx.textAlign = 'right';
@@ -68,7 +67,7 @@ export async function generateSocialCardCanvas({ boxPrice, totalValue, diff, isP
     ctx.font = '14px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-    ctx.fillText('pokeboxvalue.com | Calculadora de Cajas de Pokémon GO', 300, 345);
+    ctx.fillText(t('shareCanvasWatermark'), 300, 345);
 
     return new Promise((resolve) => {
         canvas.toBlob((blob) => resolve(blob), 'image/png');
