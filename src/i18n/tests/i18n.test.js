@@ -55,7 +55,8 @@ test('i18n - updateDOMTranslations updates elements with data-i18n and data-i18n
             if (selector === '[data-i18n]') return mockElements;
             if (selector === '[data-i18n-placeholder]') return mockPlaceholders;
             return [];
-        }
+        },
+        querySelector: () => null
     };
 
     updateDOMTranslations();

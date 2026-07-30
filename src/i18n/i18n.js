@@ -38,4 +38,15 @@ export function updateDOMTranslations() {
             el.placeholder = translation;
         }
     });
+
+    // 3. Traducir dinámicamente el widget de Ko-fi si está presente
+    const kofiTextElement = document.querySelector('.kofitext');
+    if (kofiTextElement) {
+        // Reemplazar solo el texto para no borrar el icono de la taza (<img>)
+        Array.from(kofiTextElement.childNodes).forEach(node => {
+            if (node.nodeType === Node.TEXT_NODE && node.nodeValue.trim().length > 0) {
+                node.nodeValue = lang === 'es' ? ' Apoyar proyecto' : ' Support Project';
+            }
+        });
+    }
 }
