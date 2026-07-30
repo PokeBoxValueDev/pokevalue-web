@@ -84,7 +84,8 @@ export class ValuationService {
                     count,
                     effectiveUnitPrice,
                     standardUnitPrice: unitPrice,
-                    formattedText: `${localizedName}: ${fmtEffective} ${symbol} (${currentLang === 'en' ? 'Standard' : 'Habitual'}: ${fmtStandard} ${symbol})`
+                    fmtEffective,
+                    fmtStandard
                 });
             }
         });

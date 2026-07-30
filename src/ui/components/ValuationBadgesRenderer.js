@@ -1,4 +1,5 @@
 import { t } from '../../../js/i18n.js';
+import { state, CURRENCY_CONFIG } from '../../../js/config.js';
 
 /**
  * Muestra la insignia del Rango de Oferta (Grade Badge S/A/B/F).
@@ -30,14 +31,19 @@ export function renderKeyMetrics(keyMetrics) {
         return;
     }
 
+    const curr = CURRENCY_CONFIG[state.currentCurrency] || CURRENCY_CONFIG.EUR;
+
     sectionEl.classList.remove('hidden');
     containerEl.innerHTML = keyMetrics.map(metric => `
         <div class="flex justify-between items-center py-1.5 border-b border-gray-100 dark:border-gray-700/50 last:border-0 text-xs">
             <span class="font-medium text-gray-800 dark:text-gray-200">
                 ${metric.count}x ${metric.name}
             </span>
-            <span class="font-bold text-indigo-600 dark:text-indigo-400">
-                ${metric.formattedText}
+            <span class="font-bold text-indigo-600 dark:text-indigo-400 text-right">
+                ${metric.fmtEffective} ${curr.symbol}
+                <span class="font-normal text-[10px] text-gray-500 block">
+                    (${t('habitualLabel')}: ${metric.fmtStandard} ${curr.symbol})
+                </span>
             </span>
         </div>
     `).join('');

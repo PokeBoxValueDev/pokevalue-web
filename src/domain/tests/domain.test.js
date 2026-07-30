@@ -57,7 +57,8 @@ test('domain/ValuationService - calculates box valuation, grade rating, and key 
     // Verificar Métricas Clave KVI
     assert.equal(result.keyMetrics.length, 2);
     assert.equal(result.keyMetrics[0].name, 'Pase de Incursión');
-    assert.ok(result.keyMetrics[0].formattedText.includes('Pase de Incursión'));
+    assert.equal(result.keyMetrics[0].fmtEffective, '0.83');
+    assert.equal(result.keyMetrics[0].fmtStandard, '1.00');
 
     // Test Grado S (>= 40% ahorro)
     const resultS = ValuationService.calculate(3.00, { '1': 3, '2': 2 }, items, 'EUR', 'es');
