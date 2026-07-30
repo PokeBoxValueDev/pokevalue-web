@@ -57,6 +57,11 @@ export default {
     catConsumibles: "Consumibles",
     catOtros: "Otros Objetos",
 
+    // SEO / Descripción
+    seoTitle: "Acerca de PokeBoxValue",
+    seoDesc1: "PokeBoxValue es una calculadora especializada diseñada para ayudar a los jugadores a analizar la rentabilidad de las cajas de objetos en el juego. Introduce el precio de la caja y selecciona los objetos que contiene para obtener un desglose detallado de su valor real en comparación con la compra de objetos individuales.",
+    seoDesc2: "Nuestra herramienta utiliza los precios base estándar de la tienda para calcular si estás consiguiendo un buen trato, mostrando métricas clave, porcentajes de descuento y asignando una calificación (Grado S, A, B, o F) para que siempre tomes la mejor decisión con tus monedas.",
+
     // Footer & Donaciones
     coffeeBtn: "☕ ¿Te ha servido? Invítame a un café",
     footerText: "PokeBoxValue es un proyecto independiente desarrollado por fans y no está afiliado, patrocinado ni respaldado por Scopely, Niantic, The Pokémon Company, Nintendo o GAME FREAK. Pokémon y los nombres de los objetos son marcas registradas de sus respectivos propietarios.",
@@ -70,6 +75,7 @@ export default {
     privacyTitle: "Política de Privacidad y Cookies (Google Consent Mode v2)",
     privacyBody1: "Google Analytics y Publicidad (AdSense): Utilizamos Google Tag (GA4) y Google Consent Mode v2 para medición estadística de tráfico e integración con servicios de Google (incluyendo AdSense). Por defecto, todas las cookies analíticas y publicitarias están desactivadas hasta que otorgues tu consentimiento en el aviso de cookies.",
     privacyBody2: "Almacenamiento Local (localStorage): Guardamos en tu navegador tus preferencias de tema, divisa, idioma e historial reciente. Puedes aceptar, rechazar o revocar el consentimiento de cookies analíticas y de anuncios en cualquier momento.",
+    privacyBody3: "Los proveedores de terceros, incluido Google, utilizan cookies para publicar anuncios basándose en las visitas anteriores de un usuario a este sitio web u otros sitios web. El uso de cookies de publicidad permite a Google y a sus socios publicar anuncios basados en la visita a este u otros sitios en Internet. Puedes inhabilitar la publicidad personalizada visitando la <a href='https://www.aboutads.info' target='_blank' class='text-indigo-600 dark:text-indigo-400 hover:underline'>Configuración de anuncios</a>.",
     btnCloseModal: "Cerrar",
 
     // Página de error

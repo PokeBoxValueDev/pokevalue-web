@@ -57,6 +57,11 @@ export default {
     catConsumibles: "Consumables",
     catOtros: "Other Items",
 
+    // SEO / Descripción
+    seoTitle: "About PokeBoxValue",
+    seoDesc1: "PokeBoxValue is a specialized calculator designed to help players analyze the profitability of in-game item boxes. Enter the box price and select its contents to get a detailed breakdown of its real value compared to buying items individually.",
+    seoDesc2: "Our tool uses standard in-game shop base prices to calculate if you are getting a good deal, displaying key metrics, discount percentages, and assigning a rating (Grade S, A, B, or F) so you always make the smartest choice with your coins.",
+
     // Footer & Donaciones
     coffeeBtn: "☕ Enjoyed this? Buy me a coffee",
     footerText: "PokeBoxValue is an independent fan project and is not affiliated with, sponsored, or endorsed by Scopely, Niantic, The Pokémon Company, Nintendo, or GAME FREAK. Pokémon and item names are trademarks of their respective owners.",
@@ -70,6 +75,7 @@ export default {
     privacyTitle: "Privacy & Cookie Policy (Google Consent Mode v2)",
     privacyBody1: "Google Analytics & Advertising (AdSense): We use Google Tag (GA4) and Google Consent Mode v2 for traffic analytics and Google service integration (including AdSense). By default, all analytics and advertising cookies are denied until you grant consent via the cookie banner.",
     privacyBody2: "Local Technical Storage (localStorage): We store your theme, currency, language, and recent calculation history in your browser. You can accept, reject, or revoke consent for analytics and ad cookies at any time.",
+    privacyBody3: "Third party vendors, including Google, use cookies to serve ads based on a user's prior visits to this website or other websites. Google's use of advertising cookies enables it and its partners to serve ads based on visits to this and/or other sites on the Internet. Users may opt out of personalized advertising by visiting <a href='https://www.aboutads.info' target='_blank' class='text-indigo-600 dark:text-indigo-400 hover:underline'>Ads Settings</a>.",
     btnCloseModal: "Close",
 
     // Página de error
