@@ -31,12 +31,20 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# Cachés y temporales
+# Cachés, build artifacts y temporales
 .cache/
+.vite/
+.turbo/
+.parcel-cache/
+.next/
+.nuxt/
 dist/
 build/
 out/
 coverage/
 *.log
 *.tmp
+*.tsbuildinfo
 tmp/
+.vercel/
+.netlify/
