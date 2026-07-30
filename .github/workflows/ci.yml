@@ -20,5 +20,8 @@ jobs:
         with:
           node-version: 20
 
+      - name: Verify JavaScript Syntax & Lint
+        run: npm run lint
+
       - name: Run Complete Test Suite
-        run: node --test tests/contract/*.test.js tests/unit/*.test.js tests/visual/*.test.js
+        run: npm test
