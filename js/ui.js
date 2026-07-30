@@ -295,8 +295,8 @@ export function renderHistory(onRestore) {
                         <span class="text-[10px] text-gray-400">${dateStr}</span>
                     </div>
                     <p class="text-xs text-gray-600 dark:text-gray-300">
-                        <span data-i18n="resBoxPrice">Precio</span>: <b>${formattedBoxPrice}${item.currencySymbol}</b> | 
-                        <span data-i18n="resRealValue">Valor</span>: <b>${formattedTotalValue}${item.currencySymbol}</b>
+                        <span data-i18n="resBoxPrice">${t('resBoxPrice')}</span> <b>${formattedBoxPrice}${item.currencySymbol}</b> | 
+                        <span data-i18n="resRealValue">${t('resRealValue')}</span> <b>${formattedTotalValue}${item.currencySymbol}</b>
                     </p>
                 </div>
                 <button 
@@ -304,7 +304,7 @@ export function renderHistory(onRestore) {
                     class="btn-restore text-xs text-indigo-600 dark:text-indigo-400 font-semibold hover:underline"
                     data-price="${item.boxPrice}"
                     data-i18n="btnRestore">
-                    ${t('btnRestore') || 'Restaurar'}
+                    ${t('btnRestore')}
                 </button>
             </div>
         `;

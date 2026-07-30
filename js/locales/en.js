@@ -13,6 +13,14 @@ export default {
     btnClear: "Clear",
     noItemsFound: "No items found.",
     enterValidPrice: "Please enter a valid box price.",
+    alertNoItems: "Select at least one item.",
+
+    // Historial
+    badgeProfitable: "Profitable",
+    badgeNotProfitable: "Not profitable",
+    btnRestore: "Restore",
+    emptyHistory: "No saved calculations yet.",
+    noItemsSelected: "No breakdown available",
 
     // Resultados
     titleProfitable: "GREAT VALUE! 🎉",

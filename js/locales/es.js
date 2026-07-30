@@ -13,6 +13,14 @@ export default {
     btnClear: "Borrar",
     noItemsFound: "No se encontraron objetos.",
     enterValidPrice: "Por favor, introduce un precio válido para la caja.",
+    alertNoItems: "Selecciona al menos un objeto.",
+
+    // Historial
+    badgeProfitable: "Rentable",
+    badgeNotProfitable: "No rentable",
+    btnRestore: "Restaurar",
+    emptyHistory: "No hay cálculos guardados aún.",
+    noItemsSelected: "Sin desglose disponible",
 
     // Resultados
     titleProfitable: "¡OFERTA RENTABLE! 🎉",

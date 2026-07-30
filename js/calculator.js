@@ -1,10 +1,12 @@
 import { CURRENCY_CONFIG } from './config.js';
 
 export function getCategoryKey(item) {
-    const name = (item.name || item.name_es || item.item || '').toLowerCase();
+    if (item && item.category) return item.category.toLowerCase();
+    const rawName = (item?.name || item?.name_es || item?.item || '');
+    const name = rawName.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
     if (name.includes('pase') || name.includes('raid') || name.includes('pass')) return 'pases';
     if (name.includes('incubadora') || name.includes('incubator')) return 'incubadoras';
-    if (name.includes('poción') || name.includes('pocion') || name.includes('revivir') || name.includes('potion')) return 'consumibles';
+    if (name.includes('pocion') || name.includes('reviv') || name.includes('potion')) return 'consumibles';
     return 'otros';
 }
 

@@ -55,7 +55,7 @@ export const CATEGORY_CONFIG = {
 
 export const state = {
     storeData: [],
-    currentCurrency: localStorage.getItem('currency') || 'EUR',
-    currentLang: localStorage.getItem('lang') || (navigator.language.startsWith('es') ? 'es' : 'en'),
+    currentCurrency: (typeof localStorage !== 'undefined' && localStorage.getItem('currency')) || 'EUR',
+    currentLang: (typeof localStorage !== 'undefined' && localStorage.getItem('lang')) || ((typeof navigator !== 'undefined' && navigator.language?.startsWith('es')) ? 'es' : 'en'),
     lastCalculationText: ''
 };

@@ -63,6 +63,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             updateCurrencyUI();
 
             renderItems(getFilteredItems());
+            renderHistory(restoreFromHistory);
         });
     }
     setLanguage(state.currentLang);

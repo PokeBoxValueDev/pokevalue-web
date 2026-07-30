@@ -12,7 +12,9 @@ export function t(key) {
 export function setLanguage(lang) {
     if (translations[lang]) {
         state.currentLang = lang;
-        localStorage.setItem('lang', lang);
+        if (typeof localStorage !== 'undefined') {
+            localStorage.setItem('lang', lang);
+        }
     }
 }
 
