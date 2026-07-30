@@ -42,8 +42,8 @@ test('i18n - updateDOMTranslations updates elements with data-i18n and data-i18n
     setLanguage('es');
 
     const mockElements = [
-        { getAttribute: (attr) => attr === 'data-i18n' ? 'badgeProfitable' : null, innerText: '' },
-        { getAttribute: (attr) => attr === 'data-i18n' ? 'btnRestore' : null, innerText: '' }
+        { getAttribute: (attr) => attr === 'data-i18n' ? 'badgeProfitable' : null, innerHTML: '' },
+        { getAttribute: (attr) => attr === 'data-i18n' ? 'btnRestore' : null, innerHTML: '' }
     ];
 
     const mockPlaceholders = [
@@ -60,8 +60,8 @@ test('i18n - updateDOMTranslations updates elements with data-i18n and data-i18n
 
     updateDOMTranslations();
 
-    assert.equal(mockElements[0].innerText, 'Rentable');
-    assert.equal(mockElements[1].innerText, 'Restaurar');
+    assert.equal(mockElements[0].innerHTML, 'Rentable');
+    assert.equal(mockElements[1].innerHTML, 'Restaurar');
     assert.equal(mockPlaceholders[0].placeholder, '🔍 Buscar objeto...');
 
     setLanguage('es'); // Restaurar estado

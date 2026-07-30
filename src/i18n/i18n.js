@@ -26,7 +26,7 @@ export function updateDOMTranslations() {
         const key = el.getAttribute('data-i18n');
         const translation = t(key);
         if (translation && translation !== key) {
-            el.innerText = translation;
+            el.innerHTML = translation;
         }
     });
 
