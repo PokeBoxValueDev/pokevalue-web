@@ -1,7 +1,8 @@
 {
   "name": "pokevalue-web",
-  "version": "1.18.2",
+  "version": "1.18.3",
   "private": true,
+  "license": "UNLICENSED",
   "type": "module",
   "scripts": {
     "build:html": "node scripts/build-components.js",
