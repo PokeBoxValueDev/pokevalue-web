@@ -36,6 +36,7 @@ export default {
     shareTitle: "PokeBoxValue",
     shareText: "Check out the profitability of this box on PokeBoxValue:",
     shareNativeTextFallback: "PokeBoxValue - Pokémon GO Box Calculator",
+    shareNativeCardText: "I analyzed this Pokémon GO box value on PokeBoxValue! 📦✨",
     shareCanvasWatermark: "pokeboxvalue.com | Pokémon GO Box Calculator",
     btnReset: "🔄 Calculate another",
     copiedToClipboard: "Result copied to clipboard!",

@@ -202,7 +202,7 @@ export class CalculatorController {
             if (navigator.canShare && navigator.canShare({ files: [file] })) {
                 await navigator.share({
                     title: 'PokeBoxValue - Resultado',
-                    text: '¡He calculado la rentabilidad de esta caja en PokeBoxValue! 📦✨',
+                    text: t('shareNativeCardText') || '¡He calculado la rentabilidad de esta caja en PokeBoxValue! 📦✨',
                     files: [file]
                 });
             } else {

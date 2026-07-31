@@ -36,6 +36,7 @@ export default {
     shareTitle: "PokeBoxValue",
     shareText: "Mira la rentabilidad de esta caja en PokeBoxValue:",
     shareNativeTextFallback: "PokeBoxValue - Calculadora de Cajas de Pokémon GO",
+    shareNativeCardText: "¡He calculado la rentabilidad de esta caja en PokeBoxValue! 📦✨",
     shareCanvasWatermark: "pokeboxvalue.com | Calculadora de Cajas de Pokémon GO",
     btnReset: "🔄 Calcular otra",
     copiedToClipboard: "¡Resultado copiado al portapapeles!",
