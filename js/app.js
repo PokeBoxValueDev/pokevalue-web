@@ -244,7 +244,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 diff: res.diff,
                 isProfitable: res.isProfitable,
                 currencySymbol: curr.symbol,
-                items: res.itemSummary
+                items: res.itemSummary,
+                quantities: quantities
             });
 
             renderHistory(restoreFromHistory);
@@ -354,6 +355,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     function restoreFromHistory(item) {
         const priceInput = document.getElementById('box-price');
         if (priceInput) priceInput.value = item.boxPrice;
+
+        // Resetear todos los inputs a 0
+        document.querySelectorAll('.item-qty').forEach(input => {
+            input.value = 0;
+            // Forzar el evento input para quitar el resaltado si existe
+            input.dispatchEvent(new Event('input'));
+        });
+
+        // Rellenar cantidades guardadas si existen
+        if (item.quantities) {
+            Object.entries(item.quantities).forEach(([id, qty]) => {
+                const input = document.querySelector(`.item-qty[data-id="${id}"]`);
+                if (input) {
+                    input.value = qty;
+                    input.dispatchEvent(new Event('input'));
+                }
+            });
+        }
+
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 

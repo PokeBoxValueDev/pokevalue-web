@@ -56,7 +56,7 @@ export function renderHistory(onRestore) {
                 <button 
                     type="button" 
                     class="btn-restore text-xs text-indigo-600 dark:text-indigo-400 font-semibold hover:underline"
-                    data-price="${item.boxPrice}"
+                    data-index="${history.indexOf(item)}"
                     data-i18n="btnRestore">
                     ${t('btnRestore')}
                 </button>
@@ -66,8 +66,8 @@ export function renderHistory(onRestore) {
 
     container.querySelectorAll('.btn-restore').forEach(btn => {
         btn.addEventListener('click', () => {
-            const price = btn.getAttribute('data-price');
-            if (onRestore) onRestore({ boxPrice: price });
+            const index = btn.getAttribute('data-index');
+            if (onRestore) onRestore(history[index]);
         });
     });
 }
