@@ -88,25 +88,25 @@ export function renderItems(items) {
                 : (item.image ? `<img src="${item.image}" alt="${name}" class="w-full h-full object-contain filter drop-shadow-sm">` : '');
 
             return `
-    <div class="item-card flex items-center justify-between p-3 sm:p-3.5 bg-gray-50/80 dark:bg-gray-700/50 hover:bg-white dark:hover:bg-gray-700/80 rounded-2xl border border-gray-200/60 dark:border-gray-700/60 shadow-xs hover:shadow-md transition-all duration-200 group" data-card-id="${item.id}">
+    <div class="item-card flex items-center justify-between p-2.5 sm:p-3.5 bg-gray-50/80 dark:bg-gray-700/50 hover:bg-white dark:hover:bg-gray-700/80 rounded-2xl border border-gray-200/60 dark:border-gray-700/60 shadow-2xs hover:shadow-md transition-all duration-200 group" data-card-id="${item.id}">
         
         <!-- Icono SVG / Imagen del Item + Información -->
-        <div class="flex items-center gap-3 min-w-0 pr-2 flex-1">
-            <div class="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 flex items-center justify-center rounded-2xl p-1.5 bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-850 border border-gray-200/80 dark:border-gray-600/80 shadow-xs group-hover:scale-105 transition-transform duration-200">
+        <div class="flex items-center gap-2.5 sm:gap-3 min-w-0 pr-1.5 sm:pr-2 flex-1">
+            <div class="w-14 h-14 sm:w-16 sm:h-16 flex-shrink-0 flex items-center justify-center rounded-2xl p-1 bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-850 border border-gray-200/80 dark:border-gray-600/80 shadow-xs group-hover:scale-105 transition-transform duration-200">
                 ${svgContent}
             </div>
             <div class="min-w-0 flex-1">
                 <p class="text-sm sm:text-base font-bold text-gray-900 dark:text-white leading-tight break-words whitespace-normal">${name}</p>
-                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 font-medium">
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5 font-medium">
                     ${unitPriceStr}
                 </p>
             </div>
         </div>
 
-        <!-- Controles de Cantidad (+ / -) con Touch Targets Accesibles (>= 40px) -->
-        <div class="flex items-center gap-1 bg-white dark:bg-gray-800 border border-gray-200/90 dark:border-gray-600 rounded-xl p-1 shadow-xs flex-shrink-0">
+        <!-- Controles de Cantidad (+ / -) con Touch Targets Accesibles -->
+        <div class="flex items-center gap-0.5 sm:gap-1 bg-white dark:bg-gray-800 border border-gray-200/90 dark:border-gray-600 rounded-xl p-0.5 sm:p-1 shadow-xs flex-shrink-0">
             <button type="button" 
-                class="btn-decrement w-10 h-10 flex items-center justify-center text-base font-extrabold text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition active:scale-95 touch-manipulation" 
+                class="btn-decrement w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center text-base font-extrabold text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition active:scale-95 touch-manipulation" 
                 data-id="${item.id}"
                 aria-label="Disminuir cantidad de ${name}">-</button>
             
@@ -117,10 +117,10 @@ export function renderItems(items) {
                 aria-label="Cantidad de ${name}"
                 inputmode="numeric"
                 pattern="[0-9]*"
-                class="item-qty w-9 text-center text-sm font-extrabold bg-transparent text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                class="item-qty w-8 sm:w-9 text-center text-sm font-extrabold bg-transparent text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
             
             <button type="button" 
-                class="btn-increment w-10 h-10 flex items-center justify-center text-base font-extrabold text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition active:scale-95 touch-manipulation" 
+                class="btn-increment w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center text-base font-extrabold text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition active:scale-95 touch-manipulation" 
                 data-id="${item.id}"
                 aria-label="Aumentar cantidad de ${name}">+</button>
         </div>
@@ -139,9 +139,9 @@ export function renderItems(items) {
         const val = parseInt(input.value) || 0;
         if (card) {
             if (val > 0) {
-                card.className = 'item-card flex items-center justify-between p-3 sm:p-3.5 bg-indigo-50/90 dark:bg-indigo-950/50 rounded-2xl border border-indigo-400 dark:border-indigo-500 shadow-md ring-1 ring-indigo-400/30 transition-all duration-200 group';
+                card.className = 'item-card flex items-center justify-between p-2.5 sm:p-3.5 bg-indigo-50/90 dark:bg-indigo-950/50 rounded-2xl border border-indigo-400 dark:border-indigo-500 shadow-md ring-1 ring-indigo-400/30 transition-all duration-200 group';
             } else {
-                card.className = 'item-card flex items-center justify-between p-3 sm:p-3.5 bg-gray-50/80 dark:bg-gray-700/50 hover:bg-white dark:hover:bg-gray-700/80 rounded-2xl border border-gray-200/60 dark:border-gray-700/60 shadow-2xs hover:shadow-md transition-all duration-200 group';
+                card.className = 'item-card flex items-center justify-between p-2.5 sm:p-3.5 bg-gray-50/80 dark:bg-gray-700/50 hover:bg-white dark:hover:bg-gray-700/80 rounded-2xl border border-gray-200/60 dark:border-gray-700/60 shadow-2xs hover:shadow-md transition-all duration-200 group';
             }
         }
     }

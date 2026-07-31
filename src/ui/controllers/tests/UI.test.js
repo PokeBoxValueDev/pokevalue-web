@@ -125,8 +125,10 @@ test('ui - renderItems renders item list grouped by category with ARIA labels an
     assert.ok(mockItemsContainer.innerHTML.includes('1.00 <span class="currency-symbol">€</span>'));
     assert.ok(mockItemsContainer.innerHTML.includes('1.50 <span class="currency-symbol">€</span>'));
 
-    // ARIA & Mobile Touch Targets (>= 40px)
+    // ARIA, Enlarged Icons & Mobile Layout Sizing
     assert.ok(mockItemsContainer.innerHTML.includes('aria-label="Aumentar cantidad de Pase de Incursión"'));
     assert.ok(mockItemsContainer.innerHTML.includes('aria-label="Disminuir cantidad de Pase de Incursión"'));
-    assert.ok(mockItemsContainer.innerHTML.includes('w-10 h-10'));
+    assert.ok(mockItemsContainer.innerHTML.includes('w-14 h-14 sm:w-16 sm:h-16'));
+    assert.ok(mockItemsContainer.innerHTML.includes('w-9 h-9 sm:w-10 sm:h-10'));
+    assert.ok(mockItemsContainer.innerHTML.includes('p-2.5 sm:p-3.5'));
 });
