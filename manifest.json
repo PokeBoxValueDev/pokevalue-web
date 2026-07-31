@@ -1,0 +1,15 @@
+{
+  "short_name": "PokeBoxValue",
+  "name": "PokeBoxValue - Calculadora de Cajas",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "background_color": "#111827",
+  "theme_color": "#4f46e5",
+  "display": "standalone"
+}

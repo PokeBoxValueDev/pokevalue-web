@@ -1,0 +1,58 @@
+<!-- Resultado -->
+<div id="view-result" class="hidden space-y-4">
+    <div id="result-card" class="p-6 rounded-xl text-center space-y-4 text-white relative">
+        <div class="flex justify-center">
+            <div id="res-grade-badge" class="inline-block px-3 py-1 text-xs font-extrabold rounded-full bg-white/20 backdrop-blur-md shadow-sm border border-white/30"></div>
+        </div>
+        <h2 id="result-title" tabindex="-1" class="text-xl font-bold focus:outline-none"></h2>
+        <div class="grid grid-cols-2 gap-2 text-sm bg-black/20 p-3 rounded-lg backdrop-blur-sm">
+            <div>
+                <span data-i18n="resBoxPrice" class="block text-xs opacity-80">Precio caja:</span>
+                <strong id="res-box-price" class="text-base"></strong>
+            </div>
+            <div>
+                <span data-i18n="resRealValue" class="block text-xs opacity-80">Valor real:</span>
+                <strong id="res-real-value" class="text-base"></strong>
+            </div>
+        </div>
+        <div class="pt-2 border-t border-white/20">
+            <span id="res-diff-label"
+                class="block text-xs uppercase tracking-wider font-semibold opacity-80"></span>
+            <span id="res-diff-val" class="text-3xl font-extrabold"></span>
+        </div>
+    </div>
+
+    <!-- Métricas Clave (KVI) -->
+    <div id="key-metrics-section"
+        class="hidden bg-white dark:bg-gray-800 p-4 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm space-y-2">
+        <h3 data-i18n="keyMetricsTitle"
+            class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">⚡ Métricas Clave (Coste Efectivo)</h3>
+        <div id="key-metrics-container" class="space-y-1.5 text-xs text-gray-700 dark:text-gray-300"></div>
+    </div>
+
+    <!-- Desglose Gráfico -->
+    <div
+        class="bg-white dark:bg-gray-800 p-4 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm space-y-3">
+        <h3 data-i18n="breakdownTitle"
+            class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Desglose del
+            Valor</h3>
+        <div id="breakdown-bar"
+            class="w-full h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden flex"></div>
+        <div id="breakdown-legend" class="grid grid-cols-2 gap-2 text-xs"></div>
+    </div>
+
+    <div class="grid grid-cols-3 gap-2">
+        <button id="btn-share" data-i18n="btnShare"
+            class="py-2.5 px-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl text-xs sm:text-sm transition shadow-sm">
+            📲 Compartir
+        </button>
+        <button id="btn-share-card" data-i18n="btnShareCard"
+            class="py-2.5 px-3 bg-violet-600 hover:bg-violet-700 text-white font-medium rounded-xl text-xs sm:text-sm transition shadow-sm">
+            🖼️ Tarjeta
+        </button>
+        <button id="btn-reset" data-i18n="btnReset"
+            class="py-2.5 px-3 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium rounded-xl text-xs sm:text-sm transition">
+            🔄 Calcular otra
+        </button>
+    </div>
+</div>
