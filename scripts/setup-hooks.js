@@ -14,7 +14,7 @@ if [ -f "/Users/alejandrolorenzocastellanos/.lmstudio/.internal/utils/node" ]; t
 fi
 
 # 1. Comprobación de sintaxis de JavaScript (Linting)
-$NODE_BIN --check js/*.js js/tests/*.js src/config/*.js src/config/tests/*.js src/domain/*/*.js src/domain/tests/*.js src/i18n/*.js src/i18n/tests/*.js src/infrastructure/*/*.js src/infrastructure/repositories/tests/*.js src/ui/components/*.js src/ui/ios/*.js src/ui/ios/tests/*.js tests/contract/*.js tests/visual/*.js sw.js
+$NODE_BIN --check src/**/*.js tests/**/*.js scripts/*.js sw.js
 LINT_STATUS=$?
 
 if [ $LINT_STATUS -ne 0 ]; then
@@ -26,7 +26,7 @@ if [ $LINT_STATUS -ne 0 ]; then
 fi
 
 # 2. Ejecución de la Suite Completa de Tests
-$NODE_BIN --test src/**/tests/*.test.js js/tests/*.test.js tests/contract/*.test.js tests/visual/*.test.js
+$NODE_BIN --test src/**/tests/*.test.js tests/contract/*.test.js tests/visual/*.test.js
 TEST_STATUS=$?
 
 if [ $TEST_STATUS -ne 0 ]; then
