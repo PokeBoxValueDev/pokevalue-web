@@ -87,7 +87,7 @@ export class CalculatorController {
 
         if (btnReset) {
             btnReset.addEventListener('click', () => {
-                CalculatorController.switchView('form');
+                CalculatorController.resetForm();
             });
         }
 
@@ -115,6 +115,27 @@ export class CalculatorController {
         }
     }
 
+    static resetForm() {
+        const priceInput = document.getElementById('box-price');
+        const priceError = document.getElementById('price-error');
+        if (priceInput) {
+            priceInput.value = '';
+            priceInput.classList.remove('border-rose-500', 'focus:ring-rose-500');
+        }
+        if (priceError) priceError.classList.add('hidden');
+
+        const allInputs = document.querySelectorAll('.item-qty');
+        allInputs.forEach(input => {
+            input.value = 0;
+            if (typeof input.dispatchEvent === 'function') {
+                input.dispatchEvent(new Event('input'));
+            }
+        });
+
+        CalculatorController.switchView('form');
+        if (priceInput) priceInput.focus();
+    }
+
     static async handleTextShare() {
         if (!state.lastResult || !state.lastBoxPrice) return;
 
@@ -125,9 +146,14 @@ export class CalculatorController {
             : (t('titleNotProfitable') || 'No renta comprarla');
 
         const decimals = state.currentCurrency === 'POKECOINS' ? 0 : 2;
+        const itemsSummary = (state.lastResult.itemSummary && state.lastResult.itemSummary.length > 0)
+            ? `\n📋 ${state.lastResult.itemSummary.join(', ')}`
+            : '';
+
         const shareText = `📦 PokeBoxValue: ${statusTitle}\n` +
             `${t('resBoxPrice') || 'Precio:'} ${state.lastBoxPrice} ${curr.symbol} | ` +
-            `${t('resRealValue') || 'Valor real:'} ${state.lastResult.totalValue.toFixed(decimals)} ${curr.symbol}`;
+            `${t('resRealValue') || 'Valor real:'} ${state.lastResult.totalValue.toFixed(decimals)} ${curr.symbol}` +
+            itemsSummary;
 
         const pageUrl = (typeof window !== 'undefined' && window.location) ? window.location.href : '';
         try {
@@ -161,7 +187,8 @@ export class CalculatorController {
                 diff: state.lastResult.diff,
                 isProfitable: state.lastResult.isProfitable,
                 grade: state.lastResult.grade,
-                currencySymbol: curr.symbol
+                currencySymbol: curr.symbol,
+                items: state.lastResult.itemSummary || []
             });
         } catch (canvasErr) {
             console.error("Error al generar canvas de la tarjeta:", canvasErr);
@@ -175,7 +202,7 @@ export class CalculatorController {
             if (navigator.canShare && navigator.canShare({ files: [file] })) {
                 await navigator.share({
                     title: 'PokeBoxValue - Resultado',
-                    text: '¡He calculated la rentabilidad de esta caja en PokeBoxValue! 📦✨',
+                    text: '¡He calculado la rentabilidad de esta caja en PokeBoxValue! 📦✨',
                     files: [file]
                 });
             } else {

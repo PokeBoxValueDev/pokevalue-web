@@ -21,6 +21,7 @@ function createMockElement(id, attrs = {}) {
             if (listeners['click']) listeners['click']();
         },
         focus: () => {},
+        dispatchEvent: () => {},
         value: ''
     };
 }
@@ -419,4 +420,31 @@ test('visual/harness - CalculatorController.switchView toggles view-form and vie
     CalculatorController.switchView('result');
     assert.equal(viewForm.classList.contains('hidden'), true, 'view-form must be hidden after switching to result');
     assert.equal(viewResult.classList.contains('hidden'), false, 'view-result must be visible after switching to result');
+});
+
+test('visual/harness - CalculatorController.resetForm resets box price, price error and item quantities to 0', () => {
+    const boxPriceInput = createMockElement('box-price');
+    boxPriceInput.value = '10.00';
+    const priceError = createMockElement('price-error');
+    const itemQty1 = createMockElement('item-qty-1');
+    itemQty1.value = '5';
+
+    globalThis.document = {
+        getElementById: (id) => {
+            if (id === 'box-price') return boxPriceInput;
+            if (id === 'price-error') return priceError;
+            return null;
+        },
+        querySelectorAll: (sel) => {
+            if (sel === '.item-qty') return [itemQty1];
+            return [];
+        }
+    };
+    globalThis.window = { scrollTo: () => {} };
+
+    CalculatorController.resetForm();
+
+    assert.equal(boxPriceInput.value, '', 'box-price input value must be cleared on resetForm');
+    assert.equal(priceError.classList.contains('hidden'), true, 'price-error must be hidden on resetForm');
+    assert.equal(itemQty1.value, 0, 'item quantity input value must be reset to 0 on resetForm');
 });
