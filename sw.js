@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pokeboxvalue-v1.15.2';
+const CACHE_NAME = 'pokeboxvalue-v1.15.3';
 const STATIC_ASSETS = [
     './',
     './index.html',
@@ -6,7 +6,6 @@ const STATIC_ASSETS = [
     './ads.txt',
     './favicon.svg',
     './manifest.json',
-    './js/config.js',
     './src/app/main.js',
     './src/assets/items-fallback.json',
     './src/config/config.js',
