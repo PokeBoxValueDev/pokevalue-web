@@ -37,3 +37,27 @@ test('app integration - repository data loading flow populates state and renders
     assert.ok(!mockContainer.innerHTML.includes('Error al cargar datos'), 'UI should not contain error message after successful load');
     assert.ok(mockContainer.innerHTML.includes('Pase'), 'UI should render items correctly');
 });
+
+test('app integration - main.js module imports resolve correctly without ESM SyntaxError', async () => {
+    // Mock minimal DOM to allow importing main.js safely in Node environment
+    globalThis.document = {
+        addEventListener: () => {},
+        getElementById: () => null,
+        querySelectorAll: () => []
+    };
+    globalThis.window = globalThis;
+    globalThis.localStorage = {
+        getItem: () => null,
+        setItem: () => {},
+        removeItem: () => {},
+        clear: () => {}
+    };
+
+    try {
+        // Intencionalmente se importa dinámicamente main.js para comprobar la resolución de ESM imports
+        await import('../main.js');
+        assert.ok(true, 'main.js loaded and all imported modules resolved successfully');
+    } catch (err) {
+        assert.fail(`Failed to load main.js due to import/syntax error: ${err.message}`);
+    }
+});

@@ -1,6 +1,6 @@
 import { APP_VERSION, state } from '../config/config.js';
 import { ItemsRepository } from '../infrastructure/repositories/ItemsRepository.js';
-import { getHistory } from '../infrastructure/repositories/HistoryRepository.js';
+import { HistoryRepository } from '../infrastructure/repositories/HistoryRepository.js';
 import { IOSDeviceDetector } from '../ui/ios/IOSDeviceDetector.js';
 import { setupModals } from '../ui/components/ModalManager.js';
 import { renderItems } from '../ui/components/ItemCardRenderer.js';
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     setupModals();
 
     // 4. Mostrar sección de historial si hay elementos
-    if (getHistory().length > 0) {
+    if (HistoryRepository.getHistory().length > 0) {
         const historySection = document.getElementById('history-section');
         if (historySection) historySection.classList.remove('hidden');
     }
