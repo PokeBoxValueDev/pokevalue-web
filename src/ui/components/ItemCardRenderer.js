@@ -88,12 +88,12 @@ export function renderItems(items) {
         
         <!-- Icono SVG / Imagen del Item + Información -->
         <div class="flex items-center gap-3 flex-1 pr-2">
-            <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-lg p-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 shadow-sm">
-                ${item.svg ? item.svg : (item.image ? `<img src="${item.image}" alt="${name}" class="w-full h-full object-contain">` : '')}
+            <div class="w-12 h-12 flex-shrink-0 flex items-center justify-center rounded-xl p-1.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 shadow-sm">
+                ${item.svg ? item.svg.replace('w-10 h-10', 'w-full h-full') : (item.image ? `<img src="${item.image}" alt="${name}" class="w-full h-full object-contain">` : '')}
             </div>
             <div>
-                <p class="text-xs font-semibold text-gray-800 dark:text-gray-200">${name}</p>
-                <p class="text-[10px] text-gray-500 dark:text-gray-400">
+                <p class="text-sm font-bold text-gray-800 dark:text-gray-200">${name}</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
                     ${unitPriceStr}
                 </p>
             </div>
