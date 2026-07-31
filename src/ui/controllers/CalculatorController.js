@@ -31,6 +31,17 @@ export class CalculatorController {
             });
         }
 
+        const btnResetQty = document.getElementById('btn-reset-qty');
+        if (btnResetQty) {
+            btnResetQty.addEventListener('click', () => {
+                const allInputs = document.querySelectorAll('.item-qty');
+                allInputs.forEach(input => {
+                    input.value = 0;
+                    input.dispatchEvent(new Event('input'));
+                });
+            });
+        }
+
         if (btnClearHistory) {
             btnClearHistory.addEventListener('click', () => {
                 HistoryRepository.clearHistory();
@@ -38,9 +49,50 @@ export class CalculatorController {
             });
         }
 
-        const btnShare = document.getElementById('btn-share-result');
+        const btnShare = document.getElementById('btn-share');
         if (btnShare) {
             btnShare.addEventListener('click', async () => {
+                if (!state.lastResult || !state.lastBoxPrice) return;
+
+                const curr = CURRENCY_CONFIG[state.currentCurrency] || { symbol: '€' };
+                const isProfitable = state.lastResult.isProfitable;
+                const statusTitle = isProfitable
+                    ? (t('titleProfitable') || '¡Renta comprarla!')
+                    : (t('titleNotProfitable') || 'No renta comprarla');
+
+                const decimals = state.currentCurrency === 'POKECOINS' ? 0 : 2;
+                const shareText = `📦 PokeBoxValue: ${statusTitle}\n` +
+                    `${t('resBoxPrice') || 'Precio:'} ${state.lastBoxPrice} ${curr.symbol} | ` +
+                    `${t('resRealValue') || 'Valor real:'} ${state.lastResult.totalValue.toFixed(decimals)} ${curr.symbol}`;
+
+                const pageUrl = (typeof window !== 'undefined' && window.location) ? window.location.href : '';
+                if (navigator.share) {
+                    try {
+                        await navigator.share({
+                            title: 'PokeBoxValue - Resultado',
+                            text: shareText,
+                            ...(pageUrl ? { url: pageUrl } : {})
+                        });
+                    } catch (err) {
+                        if (err.name !== 'AbortError') {
+                            console.error("Error compartiendo resultado:", err);
+                        }
+                    }
+                } else if (navigator.clipboard) {
+                    try {
+                        const copyContent = pageUrl ? `${shareText}\n${pageUrl}` : shareText;
+                        await navigator.clipboard.writeText(copyContent);
+                        alert(t('linkCopied') || '¡Resultado copiado al portapapeles!');
+                    } catch (err) {
+                        console.error("Error al copiar al portapapeles:", err);
+                    }
+                }
+            });
+        }
+
+        const btnShareCard = document.getElementById('btn-share-card');
+        if (btnShareCard) {
+            btnShareCard.addEventListener('click', async () => {
                 if (!state.lastResult || !state.lastBoxPrice) return;
 
                 const curr = CURRENCY_CONFIG[state.currentCurrency] || { symbol: '€' };
@@ -72,8 +124,25 @@ export class CalculatorController {
                         URL.revokeObjectURL(url);
                     }
                 } catch (err) {
-                    console.error("Error compartiendo:", err);
+                    if (err.name !== 'AbortError') {
+                        console.error("Error compartiendo tarjeta:", err);
+                    }
                 }
+            });
+        }
+
+        const btnReset = document.getElementById('btn-reset');
+        if (btnReset) {
+            btnReset.addEventListener('click', () => {
+                const viewForm = document.getElementById('view-form');
+                const viewResult = document.getElementById('view-result');
+                if (viewResult) viewResult.classList.add('hidden');
+                if (viewForm) viewForm.classList.remove('hidden');
+
+                const btnCalculate = document.getElementById('btn-calculate');
+                if (btnCalculate) btnCalculate.focus();
+
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             });
         }
 

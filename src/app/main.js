@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 6. Configurar vista de resultados y botón "Volver"
     const viewForm = document.getElementById('view-form');
     const viewResult = document.getElementById('view-result');
-    const btnBack = document.getElementById('btn-back');
+    const btnBack = document.getElementById('btn-reset') || document.getElementById('btn-back');
     const resultTitle = document.getElementById('result-title');
 
     if (btnBack) {
