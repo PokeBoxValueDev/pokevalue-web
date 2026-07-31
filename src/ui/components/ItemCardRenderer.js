@@ -58,8 +58,8 @@ export function renderItems(items) {
                     </span>
                 </div>
 
-                <!-- Lista de Objetos en Grid para optimizar el espacio en Desktop -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
+                <!-- Lista de Objetos -->
+                <div class="space-y-2.5">
                     ${categoryItems.map(item => {
             let unitPriceStr = '';
 
@@ -92,11 +92,11 @@ export function renderItems(items) {
         
         <!-- Icono SVG / Imagen del Item + Información -->
         <div class="flex items-center gap-3 min-w-0 pr-2 flex-1">
-            <div class="w-14 h-14 sm:w-16 sm:h-16 flex-shrink-0 flex items-center justify-center rounded-2xl p-2 bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-850 border border-gray-200/80 dark:border-gray-600/80 shadow-xs group-hover:scale-105 transition-transform duration-200">
+            <div class="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 flex items-center justify-center rounded-2xl p-1.5 bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-850 border border-gray-200/80 dark:border-gray-600/80 shadow-xs group-hover:scale-105 transition-transform duration-200">
                 ${svgContent}
             </div>
             <div class="min-w-0 flex-1">
-                <p class="text-sm sm:text-base font-bold text-gray-800 dark:text-gray-100 leading-tight truncate" title="${name}">${name}</p>
+                <p class="text-sm sm:text-base font-bold text-gray-900 dark:text-white leading-tight break-words whitespace-normal">${name}</p>
                 <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 font-medium">
                     ${unitPriceStr}
                 </p>

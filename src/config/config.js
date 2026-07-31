@@ -1,4 +1,4 @@
-export const APP_VERSION = '1.15.3';
+export const APP_VERSION = '1.15.4';
 export const JSON_URL = 'https://raw.githubusercontent.com/alejandrrolc/pokevalue-data/refs/heads/main/items.json';
 export const FALLBACK_JSON_URL = 'src/assets/items-fallback.json';
 

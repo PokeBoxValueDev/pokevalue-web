@@ -180,20 +180,60 @@ export class CalculatorController {
     }
 
     static restoreFromHistory(item) {
-        const priceInput = document.getElementById('box-price');
-        if (priceInput) priceInput.value = item.boxPrice;
+        if (!item) return;
 
-        document.querySelectorAll('.item-qty').forEach(input => {
+        // 1. Mostrar vista de formulario si estábamos en la vista de resultados
+        const viewForm = document.getElementById('view-form');
+        const viewResult = document.getElementById('view-result');
+        if (viewResult) viewResult.classList.add('hidden');
+        if (viewForm) viewForm.classList.remove('hidden');
+
+        // 2. Restaurar precio de la caja
+        const priceInput = document.getElementById('box-price');
+        if (priceInput) {
+            priceInput.value = item.boxPrice;
+            priceInput.classList.remove('border-rose-500', 'focus:ring-rose-500');
+            const priceError = document.getElementById('box-price-error');
+            if (priceError) priceError.classList.add('hidden');
+        }
+
+        // 3. Resetear todas las cantidades en el formulario
+        const allInputs = document.querySelectorAll('.item-qty');
+        allInputs.forEach(input => {
             input.value = 0;
             input.dispatchEvent(new Event('input'));
         });
 
-        if (item.quantities) {
+        // 4. Restaurar cantidades de los objetos desde item.quantities o fallback por nombres
+        if (item.quantities && Object.keys(item.quantities).length > 0) {
             Object.entries(item.quantities).forEach(([id, qty]) => {
-                const input = document.querySelector(`.item-qty[data-id="${id}"]`);
-                if (input) {
-                    input.value = qty;
-                    input.dispatchEvent(new Event('input'));
+                allInputs.forEach(input => {
+                    if (String(input.getAttribute('data-id')) === String(id)) {
+                        input.value = qty;
+                        input.dispatchEvent(new Event('input'));
+                    }
+                });
+            });
+        } else if (Array.isArray(item.items)) {
+            // Fallback para registros antiguos del historial sin objeto `quantities`
+            item.items.forEach(summaryStr => {
+                const match = String(summaryStr).match(/^(\d+)x\s+(.+)$/);
+                if (match) {
+                    const qty = parseInt(match[1]) || 0;
+                    const itemName = match[2].trim().toLowerCase();
+
+                    state.storeData.forEach(storeItem => {
+                        const esName = (storeItem.name_es || storeItem.name || '').toLowerCase();
+                        const enName = (storeItem.name_en || '').toLowerCase();
+                        if (esName === itemName || enName === itemName) {
+                            allInputs.forEach(input => {
+                                if (String(input.getAttribute('data-id')) === String(storeItem.id)) {
+                                    input.value = qty;
+                                    input.dispatchEvent(new Event('input'));
+                                }
+                            });
+                        }
+                    });
                 }
             });
         }
