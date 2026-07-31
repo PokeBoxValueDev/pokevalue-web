@@ -148,6 +148,39 @@ test('visual/harness - ThemeController toggles dark mode when theme-toggle-btn i
     assert.ok(!docClasses.has('dark'), 'document element must remove dark class after clicking theme-toggle-btn again');
 });
 
+test('visual/harness - ThemeController auto-detects OS prefers-color-scheme dark mode when no saved preference exists', async () => {
+    const lightIcon = createMockElement('theme-toggle-light-icon');
+    const darkIcon = createMockElement('theme-toggle-dark-icon');
+    const docClasses = new Set();
+
+    globalThis.localStorage = { getItem: () => null, setItem: () => {} };
+    globalThis.window = {
+        matchMedia: (query) => ({
+            matches: query.includes('dark'),
+            addEventListener: () => {}
+        })
+    };
+    globalThis.document = {
+        getElementById: (id) => {
+            if (id === 'theme-toggle-light-icon') return lightIcon;
+            if (id === 'theme-toggle-dark-icon') return darkIcon;
+            return null;
+        },
+        documentElement: {
+            classList: {
+                add: (c) => docClasses.add(c),
+                remove: (c) => docClasses.delete(c),
+                contains: (c) => docClasses.has(c)
+            }
+        }
+    };
+
+    const { ThemeController } = await import('../../src/ui/controllers/ThemeController.js');
+    ThemeController.init();
+
+    assert.ok(docClasses.has('dark'), 'must automatically enable dark mode when OS prefers dark mode');
+});
+
 test('visual/harness - ModalManager opens modals when btn-legal and btn-privacy are clicked', async () => {
     const legalModal = createMockElement('legal-modal');
     const privacyModal = createMockElement('privacy-modal');

@@ -5,10 +5,20 @@ export class ThemeController {
         const darkIcon = document.getElementById('theme-toggle-dark-icon');
 
         const savedTheme = localStorage.getItem('theme');
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const mediaQuery = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+        const prefersDark = mediaQuery ? mediaQuery.matches : false;
+        
         let isDark = savedTheme ? savedTheme === 'dark' : prefersDark;
         
         ThemeController.applyTheme(isDark, lightIcon, darkIcon);
+
+        if (mediaQuery && typeof mediaQuery.addEventListener === 'function') {
+            mediaQuery.addEventListener('change', (e) => {
+                if (!localStorage.getItem('theme')) {
+                    ThemeController.applyTheme(e.matches, lightIcon, darkIcon);
+                }
+            });
+        }
 
         if (themeBtn) {
             themeBtn.addEventListener('click', () => {

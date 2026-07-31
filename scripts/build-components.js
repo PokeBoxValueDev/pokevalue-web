@@ -54,6 +54,15 @@ const assembledIndexHtml = `<!DOCTYPE html>
     <meta name="twitter:description" content="Calcula si las cajas de la tienda de Pokémon GO valen la pena y descubre cuánto ahorras.">
     <meta name="twitter:image" content="https://pokeboxvalue.com/favicon.svg">
 
+    <!-- Anti-Flash Theme Auto-Detection -->
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+
     <!-- Silenciar aviso CDN de Tailwind -->
     <script>
         const origWarn = console.warn;
