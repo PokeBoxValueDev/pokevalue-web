@@ -14,6 +14,11 @@ export class CalculatorController {
         const priceInput = document.getElementById('box-price');
         const priceError = document.getElementById('price-error');
         const btnClearHistory = document.getElementById('btn-clear-history');
+        const btnResetQty = document.getElementById('btn-reset-qty');
+        const siteLogo = document.getElementById('site-logo');
+        const btnShare = document.getElementById('btn-share');
+        const btnShareCard = document.getElementById('btn-share-card');
+        const btnReset = document.getElementById('btn-reset');
 
         if (priceInput) {
             priceInput.addEventListener('input', () => {
@@ -31,7 +36,6 @@ export class CalculatorController {
             });
         }
 
-        const btnResetQty = document.getElementById('btn-reset-qty');
         if (btnResetQty) {
             btnResetQty.addEventListener('click', () => {
                 const allInputs = document.querySelectorAll('.item-qty');
@@ -48,133 +52,145 @@ export class CalculatorController {
                 renderHistory(CalculatorController.restoreFromHistory);
             });
         }
-        const siteLogo = document.getElementById('site-logo');
+
         if (siteLogo) {
             siteLogo.addEventListener('click', () => {
-                const viewForm = document.getElementById('view-form');
-                const viewResult = document.getElementById('view-result');
-                if (viewResult) viewResult.classList.add('hidden');
-                if (viewForm) viewForm.classList.remove('hidden');
-
-                const btnCalculate = document.getElementById('btn-calculate');
-                if (btnCalculate) btnCalculate.focus();
-
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                CalculatorController.switchView('form');
             });
         }
 
         let isSharing = false;
 
-        const btnShare = document.getElementById('btn-share');
         if (btnShare) {
             btnShare.addEventListener('click', async () => {
-                if (!state.lastResult || !state.lastBoxPrice || isSharing) return;
+                if (isSharing) return;
                 isSharing = true;
-
-                const curr = CURRENCY_CONFIG[state.currentCurrency] || { symbol: '€' };
-                const isProfitable = state.lastResult.isProfitable;
-                const statusTitle = isProfitable
-                    ? (t('titleProfitable') || '¡Renta comprarla!')
-                    : (t('titleNotProfitable') || 'No renta comprarla');
-
-                const decimals = state.currentCurrency === 'POKECOINS' ? 0 : 2;
-                const shareText = `📦 PokeBoxValue: ${statusTitle}\n` +
-                    `${t('resBoxPrice') || 'Precio:'} ${state.lastBoxPrice} ${curr.symbol} | ` +
-                    `${t('resRealValue') || 'Valor real:'} ${state.lastResult.totalValue.toFixed(decimals)} ${curr.symbol}`;
-
-                const pageUrl = (typeof window !== 'undefined' && window.location) ? window.location.href : '';
                 try {
-                    if (navigator.share) {
-                        await navigator.share({
-                            title: 'PokeBoxValue - Resultado',
-                            text: shareText,
-                            ...(pageUrl ? { url: pageUrl } : {})
-                        });
-                    } else if (navigator.clipboard) {
-                        const copyContent = pageUrl ? `${shareText}\n${pageUrl}` : shareText;
-                        await navigator.clipboard.writeText(copyContent);
-                        alert(t('linkCopied') || '¡Resultado copiado al portapapeles!');
-                    }
-                } catch (err) {
-                    if (err.name !== 'AbortError' && err.name !== 'InvalidStateError') {
-                        console.error("Error compartiendo resultado:", err);
-                    }
+                    await CalculatorController.handleTextShare();
                 } finally {
                     isSharing = false;
                 }
             });
         }
 
-        const btnShareCard = document.getElementById('btn-share-card');
         if (btnShareCard) {
             btnShareCard.addEventListener('click', async () => {
-                if (!state.lastResult || !state.lastBoxPrice || isSharing) return;
+                if (isSharing) return;
                 isSharing = true;
-
-                const curr = CURRENCY_CONFIG[state.currentCurrency] || { symbol: '€' };
-                let blob = null;
                 try {
-                    blob = await generateSocialCardCanvas({
-                        boxPrice: state.lastBoxPrice,
-                        totalValue: state.lastResult.totalValue,
-                        diff: state.lastResult.diff,
-                        isProfitable: state.lastResult.isProfitable,
-                        grade: state.lastResult.grade,
-                        currencySymbol: curr.symbol
-                    });
-                } catch (canvasErr) {
-                    console.error("Error al generar canvas de la tarjeta:", canvasErr);
-                    isSharing = false;
-                    return;
-                }
-
-                if (!blob) {
-                    isSharing = false;
-                    return;
-                }
-
-                try {
-                    const file = new File([blob], 'pokeboxvalue-result.png', { type: 'image/png' });
-                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                        await navigator.share({
-                            title: 'PokeBoxValue - Resultado',
-                            text: '¡He calculado la rentabilidad de esta caja en PokeBoxValue! 📦✨',
-                            files: [file]
-                        });
-                    } else {
-                        const url = URL.createObjectURL(blob);
-                        const a = document.createElement('a');
-                        a.href = url;
-                        a.download = 'pokeboxvalue-result.png';
-                        a.click();
-                        URL.revokeObjectURL(url);
-                    }
-                } catch (err) {
-                    if (err.name !== 'AbortError' && err.name !== 'InvalidStateError') {
-                        console.error("Error compartiendo tarjeta:", err);
-                    }
+                    await CalculatorController.handleCardShare();
                 } finally {
                     isSharing = false;
                 }
             });
         }
 
-        const btnReset = document.getElementById('btn-reset');
         if (btnReset) {
             btnReset.addEventListener('click', () => {
-                const viewForm = document.getElementById('view-form');
-                const viewResult = document.getElementById('view-result');
-                if (viewResult) viewResult.classList.add('hidden');
-                if (viewForm) viewForm.classList.remove('hidden');
-
-                const btnCalculate = document.getElementById('btn-calculate');
-                if (btnCalculate) btnCalculate.focus();
-
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                CalculatorController.switchView('form');
             });
         }
 
         renderHistory(CalculatorController.restoreFromHistory);
+    }
+
+    static switchView(viewName) {
+        const viewForm = document.getElementById('view-form');
+        const viewResult = document.getElementById('view-result');
+
+        if (viewName === 'form') {
+            if (viewResult) viewResult.classList.add('hidden');
+            if (viewForm) viewForm.classList.remove('hidden');
+            const btnCalculate = document.getElementById('btn-calculate');
+            if (btnCalculate) btnCalculate.focus();
+        } else if (viewName === 'result') {
+            if (viewForm) viewForm.classList.add('hidden');
+            if (viewResult) viewResult.classList.remove('hidden');
+            const resTitle = document.getElementById('result-title');
+            if (resTitle) resTitle.focus();
+        }
+
+        if (typeof window !== 'undefined' && window.scrollTo) {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }
+
+    static async handleTextShare() {
+        if (!state.lastResult || !state.lastBoxPrice) return;
+
+        const curr = CURRENCY_CONFIG[state.currentCurrency] || { symbol: '€' };
+        const isProfitable = state.lastResult.isProfitable;
+        const statusTitle = isProfitable
+            ? (t('titleProfitable') || '¡Renta comprarla!')
+            : (t('titleNotProfitable') || 'No renta comprarla');
+
+        const decimals = state.currentCurrency === 'POKECOINS' ? 0 : 2;
+        const shareText = `📦 PokeBoxValue: ${statusTitle}\n` +
+            `${t('resBoxPrice') || 'Precio:'} ${state.lastBoxPrice} ${curr.symbol} | ` +
+            `${t('resRealValue') || 'Valor real:'} ${state.lastResult.totalValue.toFixed(decimals)} ${curr.symbol}`;
+
+        const pageUrl = (typeof window !== 'undefined' && window.location) ? window.location.href : '';
+        try {
+            if (navigator.share) {
+                await navigator.share({
+                    title: 'PokeBoxValue - Resultado',
+                    text: shareText,
+                    ...(pageUrl ? { url: pageUrl } : {})
+                });
+            } else if (navigator.clipboard) {
+                const copyContent = pageUrl ? `${shareText}\n${pageUrl}` : shareText;
+                await navigator.clipboard.writeText(copyContent);
+                alert(t('linkCopied') || '¡Resultado copiado al portapapeles!');
+            }
+        } catch (err) {
+            if (err.name !== 'AbortError' && err.name !== 'InvalidStateError') {
+                console.error("Error compartiendo resultado:", err);
+            }
+        }
+    }
+
+    static async handleCardShare() {
+        if (!state.lastResult || !state.lastBoxPrice) return;
+
+        const curr = CURRENCY_CONFIG[state.currentCurrency] || { symbol: '€' };
+        let blob = null;
+        try {
+            blob = await generateSocialCardCanvas({
+                boxPrice: state.lastBoxPrice,
+                totalValue: state.lastResult.totalValue,
+                diff: state.lastResult.diff,
+                isProfitable: state.lastResult.isProfitable,
+                grade: state.lastResult.grade,
+                currencySymbol: curr.symbol
+            });
+        } catch (canvasErr) {
+            console.error("Error al generar canvas de la tarjeta:", canvasErr);
+            return;
+        }
+
+        if (!blob) return;
+
+        try {
+            const file = new File([blob], 'pokeboxvalue-result.png', { type: 'image/png' });
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                await navigator.share({
+                    title: 'PokeBoxValue - Resultado',
+                    text: '¡He calculated la rentabilidad de esta caja en PokeBoxValue! 📦✨',
+                    files: [file]
+                });
+            } else {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'pokeboxvalue-result.png';
+                a.click();
+                URL.revokeObjectURL(url);
+            }
+        } catch (err) {
+            if (err.name !== 'AbortError' && err.name !== 'InvalidStateError') {
+                console.error("Error compartiendo tarjeta:", err);
+            }
+        }
     }
 
     static handleCalculate(priceInput, priceError) {
@@ -218,19 +234,14 @@ export class CalculatorController {
         const isCoins = state.currentCurrency === 'POKECOINS';
         const decimals = isCoins ? 0 : 2;
 
-        const viewForm = document.getElementById('view-form');
-        const viewResult = document.getElementById('view-result');
+        CalculatorController.switchView('result');
+
         const resCard = document.getElementById('result-card');
         const resTitle = document.getElementById('result-title');
         const resDiffLabel = document.getElementById('res-diff-label');
         const resDiffVal = document.getElementById('res-diff-val');
         const resBoxPriceEl = document.getElementById('res-box-price');
         const resRealValueEl = document.getElementById('res-real-value');
-
-        if (viewForm) viewForm.classList.add('hidden');
-        if (viewResult) viewResult.classList.remove('hidden');
-
-        if (resTitle) resTitle.focus();
 
         if (resBoxPriceEl) animateValue(resBoxPriceEl, 0, boxPrice, 700, '', ` ${curr.symbol}`, decimals);
         if (resRealValueEl) animateValue(resRealValueEl, 0, res.totalValue, 850, '', ` ${curr.symbol}`, decimals);
@@ -280,10 +291,7 @@ export class CalculatorController {
         if (!item) return;
 
         // 1. Mostrar vista de formulario si estábamos en la vista de resultados
-        const viewForm = document.getElementById('view-form');
-        const viewResult = document.getElementById('view-result');
-        if (viewResult) viewResult.classList.add('hidden');
-        if (viewForm) viewForm.classList.remove('hidden');
+        CalculatorController.switchView('form');
 
         // 2. Restaurar precio de la caja
         const priceInput = document.getElementById('box-price');
@@ -334,7 +342,5 @@ export class CalculatorController {
                 }
             });
         }
-
-        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 }

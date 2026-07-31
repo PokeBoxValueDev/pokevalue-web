@@ -397,3 +397,26 @@ test('visual/harness - ServiceWorkerController registers worker without unhandle
     if (controllerChangeListener) controllerChangeListener();
     assert.equal(reloaded, false, 'must NOT trigger page reload on initial service worker activation');
 });
+
+test('visual/harness - CalculatorController.switchView toggles view-form and view-result correctly', () => {
+    const viewForm = createMockElement('view-form');
+    const viewResult = createMockElement('view-result');
+    viewForm.classList.add('hidden');
+
+    globalThis.document = {
+        getElementById: (id) => {
+            if (id === 'view-form') return viewForm;
+            if (id === 'view-result') return viewResult;
+            return null;
+        }
+    };
+    globalThis.window = { scrollTo: () => {} };
+
+    CalculatorController.switchView('form');
+    assert.equal(viewForm.classList.contains('hidden'), false, 'view-form must be visible after switching to form');
+    assert.equal(viewResult.classList.contains('hidden'), true, 'view-result must be hidden after switching to form');
+
+    CalculatorController.switchView('result');
+    assert.equal(viewForm.classList.contains('hidden'), true, 'view-form must be hidden after switching to result');
+    assert.equal(viewResult.classList.contains('hidden'), false, 'view-result must be visible after switching to result');
+});
