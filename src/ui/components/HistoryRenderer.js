@@ -1,5 +1,5 @@
-import { getHistory } from '../../../js/storage.js';
-import { t } from '../../../js/i18n.js';
+import { HistoryRepository } from '../../infrastructure/repositories/HistoryRepository.js';
+import { t } from '../../i18n/i18n.js';
 
 /**
  * Historial de cálculos previos.
@@ -7,7 +7,7 @@ import { t } from '../../../js/i18n.js';
 export function renderHistory(onRestore) {
     const historySection = document.getElementById('history-section');
     const container = document.getElementById('history-container');
-    const history = getHistory();
+    const history = HistoryRepository.getHistory();
 
     if (!container) return;
 

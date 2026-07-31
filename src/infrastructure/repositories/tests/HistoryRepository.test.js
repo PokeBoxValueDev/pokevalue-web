@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { getHistory, saveCalculation, clearHistory } from '../storage.js';
+import { HistoryRepository } from '../HistoryRepository.js';
 
 // Setup Mock localStorage for Node test runner
 const mockStore = new Map();
@@ -13,7 +13,7 @@ globalThis.localStorage = {
 
 test('storage - getHistory returns empty array when storage is empty', () => {
     localStorage.clear();
-    assert.deepEqual(getHistory(), []);
+    assert.deepEqual(HistoryRepository.getHistory(), []);
 });
 
 test('storage - saveCalculation adds entry with timestamp and limits to 10 entries', () => {
@@ -21,10 +21,10 @@ test('storage - saveCalculation adds entry with timestamp and limits to 10 entri
 
     // Save 12 entries
     for (let i = 1; i <= 12; i++) {
-        saveCalculation({ boxPrice: i * 10, totalValue: i * 15, currencySymbol: '€', isProfitable: true });
+        HistoryRepository.saveCalculation({ boxPrice: i * 10, totalValue: i * 15, currencySymbol: '€', isProfitable: true });
     }
 
-    const history = getHistory();
+    const history = HistoryRepository.getHistory();
     assert.equal(history.length, 10);
     // Most recent should be first (boxPrice: 120)
     assert.equal(history[0].boxPrice, 120);
@@ -34,15 +34,15 @@ test('storage - saveCalculation adds entry with timestamp and limits to 10 entri
 
 test('storage - getHistory handles corrupted JSON gracefully', () => {
     localStorage.setItem('pokevalue_history', 'INVALID_JSON{');
-    const history = getHistory();
+    const history = HistoryRepository.getHistory();
     assert.deepEqual(history, []);
 });
 
 test('storage - clearHistory removes history from localStorage', () => {
     localStorage.clear();
-    saveCalculation({ boxPrice: 100, totalValue: 150, currencySymbol: '€', isProfitable: true });
-    assert.equal(getHistory().length, 1);
+    HistoryRepository.saveCalculation({ boxPrice: 100, totalValue: 150, currencySymbol: '€', isProfitable: true });
+    assert.equal(HistoryRepository.getHistory().length, 1);
 
-    clearHistory();
-    assert.equal(getHistory().length, 0);
+    HistoryRepository.clearHistory();
+    assert.equal(HistoryRepository.getHistory().length, 0);
 });

@@ -193,7 +193,7 @@ ${modalsHtml}
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js"></script>
 
     <!-- JS Principal -->
-    <script type="module" src="js/app.js"></script>
+    <script type="module" src="src/app/main.js"></script>
 </body>
 
 </html>

@@ -1,11 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { APP_VERSION, JSON_URL, FALLBACK_JSON_URL, CURRENCY_CONFIG, CATEGORY_CONFIG, state } from '../../../js/config.js';
+import { APP_VERSION, JSON_URL, FALLBACK_JSON_URL, CURRENCY_CONFIG, CATEGORY_CONFIG, state } from '../config.js';
 
 test('config - exports valid constants', () => {
     assert.ok(typeof APP_VERSION === 'string' && APP_VERSION.length > 0);
     assert.ok(JSON_URL.includes('https://'));
-    assert.equal(FALLBACK_JSON_URL, 'js/items-fallback.json');
+    assert.equal(FALLBACK_JSON_URL, 'src/assets/items-fallback.json');
 });
 
 test('config - CURRENCY_CONFIG contains required currencies', () => {

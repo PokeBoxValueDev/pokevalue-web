@@ -1,12 +1,12 @@
 {
   "name": "pokevalue-web",
-  "version": "1.14.19",
+  "version": "1.15.0",
   "private": true,
   "type": "module",
   "scripts": {
     "build:html": "node scripts/build-components.js",
-    "test": "node scripts/build-components.js && node --test src/**/tests/*.test.js js/tests/*.test.js tests/contract/*.test.js tests/visual/*.test.js",
-    "lint": "node --check js/*.js js/tests/*.js src/config/*.js src/config/tests/*.js src/domain/*/*.js src/domain/tests/*.js src/i18n/*.js src/i18n/tests/*.js src/infrastructure/*/*.js src/infrastructure/repositories/tests/*.js src/ui/components/*.js src/ui/ios/*.js src/ui/ios/tests/*.js tests/contract/*.js tests/visual/*.js sw.js",
+    "test": "node scripts/build-components.js && node --test src/**/tests/*.test.js tests/contract/*.test.js tests/visual/*.test.js",
+    "lint": "node --check src/**/*.js tests/**/*.js sw.js scripts/*.js",
     "tag": "node scripts/tag-release.js",
     "prepare": "node scripts/build-components.js && node scripts/setup-hooks.js"
   }

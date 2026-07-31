@@ -1,5 +1,5 @@
 import { CURRENCY_CONFIG, CATEGORY_CONFIG, state } from '../../config/config.js';
-import { t } from '../../../js/i18n.js';
+import { t } from '../../i18n/i18n.js';
 import { Category } from '../../domain/valueObjects/Category.js';
 import { getCategoryTranslation } from './ItemCardRenderer.js';
 

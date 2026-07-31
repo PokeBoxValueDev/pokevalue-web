@@ -1,9 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { ItemsRepository } from '../../src/infrastructure/repositories/ItemsRepository.js';
-import { state } from '../config.js';
-import { renderItems } from '../ui.js';
-import { setLanguage } from '../i18n.js';
+import { ItemsRepository } from '../../infrastructure/repositories/ItemsRepository.js';
+import { state } from '../../config/config.js';
+import { renderItems } from '../../ui/components/ItemCardRenderer.js';
+import { setLanguage } from '../../i18n/i18n.js';
 
 test('app integration - repository data loading flow populates state and renders UI without runtime errors', async () => {
     // 1. Verificar que ItemsRepository.getItems() funciona correctamente sin arrojar TypeError

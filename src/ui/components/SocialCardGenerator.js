@@ -1,7 +1,7 @@
 /**
  * Genera una tarjeta visual PNG mediante HTML5 Canvas para compartir en redes sociales.
  */
-import { t } from '../../../js/i18n.js';
+import { t } from '../../i18n/i18n.js';
 
 export async function generateSocialCardCanvas({ boxPrice, totalValue, diff, isProfitable, grade, currencySymbol }) {
     if (typeof document === 'undefined') return null;

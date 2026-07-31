@@ -1,5 +1,5 @@
-import { t } from '../../../js/i18n.js';
-import { state, CURRENCY_CONFIG } from '../../../js/config.js';
+import { t } from '../../i18n/i18n.js';
+import { state, CURRENCY_CONFIG } from '../../config/config.js';
 
 /**
  * Muestra la insignia del Rango de Oferta (Grade Badge S/A/B/F).

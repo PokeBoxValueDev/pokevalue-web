@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pokeboxvalue-v1.14.19';
+const CACHE_NAME = 'pokeboxvalue-v1.15.0';
 const STATIC_ASSETS = [
     './',
     './index.html',
@@ -7,30 +7,32 @@ const STATIC_ASSETS = [
     './favicon.svg',
     './manifest.json',
     './js/config.js',
-    './js/app.js',
-    './js/calculator.js',
-    './js/storage.js',
-    './js/ui.js',
-    './js/i18n.js',
-    './src/i18n/i18n.js',
-    './src/i18n/locales/es.js',
-    './src/i18n/locales/en.js',
-    './js/items-fallback.json',
+    './src/app/main.js',
+    './src/assets/items-fallback.json',
     './src/config/config.js',
-    './src/domain/models/Item.js',
     './src/domain/models/CalculationResult.js',
-    './src/domain/valueObjects/Category.js',
+    './src/domain/models/Item.js',
     './src/domain/services/ValuationService.js',
+    './src/domain/valueObjects/Category.js',
+    './src/i18n/i18n.js',
+    './src/i18n/locales/en.js',
+    './src/i18n/locales/es.js',
     './src/infrastructure/mappers/ItemMapper.js',
-    './src/infrastructure/repositories/ItemsRepository.js',
     './src/infrastructure/repositories/HistoryRepository.js',
-    './src/ui/components/ItemCardRenderer.js',
+    './src/infrastructure/repositories/ItemsRepository.js',
     './src/ui/components/BreakdownRenderer.js',
     './src/ui/components/HistoryRenderer.js',
-    './src/ui/components/ValuationBadgesRenderer.js',
-    './src/ui/components/SocialCardGenerator.js',
+    './src/ui/components/ItemCardRenderer.js',
     './src/ui/components/ModalManager.js',
-    './src/ui/ios/IOSDeviceDetector.js'
+    './src/ui/components/SocialCardGenerator.js',
+    './src/ui/components/ValuationBadgesRenderer.js',
+    './src/ui/controllers/CalculatorController.js',
+    './src/ui/controllers/CurrencyController.js',
+    './src/ui/controllers/I18nController.js',
+    './src/ui/controllers/ServiceWorkerController.js',
+    './src/ui/controllers/ThemeController.js',
+    './src/ui/ios/IOSDeviceDetector.js',
+    './src/ui/utils/AnimationUtils.js'
 ];
 
 // Instalación: Cachear App Shell
@@ -84,7 +86,7 @@ self.addEventListener('fetch', (event) => {
                 .catch(() => {
                     return caches.match(event.request).then((cachedResponse) => {
                         if (cachedResponse) return cachedResponse;
-                        if (isItemsJson) return caches.match('./js/items-fallback.json');
+                        if (isItemsJson) return caches.match('./src/assets/items-fallback.json');
                         return caches.match('./index.html');
                     });
                 })

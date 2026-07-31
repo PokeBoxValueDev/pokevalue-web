@@ -1,8 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { renderHistory, renderBreakdown, renderItems } from '../../js/ui.js';
-import { setLanguage } from '../../js/i18n.js';
-import { state } from '../../js/config.js';
+import { renderHistory } from '../../src/ui/components/HistoryRenderer.js';
+import { renderBreakdown } from '../../src/ui/components/BreakdownRenderer.js';
+import { renderItems } from '../../src/ui/components/ItemCardRenderer.js';
+import { setLanguage } from '../../src/i18n/i18n.js';
+import { state } from '../../src/config/config.js';
 
 // Setup Mock DOM
 const mockStore = new Map();

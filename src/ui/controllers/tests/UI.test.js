@@ -1,8 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { renderBreakdown, renderHistory, renderItems } from '../ui.js';
-import { setLanguage } from '../i18n.js';
-import { state } from '../config.js';
+import { renderBreakdown } from '../../components/BreakdownRenderer.js';
+import { renderHistory } from '../../components/HistoryRenderer.js';
+import { renderItems } from '../../components/ItemCardRenderer.js';
+import { setLanguage } from '../../../i18n/i18n.js';
+import { state } from '../../../config/config.js';
 
 // Setup Mock DOM and localStorage for UI component tests
 const mockStore = new Map();

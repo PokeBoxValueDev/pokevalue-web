@@ -6,7 +6,7 @@ import { ItemMapper } from '../../src/infrastructure/mappers/ItemMapper.js';
 import { Item } from '../../src/domain/models/Item.js';
 
 test('contract/items - local items-fallback.json adheres to expected contract structure', () => {
-    const jsonPath = path.resolve('js/items-fallback.json');
+    const jsonPath = path.resolve('src/assets/items-fallback.json');
     const content = fs.readFileSync(jsonPath, 'utf8');
     const data = JSON.parse(content);
 
