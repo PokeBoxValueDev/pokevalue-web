@@ -1,0 +1,13 @@
+{
+  "name": "pokevalue-web",
+  "version": "1.15.7",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:html": "node scripts/build-components.js",
+    "test": "node scripts/build-components.js && node --test src/**/tests/*.test.js tests/contract/*.test.js tests/visual/*.test.js",
+    "lint": "node --check src/**/*.js tests/**/*.js sw.js scripts/*.js",
+    "tag": "node scripts/tag-release.js",
+    "prepare": "node scripts/build-components.js && node scripts/setup-hooks.js"
+  }
+}

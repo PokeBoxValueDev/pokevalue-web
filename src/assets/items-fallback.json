@@ -1,0 +1,176 @@
+{
+  "last_updated": "2026-07-29",
+  "currency": "EUR",
+  "pokecoin_rates": {
+    "base_eur_per_coin": 0.009083,
+    "optimal_eur_per_coin": 0.006666,
+    "default_eur_per_coin": 0.009083
+  },
+  "objetos": [
+    {
+      "id": "pase_incursion_remota",
+      "name_es": "Pase de incursión remota",
+      "name_en": "Remote Raid Pass",
+      "category": "pases",
+      "pack_size": 2,
+      "pack_price_eur": 3.29,
+      "unit_price_eur": 1.645,
+      "unit_price_coins": 181,
+      "svg": "<svg viewBox=\"0 0 64 64\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-10 h-10\"><rect x=\"8\" y=\"16\" width=\"48\" height=\"32\" rx=\"6\" fill=\"url(#remotePassGrad)\"/><path d=\"M16 28H48\" stroke=\"white\" stroke-width=\"3\" stroke-dasharray=\"4 4\"/><circle cx=\"32\" cy=\"32\" r=\"8\" fill=\"white\" fill-opacity=\"0.3\"/><path d=\"M32 20V44M20 32H44\" stroke=\"#00E5FF\" stroke-width=\"2\"/><defs><linearGradient id=\"remotePassGrad\" x1=\"8\" y1=\"16\" x2=\"56\" y2=\"48\" gradientUnits=\"userSpaceOnUse\"><stop stop-color=\"#00E5FF\"/><stop offset=\"1\" stop-color=\"#2979FF\"/></linearGradient></defs></svg>"
+    },
+    {
+      "id": "pase_combate_premium",
+      "name_es": "Pase de combate prémium",
+      "name_en": "Premium Battle Pass",
+      "category": "pases",
+      "pack_size": 3,
+      "pack_price_eur": 3.29,
+      "unit_price_eur": 1.0967,
+      "unit_price_coins": 121,
+      "svg": "<svg viewBox=\"0 0 64 64\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-10 h-10\"><rect x=\"8\" y=\"16\" width=\"48\" height=\"32\" rx=\"6\" fill=\"url(#premiumPassGrad)\"/><circle cx=\"32\" cy=\"32\" r=\"7\" fill=\"#76FF03\"/><path d=\"M12 20L52 44\" stroke=\"white\" stroke-opacity=\"0.3\" stroke-width=\"2\"/><defs><linearGradient id=\"premiumPassGrad\" x1=\"8\" y1=\"16\" x2=\"56\" y2=\"48\" gradientUnits=\"userSpaceOnUse\"><stop stop-color=\"#00E676\"/><stop offset=\"1\" stop-color=\"#1DE9B6\"/></linearGradient></defs></svg>"
+    },
+    {
+      "id": "incubadora",
+      "name_es": "Incubadora",
+      "name_en": "Egg Incubator",
+      "category": "incubadoras",
+      "pack_size": 3,
+      "pack_price_eur": 3.29,
+      "unit_price_eur": 1.0967,
+      "unit_price_coins": 121,
+      "svg": "<svg viewBox=\"0 0 64 64\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-10 h-10\"><rect x=\"20\" y=\"10\" width=\"24\" height=\"44\" rx=\"12\" fill=\"#E0F7FA\" stroke=\"#00838F\" stroke-width=\"3\"/><rect x=\"18\" y=\"8\" width=\"28\" height=\"8\" rx=\"3\" fill=\"#ECEFF1\"/><rect x=\"18\" y=\"48\" width=\"28\" height=\"8\" rx=\"3\" fill=\"#ECEFF1\"/><ellipse cx=\"32\" cy=\"38\" rx=\"6\" ry=\"8\" fill=\"#FFB74D\"/></svg>"
+    },
+    {
+      "id": "superincubadora",
+      "name_es": "Superincubadora",
+      "name_en": "Super Incubator",
+      "category": "incubadoras",
+      "pack_size": 2,
+      "pack_price_eur": 3.29,
+      "unit_price_eur": 1.645,
+      "unit_price_coins": 181,
+      "svg": "<svg viewBox=\"0 0 64 64\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-10 h-10\"><rect x=\"20\" y=\"10\" width=\"24\" height=\"44\" rx=\"12\" fill=\"#F3E5F5\" stroke=\"#8E24AA\" stroke-width=\"3\"/><rect x=\"18\" y=\"8\" width=\"28\" height=\"8\" rx=\"3\" fill=\"#AB47BC\"/><rect x=\"18\" y=\"48\" width=\"28\" height=\"8\" rx=\"3\" fill=\"#AB47BC\"/><ellipse cx=\"32\" cy=\"38\" rx=\"6\" ry=\"8\" fill=\"#26C6DA\"/></svg>"
+    },
+    {
+      "id": "huevo_suerte",
+      "name_es": "Huevo Suerte",
+      "name_en": "Lucky Egg",
+      "category": "potenciadores",
+      "pack_size": 8,
+      "pack_price_eur": 5.49,
+      "unit_price_eur": 0.6863,
+      "unit_price_coins": 76,
+      "svg": "<svg viewBox=\"0 0 64 64\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-10 h-10\"><path d=\"M32 8C21 8 16 26 16 42C16 53 23 56 32 56C41 56 48 53 48 42C48 26 43 8 32 8Z\" fill=\"url(#eggGrad)\"/><ellipse cx=\"26\" cy=\"22\" rx=\"4\" ry=\"8\" fill=\"white\" fill-opacity=\"0.4\" transform=\"rotate(-20 26 22)\"/><defs><linearGradient id=\"eggGrad\" x1=\"16\" y1=\"8\" x2=\"48\" y2=\"56\" gradientUnits=\"userSpaceOnUse\"><stop stop-color=\"#E2F5FB\"/><stop offset=\"1\" stop-color=\"#9AD9EA\"/></linearGradient></defs></svg>"
+    },
+    {
+      "id": "trozo_estrella",
+      "name_es": "Trozo Estrella",
+      "name_en": "Star Piece",
+      "category": "potenciadores",
+      "pack_size": 8,
+      "pack_price_eur": 6.49,
+      "unit_price_eur": 0.8113,
+      "unit_price_coins": 89,
+      "svg": "<svg viewBox=\"0 0 64 64\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-10 h-10\"><path d=\"M32 6L37.5 22.5L54 18L43.5 32L54 46L37.5 41.5L32 58L26.5 41.5L10 46L20.5 32L10 18L26.5 22.5L32 6Z\" fill=\"url(#starGrad)\"/><circle cx=\"32\" cy=\"32\" r=\"5\" fill=\"#FFF59D\"/><defs><linearGradient id=\"starGrad\" x1=\"10\" y1=\"6\" x2=\"54\" y2=\"58\" gradientUnits=\"userSpaceOnUse\"><stop stop-color=\"#FF70A6\"/><stop offset=\"0.5\" stop-color=\"#FF9770\"/><stop offset=\"1\" stop-color=\"#FFD670\"/></linearGradient></defs></svg>"
+    },
+    {
+      "id": "almacenamiento_pokemon",
+      "name_es": "Almacenamiento de Pokémon",
+      "name_en": "Pokémon Storage Upgrade",
+      "category": "mejoras",
+      "pack_size": 1,
+      "pack_price_eur": 2.19,
+      "unit_price_eur": 2.19,
+      "unit_price_coins": 200,
+      "svg": "<svg viewBox=\"0 0 64 64\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-10 h-10\"><rect x=\"10\" y=\"20\" width=\"44\" height=\"28\" rx=\"4\" fill=\"#37474F\"/><rect x=\"14\" y=\"24\" width=\"36\" height=\"12\" rx=\"2\" fill=\"#80DEEA\"/><circle cx=\"20\" cy=\"42\" r=\"3\" fill=\"#FF5252\"/><circle cx=\"28\" cy=\"42\" r=\"3\" fill=\"#FFD740\"/><rect x=\"36\" y=\"40\" width=\"12\" height=\"4\" rx=\"2\" fill=\"#90A4AE\"/></svg>"
+    },
+    {
+      "id": "aumento_espacio_bolsa",
+      "name_es": "Aumento de espacio (Bolsa)",
+      "name_en": "Item Bag Upgrade",
+      "category": "mejoras",
+      "pack_size": 1,
+      "pack_price_eur": 2.19,
+      "unit_price_eur": 2.19,
+      "unit_price_coins": 200,
+      "svg": "<svg viewBox=\"0 0 64 64\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-10 h-10\"><path d=\"M20 22C20 15 25 10 32 10C39 10 44 15 44 22\" stroke=\"#FF9100\" stroke-width=\"4\" stroke-linecap=\"round\"/><path d=\"M14 22H50V52C50 55.3 47.3 58 44 58H20C16.7 58 14 55.3 14 52V22Z\" fill=\"#29B6F6\"/><path d=\"M14 34H50\" stroke=\"#0288D1\" stroke-width=\"3\"/><rect x=\"24\" y=\"38\" width=\"16\" height=\"12\" rx=\"2\" fill=\"#FFD180\"/></svg>"
+    },
+    {
+      "id": "carga_union_600",
+      "name_es": "600 de Carga Unión",
+      "name_en": "600 Fusion Energy",
+      "category": "combates",
+      "pack_size": 1,
+      "pack_price_eur": 3.29,
+      "unit_price_eur": 3.29,
+      "unit_price_coins": 362,
+      "svg": "<svg viewBox=\"0 0 64 64\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-10 h-10\"><rect x=\"24\" y=\"10\" width=\"16\" height=\"44\" rx=\"8\" fill=\"url(#partGrad)\"/><path d=\"M28 16H36M28 48H36\" stroke=\"white\" stroke-width=\"2\"/><circle cx=\"32\" cy=\"32\" r=\"4\" fill=\"#E040FB\"/><defs><linearGradient id=\"partGrad\" x1=\"24\" y1=\"10\" x2=\"40\" y2=\"54\" gradientUnits=\"userSpaceOnUse\"><stop stop-color=\"#EA80FC\"/><stop offset=\"1\" stop-color=\"#AA00FF\"/></linearGradient></defs></svg>"
+    },
+    {
+      "id": "pack_particulas_max",
+      "name_es": "Pack de Partículas Max",
+      "name_en": "Max Particles Pack",
+      "category": "combates",
+      "pack_size": 6,
+      "pack_price_eur": 8.99,
+      "unit_price_eur": 1.4983,
+      "unit_price_coins": 165,
+      "svg": "<svg viewBox=\"0 0 64 64\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-10 h-10\"><rect x=\"24\" y=\"10\" width=\"16\" height=\"44\" rx=\"8\" fill=\"url(#partGrad)\"/><path d=\"M28 16H36M28 48H36\" stroke=\"white\" stroke-width=\"2\"/><circle cx=\"32\" cy=\"32\" r=\"4\" fill=\"#E040FB\"/><defs><linearGradient id=\"partGrad\" x1=\"24\" y1=\"10\" x2=\"40\" y2=\"54\" gradientUnits=\"userSpaceOnUse\"><stop stop-color=\"#EA80FC\"/><stop offset=\"1\" stop-color=\"#AA00FF\"/></linearGradient></defs></svg>"
+    },
+    {
+      "id": "maxiseta",
+      "name_es": "Maxiseta",
+      "name_en": "Max Mushroom",
+      "category": "combates",
+      "pack_size": 3,
+      "pack_price_eur": 10.99,
+      "unit_price_eur": 3.6633,
+      "unit_price_coins": 403,
+      "svg": "<svg viewBox=\"0 0 64 64\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-10 h-10\"><path d=\"M12 32C12 18 20 10 32 10C44 10 52 18 52 32H12Z\" fill=\"#FF4081\"/><circle cx=\"24\" cy=\"20\" r=\"3\" fill=\"white\"/><circle cx=\"40\" cy=\"22\" r=\"4\" fill=\"white\"/><path d=\"M26 32V50C26 53 28 54 32 54C36 54 38 53 38 50V32H26Z\" fill=\"#F5F5F5\"/></svg>"
+    },
+    {
+      "id": "revivir_maximo",
+      "name_es": "Revivir Máximo",
+      "name_en": "Max Revive",
+      "category": "otros",
+      "pack_size": 15,
+      "pack_price_eur": 2.19,
+      "unit_price_eur": 0.146,
+      "unit_price_coins": 16,
+      "svg": "<svg viewBox=\"0 0 64 64\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-10 h-10\"><path d=\"M32 6L54 28L32 58L10 28L32 6Z\" fill=\"url(#reviveGrad)\"/><path d=\"M32 16L44 28L32 48L20 28L32 16Z\" fill=\"#FFF9C4\"/><defs><linearGradient id=\"reviveGrad\" x1=\"10\" y1=\"6\" x2=\"54\" y2=\"58\" gradientUnits=\"userSpaceOnUse\"><stop stop-color=\"#FFD54F\"/><stop offset=\"1\" stop-color=\"#FF8F00\"/></linearGradient></defs></svg>"
+    },
+    {
+      "id": "pociones_maximas",
+      "name_es": "Pociones Máximas",
+      "name_en": "Max Potion",
+      "category": "otros",
+      "pack_size": 10,
+      "pack_price_eur": 2.19,
+      "unit_price_eur": 0.219,
+      "unit_price_coins": 24,
+      "svg": "<svg viewBox=\"0 0 64 64\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-10 h-10\"><path d=\"M22 24L16 54H48L42 24H22Z\" fill=\"#29B6F6\"/><rect x=\"24\" y=\"12\" width=\"16\" height=\"12\" rx=\"3\" fill=\"#1E88E5\"/><rect x=\"20\" y=\"8\" width=\"24\" height=\"6\" rx=\"2\" fill=\"#ECEFF1\"/><path d=\"M32 32V46M25 39H39\" stroke=\"white\" stroke-width=\"4\" stroke-linecap=\"round\"/></svg>"
+    },
+    {
+      "id": "bayas_pinia_plateadas",
+      "name_es": "Bayas Pinia plateadas",
+      "name_en": "Silver Pinap Berry",
+      "category": "otros",
+      "pack_size": 10,
+      "pack_price_eur": 2.19,
+      "unit_price_eur": 0.219,
+      "unit_price_coins": 24,
+      "svg": "<svg viewBox=\"0 0 64 64\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-10 h-10\"><path d=\"M32 8L36 18H28L32 8Z\" fill=\"#76FF03\"/><ellipse cx=\"32\" cy=\"38\" rx=\"16\" ry=\"20\" fill=\"url(#silverBerry)\"/><path d=\"M20 30L44 46M20 46L44 30\" stroke=\"#B0BEC5\" stroke-width=\"2\"/><defs><linearGradient id=\"silverBerry\" x1=\"16\" y1=\"18\" x2=\"48\" y2=\"58\" gradientUnits=\"userSpaceOnUse\"><stop stop-color=\"#CFD8DC\"/><stop offset=\"1\" stop-color=\"#78909C\"/></linearGradient></defs></svg>"
+    },
+    {
+      "id": "bayas_frambu_doradas",
+      "name_es": "Bayas Frambu doradas",
+      "name_en": "Golden Razz Berry",
+      "category": "otros",
+      "pack_size": 15,
+      "pack_price_eur": 2.19,
+      "unit_price_eur": 0.146,
+      "unit_price_coins": 16,
+      "svg": "<svg viewBox=\"0 0 64 64\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-10 h-10\"><circle cx=\"32\" cy=\"24\" r=\"7\" fill=\"#FFD700\"/><circle cx=\"22\" cy=\"32\" r=\"7\" fill=\"#FFC107\"/><circle cx=\"42\" cy=\"32\" r=\"7\" fill=\"#FFC107\"/><circle cx=\"26\" cy=\"42\" r=\"7\" fill=\"#FFB300\"/><circle cx=\"38\" cy=\"42\" r=\"7\" fill=\"#FFB300\"/><circle cx=\"32\" cy=\"50\" r=\"6\" fill=\"#FFA000\"/><path d=\"M32 8C32 8 36 12 32 17\" stroke=\"#76FF03\" stroke-width=\"3\" stroke-linecap=\"round\"/></svg>"
+    }
+  ]
+}
