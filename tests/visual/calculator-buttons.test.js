@@ -26,6 +26,14 @@ function createMockElement(id, attrs = {}) {
     };
 }
 
+function setMockNavigator(obj) {
+    Object.defineProperty(globalThis, 'navigator', {
+        value: obj,
+        configurable: true,
+        writable: true
+    });
+}
+
 test('visual/harness - CalculatorController binds click handlers for btn-share, btn-share-card, and btn-reset', () => {
     const elements = {
         'btn-calculate': createMockElement('btn-calculate'),
@@ -63,12 +71,12 @@ test('visual/harness - btn-share copies or shares text summary when clicked', as
     let sharedData = null;
     let clipboardText = null;
 
-    globalThis.navigator = {
+    setMockNavigator({
         share: async (data) => { sharedData = data; },
         clipboard: {
             writeText: async (text) => { clipboardText = text; }
         }
-    };
+    });
 
     state.lastBoxPrice = 500;
     state.lastResult = {
@@ -255,14 +263,14 @@ test('visual/harness - site-logo header click returns to main view-form', () => 
 
 test('visual/harness - share handlers guard against concurrent calls and handle InvalidStateError gracefully', async () => {
     let shareCallCount = 0;
-    globalThis.navigator = {
+    setMockNavigator({
         share: async () => {
             shareCallCount++;
             const err = new Error('An earlier share has not yet completed.');
             err.name = 'InvalidStateError';
             throw err;
         }
-    };
+    });
 
     state.lastBoxPrice = 100;
     state.lastResult = { totalValue: 150, isProfitable: true, diff: 50, grade: 'A' };
@@ -340,11 +348,11 @@ test('visual/harness - I18nController detects browser language dynamically when 
 
     // 2. Fallback to navigator.language for Spanish
     globalThis.localStorage = { getItem: () => null };
-    globalThis.navigator = { language: 'es-ES' };
+    setMockNavigator({ language: 'es-ES' });
     assert.equal(I18nController.detectLanguage(), 'es', 'must detect es from es-ES browser language');
 
     // 3. Fallback to navigator.language for English
-    globalThis.navigator = { language: 'en-US' };
+    setMockNavigator({ language: 'en-US' });
     assert.equal(I18nController.detectLanguage(), 'en', 'must detect en from en-US browser language');
 });
 
@@ -357,11 +365,11 @@ test('visual/harness - CurrencyController detects browser region currency dynami
 
     // 2. Fallback to USD for US region
     globalThis.localStorage = { getItem: () => null };
-    globalThis.navigator = { language: 'en-US' };
+    setMockNavigator({ language: 'en-US' });
     assert.equal(CurrencyController.detectCurrency(), 'USD', 'must detect USD for en-US browser language');
 
     // 3. Default to EUR for non-US region
-    globalThis.navigator = { language: 'es-ES' };
+    setMockNavigator({ language: 'es-ES' });
     assert.equal(CurrencyController.detectCurrency(), 'EUR', 'must default to EUR for es-ES browser language');
 });
 
@@ -370,7 +378,7 @@ test('visual/harness - ServiceWorkerController registers worker without unhandle
     let registeredUrl = null;
     let controllerChangeListener = null;
 
-    globalThis.navigator = {
+    setMockNavigator({
         serviceWorker: {
             controller: null,
             addEventListener: (event, fn) => {
@@ -381,7 +389,7 @@ test('visual/harness - ServiceWorkerController registers worker without unhandle
                 return {};
             }
         }
-    };
+    });
     globalThis.window = {
         addEventListener: (event, fn) => {
             if (event === 'load') fn();
