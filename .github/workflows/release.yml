@@ -20,7 +20,7 @@ jobs:
       - name: Setup Node.js Environment
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       - name: Verify JavaScript Syntax & Lint
         run: npm run lint

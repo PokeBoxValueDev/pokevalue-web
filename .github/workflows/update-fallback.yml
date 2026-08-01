@@ -22,7 +22,7 @@ jobs:
           curl -sSL https://raw.githubusercontent.com/alejandrrolc/pokevalue-data/refs/heads/main/items.json -o src/assets/items-fallback.json
 
       - name: Crear Pull Request si hay cambios
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "chore: auto-update local items-fallback.json from pokevalue-data"
