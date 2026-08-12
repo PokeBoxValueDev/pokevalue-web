@@ -1,16 +1,75 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="100%" height="100%">
-  <!-- Fondo redondeado estilo app -->
-  <rect x="2" y="2" width="60" height="60" rx="16" fill="#4F46E5"/>
-  
-  <!-- Símbolo de la Pokéball / Moneda de Calculadora -->
-  <path d="M 12 32 A 20 20 0 0 1 52 32 Z" fill="#EF4444"/>
-  <path d="M 12 32 A 20 20 0 0 0 52 32 Z" fill="#FFFFFF"/>
-  <rect x="12" y="30" width="40" height="4" fill="#1F2937"/>
-  
-  <!-- Centro de la Pokéball -->
-  <circle cx="32" cy="32" r="7" fill="#1F2937"/>
-  <circle cx="32" cy="32" r="4" fill="#FFFFFF"/>
-  
-  <!-- Detalle de Sparkle / Valor (Esquina superior derecha) -->
-  <path d="M 48 10 L 50 16 L 56 18 L 50 20 L 48 26 L 46 20 L 40 18 L 46 16 Z" fill="#FBBF24"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Fondo Gradiente Índigo Premium -->
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4F46E5"/>
+      <stop offset="100%" stop-color="#3730A3"/>
+    </linearGradient>
+    
+    <!-- Gradiente Rojo Pokéball -->
+    <linearGradient id="poke-red" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FF4D4D"/>
+      <stop offset="100%" stop-color="#DC2626"/>
+    </linearGradient>
+
+    <!-- Gradiente Blanco Pokéball -->
+    <linearGradient id="poke-white" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#E2E8F0"/>
+    </linearGradient>
+
+    <!-- Gradiente Dorado Sparkle -->
+    <linearGradient id="gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDE047"/>
+      <stop offset="100%" stop-color="#F59E0B"/>
+    </linearGradient>
+
+    <!-- Sombra suave para darle volumen 3D -->
+    <filter id="drop-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#0F172A" flood-opacity="0.35"/>
+    </filter>
+    
+    <filter id="sparkle-glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="2" stdDeviation="6" flood-color="#F59E0B" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <!-- 1. Fondo completo Edge-to-Edge (Sin márgenes ni bordes inset) -->
+  <rect x="0" y="0" width="512" height="512" fill="url(#bg-grad)"/>
+
+  <!-- 2. Grupo de la Caja Pokéball de Tienda -->
+  <g filter="url(#drop-shadow)" transform="translate(0, 8)">
+    
+    <!-- Cuerpo de la Caja (Parte Inferior - Blanca con sutil sombra) -->
+    <path d="M 128 240 L 384 240 L 372 400 C 370 418 354 432 336 432 L 176 432 C 158 432 142 418 140 400 Z" fill="url(#poke-white)"/>
+    
+    <!-- Cinta / Franja Central Oscura en la caja -->
+    <rect x="236" y="240" width="40" height="192" fill="#1E293B"/>
+
+    <!-- Tapa de la Caja (Estilo Pokéball Roja Superior) -->
+    <rect x="112" y="160" width="288" height="88" rx="20" fill="url(#poke-red)"/>
+    
+    <!-- Borde Inferior de la Tapa (Franja Negra de Pokéball) -->
+    <path d="M 112 224 L 400 224 L 400 248 C 400 259 391 268 380 268 L 132 268 C 121 268 112 259 112 248 Z" fill="#0F172A"/>
+
+    <!-- Cinta Vertical en la Tapa -->
+    <rect x="236" y="160" width="40" height="108" fill="#1E293B"/>
+
+    <!-- Botón Central de Pokéball en la Tapa/Cierre -->
+    <circle cx="256" cy="236" r="32" fill="#0F172A"/>
+    <circle cx="256" cy="236" r="22" fill="url(#poke-white)"/>
+    <circle cx="256" cy="236" r="12" fill="#0F172A"/>
+    <circle cx="256" cy="236" r="7" fill="#FFFFFF"/>
+
+    <!-- Brillo en la tapa roja -->
+    <path d="M 132 174 C 180 166 330 166 380 174 C 368 186 144 186 132 174 Z" fill="#FFFFFF" opacity="0.3"/>
+  </g>
+
+  <!-- 3. Sparkle / Estrellas de Valor & Ahorro -->
+  <g filter="url(#sparkle-glow)">
+    <!-- Gran estrella de destello de valor -->
+    <path d="M 400 70 L 415 115 L 460 130 L 415 145 L 400 190 L 385 145 L 340 130 L 385 115 Z" fill="url(#gold-grad)"/>
+    <!-- Destello secundario más pequeño -->
+    <path d="M 120 90 L 128 112 L 150 120 L 128 128 L 120 150 L 112 128 L 90 120 L 112 112 Z" fill="url(#gold-grad)" opacity="0.85"/>
+  </g>
 </svg>
