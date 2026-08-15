@@ -1,13 +1,15 @@
-/* css/styles.css */
-/* Ocultar flechas arriba/abajo en inputs numéricos */
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+/* Ocultar barra de desplazamiento manteniendo funcionalidad de scroll */
+.no-scrollbar::-webkit-scrollbar,
+.scrollbar-none::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
 }
 
-input[type=number] {
-    -moz-appearance: textfield;
+.no-scrollbar,
+.scrollbar-none {
+    -ms-overflow-style: none !important;  /* IE y Edge */
+    scrollbar-width: none !important;  /* Firefox */
 }
 
 /* Transiciones suaves de vistas */

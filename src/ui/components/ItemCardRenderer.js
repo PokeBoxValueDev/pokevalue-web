@@ -19,23 +19,59 @@ export function getCategoryTranslation(catKey) {
     return CATEGORY_CONFIG[normKey]?.label || catKey.toUpperCase();
 }
 
-let activeCategoryFilter = 'all';
+const activeCategories = new Set(['all']);
 
-export function setCategoryFilter(category) {
-    activeCategoryFilter = category;
+export function toggleCategoryFilter(category) {
+    if (category === 'all') {
+        activeCategories.clear();
+        activeCategories.add('all');
+    } else {
+        activeCategories.delete('all');
+        if (activeCategories.has(category)) {
+            activeCategories.delete(category);
+            if (activeCategories.size === 0) {
+                activeCategories.add('all');
+            }
+        } else {
+            activeCategories.add(category);
+        }
+    }
+    updateFilterPillsUI();
     applyFilters();
 }
 
+export function setCategoryFilter(category) {
+    toggleCategoryFilter(category);
+}
+
+export function getActiveCategories() {
+    return Array.from(activeCategories);
+}
+
 export function getActiveCategoryFilter() {
-    return activeCategoryFilter;
+    return activeCategories.has('all') ? 'all' : Array.from(activeCategories).join(',');
+}
+
+export function updateFilterPillsUI() {
+    if (typeof document === 'undefined' || typeof document.querySelectorAll !== 'function') return;
+    const filterPills = document.querySelectorAll('.category-pill');
+    filterPills.forEach(pill => {
+        const cat = pill.getAttribute('data-category') || 'all';
+        if (activeCategories.has(cat)) {
+            pill.className = 'category-pill whitespace-nowrap px-3 py-1 rounded-full font-bold transition bg-indigo-600 text-white shadow-sm ring-1 ring-indigo-400/40 cursor-pointer';
+        } else {
+            pill.className = 'category-pill whitespace-nowrap px-3 py-1 rounded-full font-medium transition bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer';
+        }
+    });
 }
 
 export function applyFilters() {
-    const container = document.getElementById('items-container');
-    const searchInput = document.getElementById('search-input');
-    if (!container) return;
+    const container = (typeof document !== 'undefined' && typeof document.getElementById === 'function') ? document.getElementById('items-container') : null;
+    const searchInput = (typeof document !== 'undefined' && typeof document.getElementById === 'function') ? document.getElementById('search-input') : null;
+    if (!container || typeof container.querySelectorAll !== 'function') return;
 
     const searchTerm = (searchInput ? searchInput.value : '').toLowerCase().trim();
+    const isAll = activeCategories.has('all');
 
     container.querySelectorAll('.category-group').forEach(group => {
         const groupCat = group.getAttribute('data-category');
@@ -45,7 +81,7 @@ export function applyFilters() {
             const itemName = (card.getAttribute('data-item-name') || '').toLowerCase();
             const cardCat = card.getAttribute('data-category');
 
-            const matchesCategory = (activeCategoryFilter === 'all' || cardCat === activeCategoryFilter || groupCat === activeCategoryFilter);
+            const matchesCategory = isAll || activeCategories.has(cardCat) || activeCategories.has(groupCat);
             const matchesSearch = !searchTerm || itemName.includes(searchTerm);
 
             if (matchesCategory && matchesSearch) {
@@ -264,14 +300,7 @@ export function renderItems(items) {
             pill.addEventListener('click', () => {
                 IOSDeviceDetector.triggerHapticFeedback(10);
                 const cat = pill.getAttribute('data-category') || 'all';
-                
-                // Actualizar estilo visual de la píldora activa
-                filterPills.forEach(p => {
-                    p.className = 'category-pill whitespace-nowrap px-3 py-1 rounded-full font-medium transition bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer';
-                });
-                pill.className = 'category-pill whitespace-nowrap px-3 py-1 rounded-full font-medium transition bg-indigo-600 text-white shadow-sm cursor-pointer';
-
-                setCategoryFilter(cat);
+                toggleCategoryFilter(cat);
             });
         }
     });
