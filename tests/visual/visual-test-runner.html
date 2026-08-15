@@ -79,71 +79,72 @@
         <main role="main" class="space-y-6">
             <div id="preview-wrapper" class="flex justify-center">
                 
-                <div id="preview-container" class="preview-box w-full max-w-xl mx-auto bg-slate-900 text-white border border-gray-800 rounded-3xl p-5 sm:p-6 shadow-2xl space-y-6 transition-colors duration-200">
+                <!-- El preview-container lleva la clase .dark por defecto y Tailwind se encarga de cambiar todo en cascada -->
+                <div id="preview-container" class="preview-box dark w-full max-w-xl mx-auto bg-slate-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 border border-gray-200 dark:border-gray-800 rounded-3xl p-5 sm:p-6 shadow-2xl space-y-6 transition-colors duration-200">
                     
                     <!-- Cabecera de la Aplicación -->
-                    <header role="banner" class="flex justify-between items-center pb-4 border-b border-gray-800">
+                    <header role="banner" class="flex justify-between items-center pb-4 border-b border-gray-200 dark:border-gray-800">
                         <div class="flex items-center gap-3 select-none">
                             <img src="../../favicon.svg" alt="PokeBoxValue Logo" class="w-9 h-9">
                             <div>
-                                <h2 class="text-xl font-bold text-indigo-400 leading-tight">PokeBoxValue</h2>
-                                <p class="text-[10px] text-gray-400">Data: 16/08/2026</p>
+                                <h2 class="text-xl font-bold text-indigo-600 dark:text-indigo-400 leading-tight">PokeBoxValue</h2>
+                                <p class="text-[10px] text-gray-500 dark:text-gray-400">Data: 16/08/2026</p>
                             </div>
                         </div>
                         <div class="flex items-center gap-2">
-                            <select aria-label="Seleccionar idioma" class="bg-gray-800 text-xs px-2.5 py-1 rounded-lg border border-gray-700 text-gray-200 cursor-pointer">
+                            <select aria-label="Seleccionar idioma" class="bg-white dark:bg-gray-800 text-xs px-2.5 py-1 rounded-lg border border-gray-300 dark:border-gray-700 text-gray-800 dark:text-gray-200 cursor-pointer focus:outline-none">
                                 <option value="es">ES</option>
                                 <option value="en">EN</option>
                             </select>
-                            <select aria-label="Seleccionar divisa" class="bg-gray-800 text-xs px-2.5 py-1 rounded-lg border border-gray-700 text-gray-200 cursor-pointer">
+                            <select aria-label="Seleccionar divisa" class="bg-white dark:bg-gray-800 text-xs px-2.5 py-1 rounded-lg border border-gray-300 dark:border-gray-700 text-gray-800 dark:text-gray-200 cursor-pointer focus:outline-none">
                                 <option value="EUR">€</option>
                                 <option value="USD">$</option>
                                 <option value="POKECOINS">🟡</option>
                             </select>
-                            <button type="button" aria-label="Cambiar tema" class="p-1.5 bg-gray-800 text-gray-300 rounded-lg hover:bg-gray-700 border border-gray-700 cursor-pointer">🌙</button>
+                            <button type="button" aria-label="Cambiar tema" class="p-1.5 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-300 dark:border-gray-700 cursor-pointer">🌙</button>
                         </div>
                     </header>
 
                     <!-- Formulario de la Calculadora -->
-                    <section aria-labelledby="form-calc-title" class="space-y-5">
+                    <section aria-labelledby="form-calc-title" class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-5 sm:p-6 space-y-5 border border-gray-200 dark:border-gray-700 transition-colors duration-200">
                         <h3 id="form-calc-title" class="sr-only">Calculadora de valor de caja</h3>
                         
                         <div>
-                            <label for="runner-box-price" class="block text-xs font-semibold text-gray-300 mb-1.5">
-                                Precio de la Caja (<span class="text-indigo-400 font-bold">EUR €</span>)
+                            <label for="runner-box-price" class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1.5">
+                                Precio de la Caja (<span class="text-indigo-600 dark:text-indigo-400 font-bold">EUR €</span>)
                             </label>
-                            <input type="number" id="runner-box-price" placeholder="Ej: 8.99" value="10.00" aria-label="Precio de la Caja" class="w-full px-3.5 py-2.5 text-sm bg-gray-800 border border-gray-700 text-white rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                            <input type="number" id="runner-box-price" placeholder="Ej: 8.99" value="10.00" aria-label="Precio de la Caja" class="w-full px-3.5 py-2.5 text-sm bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none transition">
                         </div>
 
                         <div>
                             <div class="flex justify-between items-center mb-2">
-                                <h4 class="text-xs font-bold text-gray-300 uppercase tracking-wider">Objetos incluidos</h4>
-                                <button type="button" id="btn-reset-qty" aria-label="Limpiar cantidades seleccionadas" class="text-xs text-indigo-400 hover:underline cursor-pointer">Limpiar</button>
+                                <h4 class="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">Objetos incluidos</h4>
+                                <button type="button" id="btn-reset-qty" aria-label="Limpiar cantidades seleccionadas" class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold hover:underline cursor-pointer">Limpiar</button>
                             </div>
 
                             <!-- Píldoras de Categoría con Colores Temáticos Accesibles -->
                             <div role="toolbar" id="category-filter-pills" aria-label="Filtro de categorías de objetos" class="flex gap-1.5 overflow-x-auto pb-1.5 mb-2.5 no-scrollbar text-xs">
-                                <button type="button" data-category="all" aria-label="Mostrar todas las categorías" class="category-pill whitespace-nowrap px-3 py-1 bg-indigo-700 text-white font-bold rounded-full shadow-sm ring-1 ring-indigo-400/50 cursor-pointer">Todos</button>
-                                <button type="button" data-category="pases" aria-label="Filtrar por Pases de Incursión" class="category-pill whitespace-nowrap px-3 py-1 bg-gray-800 text-gray-300 hover:bg-gray-700 rounded-full cursor-pointer">Pases</button>
-                                <button type="button" data-category="incubadoras" aria-label="Filtrar por Incubadoras" class="category-pill whitespace-nowrap px-3 py-1 bg-gray-800 text-gray-300 hover:bg-gray-700 rounded-full cursor-pointer">Incubadoras</button>
-                                <button type="button" data-category="potenciadores" aria-label="Filtrar por Potenciadores" class="category-pill whitespace-nowrap px-3 py-1 bg-gray-800 text-gray-300 hover:bg-gray-700 rounded-full cursor-pointer">Potenciadores</button>
-                                <button type="button" data-category="mejoras" aria-label="Filtrar por Mejoras" class="category-pill whitespace-nowrap px-3 py-1 bg-gray-800 text-gray-300 hover:bg-gray-700 rounded-full cursor-pointer">Mejoras</button>
+                                <button type="button" data-category="all" aria-label="Mostrar todas las categorías" class="category-pill whitespace-nowrap px-3 py-1 bg-indigo-600 text-white font-bold rounded-full shadow-sm ring-1 ring-indigo-400/50 cursor-pointer">Todos</button>
+                                <button type="button" data-category="pases" aria-label="Filtrar por Pases de Incursión" class="category-pill whitespace-nowrap px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-full cursor-pointer">Pases</button>
+                                <button type="button" data-category="incubadoras" aria-label="Filtrar por Incubadoras" class="category-pill whitespace-nowrap px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-full cursor-pointer">Incubadoras</button>
+                                <button type="button" data-category="potenciadores" aria-label="Filtrar por Potenciadores" class="category-pill whitespace-nowrap px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-full cursor-pointer">Potenciadores</button>
+                                <button type="button" data-category="mejoras" aria-label="Filtrar por Mejoras" class="category-pill whitespace-nowrap px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-full cursor-pointer">Mejoras</button>
                             </div>
 
-                            <input type="text" id="search-input" aria-label="Buscar objetos en la tienda" placeholder="Buscar objeto..." class="w-full px-3 py-2 text-xs bg-gray-800 border border-gray-700 text-white rounded-xl focus:ring-2 focus:ring-indigo-500 mb-3">
+                            <input type="text" id="search-input" aria-label="Buscar objetos en la tienda" placeholder="Buscar objeto..." class="w-full px-3 py-2 text-xs bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 mb-3 transition">
 
                             <!-- Contenedor Dinámico de Objetos con Categorías -->
                             <div id="items-container" class="space-y-4 max-h-96 overflow-y-auto pr-1"></div>
                         </div>
 
                         <!-- Botón Calcular -->
-                        <button type="button" id="btn-calculate" aria-label="Calcular Rentabilidad de la Caja" class="w-full py-3.5 bg-indigo-700 hover:bg-indigo-600 text-white font-bold rounded-2xl text-sm transition shadow-lg shadow-indigo-700/40 cursor-pointer active:scale-98">
+                        <button type="button" id="btn-calculate" aria-label="Calcular Rentabilidad de la Caja" class="w-full py-3.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-2xl text-sm transition shadow-lg shadow-indigo-600/30 cursor-pointer active:scale-98">
                             Calcular Rentabilidad
                         </button>
                     </section>
 
                     <!-- Tarjeta de Resultados (Rentable Grado S) -->
-                    <section aria-labelledby="card-result-title" class="space-y-4 pt-4 border-t border-gray-800">
+                    <section aria-labelledby="card-result-title" class="space-y-4 pt-4 border-t border-gray-200 dark:border-gray-800">
                         <div class="p-6 rounded-2xl text-center space-y-4 text-white bg-emerald-700 shadow-lg">
                             <div class="inline-block px-3 py-1 text-xs font-black rounded-full bg-black/40 text-white border border-white/40">GRADO S (EXCELENTE)</div>
                             <h4 id="card-result-title" class="text-xl font-bold text-white">¡OFERTA RENTABLE! 🎉</h4>
@@ -159,7 +160,7 @@
                     </section>
 
                     <!-- Footer de la App -->
-                    <footer role="contentinfo" class="pt-4 border-t border-gray-800 text-center text-xs text-gray-500 space-y-2">
+                    <footer role="contentinfo" class="pt-4 border-t border-gray-200 dark:border-gray-800 text-center text-xs text-gray-500 dark:text-gray-400 space-y-2">
                         <p>PokeBoxValue © 2026 - Guía no oficial de Pokémon GO</p>
                     </footer>
                 </div>
@@ -171,9 +172,8 @@
     <!-- Axe-Core Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.8.2/axe.min.js"></script>
     
-    <!-- Script de Control Robusto (Funciona inmediatamente en file:// y http://) -->
+    <!-- Script de Control Robusto -->
     <script>
-        // Datos de objetos pre-cargados para máxima resiliencia sin bloqueo CORS en file://
         const DEFAULT_ITEMS = [
             {
                 id: 'pase_incursion_remota',
@@ -226,14 +226,13 @@
             }
         ];
 
-        const CATEGORY_NAMES = {
+        const CATEGORY_CONFIG = {
             pases: { label: 'Pases de Incursión', color: 'indigo' },
             incubadoras: { label: 'Incubadoras', color: 'amber' },
             potenciadores: { label: 'Potenciadores', color: 'purple' },
             mejoras: { label: 'Mejoras de Espacio', color: 'emerald' }
         };
 
-        // Renderizador de grupos y tarjetas de objetos
         function renderItemsList(items) {
             const container = document.getElementById('items-container');
             if (!container) return;
@@ -247,40 +246,40 @@
 
             container.innerHTML = Object.keys(groups).map(catKey => {
                 const groupItems = groups[catKey];
-                const catInfo = CATEGORY_NAMES[catKey] || { label: catKey.toUpperCase(), color: 'indigo' };
+                const catInfo = CATEGORY_CONFIG[catKey] || { label: catKey.toUpperCase(), color: 'indigo' };
                 const color = catInfo.color;
 
                 return `
-                    <div class="category-group p-3 rounded-2xl border border-${color}-800/60 bg-${color}-950/20 space-y-2.5" data-category="${catKey}">
-                        <div class="w-full flex items-center justify-between px-3 py-1.5 rounded-xl bg-${color}-950/70 border border-${color}-800/60">
+                    <div class="category-group p-3 rounded-2xl border border-${color}-200 dark:border-${color}-800/60 bg-${color}-50/50 dark:bg-${color}-950/20 space-y-2.5 transition-colors duration-200" data-category="${catKey}">
+                        <div class="w-full flex items-center justify-between px-3 py-1.5 rounded-xl bg-${color}-100 dark:bg-${color}-950/70 border border-${color}-200 dark:border-${color}-800/60 transition-colors duration-200">
                             <div class="flex items-center gap-2">
                                 <span class="w-2.5 h-2.5 rounded-full bg-${color}-500"></span>
-                                <span class="text-xs font-bold text-${color}-300 uppercase tracking-wider">${catInfo.label}</span>
+                                <span class="text-xs font-bold text-${color}-800 dark:text-${color}-300 uppercase tracking-wider">${catInfo.label}</span>
                             </div>
-                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-gray-800 text-${color}-300">${groupItems.length}</span>
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-white dark:bg-gray-800 text-${color}-700 dark:text-${color}-300 border border-${color}-200 dark:border-transparent">${groupItems.length}</span>
                         </div>
                         <div class="space-y-2">
                             ${groupItems.map(item => `
-                                <div class="item-card flex items-center justify-between p-2.5 bg-gray-800/90 rounded-xl border border-gray-700 transition" data-id="${item.id}">
+                                <div class="item-card flex items-center justify-between p-2.5 bg-white dark:bg-gray-700/50 rounded-xl border border-gray-200 dark:border-gray-600/50 shadow-sm transition" data-id="${item.id}">
                                     <div class="flex items-center gap-2.5 min-w-0 flex-1 pr-2">
-                                        <div class="w-11 h-11 rounded-xl bg-gray-900 flex-shrink-0 flex items-center justify-center p-1 border border-gray-700">
+                                        <div class="w-11 h-11 rounded-xl bg-slate-50 dark:bg-gray-800 flex-shrink-0 flex items-center justify-center p-1 border border-gray-200 dark:border-gray-700">
                                             ${item.svg}
                                         </div>
                                         <div class="min-w-0 flex-1">
-                                            <p class="text-xs font-bold text-white break-words">${item.name}</p>
+                                            <p class="text-xs font-bold text-gray-900 dark:text-white break-words">${item.name}</p>
                                             <div class="flex items-center gap-2 mt-0.5">
-                                                <span class="text-[11px] text-gray-400">${item.unitPrice}</span>
+                                                <span class="text-[11px] text-gray-500 dark:text-gray-400 font-medium">${item.unitPrice}</span>
                                                 <div class="flex items-center gap-1">
-                                                    <button type="button" class="btn-quick-add text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-700 hover:bg-indigo-600 text-gray-300 hover:text-white transition cursor-pointer active:scale-90" data-id="${item.id}" data-add="1" aria-label="Añadir 1 ${item.name}">+1</button>
-                                                    <button type="button" class="btn-quick-add text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-700 hover:bg-indigo-600 text-gray-300 hover:text-white transition cursor-pointer active:scale-90" data-id="${item.id}" data-add="5" aria-label="Añadir 5 ${item.name}">+5</button>
+                                                    <button type="button" class="btn-quick-add text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-600 hover:bg-indigo-600 dark:hover:bg-indigo-600 text-gray-700 dark:text-gray-200 hover:text-white dark:hover:text-white transition cursor-pointer active:scale-90" data-id="${item.id}" data-add="1" aria-label="Añadir 1 ${item.name}">+1</button>
+                                                    <button type="button" class="btn-quick-add text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-600 hover:bg-indigo-600 dark:hover:bg-indigo-600 text-gray-700 dark:text-gray-200 hover:text-white dark:hover:text-white transition cursor-pointer active:scale-90" data-id="${item.id}" data-add="5" aria-label="Añadir 5 ${item.name}">+5</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="flex items-center gap-1 bg-gray-900 border border-gray-700 rounded-lg p-1 flex-shrink-0">
-                                        <button type="button" class="btn-dec w-7 h-7 text-gray-300 hover:bg-gray-800 rounded font-bold transition active:scale-90 cursor-pointer" data-id="${item.id}" aria-label="Disminuir ${item.name}">-</button>
-                                        <input type="number" class="item-qty w-7 text-center text-xs font-bold bg-transparent text-white focus:outline-none" value="0" min="0" data-id="${item.id}" aria-label="Cantidad de ${item.name}">
-                                        <button type="button" class="btn-inc w-7 h-7 text-gray-300 hover:bg-gray-800 rounded font-bold transition active:scale-90 cursor-pointer" data-id="${item.id}" aria-label="Aumentar ${item.name}">+</button>
+                                    <div class="flex items-center gap-1 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg p-1 flex-shrink-0">
+                                        <button type="button" class="btn-dec w-7 h-7 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 rounded font-bold transition active:scale-90 cursor-pointer" data-id="${item.id}" aria-label="Disminuir ${item.name}">-</button>
+                                        <input type="number" class="item-qty w-7 text-center text-xs font-bold bg-transparent text-gray-900 dark:text-white focus:outline-none" value="0" min="0" data-id="${item.id}" aria-label="Cantidad de ${item.name}">
+                                        <button type="button" class="btn-inc w-7 h-7 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 rounded font-bold transition active:scale-90 cursor-pointer" data-id="${item.id}" aria-label="Aumentar ${item.name}">+</button>
                                     </div>
                                 </div>
                             `).join('')}
@@ -292,7 +291,6 @@
             bindItemEvents();
         }
 
-        // Vincular eventos de incremento y decremento
         function bindItemEvents() {
             document.querySelectorAll('.btn-inc').forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -343,18 +341,16 @@
             if (!card) return;
             const count = parseInt(val) || 0;
             if (count > 0) {
-                card.classList.add('border-indigo-500', 'bg-indigo-950/40');
-                card.classList.remove('border-gray-700', 'bg-gray-800/90');
+                card.classList.add('ring-2', 'ring-indigo-500', 'bg-indigo-50/70', 'dark:bg-indigo-950/40');
+                card.classList.remove('border-gray-200', 'dark:border-gray-600/50');
             } else {
-                card.classList.remove('border-indigo-500', 'bg-indigo-950/40');
-                card.classList.add('border-gray-700', 'bg-gray-800/90');
+                card.classList.remove('ring-2', 'ring-indigo-500', 'bg-indigo-50/70', 'dark:bg-indigo-950/40');
+                card.classList.add('border-gray-200', 'dark:border-gray-600/50');
             }
         }
 
-        // Ejecutar carga inicial
         renderItemsList(DEFAULT_ITEMS);
 
-        // Botón Limpiar cantidades
         document.getElementById('btn-reset-qty')?.addEventListener('click', () => {
             document.querySelectorAll('.item-qty').forEach(input => {
                 input.value = '0';
@@ -362,14 +358,14 @@
             });
         });
 
-        // Filtrado por píldoras de categoría
+        // Filtrado por píldoras
         const pills = document.querySelectorAll('#category-filter-pills .category-pill');
         pills.forEach(pill => {
             pill.addEventListener('click', () => {
                 pills.forEach(p => {
-                    p.className = 'category-pill whitespace-nowrap px-3 py-1 bg-gray-800 text-gray-300 hover:bg-gray-700 rounded-full cursor-pointer transition';
+                    p.className = 'category-pill whitespace-nowrap px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-full cursor-pointer transition';
                 });
-                pill.className = 'category-pill whitespace-nowrap px-3 py-1 bg-indigo-700 text-white font-bold rounded-full shadow-sm ring-1 ring-indigo-400/50 cursor-pointer transition';
+                pill.className = 'category-pill whitespace-nowrap px-3 py-1 bg-indigo-600 text-white font-bold rounded-full shadow-sm ring-1 ring-indigo-400/50 cursor-pointer transition';
 
                 const cat = pill.getAttribute('data-category');
                 document.querySelectorAll('.category-group').forEach(group => {
@@ -382,7 +378,7 @@
             });
         });
 
-        // Buscador de objetos en vivo
+        // Buscador
         document.getElementById('search-input')?.addEventListener('input', (e) => {
             const query = e.target.value.toLowerCase().trim();
             document.querySelectorAll('.item-card').forEach(card => {
@@ -395,25 +391,21 @@
             });
         });
 
-        // 1. Selector de Tema Claro / Oscuro
+        // 1. Selector de Tema (Claro / Oscuro)
         const btnLight = document.getElementById('btn-mode-light');
         const btnDark = document.getElementById('btn-mode-dark');
         const previewContainer = document.getElementById('preview-container');
 
         btnLight?.addEventListener('click', () => {
-            document.documentElement.classList.remove('dark');
+            previewContainer.classList.remove('dark');
             btnLight.className = 'px-3 py-1 rounded-lg transition font-bold bg-indigo-700 text-white shadow-sm cursor-pointer';
             btnDark.className = 'px-3 py-1 rounded-lg transition font-medium text-gray-400 hover:text-white cursor-pointer';
-            previewContainer.classList.remove('bg-slate-900', 'text-white', 'border-gray-800');
-            previewContainer.classList.add('bg-slate-100', 'text-gray-900', 'border-gray-300');
         });
 
         btnDark?.addEventListener('click', () => {
-            document.documentElement.classList.add('dark');
+            previewContainer.classList.add('dark');
             btnDark.className = 'px-3 py-1 rounded-lg transition font-bold bg-indigo-700 text-white shadow-sm cursor-pointer';
             btnLight.className = 'px-3 py-1 rounded-lg transition font-medium text-gray-400 hover:text-white cursor-pointer';
-            previewContainer.classList.remove('bg-slate-100', 'text-gray-900', 'border-gray-300');
-            previewContainer.classList.add('bg-slate-900', 'text-white', 'border-gray-800');
         });
 
         // 2. Selector de Viewports
@@ -434,7 +426,7 @@
             });
         });
 
-        // 3. Zoom de Texto 200%
+        // 3. Zoom de Texto
         let isZoomed = false;
         const btnZoom = document.getElementById('btn-toggle-zoom');
         const zoomStatus = document.getElementById('zoom-status');
@@ -451,7 +443,7 @@
             }
         });
 
-        // 4. Auditoría Axe-Core en Vivo
+        // 4. Auditoría Axe-Core
         document.getElementById('btn-run-axe')?.addEventListener('click', async () => {
             const resultsSection = document.getElementById('axe-results-section');
             const summaryBox = document.getElementById('axe-summary');
