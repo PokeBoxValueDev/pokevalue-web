@@ -144,7 +144,8 @@ test('visual/harness - ThemeController toggles dark mode when theme-toggle-btn i
                 remove: (c) => docClasses.delete(c),
                 contains: (c) => docClasses.has(c)
             }
-        }
+        },
+        querySelectorAll: () => []
     };
 
     const { ThemeController } = await import('../../src/ui/controllers/ThemeController.js');
@@ -182,7 +183,8 @@ test('visual/harness - ThemeController auto-detects OS prefers-color-scheme dark
                 remove: (c) => docClasses.delete(c),
                 contains: (c) => docClasses.has(c)
             }
-        }
+        },
+        querySelectorAll: () => []
     };
 
     const { ThemeController } = await import('../../src/ui/controllers/ThemeController.js');

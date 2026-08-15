@@ -73,6 +73,7 @@ let assembledIndexHtml = templateHtml
     .replace('<!-- @include about-seo -->', aboutSeoHtml)
     .replace('<!-- @include footer -->', footerHtml)
     .replace(/href="\/favicon\.svg(\?v=[^"]*)?"/g, `href="/favicon.svg?v=${appVersion}"`)
+    .replace(/href="\/favicon-light\.svg(\?v=[^"]*)?"/g, `href="/favicon-light.svg?v=${appVersion}"`)
     .replace(/href="\/favicon\.png(\?v=[^"]*)?"/g, `href="/favicon.png?v=${appVersion}"`)
     .replace(/href="\/css\/styles\.css(\?v=[^"]*)?"/g, `href="/css/styles.css?v=${appVersion}"`);
 

@@ -7,6 +7,7 @@ const STATIC_ASSETS = [
     './robots.txt',
     './sitemap.xml',
     './favicon.svg',
+    './favicon-light.svg',
     './favicon.png',
     './logo.png',
     './og-image.svg',

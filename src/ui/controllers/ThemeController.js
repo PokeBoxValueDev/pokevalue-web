@@ -39,5 +39,17 @@ export class ThemeController {
             if (lightIcon) lightIcon.classList.add('hidden');
             if (darkIcon) darkIcon.classList.remove('hidden');
         }
+
+        // Sincronizar dinámicamente el favicon de la pestaña del navegador
+        try {
+            const faviconLinks = document.querySelectorAll('link[rel="icon"], link[rel="apple-touch-icon"]');
+            faviconLinks.forEach(link => {
+                if (link && link.href) {
+                    const versionMatch = link.href.match(/\?v=([^&]+)/);
+                    const versionParam = versionMatch ? `?v=${versionMatch[1]}` : '';
+                    link.href = isDark ? `/favicon.svg${versionParam}` : `/favicon-light.svg${versionParam}`;
+                }
+            });
+        } catch (_) {}
     }
 }
