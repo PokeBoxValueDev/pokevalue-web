@@ -41,7 +41,7 @@
 
 <body
     class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100 min-h-screen flex items-center justify-center p-4">
-    <div
+    <main role="main"
         class="max-w-md w-full text-center space-y-6 bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 relative">
 
         <!-- Controles superiores (Tema e Idioma) -->
@@ -62,8 +62,8 @@
                 </svg>
             </button>
 
-            <select id="lang-select"
-                class="text-xs bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg p-1.5 focus:outline-none">
+            <select id="lang-select" aria-label="Seleccionar idioma"
+                class="text-xs bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg p-1.5 focus:outline-none cursor-pointer">
                 <option value="es">ES</option>
                 <option value="en">EN</option>
             </select>
@@ -77,8 +77,8 @@
         <!-- Contenido dinámico -->
         <div class="space-y-2">
             <h1 id="error-code" class="text-6xl font-extrabold text-indigo-600 dark:text-indigo-400">404</h1>
-            <h2 id="error-heading" class="text-xl font-bold text-gray-900 dark:text-white"></h2>
-            <p id="error-message" class="text-sm text-gray-500 dark:text-gray-400"></p>
+            <h2 id="error-heading" data-i18n="error_heading" class="text-xl font-bold text-gray-900 dark:text-white">Página no encontrada</h2>
+            <p id="error-message" data-i18n="error_message" class="text-sm text-gray-500 dark:text-gray-400">La página solicitada no existe o ha sido movida.</p>
         </div>
 
         <!-- Botón de regreso -->
@@ -88,7 +88,7 @@
                 Volver al inicio
             </a>
         </div>
-    </div>
+    </main>
 
     <!-- Script de control -->
     <script type="module">
