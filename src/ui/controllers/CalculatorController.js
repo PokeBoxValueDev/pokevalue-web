@@ -7,6 +7,7 @@ import { renderBreakdown } from '../components/BreakdownRenderer.js';
 import { renderHistory } from '../components/HistoryRenderer.js';
 import { HistoryRepository } from '../../infrastructure/repositories/HistoryRepository.js';
 import { generateSocialCardCanvas } from '../components/SocialCardGenerator.js';
+import { setCategoryFilter } from '../components/ItemCardRenderer.js';
 import { RouterController } from './RouterController.js';
 
 export class CalculatorController {
@@ -73,6 +74,9 @@ export class CalculatorController {
                     input.value = 0;
                     input.dispatchEvent(new Event('input'));
                 });
+                const searchInput = document.getElementById('search-input');
+                if (searchInput) searchInput.value = '';
+                setCategoryFilter('all');
                 CalculatorController.updateLiveSummary();
             });
         }
@@ -261,6 +265,10 @@ export class CalculatorController {
                 input.dispatchEvent(new Event('input'));
             }
         });
+
+        const searchInput = document.getElementById('search-input');
+        if (searchInput) searchInput.value = '';
+        setCategoryFilter('all');
 
         CalculatorController.updateLiveSummary();
         CalculatorController.switchView('form');

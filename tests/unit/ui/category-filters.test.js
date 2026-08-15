@@ -47,4 +47,15 @@ test('ui/category-filters - css/styles.css define utilidades .no-scrollbar y .sc
 
     assert.ok(cssContent.includes('.no-scrollbar::-webkit-scrollbar'), 'styles.css debe contener regla para webkit scrollbar');
     assert.ok(cssContent.includes('scrollbar-width: none'), 'styles.css debe contener scrollbar-width: none para Firefox');
+    assert.ok(cssContent.includes('touch-action: manipulation'), 'styles.css debe contener regla touch-action: manipulation para evitar zoom por doble toque');
 });
+
+test('ui/category-filters - setCategoryFilter("all") restablece correctamente el filtro activo', () => {
+    toggleCategoryFilter('incubadoras');
+    toggleCategoryFilter('mejoras');
+    assert.equal(getActiveCategories().length, 2);
+
+    toggleCategoryFilter('all');
+    assert.deepEqual(getActiveCategories(), ['all']);
+});
+
