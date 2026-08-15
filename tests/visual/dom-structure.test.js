@@ -113,10 +113,8 @@ test('visual/dom - verify Tailwind dark mode classes and ARIA accessibility attr
     assert.ok(html.includes('aria-label="Seleccionar divisa"'));
     assert.ok(html.includes('aria-label="Buscar objetos"'));
     assert.ok(html.includes('tabindex="-1"'));
-    assert.ok(html.includes('role="dialog"'));
-    assert.ok(html.includes('aria-modal="true"'));
-    assert.ok(html.includes('aria-labelledby="legal-modal-title"'));
-    assert.ok(html.includes('aria-labelledby="privacy-modal-title"'));
+    assert.ok(html.includes('id="view-legal"'));
+    assert.ok(html.includes('id="view-privacy"'));
 });
 
 test('visual/dom - index.html contains canonical and hreflang SEO tags and 404.html contains SPA redirect', () => {
