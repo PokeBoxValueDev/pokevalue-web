@@ -42,8 +42,10 @@ export class ItemsRepository {
                     const fileContent = fs.readFileSync(filePath, 'utf8');
                     rawData = JSON.parse(fileContent);
                 } else {
-                    // Entorno Navegador / ServiceWorker
-                    const fallbackRes = await fetch(this.fallbackUrl);
+                    // Entorno Navegador / ServiceWorker: Asegurar ruta absoluta desde la raíz del origen
+                    const cleanPath = this.fallbackUrl.replace(/^\.?\//, '');
+                    const resolvedFallbackUrl = `${window.location.origin}/${cleanPath}`;
+                    const fallbackRes = await fetch(resolvedFallbackUrl);
                     if (!fallbackRes.ok) throw new Error(`HTTP Fallback Error ${fallbackRes.status}`);
                     rawData = await fallbackRes.json();
                 }

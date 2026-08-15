@@ -13,7 +13,7 @@ import { ServiceWorkerController } from '../ui/controllers/ServiceWorkerControll
 import { RouterController } from '../ui/controllers/RouterController.js';
 import { t } from '../i18n/i18n.js';
 
-document.addEventListener('DOMContentLoaded', async () => {
+export async function initApp() {
     // 1. Detección automática de iOS (Aplica clase .is-ios si es iPhone, iPad o iPod)
     const isIOSDevice = IOSDeviceDetector.applyIOSClassIfNeeded();
     const iosBadge = document.getElementById('ios-badge');
@@ -121,4 +121,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
     }
-});
+}
+
+if (typeof document !== 'undefined') {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initApp);
+    } else {
+        initApp();
+    }
+}

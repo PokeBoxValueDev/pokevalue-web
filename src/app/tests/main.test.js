@@ -41,6 +41,7 @@ test('app integration - repository data loading flow populates state and renders
 test('app integration - main.js module imports resolve correctly without ESM SyntaxError', async () => {
     // Mock minimal DOM to allow importing main.js safely in Node environment
     globalThis.document = {
+        readyState: 'loading',
         addEventListener: () => {},
         getElementById: () => null,
         querySelectorAll: () => []
