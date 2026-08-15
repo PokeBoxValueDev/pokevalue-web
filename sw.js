@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pokeboxvalue-v1.22.3';
+const CACHE_NAME = 'pokeboxvalue-v1.22.4';
 const STATIC_ASSETS = [
     './',
     './index.html',
@@ -62,7 +62,7 @@ self.addEventListener('activate', (event) => {
     );
 });
 
-// Estrategia de Peticiones Fetch
+// Estrategia de Peticiones Fetch ultrarrápida y resiliente
 self.addEventListener('fetch', (event) => {
     const url = new URL(event.request.url);
 
@@ -71,33 +71,50 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
-    // 1. Network-First para navegación (HTML index) y datos dinámicos (items.json)
-    // Garantiza que en iPhone/Móvil se cargue siempre la última versión desplegada si hay red
     const isNavigation = event.request.mode === 'navigate' || event.request.headers.get('accept')?.includes('text/html');
     const isItemsJson = url.href.includes('items.json');
 
-    if (isNavigation || isItemsJson) {
+    // 1. Navegación (HTML): Cache-First con actualización en segundo plano para carga en 0ms
+    if (isNavigation) {
         event.respondWith(
-            fetch(event.request)
-                .then((networkResponse) => {
-                    if (networkResponse && networkResponse.status === 200) {
-                        const responseClone = networkResponse.clone();
-                        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseClone));
-                    }
-                    return networkResponse;
-                })
-                .catch(() => {
-                    return caches.match(event.request).then((cachedResponse) => {
-                        if (cachedResponse) return cachedResponse;
-                        if (isItemsJson) return caches.match('./src/assets/items-fallback.json');
-                        return caches.match('./index.html');
-                    });
-                })
+            caches.match('./index.html').then((cachedHtml) => {
+                const networkFetch = fetch(event.request)
+                    .then((networkResponse) => {
+                        if (networkResponse && networkResponse.status === 200) {
+                            const responseClone = networkResponse.clone();
+                            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseClone));
+                        }
+                        return networkResponse;
+                    })
+                    .catch(() => cachedHtml);
+
+                return cachedHtml || networkFetch;
+            })
         );
         return;
     }
 
-    // 2. Stale-While-Revalidate para assets estáticos (CSS, JS, imágenes)
+    // 2. Datos de items.json: Stale-While-Revalidate con fallback local inmediato
+    if (isItemsJson) {
+        event.respondWith(
+            caches.match(event.request).then((cachedResponse) => {
+                const fetchPromise = fetch(event.request)
+                    .then((networkResponse) => {
+                        if (networkResponse && networkResponse.status === 200) {
+                            const responseClone = networkResponse.clone();
+                            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseClone));
+                        }
+                        return networkResponse;
+                    })
+                    .catch(() => caches.match('./src/assets/items-fallback.json'));
+
+                return cachedResponse || fetchPromise;
+            })
+        );
+        return;
+    }
+
+    // 3. Stale-While-Revalidate para todos los assets estáticos (CSS, JS, imágenes, iconos)
     event.respondWith(
         caches.match(event.request).then((cachedResponse) => {
             const fetchPromise = fetch(event.request).then((networkResponse) => {

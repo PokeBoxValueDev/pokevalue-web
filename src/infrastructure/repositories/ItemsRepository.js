@@ -28,17 +28,26 @@ export class ItemsRepository {
         let rawData = null;
 
         try {
-            const response = await fetch(this.jsonUrl);
+            // Timeout de 1500ms para evitar bloqueo en conexiones lentas o límites de GitHub RAW
+            const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+            const timeoutId = controller ? setTimeout(() => controller.abort(), 1500) : null;
+
+            const response = await fetch(this.jsonUrl, {
+                signal: controller ? controller.signal : undefined
+            });
+            if (timeoutId) clearTimeout(timeoutId);
+
             if (!response.ok) throw new Error(`HTTP Error ${response.status}`);
             rawData = await response.json();
         } catch (netErr) {
-            console.warn('Fallo al obtener items.json de la red, usando fallback local:', netErr?.message || netErr);
+            console.warn('Fallo o timeout al obtener items.json de la red, usando fallback local:', netErr?.message || netErr);
             try {
                 if (typeof window === 'undefined') {
                     // Entorno Node.js (Pruebas unitarias): Cargar fallback mediante fs
                     const fs = await import('node:fs');
                     const path = await import('node:path');
-                    const filePath = path.resolve(this.fallbackUrl);
+                    const cleanPath = this.fallbackUrl.replace(/^\.?\//, '');
+                    const filePath = path.resolve(process.cwd(), cleanPath);
                     const fileContent = fs.readFileSync(filePath, 'utf8');
                     rawData = JSON.parse(fileContent);
                 } else {
