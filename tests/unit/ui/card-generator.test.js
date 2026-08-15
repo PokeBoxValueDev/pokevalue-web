@@ -2,8 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { generateSocialCardCanvas } from '../../../src/ui/components/SocialCardGenerator.js';
 
-test('ui/card-generator - Genera Blob PNG mediante Canvas y simula dimensiones y degradados', async () => {
-    let toBlobCalled = false;
+test('ui/card-generator - Genera Blob PNG en formato 16:9 (Post) y 9:16 (Story)', async () => {
+    let lastCanvasWidth = 0;
+    let lastCanvasHeight = 0;
     const mockContext = {
         createLinearGradient: () => ({ addColorStop: () => {} }),
         fillRect: () => {},
@@ -20,11 +21,12 @@ test('ui/card-generator - Genera Blob PNG mediante Canvas y simula dimensiones y
     };
 
     const mockCanvas = {
-        width: 0,
-        height: 0,
+        get width() { return lastCanvasWidth; },
+        set width(w) { lastCanvasWidth = w; },
+        get height() { return lastCanvasHeight; },
+        set height(h) { lastCanvasHeight = h; },
         getContext: () => mockContext,
         toBlob: (cb) => {
-            toBlobCalled = true;
             cb(new Blob(['mock-png'], { type: 'image/png' }));
         }
     };
@@ -50,19 +52,39 @@ test('ui/card-generator - Genera Blob PNG mediante Canvas y simula dimensiones y
     };
 
     try {
-        const blob = await generateSocialCardCanvas({
+        // Test 1: Formato Post (16:9)
+        const postBlob = await generateSocialCardCanvas({
             boxPrice: 5.99,
             totalValue: 12.50,
             diff: 6.51,
             isProfitable: true,
             grade: 'S',
             currencySymbol: '€',
-            items: ['5x Pase de incursión']
+            items: ['5x Pase de incursión'],
+            format: 'post'
         });
 
-        assert.ok(blob, 'Debe devolver un objeto Blob');
-        assert.equal(blob.type, 'image/png');
-        assert.equal(toBlobCalled, true, 'toBlob debe ser invocado');
+        assert.ok(postBlob, 'Debe devolver Blob para post');
+        assert.equal(postBlob.type, 'image/png');
+        assert.equal(lastCanvasWidth, 600, 'Canvas post debe tener ancho 600');
+        assert.equal(lastCanvasHeight, 440, 'Canvas post debe tener alto 440');
+
+        // Test 2: Formato Story (9:16)
+        const storyBlob = await generateSocialCardCanvas({
+            boxPrice: 500,
+            totalValue: 1250,
+            diff: 750,
+            isProfitable: true,
+            grade: 'S',
+            currencySymbol: '🟡',
+            items: ['10x Pase de incursión remota', '5x Super Incubadora', '2x Huevo Suerte'],
+            format: 'story'
+        });
+
+        assert.ok(storyBlob, 'Debe devolver Blob para story');
+        assert.equal(storyBlob.type, 'image/png');
+        assert.equal(lastCanvasWidth, 720, 'Canvas story debe tener ancho 720');
+        assert.equal(lastCanvasHeight, 1280, 'Canvas story debe tener alto 1280');
     } finally {
         globalThis.document = originalDoc;
         globalThis.Image = originalImage;

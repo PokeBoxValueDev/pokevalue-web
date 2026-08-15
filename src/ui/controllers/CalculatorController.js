@@ -31,6 +31,7 @@ export class CalculatorController {
         const btnResetQty = document.getElementById('btn-reset-qty');
         const siteLogo = document.getElementById('site-logo');
         const btnShare = document.getElementById('btn-share');
+        const btnShareStory = document.getElementById('btn-share-story');
         const btnShareCard = document.getElementById('btn-share-card');
         const btnReset = document.getElementById('btn-reset');
         const btnLiveViewResult = document.getElementById('btn-live-view-result');
@@ -104,12 +105,24 @@ export class CalculatorController {
             });
         }
 
+        if (btnShareStory) {
+            btnShareStory.addEventListener('click', async () => {
+                if (isSharing) return;
+                isSharing = true;
+                try {
+                    await CalculatorController.handleCardShare('story');
+                } finally {
+                    isSharing = false;
+                }
+            });
+        }
+
         if (btnShareCard) {
             btnShareCard.addEventListener('click', async () => {
                 if (isSharing) return;
                 isSharing = true;
                 try {
-                    await CalculatorController.handleCardShare();
+                    await CalculatorController.handleCardShare('post');
                 } finally {
                     isSharing = false;
                 }
@@ -303,7 +316,7 @@ Objetos incluidos:${itemsSummaryText || ' No especificados'}`;
         }
     }
 
-    static async handleCardShare() {
+    static async handleCardShare(format = 'post') {
         if (!state.lastResult || !state.lastBoxPrice) return;
 
         const curr = CURRENCY_CONFIG[state.currentCurrency] || { symbol: '€' };
@@ -316,7 +329,8 @@ Objetos incluidos:${itemsSummaryText || ' No especificados'}`;
                 isProfitable: state.lastResult.isProfitable,
                 grade: state.lastResult.grade,
                 currencySymbol: curr.symbol,
-                items: state.lastResult.itemSummary || []
+                items: state.lastResult.itemSummary || [],
+                format
             });
         } catch (canvasErr) {
             console.error("Error al generar canvas de la tarjeta:", canvasErr);
@@ -325,12 +339,13 @@ Objetos incluidos:${itemsSummaryText || ' No especificados'}`;
 
         if (!blob) return;
 
+        const filename = format === 'story' ? 'pokeboxvalue-story-9x16.png' : 'pokeboxvalue-tarjeta.png';
         const downloadBlob = (cardBlob) => {
             const url = URL.createObjectURL(cardBlob);
             const a = document.createElement('a');
             a.style.display = 'none';
             a.href = url;
-            a.download = 'pokeboxvalue-tarjeta.png';
+            a.download = filename;
             document.body.appendChild(a);
             a.click();
             setTimeout(() => {
@@ -340,7 +355,7 @@ Objetos incluidos:${itemsSummaryText || ' No especificados'}`;
         };
 
         try {
-            const file = new File([blob], 'pokeboxvalue-tarjeta.png', { type: 'image/png' });
+            const file = new File([blob], filename, { type: 'image/png' });
             if (navigator.canShare && navigator.canShare({ files: [file] })) {
                 await navigator.share({
                     title: 'PokeBoxValue - Resultado',
