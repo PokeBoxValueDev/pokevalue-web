@@ -3,153 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PokeBoxValue - Visual Test Suite</title>
+    <title>PokeBoxValue - Visual Test Suite & Axe-Core Accessibility Runner</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-900 text-white p-6 font-sans">
+<body class="bg-gray-900 text-white p-4 sm:p-6 font-sans">
     <div class="max-w-4xl mx-auto space-y-8">
-        <header class="border-b border-gray-800 pb-4">
-            <h1 class="text-2xl font-bold text-indigo-400">🎨 PokeBoxValue - Visual Test Suite</h1>
-            <p class="text-sm text-gray-400">Verificación visual interactiva de componentes de interfaz y sus estados.</p>
+        <!-- Cabecera -->
+        <header class="border-b border-gray-800 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+                <h1 class="text-2xl font-bold text-indigo-400">🎨 PokeBoxValue - Visual & A11y Test Runner</h1>
+                <p class="text-xs sm:text-sm text-gray-400">Auditoría visual y de accesibilidad dinámica conectada directamente a <code>index.html</code>.</p>
+            </div>
+            <button id="btn-run-axe" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs sm:text-sm font-bold rounded-xl transition shadow-lg shadow-indigo-600/30 flex items-center gap-2 cursor-pointer self-start sm:self-auto">
+                🔍 Ejecutar Axe-Core en Vivo
+            </button>
         </header>
 
-        <!-- Section 0: Formulario y Cabecera Principal de la Aplicación -->
-        <section class="space-y-4">
-            <h2 class="text-lg font-semibold text-gray-200">1. Cabecera y Formulario Principal Completo</h2>
-            <div class="bg-gray-800/80 p-5 rounded-2xl border border-gray-700 space-y-5">
-                <!-- Cabecera -->
-                <header class="flex justify-between items-center pb-4 border-b border-gray-700">
-                    <div class="flex items-center gap-3 select-none">
-                        <img src="/favicon.svg" alt="PokeBoxValue Logo" class="w-8 h-8">
-                        <div>
-                            <h2 class="text-xl font-bold text-indigo-400 leading-tight">PokeBoxValue</h2>
-                            <p class="text-[10px] text-gray-400">Data: 16/08/2026</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <select aria-label="Seleccionar idioma" class="bg-gray-700 text-xs px-2 py-1 rounded border border-gray-600">
-                            <option value="es">ES</option>
-                            <option value="en">EN</option>
-                        </select>
-                        <select aria-label="Seleccionar divisa" class="bg-gray-700 text-xs px-2 py-1 rounded border border-gray-600">
-                            <option value="EUR">€</option>
-                            <option value="USD">$</option>
-                            <option value="POKECOINS">🟡</option>
-                        </select>
-                        <button type="button" aria-label="Cambiar tema" class="p-1.5 bg-gray-700 text-gray-300 rounded hover:bg-gray-600">🌙</button>
-                    </div>
-                </header>
+        <!-- Resultados de Axe-Core -->
+        <section id="axe-results-section" class="hidden p-5 bg-gray-800/90 rounded-2xl border border-indigo-900/60 shadow-xl space-y-3">
+            <div class="flex items-center justify-between">
+                <h2 class="text-sm font-bold uppercase tracking-wider text-indigo-300">📊 Informe de Accesibilidad Axe-Core</h2>
+                <span id="axe-timestamp" class="text-[11px] text-gray-400"></span>
+            </div>
+            <div id="axe-summary" class="text-sm font-semibold"></div>
+            <ul id="axe-violations-list" class="space-y-2 text-xs text-gray-300"></ul>
+        </section>
 
-                <!-- Formulario -->
-                <div class="space-y-4">
-                    <div>
-                        <label for="mock-box-price" class="block text-xs font-semibold text-gray-300 mb-1">Precio de la Caja (EUR €)</label>
-                        <input type="number" id="mock-box-price" aria-label="Precio de la caja" placeholder="Ej: 8.99" value="10.00" class="w-full px-3 py-2 text-sm bg-gray-700 border border-gray-600 text-white rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-                    </div>
-
-                    <!-- Toolbar de Categorías -->
-                    <div role="toolbar" aria-label="Filtro de categorías" class="flex gap-1.5 overflow-x-auto pb-1 text-xs">
-                        <button type="button" aria-label="Mostrar todas las categorías" class="px-3 py-1 bg-indigo-600 text-white font-bold rounded-full">Todos</button>
-                        <button type="button" aria-label="Filtrar por Pases" class="px-3 py-1 bg-gray-700 text-gray-300 rounded-full hover:bg-gray-600">Pases</button>
-                        <button type="button" aria-label="Filtrar por Incubadoras" class="px-3 py-1 bg-gray-700 text-gray-300 rounded-full hover:bg-gray-600">Incubadoras</button>
-                    </div>
-
-                    <!-- Buscador -->
-                    <input type="text" aria-label="Buscar objetos en la tienda" placeholder="Buscar objeto..." class="w-full px-3 py-1.5 text-xs bg-gray-700 border border-gray-600 text-white rounded-lg focus:ring-2 focus:ring-indigo-500">
-
-                    <!-- Grupo de Categoría Pases -->
-                    <div class="p-3 rounded-2xl border border-indigo-800/60 bg-indigo-950/20 space-y-2.5">
-                        <div class="w-full flex items-center justify-between px-3 py-1.5 rounded-xl bg-indigo-950/60 border border-indigo-800/60">
-                            <div class="flex items-center gap-2">
-                                <span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span>
-                                <span class="text-xs font-bold text-indigo-300 uppercase tracking-wider">Pases de Incursión</span>
-                            </div>
-                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-gray-800 text-indigo-300">2</span>
-                        </div>
-
-                        <div class="space-y-2">
-                            <!-- Item Card 1 -->
-                            <div class="flex items-center justify-between p-2.5 bg-gray-800/90 rounded-xl border border-gray-700">
-                                <div class="flex items-center gap-2.5">
-                                    <div class="w-10 h-10 rounded-lg bg-gray-900 flex items-center justify-center text-lg">🎟️</div>
-                                    <div>
-                                        <p class="text-xs font-bold text-white">Pase de incursión remota</p>
-                                        <div class="flex items-center gap-2 mt-0.5">
-                                            <span class="text-[11px] text-gray-400">1.65 € / u.</span>
-                                            <div class="flex items-center gap-1">
-                                                <button type="button" aria-label="Añadir 1 Pase de incursión remota" class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-700 hover:bg-indigo-600 text-gray-300 hover:text-white">+1</button>
-                                                <button type="button" aria-label="Añadir 5 Pase de incursión remota" class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-700 hover:bg-indigo-600 text-gray-300 hover:text-white">+5</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="flex items-center gap-1 bg-gray-900 border border-gray-700 rounded-lg p-1">
-                                    <button type="button" aria-label="Disminuir Pase de incursión remota" class="w-7 h-7 text-gray-300 hover:bg-gray-800 rounded font-bold">-</button>
-                                    <input type="number" aria-label="Cantidad de Pase de incursión remota" value="3" class="w-6 text-center text-xs font-bold bg-transparent text-white focus:outline-none">
-                                    <button type="button" aria-label="Aumentar Pase de incursión remota" class="w-7 h-7 text-gray-300 hover:bg-gray-800 rounded font-bold">+</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Botón Calcular -->
-                    <button type="button" aria-label="Calcular rentabilidad de la caja" class="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-sm transition shadow-md">
-                        Calcular Rentabilidad
-                    </button>
+        <!-- 1. Aplicación Principal en Vivo (Sin duplicación de código) -->
+        <section class="space-y-3">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-base sm:text-lg font-semibold text-gray-200">1. Aplicación Real en Vivo (<code>index.html</code>)</h2>
+                    <p class="text-xs text-gray-400">Cargada directamente desde el HTML compilado del proyecto.</p>
                 </div>
+                <button id="btn-reload-frame" class="text-xs text-indigo-400 hover:text-indigo-300 font-medium cursor-pointer">
+                    🔄 Recargar App
+                </button>
+            </div>
+            <div class="rounded-2xl border border-gray-700 overflow-hidden bg-slate-900 shadow-2xl">
+                <iframe id="app-frame" src="../../index.html" title="PokeBoxValue Aplicación Real" class="w-full h-[620px] bg-slate-50 dark:bg-gray-900"></iframe>
             </div>
         </section>
 
-        <!-- Section 2: Tarjetas del Historial -->
-        <section class="space-y-4">
-            <h2 class="text-lg font-semibold text-gray-200">2. Tarjetas del Historial</h2>
+        <!-- 2. Tarjetas de Resultado y Estados Visuales -->
+        <section class="space-y-4 pt-4 border-t border-gray-800">
+            <h2 class="text-base sm:text-lg font-semibold text-gray-200">2. Estados de Tarjetas de Resultado</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <!-- Profitable EUR -->
-                <div class="p-3 bg-gray-800 rounded-xl border border-gray-700 flex items-center justify-between shadow-sm">
-                    <div class="space-y-0.5">
-                        <div class="flex items-center gap-2">
-                            <span class="text-xs font-bold text-emerald-500 bg-emerald-950/30 px-2 py-0.5 rounded-full">Rentable</span>
-                            <span class="text-[10px] text-gray-400">30 jul, 14:00</span>
-                        </div>
-                        <p class="text-xs text-gray-300">
-                            Precio caja: <b>10.00€</b> | Valor real: <b>15.50€</b>
-                        </p>
-                    </div>
-                    <button class="text-xs text-indigo-400 font-semibold hover:underline">Restaurar</button>
-                </div>
-
-                <!-- Not Profitable PokeCoins -->
-                <div class="p-3 bg-gray-800 rounded-xl border border-gray-700 flex items-center justify-between shadow-sm">
-                    <div class="space-y-0.5">
-                        <div class="flex items-center gap-2">
-                            <span class="text-xs font-bold text-rose-500 bg-rose-950/30 px-2 py-0.5 rounded-full">No rentable</span>
-                            <span class="text-[10px] text-gray-400">30 jul, 13:45</span>
-                        </div>
-                        <p class="text-xs text-gray-300">
-                            Precio caja: <b>500🟡</b> | Valor real: <b>320🟡</b>
-                        </p>
-                    </div>
-                    <button class="text-xs text-indigo-400 font-semibold hover:underline">Restaurar</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 2: Result Cards -->
-        <section class="space-y-4">
-            <h2 class="text-lg font-semibold text-gray-200">2. Tarjetas de Resultado (Rentable vs No Rentable)</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <!-- Profitable -->
-                <div class="p-6 rounded-xl text-center space-y-4 text-white bg-emerald-600 shadow-lg">
-                    <h2 class="text-xl font-bold">¡OFERTA RENTABLE! 🎉</h2>
-                    <div class="grid grid-cols-2 gap-2 text-sm bg-black/20 p-3 rounded-lg backdrop-blur-sm">
-                        <div>
-                            <span class="block text-xs opacity-80">Precio caja:</span>
-                            <strong class="text-base">10.00€</strong>
-                        </div>
-                        <div>
-                            <span class="block text-xs opacity-80">Valor real:</span>
-                            <strong class="text-base">18.50€</strong>
-                        </div>
+                <!-- Oferta Rentable -->
+                <div class="p-6 rounded-2xl text-center space-y-4 text-white bg-emerald-600 shadow-lg">
+                    <div class="inline-block px-3 py-1 text-xs font-black rounded-full bg-white/20">GRADO S (EXCELENTE)</div>
+                    <h3 class="text-xl font-bold">¡OFERTA RENTABLE! 🎉</h3>
+                    <div class="grid grid-cols-2 gap-2 text-sm bg-black/20 p-3 rounded-xl backdrop-blur-sm">
+                        <div><span class="block text-xs opacity-80">Precio caja:</span><strong class="text-base">10.00€</strong></div>
+                        <div><span class="block text-xs opacity-80">Valor real:</span><strong class="text-base">18.50€</strong></div>
                     </div>
                     <div class="pt-2 border-t border-white/20">
                         <span class="block text-xs uppercase tracking-wider font-semibold opacity-80">Ahorras:</span>
@@ -157,18 +63,13 @@
                     </div>
                 </div>
 
-                <!-- Not Profitable -->
-                <div class="p-6 rounded-xl text-center space-y-4 text-white bg-rose-600 shadow-lg">
-                    <h2 class="text-xl font-bold">NO VALE LA PENA ❌</h2>
-                    <div class="grid grid-cols-2 gap-2 text-sm bg-black/20 p-3 rounded-lg backdrop-blur-sm">
-                        <div>
-                            <span class="block text-xs opacity-80">Precio caja:</span>
-                            <strong class="text-base">20.00€</strong>
-                        </div>
-                        <div>
-                            <span class="block text-xs opacity-80">Valor real:</span>
-                            <strong class="text-base">12.00€</strong>
-                        </div>
+                <!-- No Rentable -->
+                <div class="p-6 rounded-2xl text-center space-y-4 text-white bg-rose-600 shadow-lg">
+                    <div class="inline-block px-3 py-1 text-xs font-black rounded-full bg-white/20">GRADO F (POBRE)</div>
+                    <h3 class="text-xl font-bold">NO VALE LA PENA ❌</h3>
+                    <div class="grid grid-cols-2 gap-2 text-sm bg-black/20 p-3 rounded-xl backdrop-blur-sm">
+                        <div><span class="block text-xs opacity-80">Precio caja:</span><strong class="text-base">20.00€</strong></div>
+                        <div><span class="block text-xs opacity-80">Valor real:</span><strong class="text-base">12.00€</strong></div>
                     </div>
                     <div class="pt-2 border-t border-white/20">
                         <span class="block text-xs uppercase tracking-wider font-semibold opacity-80">Pierdes:</span>
@@ -178,79 +79,89 @@
             </div>
         </section>
 
-        <!-- Section 3: Category Breakdown -->
-        <section class="space-y-4">
-            <h2 class="text-lg font-semibold text-gray-200">3. Desglose del Valor por Categorías</h2>
-            <div class="p-4 bg-gray-800 rounded-xl border border-gray-700 space-y-3">
+        <!-- 3. Desglose del Valor por Categorías -->
+        <section class="space-y-4 pt-4 border-t border-gray-800">
+            <h2 class="text-base sm:text-lg font-semibold text-gray-200">3. Desglose de Categorías y Gráficos</h2>
+            <div class="p-4 bg-gray-800/80 rounded-2xl border border-gray-700 space-y-3">
                 <div class="space-y-1">
                     <div class="flex justify-between text-xs font-semibold">
-                        <span class="text-gray-300 flex items-center gap-1.5">
-                            <span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span> Pases de Incursión
-                        </span>
+                        <span class="text-gray-300 flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span> Pases de Incursión</span>
                         <span class="text-white font-bold">10.00 € (54%)</span>
                     </div>
-                    <div class="w-full bg-gray-700 h-2 rounded-full overflow-hidden">
+                    <div class="w-full bg-gray-700 h-2.5 rounded-full overflow-hidden">
                         <div class="bg-indigo-500 h-full rounded-full" style="width: 54%"></div>
                     </div>
                 </div>
-
                 <div class="space-y-1">
                     <div class="flex justify-between text-xs font-semibold">
-                        <span class="text-gray-300 flex items-center gap-1.5">
-                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Incubadoras
-                        </span>
+                        <span class="text-gray-300 flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Incubadoras</span>
                         <span class="text-white font-bold">6.00 € (32%)</span>
                     </div>
-                    <div class="w-full bg-gray-700 h-2 rounded-full overflow-hidden">
+                    <div class="w-full bg-gray-700 h-2.5 rounded-full overflow-hidden">
                         <div class="bg-amber-500 h-full rounded-full" style="width: 32%"></div>
                     </div>
                 </div>
             </div>
         </section>
-
-        <!-- Section 4: Axe-Core Automated Accessibility Audit -->
-        <section class="space-y-4 pt-4 border-t border-gray-800">
-            <div class="flex items-center justify-between">
-                <div>
-                    <h2 class="text-lg font-semibold text-gray-200">4. Auditoría de Accesibilidad Axe-Core en Vivo</h2>
-                    <p class="text-xs text-gray-400">Ejecuta el motor axe-core oficial de Deque Systems directamente en este DOM.</p>
-                </div>
-                <button id="btn-run-axe" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-lg transition shadow-md cursor-pointer">
-                    🔍 Ejecutar Axe-Core
-                </button>
-            </div>
-            <div id="axe-results" class="p-4 bg-gray-800/80 rounded-xl border border-gray-700 text-xs space-y-2 hidden">
-                <div id="axe-summary" class="font-bold"></div>
-                <ul id="axe-violations-list" class="space-y-1 text-gray-300"></ul>
-            </div>
-        </section>
     </div>
 
-    <!-- Axe-Core Library -->
+    <!-- Librería Axe-Core Oficial de Deque Systems -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.8.2/axe.min.js"></script>
     <script>
-        document.getElementById('btn-run-axe')?.addEventListener('click', async () => {
-            const resultsBox = document.getElementById('axe-results');
-            const summaryBox = document.getElementById('axe-summary');
-            const list = document.getElementById('axe-violations-list');
-            
-            if (!resultsBox || !summaryBox || !list || typeof axe === 'undefined') return;
-            
-            resultsBox.classList.remove('hidden');
-            summaryBox.innerHTML = '<span class="text-indigo-400">Analizando DOM con Axe-Core...</span>';
-            list.innerHTML = '';
+        const iframe = document.getElementById('app-frame');
+        const btnReload = document.getElementById('btn-reload-frame');
+        const btnRunAxe = document.getElementById('btn-run-axe');
+        const resultsSection = document.getElementById('axe-results-section');
+        const summaryBox = document.getElementById('axe-summary');
+        const violationsList = document.getElementById('axe-violations-list');
+        const timestampBox = document.getElementById('axe-timestamp');
+
+        btnReload?.addEventListener('click', () => {
+            if (iframe) iframe.src = iframe.src;
+        });
+
+        btnRunAxe?.addEventListener('click', async () => {
+            if (!resultsSection || !summaryBox || !violationsList || typeof axe === 'undefined') return;
+
+            resultsSection.classList.remove('hidden');
+            summaryBox.innerHTML = '<span class="text-indigo-400 animate-pulse">⏳ Ejecutando análisis Axe-Core en la aplicación real (index.html)...</span>';
+            violationsList.innerHTML = '';
+            if (timestampBox) timestampBox.innerText = new Date().toLocaleTimeString();
 
             try {
-                const results = await axe.run();
+                // Auditar tanto el documento contenedor como el iframe real de la app
+                let targetContext = document;
+                if (iframe && iframe.contentDocument && iframe.contentDocument.body) {
+                    targetContext = iframe.contentDocument;
+                }
+
+                const results = await axe.run(targetContext);
+
                 if (results.violations.length === 0) {
-                    summaryBox.innerHTML = `<span class="text-emerald-400">✅ ¡Enhorabuena! Axe-Core no ha detectado ninguna violación de accesibilidad. (${results.passes.length} reglas WCAG pasadas con éxito).</span>`;
+                    summaryBox.innerHTML = `
+                        <div class="p-3 bg-emerald-950/40 border border-emerald-800/60 rounded-xl text-emerald-400 flex items-center gap-2">
+                            <span>✅</span>
+                            <span><b>¡100% Accesible!</b> Axe-Core no detectó violaciones. (${results.passes.length} reglas de accesibilidad WCAG 2.1 AA/AAA superadas con éxito).</span>
+                        </div>
+                    `;
                 } else {
-                    summaryBox.innerHTML = `<span class="text-rose-400">⚠️ Se encontraron ${results.violations.length} problemas de accesibilidad:</span>`;
+                    summaryBox.innerHTML = `
+                        <div class="p-3 bg-rose-950/40 border border-rose-800/60 rounded-xl text-rose-400">
+                            ⚠️ Se detectaron ${results.violations.length} problemas de accesibilidad a revisar:
+                        </div>
+                    `;
                     results.violations.forEach(v => {
                         const li = document.createElement('li');
-                        li.className = 'p-2 bg-gray-900/60 rounded border border-rose-900/50';
-                        li.innerHTML = `<strong class="text-rose-300">[${v.impact.toUpperCase()}] ${v.help}</strong>: <span class="text-gray-400">${v.description}</span>`;
-                        list.appendChild(li);
+                        li.className = 'p-3 bg-gray-900/80 rounded-xl border border-rose-900/40 space-y-1';
+                        li.innerHTML = `
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-rose-300 uppercase">[${v.impact || 'MENOR'}] ${v.help}</span>
+                                <a href="${v.helpUrl}" target="_blank" rel="noopener" class="text-[10px] text-indigo-400 hover:underline">Info W3C ↗</a>
+                            </div>
+                            <p class="text-gray-400">${v.description}</p>
+                            <code class="block p-1.5 bg-black/40 rounded text-[11px] text-gray-300 font-mono overflow-x-auto">${v.nodes.map(n => n.html).join('<br>')}</code>
+                        `;
+                        violationsList.appendChild(li);
                     });
                 }
             } catch (err) {
