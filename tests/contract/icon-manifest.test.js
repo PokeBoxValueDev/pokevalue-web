@@ -8,6 +8,8 @@ test('Icon y Manifest - Verificación de configuración y assets', (t) => {
     const rootDir = process.cwd();
     const faviconPath = path.join(rootDir, 'favicon.svg');
     const manifestPath = path.join(rootDir, 'manifest.json');
+    const indexPath = path.join(rootDir, 'index.html');
+    const notFoundPath = path.join(rootDir, '404.html');
 
     // 1. Verificar existencia de favicon.svg y contenido SVG válido
     assert.strictEqual(fs.existsSync(faviconPath), true, 'favicon.svg debe existir en la raíz');
@@ -23,6 +25,13 @@ test('Icon y Manifest - Verificación de configuración y assets', (t) => {
     const svgIcon = manifest.icons.find(i => i.src === 'favicon.svg');
     assert.ok(svgIcon, 'manifest.json debe incluir favicon.svg');
     assert.strictEqual(svgIcon.purpose, 'any maskable', 'El icono SVG debe tener purpose "any maskable"');
+
+    // 3. Cache-busting automático en index.html y 404.html
+    const indexHtml = fs.readFileSync(indexPath, 'utf8');
+    assert.ok(indexHtml.includes(`href="/favicon.svg?v=${APP_VERSION}"`), `index.html debe contener favicon versionado con ?v=${APP_VERSION}`);
+
+    const notFoundHtml = fs.readFileSync(notFoundPath, 'utf8');
+    assert.ok(notFoundHtml.includes(`href="/favicon.svg?v=${APP_VERSION}"`), `404.html debe contener favicon versionado con ?v=${APP_VERSION}`);
 });
 
 test('SemVer - Sincronización de versiones en config, package.json y sw.js', (t) => {

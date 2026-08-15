@@ -8,9 +8,14 @@ const viewsDir = path.join(componentsDir, 'views');
 const templatesDir = path.join(rootDir, 'src', 'templates');
 const templateHtmlPath = path.join(templatesDir, 'index.template.html');
 const indexHtmlPath = path.join(rootDir, 'index.html');
+const notFoundHtmlPath = path.join(rootDir, '404.html');
 const viewsDataJsPath = path.join(rootDir, 'src', 'ui', 'components', 'views-data.js');
+const pkgPath = path.join(rootDir, 'package.json');
 
 console.log('🔨 Ensamblando componentes modulares...');
+
+const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
+const appVersion = pkg.version || '1.0.0';
 
 const templateHtml = fs.readFileSync(templateHtmlPath, 'utf8');
 
@@ -55,8 +60,8 @@ const footerHtml = fs.readFileSync(path.join(componentsDir, 'footer.html'), 'utf
 // Sustituir include de historial en form.html si existe
 formHtml = formHtml.replace('<!--#include "history.html"-->', historyHtml);
 
-// Sustituir componentes de la calculadora en la plantilla maestra
-const assembledIndexHtml = templateHtml
+// Sustituir componentes de la calculadora en la plantilla maestra con Cache Busting automático para favicon y CSS
+let assembledIndexHtml = templateHtml
     .replace('<!-- @include head-seo-schema -->', headSeoSchemaHtml)
     .replace('<!-- @include head-theme-init -->', headThemeInitHtml)
     .replace('<!-- @include head-cookie-consent -->', headCookieConsentHtml)
@@ -66,7 +71,18 @@ const assembledIndexHtml = templateHtml
     .replace('<!-- @include result -->', resultHtml)
     .replace('<!-- @include kofi -->', kofiHtml)
     .replace('<!-- @include about-seo -->', aboutSeoHtml)
-    .replace('<!-- @include footer -->', footerHtml);
+    .replace('<!-- @include footer -->', footerHtml)
+    .replace(/href="\/favicon\.svg(\?v=[^"]*)?"/g, `href="/favicon.svg?v=${appVersion}"`)
+    .replace(/href="\/favicon\.png(\?v=[^"]*)?"/g, `href="/favicon.png?v=${appVersion}"`)
+    .replace(/href="\/css\/styles\.css(\?v=[^"]*)?"/g, `href="/css/styles.css?v=${appVersion}"`);
 
 fs.writeFileSync(indexHtmlPath, assembledIndexHtml, 'utf8');
-console.log('✅ index.html ensamblado con éxito (núcleo ligero sin vistas secundarias inyectadas).');
+console.log(`✅ index.html ensamblado con éxito (Cache-Busting activado para v${appVersion}).`);
+
+// Actualizar también 404.html con versión para cache busting del favicon
+if (fs.existsSync(notFoundHtmlPath)) {
+    let notFoundHtml = fs.readFileSync(notFoundHtmlPath, 'utf8');
+    notFoundHtml = notFoundHtml.replace(/href="\/favicon\.svg(\?v=[^"]*)?"/g, `href="/favicon.svg?v=${appVersion}"`);
+    fs.writeFileSync(notFoundHtmlPath, notFoundHtml, 'utf8');
+    console.log(`✅ 404.html actualizado con Cache-Busting del favicon v${appVersion}.`);
+}
