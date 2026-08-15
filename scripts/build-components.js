@@ -86,3 +86,12 @@ if (fs.existsSync(notFoundHtmlPath)) {
     fs.writeFileSync(notFoundHtmlPath, notFoundHtml, 'utf8');
     console.log(`✅ 404.html actualizado con Cache-Busting del favicon v${appVersion}.`);
 }
+
+// Sincronizar versión en tests/visual/visual-test-runner.html
+const visualRunnerPath = path.join(rootDir, 'tests', 'visual', 'visual-test-runner.html');
+if (fs.existsSync(visualRunnerPath)) {
+    let visualRunnerHtml = fs.readFileSync(visualRunnerPath, 'utf8');
+    visualRunnerHtml = visualRunnerHtml.replace(/v\d+\.\d+\.\d+/g, `v${appVersion}`);
+    fs.writeFileSync(visualRunnerPath, visualRunnerHtml, 'utf8');
+    console.log(`✅ visual-test-runner.html sincronizado con versión v${appVersion}.`);
+}
