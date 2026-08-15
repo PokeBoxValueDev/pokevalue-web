@@ -56,10 +56,12 @@ export function runProductionBuild() {
 
     // 5. Copiar Assets Estáticos Críticos
     const staticFiles = [
-        'favicon.ico',
+        'ads.txt',
+        'CNAME',
         'favicon.svg',
         'favicon.png',
-        'og-image.png',
+        'logo.png',
+        'og-image.svg',
         'manifest.json',
         'robots.txt',
         'sitemap.xml',
