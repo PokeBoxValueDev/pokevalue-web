@@ -1,0 +1,19 @@
+{
+  "name": "pokeboxvalue-web",
+  "version": "1.28.4",
+  "private": true,
+  "license": "UNLICENSED",
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/dev-server.js",
+    "build": "node scripts/bundle.js",
+    "build:html": "node scripts/build-components.js",
+    "lint": "node --check src/**/*.js tests/**/*.js sw.js scripts/*.js",
+    "test": "node scripts/build-components.js && node scripts/bundle.js && npm run lint && node --test tests/**/*.test.js",
+    "test:unit": "node --test tests/unit/**/*.test.js",
+    "test:contract": "node --test tests/contract/*.test.js",
+    "test:visual": "node --test tests/visual/*.test.js",
+    "tag": "node scripts/tag-release.js",
+    "prepare": "node scripts/build-components.js && node scripts/setup-hooks.js"
+  }
+}

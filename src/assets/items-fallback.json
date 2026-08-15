@@ -1,0 +1,176 @@
+{
+  "last_updated": "2026-07-29",
+  "currency": "EUR",
+  "pokecoin_rates": {
+    "base_eur_per_coin": 0.009083,
+    "optimal_eur_per_coin": 0.006666,
+    "default_eur_per_coin": 0.009083
+  },
+  "objetos": [
+    {
+      "id": "pase_incursion_remota",
+      "name_es": "Pase de incursión remota",
+      "name_en": "Remote Raid Pass",
+      "category": "pases",
+      "pack_size": 2,
+      "pack_price_eur": 3.29,
+      "unit_price_eur": 1.645,
+      "unit_price_coins": 181,
+      "svg": "<svg viewBox=\"0 0 64 64\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-10 h-10\"><defs><linearGradient id=\"rrpGrad\" x1=\"0\" y1=\"0\" x2=\"64\" y2=\"64\"><stop offset=\"0%\" stop-color=\"#00E5FF\"/><stop offset=\"100%\" stop-color=\"#2979FF\"/></linearGradient><filter id=\"rrpShadow\" x=\"-20%\" y=\"-20%\" width=\"140%\" height=\"140%\"><feDropShadow dx=\"0\" dy=\"2\" stdDeviation=\"2\" flood-opacity=\"0.3\"/></filter></defs><rect x=\"8\" y=\"16\" width=\"48\" height=\"32\" rx=\"6\" fill=\"url(#rrpGrad)\" filter=\"url(#rrpShadow)\"/><path d=\"M12 32 H52\" stroke=\"white\" stroke-width=\"2\" stroke-dasharray=\"4 4\" opacity=\"0.5\"/><circle cx=\"32\" cy=\"32\" r=\"10\" fill=\"#1A237E\"/><circle cx=\"32\" cy=\"32\" r=\"6\" stroke=\"#00E5FF\" stroke-width=\"2\"/><circle cx=\"32\" cy=\"32\" r=\"2\" fill=\"#00E5FF\"/></svg>"
+    },
+    {
+      "id": "pase_combate_premium",
+      "name_es": "Pase de combate prémium",
+      "name_en": "Premium Battle Pass",
+      "category": "pases",
+      "pack_size": 3,
+      "pack_price_eur": 3.29,
+      "unit_price_eur": 1.0967,
+      "unit_price_coins": 121,
+      "svg": "<svg viewBox=\"0 0 64 64\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-10 h-10\"><defs><linearGradient id=\"pbpGrad\" x1=\"0\" y1=\"0\" x2=\"64\" y2=\"64\"><stop offset=\"0%\" stop-color=\"#69F0AE\"/><stop offset=\"100%\" stop-color=\"#00C853\"/></linearGradient><filter id=\"pbpShadow\" x=\"-20%\" y=\"-20%\" width=\"140%\" height=\"140%\"><feDropShadow dx=\"0\" dy=\"2\" stdDeviation=\"2\" flood-opacity=\"0.3\"/></filter></defs><rect x=\"8\" y=\"16\" width=\"48\" height=\"32\" rx=\"6\" fill=\"url(#pbpGrad)\" filter=\"url(#pbpShadow)\"/><path d=\"M12 32 H52\" stroke=\"white\" stroke-width=\"2\" stroke-dasharray=\"4 4\" opacity=\"0.5\"/><circle cx=\"32\" cy=\"32\" r=\"10\" fill=\"#1B5E20\"/><path d=\"M28 28 L36 36 M36 28 L28 36\" stroke=\"#69F0AE\" stroke-width=\"3\" stroke-linecap=\"round\"/></svg>"
+    },
+    {
+      "id": "incubadora",
+      "name_es": "Incubadora",
+      "name_en": "Egg Incubator",
+      "category": "incubadoras",
+      "pack_size": 3,
+      "pack_price_eur": 3.29,
+      "unit_price_eur": 1.0967,
+      "unit_price_coins": 121,
+      "svg": "<svg viewBox=\"0 0 64 64\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-10 h-10\"><defs><linearGradient id=\"incGrad\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"64\"><stop offset=\"0%\" stop-color=\"#FF9800\"/><stop offset=\"100%\" stop-color=\"#F57C00\"/></linearGradient><linearGradient id=\"glassGrad\" x1=\"0\" y1=\"16\" x2=\"0\" y2=\"48\"><stop offset=\"0%\" stop-color=\"#E0F7FA\"/><stop offset=\"100%\" stop-color=\"#80DEEA\"/></linearGradient></defs><path d=\"M24 16 C24 10, 40 10, 40 16 Z\" fill=\"url(#incGrad)\"/><rect x=\"24\" y=\"16\" width=\"16\" height=\"32\" fill=\"url(#glassGrad)\" opacity=\"0.8\"/><ellipse cx=\"32\" cy=\"36\" rx=\"5\" ry=\"7\" fill=\"#FFB74D\" opacity=\"0.9\"/><path d=\"M24 48 C24 54, 40 54, 40 48 Z\" fill=\"url(#incGrad)\"/><rect x=\"22\" y=\"46\" width=\"20\" height=\"4\" rx=\"2\" fill=\"#E65100\"/></svg>"
+    },
+    {
+      "id": "superincubadora",
+      "name_es": "Superincubadora",
+      "name_en": "Super Incubator",
+      "category": "incubadoras",
+      "pack_size": 2,
+      "pack_price_eur": 3.29,
+      "unit_price_eur": 1.645,
+      "unit_price_coins": 181,
+      "svg": "<svg viewBox=\"0 0 64 64\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-10 h-10\"><defs><linearGradient id=\"sincGrad\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"64\"><stop offset=\"0%\" stop-color=\"#E040FB\"/><stop offset=\"100%\" stop-color=\"#7B1FA2\"/></linearGradient><linearGradient id=\"sGlassGrad\" x1=\"0\" y1=\"16\" x2=\"0\" y2=\"48\"><stop offset=\"0%\" stop-color=\"#F3E5F5\"/><stop offset=\"100%\" stop-color=\"#CE93D8\"/></linearGradient></defs><path d=\"M22 16 C22 8, 42 8, 42 16 Z\" fill=\"url(#sincGrad)\"/><rect x=\"24\" y=\"16\" width=\"16\" height=\"32\" fill=\"url(#sGlassGrad)\" opacity=\"0.8\"/><ellipse cx=\"32\" cy=\"36\" rx=\"5\" ry=\"7\" fill=\"#18FFFF\" opacity=\"0.9\"/><path d=\"M22 48 C22 56, 42 56, 42 48 Z\" fill=\"url(#sincGrad)\"/><rect x=\"20\" y=\"46\" width=\"24\" height=\"4\" rx=\"2\" fill=\"#4A148C\"/></svg>"
+    },
+    {
+      "id": "huevo_suerte",
+      "name_es": "Huevo Suerte",
+      "name_en": "Lucky Egg",
+      "category": "potenciadores",
+      "pack_size": 8,
+      "pack_price_eur": 5.49,
+      "unit_price_eur": 0.6863,
+      "unit_price_coins": 76,
+      "svg": "<svg viewBox=\"0 0 64 64\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-10 h-10\"><defs><radialGradient id=\"eggAura\" cx=\"32\" cy=\"32\" r=\"32\"><stop offset=\"40%\" stop-color=\"#B2EBF2\" stop-opacity=\"0.5\"/><stop offset=\"100%\" stop-color=\"#B2EBF2\" stop-opacity=\"0\"/></radialGradient><linearGradient id=\"eggBody\" x1=\"16\" y1=\"8\" x2=\"48\" y2=\"56\"><stop offset=\"0%\" stop-color=\"#FFFFFF\"/><stop offset=\"100%\" stop-color=\"#80DEEA\"/></linearGradient></defs><circle cx=\"32\" cy=\"32\" r=\"24\" fill=\"url(#eggAura)\"/><path d=\"M32 12 C20 12, 18 30, 18 42 C18 52, 24 56, 32 56 C40 56, 46 52, 46 42 C46 30, 44 12, 32 12 Z\" fill=\"url(#eggBody)\"/><ellipse cx=\"26\" cy=\"26\" rx=\"4\" ry=\"6\" fill=\"#4DD0E1\" opacity=\"0.4\" transform=\"rotate(-15 26 26)\"/><ellipse cx=\"38\" cy=\"40\" rx=\"3\" ry=\"5\" fill=\"#4DD0E1\" opacity=\"0.4\" transform=\"rotate(20 38 40)\"/></svg>"
+    },
+    {
+      "id": "trozo_estrella",
+      "name_es": "Trozo Estrella",
+      "name_en": "Star Piece",
+      "category": "potenciadores",
+      "pack_size": 8,
+      "pack_price_eur": 6.49,
+      "unit_price_eur": 0.8113,
+      "unit_price_coins": 89,
+      "svg": "<svg viewBox=\"0 0 64 64\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-10 h-10\"><defs><linearGradient id=\"starP1\" x1=\"32\" y1=\"8\" x2=\"32\" y2=\"32\"><stop offset=\"0%\" stop-color=\"#FFE57F\"/><stop offset=\"100%\" stop-color=\"#FFC107\"/></linearGradient><linearGradient id=\"starP2\" x1=\"12\" y1=\"32\" x2=\"32\" y2=\"32\"><stop offset=\"0%\" stop-color=\"#FF8A80\"/><stop offset=\"100%\" stop-color=\"#FF5252\"/></linearGradient><linearGradient id=\"starP3\" x1=\"52\" y1=\"32\" x2=\"32\" y2=\"32\"><stop offset=\"0%\" stop-color=\"#FFD180\"/><stop offset=\"100%\" stop-color=\"#FF9800\"/></linearGradient></defs><path d=\"M32 6 L40 28 L24 28 Z\" fill=\"url(#starP1)\"/><path d=\"M12 30 L28 24 L28 40 Z\" fill=\"url(#starP2)\"/><path d=\"M52 30 L36 24 L36 40 Z\" fill=\"url(#starP3)\"/><path d=\"M26 42 L32 56 L38 42 Z\" fill=\"#FFB74D\"/><circle cx=\"32\" cy=\"32\" r=\"6\" fill=\"#FFFF8D\" opacity=\"0.8\"/></svg>"
+    },
+    {
+      "id": "almacenamiento_pokemon",
+      "name_es": "Almacenamiento de Pokémon",
+      "name_en": "Pokémon Storage Upgrade",
+      "category": "mejoras",
+      "pack_size": 1,
+      "pack_price_eur": 2.19,
+      "unit_price_eur": 2.19,
+      "unit_price_coins": 200,
+      "svg": "<svg viewBox=\"0 0 64 64\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-10 h-10\"><defs><linearGradient id=\"boxGrad\" x1=\"12\" y1=\"16\" x2=\"52\" y2=\"56\"><stop offset=\"0%\" stop-color=\"#ECEFF1\"/><stop offset=\"100%\" stop-color=\"#B0BEC5\"/></linearGradient><linearGradient id=\"screenGrad\" x1=\"16\" y1=\"24\" x2=\"48\" y2=\"40\"><stop offset=\"0%\" stop-color=\"#18FFFF\"/><stop offset=\"100%\" stop-color=\"#00B0FF\"/></linearGradient></defs><rect x=\"12\" y=\"16\" width=\"40\" height=\"36\" rx=\"4\" fill=\"url(#boxGrad)\" stroke=\"#78909C\" stroke-width=\"2\"/><rect x=\"16\" y=\"22\" width=\"32\" height=\"16\" rx=\"2\" fill=\"url(#screenGrad)\"/><circle cx=\"24\" cy=\"46\" r=\"3\" fill=\"#00E676\"/><circle cx=\"32\" cy=\"46\" r=\"3\" fill=\"#FF1744\"/><rect x=\"38\" y=\"45\" width=\"8\" height=\"2\" fill=\"#78909C\"/></svg>"
+    },
+    {
+      "id": "aumento_espacio_bolsa",
+      "name_es": "Aumento de espacio (Bolsa)",
+      "name_en": "Item Bag Upgrade",
+      "category": "mejoras",
+      "pack_size": 1,
+      "pack_price_eur": 2.19,
+      "unit_price_eur": 2.19,
+      "unit_price_coins": 200,
+      "svg": "<svg viewBox=\"0 0 64 64\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-10 h-10\"><defs><linearGradient id=\"bagGrad\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"64\"><stop offset=\"0%\" stop-color=\"#4FC3F7\"/><stop offset=\"100%\" stop-color=\"#0288D1\"/></linearGradient></defs><path d=\"M26 20 C26 12, 38 12, 38 20\" stroke=\"#FF9800\" stroke-width=\"4\" fill=\"none\" stroke-linecap=\"round\"/><rect x=\"16\" y=\"20\" width=\"32\" height=\"36\" rx=\"8\" fill=\"url(#bagGrad)\"/><rect x=\"22\" y=\"32\" width=\"20\" height=\"16\" rx=\"4\" fill=\"#E1F5FE\" opacity=\"0.9\"/><rect x=\"22\" y=\"20\" width=\"4\" height=\"36\" fill=\"#01579B\" opacity=\"0.3\"/><rect x=\"38\" y=\"20\" width=\"4\" height=\"36\" fill=\"#01579B\" opacity=\"0.3\"/></svg>"
+    },
+    {
+      "id": "carga_union_600",
+      "name_es": "600 de Carga Unión",
+      "name_en": "600 Fusion Energy",
+      "category": "combates",
+      "pack_size": 1,
+      "pack_price_eur": 3.29,
+      "unit_price_eur": 3.29,
+      "unit_price_coins": 362,
+      "svg": "<svg viewBox=\"0 0 64 64\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-10 h-10\"><defs><linearGradient id=\"fe1\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"64\"><stop offset=\"0%\" stop-color=\"#E040FB\"/><stop offset=\"100%\" stop-color=\"#651FFF\"/></linearGradient><linearGradient id=\"fe2\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"64\"><stop offset=\"0%\" stop-color=\"#FF4081\"/><stop offset=\"100%\" stop-color=\"#D500F9\"/></linearGradient></defs><path d=\"M32 12 L40 24 V48 L32 56 L24 48 V24 Z\" fill=\"url(#fe1)\"/><path d=\"M22 28 L28 36 V52 L22 58 L16 52 V36 Z\" fill=\"url(#fe2)\" opacity=\"0.9\"/><path d=\"M42 22 L48 30 V46 L42 52 L36 46 V30 Z\" fill=\"url(#fe2)\" opacity=\"0.8\"/><circle cx=\"32\" cy=\"34\" r=\"4\" fill=\"#FFF\" opacity=\"0.5\"/></svg>"
+    },
+    {
+      "id": "pack_particulas_max",
+      "name_es": "Pack de Partículas Max",
+      "name_en": "Max Particles Pack",
+      "category": "combates",
+      "pack_size": 6,
+      "pack_price_eur": 8.99,
+      "unit_price_eur": 1.4983,
+      "unit_price_coins": 165,
+      "svg": "<svg viewBox=\"0 0 64 64\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-10 h-10\"><defs><linearGradient id=\"vialGlass\" x1=\"0\" y1=\"0\" x2=\"64\" y2=\"0\"><stop offset=\"0%\" stop-color=\"#FFF\" stop-opacity=\"0.2\"/><stop offset=\"50%\" stop-color=\"#FFF\" stop-opacity=\"0.5\"/><stop offset=\"100%\" stop-color=\"#FFF\" stop-opacity=\"0.1\"/></linearGradient><radialGradient id=\"particleGlow\" cx=\"32\" cy=\"40\" r=\"20\"><stop offset=\"0%\" stop-color=\"#F50057\"/><stop offset=\"100%\" stop-color=\"#651FFF\" stop-opacity=\"0.8\"/></radialGradient></defs><rect x=\"22\" y=\"16\" width=\"20\" height=\"40\" rx=\"10\" fill=\"url(#particleGlow)\"/><rect x=\"22\" y=\"16\" width=\"20\" height=\"40\" rx=\"10\" fill=\"url(#vialGlass)\"/><rect x=\"24\" y=\"8\" width=\"16\" height=\"8\" rx=\"2\" fill=\"#9E9E9E\"/><rect x=\"26\" y=\"6\" width=\"12\" height=\"4\" rx=\"1\" fill=\"#616161\"/><circle cx=\"28\" cy=\"36\" r=\"2\" fill=\"#FFF\"/><circle cx=\"36\" cy=\"44\" r=\"3\" fill=\"#FFF\" opacity=\"0.8\"/><circle cx=\"32\" cy=\"28\" r=\"1.5\" fill=\"#FFF\" opacity=\"0.6\"/></svg>"
+    },
+    {
+      "id": "maxiseta",
+      "name_es": "Maxiseta",
+      "name_en": "Max Mushroom",
+      "category": "combates",
+      "pack_size": 3,
+      "pack_price_eur": 10.99,
+      "unit_price_eur": 3.6633,
+      "unit_price_coins": 403,
+      "svg": "<svg viewBox=\"0 0 64 64\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-10 h-10\"><defs><linearGradient id=\"shroomCap\" x1=\"0\" y1=\"10\" x2=\"0\" y2=\"30\"><stop offset=\"0%\" stop-color=\"#FF4081\"/><stop offset=\"100%\" stop-color=\"#C51162\"/></linearGradient><linearGradient id=\"shroomStem\" x1=\"0\" y1=\"30\" x2=\"0\" y2=\"60\"><stop offset=\"0%\" stop-color=\"#F8BBD0\"/><stop offset=\"100%\" stop-color=\"#F48FB1\"/></linearGradient></defs><path d=\"M22 36 C22 30, 30 30, 30 36 Z\" fill=\"url(#shroomCap)\"/><rect x=\"24\" y=\"36\" width=\"4\" height=\"12\" fill=\"url(#shroomStem)\"/><path d=\"M42 32 C42 26, 50 26, 50 32 Z\" fill=\"url(#shroomCap)\"/><rect x=\"44\" y=\"32\" width=\"4\" height=\"16\" fill=\"url(#shroomStem)\"/><rect x=\"28\" y=\"28\" width=\"8\" height=\"24\" rx=\"2\" fill=\"url(#shroomStem)\"/><path d=\"M16 28 C16 14, 48 14, 48 28 Z\" fill=\"url(#shroomCap)\"/><ellipse cx=\"24\" cy=\"22\" rx=\"3\" ry=\"2\" fill=\"#FFF\" opacity=\"0.8\" transform=\"rotate(-15 24 22)\"/><ellipse cx=\"40\" cy=\"24\" rx=\"2.5\" ry=\"1.5\" fill=\"#FFF\" opacity=\"0.8\" transform=\"rotate(10 40 24)\"/><ellipse cx=\"32\" cy=\"18\" rx=\"4\" ry=\"2\" fill=\"#FFF\" opacity=\"0.8\"/></svg>"
+    },
+    {
+      "id": "revivir_maximo",
+      "name_es": "Revivir Máximo",
+      "name_en": "Max Revive",
+      "category": "otros",
+      "pack_size": 15,
+      "pack_price_eur": 2.19,
+      "unit_price_eur": 0.146,
+      "unit_price_coins": 16,
+      "svg": "<svg viewBox=\"0 0 64 64\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-10 h-10\"><defs><linearGradient id=\"maxRev1\" x1=\"32\" y1=\"8\" x2=\"32\" y2=\"56\"><stop offset=\"0%\" stop-color=\"#FFF59D\"/><stop offset=\"50%\" stop-color=\"#FFD54F\"/><stop offset=\"100%\" stop-color=\"#F57F17\"/></linearGradient></defs><path d=\"M32 6 L52 28 L32 58 L12 28 Z\" fill=\"url(#maxRev1)\" stroke=\"#FFC107\" stroke-width=\"2\"/><path d=\"M32 14 L42 28 L32 48 L22 28 Z\" fill=\"#FFF9C4\" opacity=\"0.8\"/><path d=\"M32 14 V48\" stroke=\"#FBC02D\" stroke-width=\"2\" opacity=\"0.5\"/><path d=\"M22 28 H42\" stroke=\"#FBC02D\" stroke-width=\"2\" opacity=\"0.5\"/></svg>"
+    },
+    {
+      "id": "pociones_maximas",
+      "name_es": "Pociones Máximas",
+      "name_en": "Max Potion",
+      "category": "otros",
+      "pack_size": 10,
+      "pack_price_eur": 2.19,
+      "unit_price_eur": 0.219,
+      "unit_price_coins": 24,
+      "svg": "<svg viewBox=\"0 0 64 64\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-10 h-10\"><defs><linearGradient id=\"potGrad\" x1=\"16\" y1=\"24\" x2=\"48\" y2=\"56\"><stop offset=\"0%\" stop-color=\"#4FC3F7\"/><stop offset=\"100%\" stop-color=\"#0277BD\"/></linearGradient></defs><rect x=\"20\" y=\"24\" width=\"24\" height=\"32\" rx=\"6\" fill=\"url(#potGrad)\"/><rect x=\"20\" y=\"36\" width=\"24\" height=\"8\" fill=\"#FFF\" opacity=\"0.9\"/><path d=\"M32 37 V43 M29 40 H35\" stroke=\"#F50057\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"26\" y=\"16\" width=\"12\" height=\"8\" fill=\"#B0BEC5\"/><path d=\"M22 16 H42 L38 8 H26 Z\" fill=\"#90A4AE\"/><rect x=\"22\" y=\"8\" width=\"6\" height=\"4\" rx=\"1\" fill=\"#CFD8DC\"/></svg>"
+    },
+    {
+      "id": "bayas_pinia_plateadas",
+      "name_es": "Bayas Pinia plateadas",
+      "name_en": "Silver Pinap Berry",
+      "category": "otros",
+      "pack_size": 10,
+      "pack_price_eur": 2.19,
+      "unit_price_eur": 0.219,
+      "unit_price_coins": 24,
+      "svg": "<svg viewBox=\"0 0 64 64\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-10 h-10\"><defs><linearGradient id=\"silverGrad\" x1=\"16\" y1=\"24\" x2=\"48\" y2=\"56\"><stop offset=\"0%\" stop-color=\"#F5F5F5\"/><stop offset=\"50%\" stop-color=\"#B0BEC5\"/><stop offset=\"100%\" stop-color=\"#78909C\"/></linearGradient><linearGradient id=\"leafGrad\" x1=\"20\" y1=\"8\" x2=\"44\" y2=\"24\"><stop offset=\"0%\" stop-color=\"#CCFF90\"/><stop offset=\"100%\" stop-color=\"#64DD17\"/></linearGradient></defs><path d=\"M32 24 L20 8 L28 20 L32 6 L36 20 L44 8 Z\" fill=\"url(#leafGrad)\"/><ellipse cx=\"32\" cy=\"40\" rx=\"14\" ry=\"18\" fill=\"url(#silverGrad)\"/><path d=\"M22 32 L42 48 M22 48 L42 32\" stroke=\"#546E7A\" stroke-width=\"2\" opacity=\"0.4\"/><path d=\"M26 26 L38 54 M38 26 L26 54\" stroke=\"#546E7A\" stroke-width=\"2\" opacity=\"0.4\"/></svg>"
+    },
+    {
+      "id": "bayas_frambu_doradas",
+      "name_es": "Bayas Frambu doradas",
+      "name_en": "Golden Razz Berry",
+      "category": "otros",
+      "pack_size": 15,
+      "pack_price_eur": 2.19,
+      "unit_price_eur": 0.146,
+      "unit_price_coins": 16,
+      "svg": "<svg viewBox=\"0 0 64 64\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-10 h-10\"><defs><radialGradient id=\"goldOrb\" cx=\"30%\" cy=\"30%\" r=\"70%\"><stop offset=\"0%\" stop-color=\"#FFF9C4\"/><stop offset=\"50%\" stop-color=\"#FFD54F\"/><stop offset=\"100%\" stop-color=\"#F57F17\"/></radialGradient></defs><path d=\"M32 24 L24 12 L30 20 L32 10 L34 20 L40 12 Z\" fill=\"#64DD17\"/><circle cx=\"32\" cy=\"28\" r=\"6\" fill=\"url(#goldOrb)\"/><circle cx=\"24\" cy=\"34\" r=\"6\" fill=\"url(#goldOrb)\"/><circle cx=\"40\" cy=\"34\" r=\"6\" fill=\"url(#goldOrb)\"/><circle cx=\"20\" cy=\"44\" r=\"6\" fill=\"url(#goldOrb)\"/><circle cx=\"28\" cy=\"42\" r=\"6\" fill=\"url(#goldOrb)\"/><circle cx=\"36\" cy=\"42\" r=\"6\" fill=\"url(#goldOrb)\"/><circle cx=\"44\" cy=\"44\" r=\"6\" fill=\"url(#goldOrb)\"/><circle cx=\"26\" cy=\"52\" r=\"6\" fill=\"url(#goldOrb)\"/><circle cx=\"38\" cy=\"52\" r=\"6\" fill=\"url(#goldOrb)\"/><circle cx=\"32\" cy=\"56\" r=\"6\" fill=\"url(#goldOrb)\"/></svg>"
+    }
+  ]
+}

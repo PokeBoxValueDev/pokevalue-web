@@ -1,0 +1,138 @@
+/* Ocultar barra de desplazamiento manteniendo funcionalidad de scroll */
+.no-scrollbar::-webkit-scrollbar,
+.scrollbar-none::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+
+.no-scrollbar,
+.scrollbar-none {
+    -ms-overflow-style: none !important;  /* IE y Edge */
+    scrollbar-width: none !important;  /* Firefox */
+}
+
+/* Prevención de zoom accidental por doble toque y latencia táctil en móviles */
+button,
+input,
+select,
+summary,
+.category-pill,
+.item-card,
+.touch-manipulation {
+    touch-action: manipulation !important;
+}
+
+/* Soporte de Safe Areas para iPhone y dispositivos con barra de gestos */
+#live-sticky-bar {
+    bottom: max(1rem, env(safe-area-inset-bottom, 1rem)) !important;
+}
+
+/* Transiciones suaves de vistas */
+.fade-in {
+    animation: fadeIn 0.25s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Anillos de foco visibles para accesibilidad por teclado */
+:focus-visible {
+    outline: 2px solid #6366f1;
+    outline-offset: 2px;
+}
+
+/* Estilos Nativos iOS 26 (Se aplican automáticamente al detectar un dispositivo iOS o activar el modo iOS) */
+html.is-ios body {
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-touch-callout: none !important;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif !important;
+}
+
+html.is-ios header {
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    background-color: rgba(255, 255, 255, 0.75) !important;
+    border-radius: 1.5rem !important;
+}
+
+html.is-ios.dark header {
+    background-color: rgba(17, 24, 39, 0.75) !important;
+}
+
+html.is-ios #view-form,
+html.is-ios #view-result {
+    backdrop-filter: blur(24px) saturate(190%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
+    background-color: rgba(255, 255, 255, 0.75) !important;
+    border: 1px solid rgba(255, 255, 255, 0.5) !important;
+    border-radius: 2rem !important;
+    box-shadow: 0 25px 50px -12px rgba(99, 102, 241, 0.15) !important;
+}
+
+html.is-ios.dark #view-form,
+html.is-ios.dark #view-result {
+    background-color: rgba(17, 24, 39, 0.75) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6) !important;
+}
+
+html.is-ios .item-card {
+    border-radius: 1.25rem !important;
+    transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s ease, border-color 0.2s ease !important;
+}
+
+html.is-ios .btn-increment,
+html.is-ios .btn-decrement {
+    border-radius: 9999px !important;
+    transition: transform 0.12s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+html.is-ios .btn-increment:active,
+html.is-ios .btn-decrement:active,
+html.is-ios button:active {
+    transform: scale(0.92) !important;
+}
+
+html.is-ios #btn-calculate {
+    border-radius: 1.25rem !important;
+    box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.4) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    background-color: rgba(99, 102, 241, 0.85) !important; /* Translucent indigo */
+}
+
+/* iOS Glassmorphism for Quantity Controls and Buttons */
+html.is-ios .btn-quick-add {
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+}
+
+html.is-ios .btn-increment,
+html.is-ios .btn-decrement {
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    background-color: rgba(255, 255, 255, 0.4) !important;
+}
+html.is-ios.dark .btn-increment,
+html.is-ios.dark .btn-decrement {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* iOS Glassmorphism for Modals (Menus) */
+html.is-ios [role="dialog"] > div {
+    backdrop-filter: blur(30px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(30px) saturate(200%) !important;
+    background-color: rgba(255, 255, 255, 0.85) !important;
+}
+html.is-ios.dark [role="dialog"] > div {
+    background-color: rgba(17, 24, 39, 0.85) !important;
+}

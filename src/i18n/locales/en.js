@@ -1,0 +1,147 @@
+export default {
+    appName: "PokeBoxValue",
+    lastUpdated: "Data:",
+    disclaimerUSD: "* USD prices are estimated using fixed currency rates.",
+    metaTitle: "PokeBoxValue - Pokémon GO Box Value Calculator",
+    metaDescription: "Calculate if Pokémon GO shop boxes are worth buying. Discover the true value of raid passes, incubators, and items to save money.",
+
+    // Form & Filters
+    boxPriceLabel: "Box Price",
+    boxPricePlaceholderPrefix: "e.g.",
+    itemsIncluded: "Items included",
+    searchPlaceholder: "Search item...",
+    loadingItems: "Loading items...",
+    btnCalculate: "Calculate Value",
+    recentHistory: "Recent History",
+    btnClear: "Clear",
+    noItemsFound: "No items found.",
+    enterValidPrice: "Please enter a valid box price.",
+    alertNoItems: "Please select at least one item.",
+    btnResetQty: "Clear",
+    btnInstallApp: "Install App",
+
+    // Quick Filter Pills
+    filterAll: "All",
+    filterPasses: "Passes",
+    filterIncubators: "Incubators",
+    filterBoosts: "Boosts",
+    filterUpgrades: "Upgrades",
+    filterConsumables: "Consumables",
+    filterOther: "Other",
+
+    // Live Sticky Summary Bar
+    liveBarTotal: "Value:",
+    liveBarSave: "You Save:",
+    liveBarLose: "You Lose:",
+    liveBarBtn: "View Card",
+
+    // Modes & Comparator
+    modeSingle: "Calculator",
+    modeCompare: "Compare 2 Boxes",
+    comparatorTitle: "Box Comparator",
+    comparatorBoxA: "Box A",
+    comparatorBoxB: "Box B",
+    comparatorWinnerA: "Box A is more profitable",
+    comparatorWinnerB: "Box B is more profitable",
+    comparatorWinnerEqual: "Both boxes offer equal value",
+    comparatorDiffMore: "{diff}% more savings",
+
+    // History
+    badgeProfitable: "Profitable",
+    badgeNotProfitable: "Not worth it",
+    btnRestore: "Restore",
+    emptyHistory: "No calculations saved yet.",
+    noItemsSelected: "No breakdown available",
+
+    // Results
+    titleProfitable: "GREAT DEAL!",
+    titleNotProfitable: "NOT WORTH IT",
+    resBoxPrice: "Box price:",
+    resRealValue: "Real value:",
+    resDiffSave: "You save:",
+    resDiffLose: "You lose:",
+    breakdownTitle: "Value Breakdown",
+    btnShare: "Share",
+    btnShareText: "💬 Text",
+    btnShareStory: "📱 Story (9:16)",
+    btnShareCard: "🖼️ Card (16:9)",
+    shareTitle: "PokeBoxValue",
+    shareText: "Check out this Pokémon GO box value on PokeBoxValue:",
+    shareNativeTextFallback: "PokeBoxValue - Pokémon GO Box Value Calculator",
+    shareNativeCardText: "I calculated this Pokémon GO box value on PokeBoxValue!",
+    shareCanvasWatermark: "pokeboxvalue.com | Pokémon GO Box Value Calculator",
+    storyItemsTitle: "BOX ITEMS",
+    btnReset: "Calculate another",
+    copiedToClipboard: "Result copied to clipboard!",
+    keyMetricsTitle: "Key Metrics (Effective Cost)",
+    habitualLabel: "Standard",
+
+    // Offer Ratings (Clear and Intuitive)
+    gradeS: "🌟 Excellent Deal",
+    gradeA: "👍 Good Value",
+    gradeB: "⚖️ Fair Value",
+    gradeF: "❌ Poor Value",
+    badgeExcellent: "Excellent",
+    badgeGood: "Good",
+    badgeFair: "Fair",
+    badgePoor: "Poor",
+
+    // Categories
+    catPases: "Raid Passes",
+    catIncubadoras: "Incubators",
+    catPotenciadores: "Boosters",
+    catMejoras: "Storage Upgrades",
+    catCombates: "Battles & Particles",
+    catConsumibles: "Consumibles",
+    catOtros: "Other Items",
+
+    // SEO / Description
+    seoTitle: "About PokeBoxValue",
+    seoDesc1: "PokeBoxValue is a specialized calculator designed to help players analyze the profitability and value of item boxes in Pokémon GO. Enter the box price and select the items it contains to get a detailed breakdown of its real value compared to buying items individually.",
+    seoDesc2: "Our tool uses standard in-game shop base prices to calculate if you are getting a good deal, displaying key metrics, discount percentages, and assigning a clear rating (Excellent, Good, Fair, or Poor) so you always make the best decision with your coins.",
+
+    // FAQ
+    faqTitle: "Frequently Asked Questions about Pokémon GO Boxes",
+    faqQ1: "How does PokeBoxValue calculate if a box is worth it?",
+    faqA1: "We compare the total cost of the box with the individual standard shop price of each item. If the total item value exceeds the box price, it is profitable, and the exact discount percentage is calculated.",
+    faqQ2: "How is an offer classified as excellent, good, or poor?",
+    faqA2: "The system classifies offers based on their savings: Excellent (savings >= 40%), Good Value (25-39%), Fair Value (1-24%), and Poor Value (no discount or more expensive than buying items separately).",
+    faqQ3: "Can I calculate offers in PokéCoins, Euros, and USD?",
+    faqA3: "Yes, PokeBoxValue supports calculations in Euros (€), US Dollars ($), and PokéCoins. You can switch currencies at any time in the header.",
+    faqQ4: "Which items offer the highest value in Pokémon GO boxes?",
+    faqA4: "Premium / Remote Raid Passes and Super Incubators typically provide the highest value and savings per PokéCoin spent.",
+
+    // Reference Table
+    tableRefTitle: "Official Shop Reference Prices",
+    tableRefSubtitle: "Standard individual shop values used to calculate box profitability:",
+    colItem: "Item",
+    colCoins: "Coins",
+    colEur: "Base Price",
+
+    // Footer & Donations
+    coffeeBtn: "Buy me a coffee",
+    footerText: "PokeBoxValue is an independent fan-made project and is not affiliated, endorsed, or supported by Scopely, Niantic, The Pokémon Company, Nintendo, or GAME FREAK. Pokémon and item names are trademarks of their respective owners.",
+    btnFaq: "Frequently Asked Questions",
+    btnLegal: "Legal Notice",
+    btnPrivacy: "Privacy & Cookies",
+
+    // Modales
+    legalTitle: "Legal Notice",
+    legalBody1: "PokeBoxValue is an independent fan tool. It is not affiliated, endorsed, associated, or supported by Niantic, Inc., The Pokémon Company, Nintendo Co., Ltd., or GAME FREAK Inc.",
+    legalBody2: "This website is intended for informational and estimation purposes only. All item names, logos, or trademarks belong to their respective owners.",
+    privacyTitle: "Privacy Policy & Cookies (Google Consent Mode v2)",
+    privacyBody1: "Google Analytics & Advertising (AdSense): We use Google Tag (GA4) and Google Consent Mode v2 for traffic analytics and Google services integration (including AdSense). By default, all analytical and advertising cookies are denied until you consent in the cookie banner.",
+    privacyBody2: "Technical Local Storage (localStorage): We store your visual theme, currency, language, and recent calculation history in your browser. You can accept, reject, or revoke consent for analytics and ads at any time.",
+    privacyBody3: "Third-party vendors, including Google, use cookies to serve ads based on a user's prior visits to this website or other visits to this website or other sites on the Internet. Users may opt out of personalized advertising by visiting <a href='https://myadcenter.google.com/' target='_blank' class='text-indigo-600 dark:text-indigo-400 hover:underline'>Google Ad Settings</a> or third-party vendors via <a href='https://www.aboutads.info' target='_blank' class='text-indigo-600 dark:text-indigo-400 hover:underline'>www.aboutads.info</a>.",
+    btnCloseModal: "Close",
+
+    // Error Page
+    error_title: "Error | PokeBoxValue",
+    error_404_heading: "Page Not Found!",
+    error_404_message: "The page you are looking for does not exist.",
+    error_500_heading: "Internal Server Error",
+    error_500_message: "An unexpected server error occurred.",
+    error_default_heading: "Oops! Something went wrong",
+    error_default_message: "An unexpected error occurred.",
+    error_back_btn: "Back to Home"
+};

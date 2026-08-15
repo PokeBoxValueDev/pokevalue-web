@@ -1,0 +1,32 @@
+name: Sync Items Fallback
+
+on:
+  schedule:
+    - cron: '0 */12 * * *' # Ejecutar cada 12 horas
+  workflow_dispatch: # Permite lanzar la acción manualmente desde GitHub
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync-fallback:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repositorio
+        uses: actions/checkout@v4
+
+      - name: Descargar último items.json de pokevalue-data
+        run: |
+          curl -sSL https://raw.githubusercontent.com/PokeBoxValueDev/pokevalue-data/refs/heads/main/items.json -o src/assets/items-fallback.json
+
+      - name: Crear Pull Request si hay cambios
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: auto-update local items-fallback.json from pokevalue-data"
+          title: "chore: Actualización automática de items-fallback.json"
+          body: "🤖 Se han detectado cambios en el repositorio de datos principal (`pokevalue-data`). Este PR actualiza la caché local de respaldo para mantener la web funcionando correctamente en caso de caída de la red."
+          branch: "chore/update-fallback-json"
+          base: "main"

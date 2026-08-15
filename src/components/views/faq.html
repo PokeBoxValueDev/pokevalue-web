@@ -1,0 +1,117 @@
+<!-- Vista Página: Preguntas Frecuentes y Precios de Referencia (/faq) -->
+<section id="view-faq"
+    class="hidden bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 space-y-6 border border-gray-100 dark:border-gray-700 transition-all duration-200">
+    <div class="border-b border-gray-100 dark:border-gray-700 pb-3">
+        <h2 id="faq-modal-title" data-i18n="faqTitle" class="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+            Preguntas Frecuentes y Guía de Precios
+        </h2>
+    </div>
+
+    <!-- Acordeón de FAQs -->
+    <div class="space-y-3 text-xs sm:text-sm">
+        <!-- FAQ 1 -->
+        <details class="group bg-gray-50 dark:bg-gray-700/40 rounded-xl p-3 border border-gray-100 dark:border-gray-700 transition cursor-pointer" open>
+            <summary class="font-semibold text-gray-800 dark:text-gray-200 list-none flex justify-between items-center select-none" data-i18n="faqQ1">
+                ¿Cómo calcula PokeBoxValue si una caja es rentable?
+                <span class="text-indigo-500 group-open:rotate-180 transition-transform font-bold text-xs">▼</span>
+            </summary>
+            <p class="mt-2 text-gray-600 dark:text-gray-300 leading-relaxed text-xs" data-i18n="faqA1">
+                Comparamos el coste total de la caja con el valor de comprar cada objeto por separado a su precio base oficial de la tienda. Si el valor total de los objetos supera el precio de la caja, se considera rentable y se calcula el porcentaje exacto de ahorro.
+            </p>
+        </details>
+
+        <!-- FAQ 2 -->
+        <details class="group bg-gray-50 dark:bg-gray-700/40 rounded-xl p-3 border border-gray-100 dark:border-gray-700 transition cursor-pointer">
+            <summary class="font-semibold text-gray-800 dark:text-gray-200 list-none flex justify-between items-center select-none" data-i18n="faqQ2">
+                ¿Cómo se clasifica si una oferta es excelente, buena o mala?
+                <span class="text-indigo-500 group-open:rotate-180 transition-transform font-bold text-xs">▼</span>
+            </summary>
+            <p class="mt-2 text-gray-600 dark:text-gray-300 leading-relaxed text-xs" data-i18n="faqA2">
+                El sistema clasifica la oferta según su descuento: Excelente (ahorro ≥ 40%), Buena compra (ahorro 25-39%), Aceptable (ahorro 1-24%) y Mala compra (sin descuento o más cara que comprar objetos sueltos).
+            </p>
+        </details>
+
+        <!-- FAQ 3 -->
+        <details class="group bg-gray-50 dark:bg-gray-700/40 rounded-xl p-3 border border-gray-100 dark:border-gray-700 transition cursor-pointer">
+            <summary class="font-semibold text-gray-800 dark:text-gray-200 list-none flex justify-between items-center select-none" data-i18n="faqQ3">
+                ¿Puedo calcular ofertas en Pokémonedas, Euros y Dólares?
+                <span class="text-indigo-500 group-open:rotate-180 transition-transform font-bold text-xs">▼</span>
+            </summary>
+            <p class="mt-2 text-gray-600 dark:text-gray-300 leading-relaxed text-xs" data-i18n="faqA3">
+                Sí, PokeBoxValue soporta cálculos en Euros (€), Dólares ($) y Pokémonedas. Puedes cambiar de divisa en cualquier momento desde la cabecera.
+            </p>
+        </details>
+
+        <!-- FAQ 4 -->
+        <details class="group bg-gray-50 dark:bg-gray-700/40 rounded-xl p-3 border border-gray-100 dark:border-gray-700 transition cursor-pointer">
+            <summary class="font-semibold text-gray-800 dark:text-gray-200 list-none flex justify-between items-center select-none" data-i18n="faqQ4">
+                ¿Qué objetos tienen mayor valor en una caja de Pokémon GO?
+                <span class="text-indigo-500 group-open:rotate-180 transition-transform font-bold text-xs">▼</span>
+            </summary>
+            <p class="mt-2 text-gray-600 dark:text-gray-300 leading-relaxed text-xs" data-i18n="faqA4">
+                Los objetos clave más codiciados suelen ser los Pases de Incursión Premium / Remotos y las Super Incubadoras, ya que otorgan el mayor ahorro por Pokémoneda invertida.
+            </p>
+        </details>
+    </div>
+
+    <!-- Tabla Oficial de Precios de Referencia -->
+    <div class="space-y-3 pt-2">
+        <h3 class="text-sm font-bold text-gray-800 dark:text-gray-100" data-i18n="tableRefTitle">
+            Precios de Referencia Oficiales de la Tienda
+        </h3>
+        <p class="text-xs text-gray-500 dark:text-gray-400" data-i18n="tableRefSubtitle">
+            Valores estándar individuales utilizados para calcular la rentabilidad:
+        </p>
+        <div class="overflow-x-auto">
+            <table class="w-full text-xs text-left text-gray-700 dark:text-gray-300">
+                <thead class="bg-gray-50 dark:bg-gray-700/50 text-[11px] uppercase font-bold text-gray-500 dark:text-gray-400 border-b border-gray-100 dark:border-gray-700">
+                    <tr>
+                        <th class="py-2 px-3" data-i18n="colItem">Objeto</th>
+                        <th class="py-2 px-2 text-center" data-i18n="colCoins">Monedas</th>
+                        <th class="py-2 px-2 text-right" data-i18n="colEur">Precio Base</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100 dark:divide-gray-700/60">
+                    <tr>
+                        <td class="py-2 px-3 font-semibold">Pase de Incursión Premium</td>
+                        <td class="py-2 px-2 text-center font-mono">100</td>
+                        <td class="py-2 px-2 text-right font-mono">1.00 €</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2 px-3 font-semibold">Pase de Incursión Remota</td>
+                        <td class="py-2 px-2 text-center font-mono">195</td>
+                        <td class="py-2 px-2 text-right font-mono">1.95 €</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2 px-3 font-semibold">Super Incubadora</td>
+                        <td class="py-2 px-2 text-center font-mono">200</td>
+                        <td class="py-2 px-2 text-right font-mono">2.00 €</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2 px-3 font-semibold">Incubadora</td>
+                        <td class="py-2 px-2 text-center font-mono">150</td>
+                        <td class="py-2 px-2 text-right font-mono">1.50 €</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2 px-3 font-semibold">Trozo Estrella / Huevo Suerte</td>
+                        <td class="py-2 px-2 text-center font-mono">80</td>
+                        <td class="py-2 px-2 text-right font-mono">0.80 €</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2 px-3 font-semibold">Pokocho</td>
+                        <td class="py-2 px-2 text-center font-mono">100</td>
+                        <td class="py-2 px-2 text-right font-mono">1.00 €</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Botón Volver -->
+    <div class="pt-3 border-t border-gray-100 dark:border-gray-700">
+        <button type="button" data-i18n="btnCloseModal"
+            class="btn-close-modal w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-xs sm:text-sm transition active:scale-[0.98] shadow-sm cursor-pointer">
+            ← Volver a la Calculadora
+        </button>
+    </div>
+</section>
