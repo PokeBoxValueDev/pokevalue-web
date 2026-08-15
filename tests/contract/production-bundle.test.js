@@ -29,8 +29,20 @@ test('contract/production-bundle - Genera bundle de producción minificado con h
     assert.ok(indexHtml.includes(cssBundle), 'dist/index.html debe enlazar el bundle CSS minificado');
 
     // 4. Verificar presencia de assets esenciales en dist/
-    const requiredStaticFiles = ['robots.txt', 'sitemap.xml', 'sw.js', 'manifest.json', 'favicon.png', '404.html'];
+    const requiredStaticFiles = [
+        'ads.txt',
+        'CNAME',
+        'robots.txt',
+        'sitemap.xml',
+        'sw.js',
+        'manifest.json',
+        'favicon.svg',
+        'favicon.png',
+        'logo.png',
+        'og-image.svg',
+        '404.html'
+    ];
     requiredStaticFiles.forEach(file => {
-        assert.ok(fs.existsSync(path.join(distDir, file)), `dist/${file} debe existir`);
+        assert.ok(fs.existsSync(path.join(distDir, file)), `dist/${file} debe existir en el bundle de producción`);
     });
 });
