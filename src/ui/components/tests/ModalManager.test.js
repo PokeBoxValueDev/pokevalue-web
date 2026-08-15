@@ -1,11 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { setupModals } from '../ModalManager.js';
+import { setupViews, renderView } from '../ViewManager.js';
 
-function createMockModal(id) {
+function createMockElement(id) {
     const classList = new Set(['hidden']);
     return {
         id,
+        innerHTML: '',
         classList: {
             add: (c) => classList.add(c),
             remove: (c) => classList.delete(c),
@@ -14,15 +15,17 @@ function createMockModal(id) {
     };
 }
 
-test('ui/components - ModalManager delegated click opens legal and privacy modals correctly', () => {
-    const legalModal = createMockModal('legal-modal');
-    const privacyModal = createMockModal('privacy-modal');
+test('ui/components - ViewManager delegated click opens legal and privacy views correctly', () => {
+    const viewContainer = createMockElement('view-container');
+    const viewForm = createMockElement('view-form');
+    const viewResult = createMockElement('view-result');
 
     const listeners = new Map();
     const mockDocument = {
         getElementById: (id) => {
-            if (id === 'legal-modal') return legalModal;
-            if (id === 'privacy-modal') return privacyModal;
+            if (id === 'view-container') return viewContainer;
+            if (id === 'view-form') return viewForm;
+            if (id === 'view-result') return viewResult;
             return null;
         },
         querySelectorAll: () => [],
@@ -40,11 +43,12 @@ test('ui/components - ModalManager delegated click opens legal and privacy modal
     globalThis.window = {
         location: { pathname: '/es' },
         history: { pushState: () => {}, replaceState: () => {} },
-        addEventListener: () => { }
+        addEventListener: () => { },
+        scrollTo: () => { }
     };
 
     try {
-        setupModals();
+        setupViews();
 
         const clickHandlers = listeners.get('click') || [];
         assert.ok(clickHandlers.length > 0, 'Should register delegated click handlers on document');
@@ -54,22 +58,24 @@ test('ui/components - ModalManager delegated click opens legal and privacy modal
         const mockLegalEvent = { target: mockLegalBtn, preventDefault: () => { } };
 
         clickHandlers[0](mockLegalEvent);
-        assert.equal(legalModal.classList.contains('hidden'), false, 'Legal modal should be visible');
+        assert.equal(viewContainer.classList.contains('hidden'), false, 'View container should be visible');
+        assert.ok(viewContainer.innerHTML.includes('id="view-legal"'), 'Legal view should be rendered');
 
         // Simular click en el botón de Privacidad (#btn-privacy)
         const mockPrivacyBtn = { id: 'btn-privacy', closest: (sel) => sel.includes('#btn-privacy') ? { id: 'btn-privacy' } : null };
         const mockPrivacyEvent = { target: mockPrivacyBtn, preventDefault: () => { } };
 
         clickHandlers[0](mockPrivacyEvent);
-        assert.equal(privacyModal.classList.contains('hidden'), false, 'Privacy modal should be visible');
+        assert.equal(viewContainer.classList.contains('hidden'), false, 'View container should be visible');
+        assert.ok(viewContainer.innerHTML.includes('id="view-privacy"'), 'Privacy view should be rendered');
 
         // Simular click en botón de cierre (.btn-close-modal)
         const mockCloseBtn = { className: 'btn-close-modal', closest: (sel) => sel.includes('.btn-close-modal') ? { className: 'btn-close-modal' } : null };
         const mockCloseEvent = { target: mockCloseBtn, preventDefault: () => { } };
 
         clickHandlers[1](mockCloseEvent);
-        assert.equal(legalModal.classList.contains('hidden'), true, 'Legal modal should be hidden after close click');
-        assert.equal(privacyModal.classList.contains('hidden'), true, 'Privacy modal should be hidden after close click');
+        assert.equal(viewContainer.classList.contains('hidden'), true, 'View container should be hidden after close click');
+        assert.equal(viewContainer.innerHTML, '', 'View container should be cleared');
 
     } finally {
         globalThis.document = originalDoc;

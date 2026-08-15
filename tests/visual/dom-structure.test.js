@@ -31,12 +31,10 @@ test('visual/dom - index.html contains all critical UI containers and IDs', () =
         'btn-reset',
         'lang-select',
         'currency-select',
-        'legal-modal',
-        'privacy-modal',
-        'view-legal',
-        'view-privacy',
-        'view-faq',
+        'view-container',
         'btn-faq',
+        'btn-legal',
+        'btn-privacy',
         'kofi-widget-container'
     ];
 
@@ -45,9 +43,16 @@ test('visual/dom - index.html contains all critical UI containers and IDs', () =
     });
 });
 
-test('visual/dom - index.html elements contain data-i18n attributes for localization', () => {
+test('visual/dom - index.html and modular views contain data-i18n attributes for localization', () => {
     const htmlPath = path.resolve('index.html');
     const html = fs.readFileSync(htmlPath, 'utf8');
+
+    const viewsDir = path.resolve('src/components/views');
+    const legalHtml = fs.readFileSync(path.join(viewsDir, 'legal.html'), 'utf8');
+    const privacyHtml = fs.readFileSync(path.join(viewsDir, 'privacy.html'), 'utf8');
+    const faqHtml = fs.readFileSync(path.join(viewsDir, 'faq.html'), 'utf8');
+
+    const allHtml = `${html}\n${legalHtml}\n${privacyHtml}\n${faqHtml}`;
 
     const requiredI18nKeys = [
         'boxPriceLabel',
@@ -84,7 +89,7 @@ test('visual/dom - index.html elements contain data-i18n attributes for localiza
     ];
 
     requiredI18nKeys.forEach(key => {
-        assert.ok(html.includes(`data-i18n="${key}"`) || html.includes(`data-i18n-placeholder="${key}"`), `index.html missing data-i18n attribute for key: "${key}"`);
+        assert.ok(allHtml.includes(`data-i18n="${key}"`) || allHtml.includes(`data-i18n-placeholder="${key}"`), `missing data-i18n attribute for key: "${key}"`);
     });
 });
 
@@ -114,6 +119,10 @@ test('visual/dom - verify Tailwind dark mode classes and ARIA accessibility attr
     const htmlPath = path.resolve('index.html');
     const html = fs.readFileSync(htmlPath, 'utf8');
 
+    const viewsDir = path.resolve('src/components/views');
+    const legalHtml = fs.readFileSync(path.join(viewsDir, 'legal.html'), 'utf8');
+    const privacyHtml = fs.readFileSync(path.join(viewsDir, 'privacy.html'), 'utf8');
+
     assert.ok(html.includes('dark:bg-gray-900'));
     assert.ok(html.includes('dark:text-white'));
     assert.ok(html.includes('dark:bg-gray-800'));
@@ -123,8 +132,8 @@ test('visual/dom - verify Tailwind dark mode classes and ARIA accessibility attr
     assert.ok(html.includes('aria-label="Seleccionar divisa"'));
     assert.ok(html.includes('aria-label="Buscar objetos"'));
     assert.ok(html.includes('tabindex="-1"'));
-    assert.ok(html.includes('id="view-legal"'));
-    assert.ok(html.includes('id="view-privacy"'));
+    assert.ok(legalHtml.includes('id="view-legal"'));
+    assert.ok(privacyHtml.includes('id="view-privacy"'));
 });
 
 test('visual/dom - index.html contains canonical and hreflang SEO tags and 404.html contains SPA redirect', () => {

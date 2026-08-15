@@ -1,5 +1,6 @@
 import { state } from '../../config/config.js';
 import { I18nController } from './I18nController.js';
+import { renderView } from '../components/ViewManager.js';
 
 export class RouterController {
     /**
@@ -171,64 +172,7 @@ export class RouterController {
      */
     static syncModalsWithView(view) {
         if (typeof document === 'undefined') return;
-
-        const viewLegal = document.getElementById('view-legal');
-        const viewPrivacy = document.getElementById('view-privacy');
-        const viewFaq = document.getElementById('view-faq');
-        const viewForm = document.getElementById('view-form');
-        const viewResult = document.getElementById('view-result');
-        const legalModal = document.getElementById('legal-modal');
-        const privacyModal = document.getElementById('privacy-modal');
-
-        if (view === 'privacy') {
-            if (viewPrivacy) viewPrivacy.classList.remove('hidden');
-            if (privacyModal) privacyModal.classList.remove('hidden');
-            if (viewLegal) viewLegal.classList.add('hidden');
-            if (viewFaq) viewFaq.classList.add('hidden');
-            if (legalModal) legalModal.classList.add('hidden');
-            if (viewForm) viewForm.classList.add('hidden');
-            if (viewResult) viewResult.classList.add('hidden');
-            if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        } else if (view === 'legal' || view === 'terms') {
-            if (viewLegal) viewLegal.classList.remove('hidden');
-            if (legalModal) legalModal.classList.remove('hidden');
-            if (viewPrivacy) viewPrivacy.classList.add('hidden');
-            if (viewFaq) viewFaq.classList.add('hidden');
-            if (privacyModal) privacyModal.classList.add('hidden');
-            if (viewForm) viewForm.classList.add('hidden');
-            if (viewResult) viewResult.classList.add('hidden');
-            if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        } else if (view === 'faq' || view === 'faqs') {
-            if (viewFaq) viewFaq.classList.remove('hidden');
-            if (viewLegal) viewLegal.classList.add('hidden');
-            if (viewPrivacy) viewPrivacy.classList.add('hidden');
-            if (legalModal) legalModal.classList.add('hidden');
-            if (privacyModal) privacyModal.classList.add('hidden');
-            if (viewForm) viewForm.classList.add('hidden');
-            if (viewResult) viewResult.classList.add('hidden');
-            if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        } else {
-            if (viewPrivacy) viewPrivacy.classList.add('hidden');
-            if (privacyModal) privacyModal.classList.add('hidden');
-            if (viewLegal) viewLegal.classList.add('hidden');
-            if (viewFaq) viewFaq.classList.add('hidden');
-            if (legalModal) legalModal.classList.add('hidden');
-
-            // Si salimos de una vista, mostrar el formulario (o resultado si no está oculto)
-            if (viewForm) {
-                if (viewResult && !viewResult.classList.contains('hidden')) {
-                    viewForm.classList.add('hidden');
-                } else {
-                    viewForm.classList.remove('hidden');
-                }
-            }
-        }
+        renderView(view);
     }
 
     /**

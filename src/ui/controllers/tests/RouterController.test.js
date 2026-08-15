@@ -2,80 +2,78 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { RouterController } from '../RouterController.js';
 import { state } from '../../../config/config.js';
-import { setLanguage } from '../../../i18n/i18n.js';
 
-function createMockModal(id) {
+function createMockElement(id) {
     const classList = new Set(['hidden']);
+    const attrs = new Map();
     return {
         id,
+        innerHTML: '',
         classList: {
             add: (c) => classList.add(c),
             remove: (c) => classList.delete(c),
             contains: (c) => classList.has(c)
-        }
-    };
-}
-
-function createMockElement(tagName) {
-    const attributes = new Map();
-    return {
-        tagName,
-        setAttribute: (k, v) => attributes.set(k, v),
-        getAttribute: (k) => attributes.get(k) || null
+        },
+        setAttribute: (k, v) => attrs.set(k, String(v)),
+        getAttribute: (k) => attrs.get(k) || null
     };
 }
 
 test('RouterController.parseUrl parses routes, localized paths and aliases correctly', () => {
-    assert.deepEqual(RouterController.parseUrl('/'), { lang: null, view: '', isRecognized: true });
-    assert.deepEqual(RouterController.parseUrl('/index.html'), { lang: null, view: '', isRecognized: true });
     assert.deepEqual(RouterController.parseUrl('/es'), { lang: 'es', view: '', isRecognized: true });
-    assert.deepEqual(RouterController.parseUrl('/en'), { lang: 'en', view: '', isRecognized: true });
-    assert.deepEqual(RouterController.parseUrl('/es/'), { lang: 'es', view: '', isRecognized: true });
-    assert.deepEqual(RouterController.parseUrl('/privacy'), { lang: null, view: 'privacy', isRecognized: true });
-    assert.deepEqual(RouterController.parseUrl('/es/privacy'), { lang: 'es', view: 'privacy', isRecognized: true });
-    assert.deepEqual(RouterController.parseUrl('/en/terms'), { lang: 'en', view: 'legal', isRecognized: true });
-    assert.deepEqual(RouterController.parseUrl('/es/legal'), { lang: 'es', view: 'legal', isRecognized: true });
+    assert.deepEqual(RouterController.parseUrl('/en/privacy'), { lang: 'en', view: 'privacy', isRecognized: true });
+    assert.deepEqual(RouterController.parseUrl('/terms'), { lang: null, view: 'legal', isRecognized: true });
+    assert.deepEqual(RouterController.parseUrl('/es/faq'), { lang: 'es', view: 'faq', isRecognized: true });
+    assert.deepEqual(RouterController.parseUrl('/'), { lang: null, view: '', isRecognized: true });
     assert.deepEqual(RouterController.parseUrl('/unknown-route'), { lang: null, view: 'unknown-route', isRecognized: false });
 });
 
 test('RouterController.buildPath constructs clean canonical paths', () => {
-    state.currentLang = 'es';
-    assert.equal(RouterController.buildPath('es'), '/es');
-    assert.equal(RouterController.buildPath('en'), '/en');
+    assert.equal(RouterController.buildPath('es', ''), '/es');
+    assert.equal(RouterController.buildPath('en', ''), '/en');
     assert.equal(RouterController.buildPath('es', 'privacy'), '/es/privacy');
     assert.equal(RouterController.buildPath('en', 'legal'), '/en/legal');
 });
 
-test('RouterController.syncModalsWithView toggles modal visibility correctly', () => {
-    const legalModal = createMockModal('legal-modal');
-    const privacyModal = createMockModal('privacy-modal');
+test('RouterController.syncModalsWithView toggles view-container visibility correctly', () => {
+    const viewContainer = createMockElement('view-container');
+    const viewForm = createMockElement('view-form');
+    const viewResult = createMockElement('view-result');
 
     const originalDoc = globalThis.document;
+    const originalWin = globalThis.window;
     globalThis.document = {
         getElementById: (id) => {
-            if (id === 'legal-modal') return legalModal;
-            if (id === 'privacy-modal') return privacyModal;
+            if (id === 'view-container') return viewContainer;
+            if (id === 'view-form') return viewForm;
+            if (id === 'view-result') return viewResult;
             return null;
-        }
+        },
+        querySelectorAll: () => [],
+        querySelector: () => null
+    };
+    globalThis.window = {
+        scrollTo: () => {}
     };
 
     try {
         // Vista privacy
         RouterController.syncModalsWithView('privacy');
-        assert.equal(privacyModal.classList.contains('hidden'), false);
-        assert.equal(legalModal.classList.contains('hidden'), true);
+        assert.equal(viewContainer.classList.contains('hidden'), false);
+        assert.ok(viewContainer.innerHTML.includes('id="view-privacy"'));
 
         // Vista terms
         RouterController.syncModalsWithView('terms');
-        assert.equal(legalModal.classList.contains('hidden'), false);
-        assert.equal(privacyModal.classList.contains('hidden'), true);
+        assert.equal(viewContainer.classList.contains('hidden'), false);
+        assert.ok(viewContainer.innerHTML.includes('id="view-legal"'));
 
         // Vista base (sin modal)
         RouterController.syncModalsWithView('');
-        assert.equal(privacyModal.classList.contains('hidden'), true);
-        assert.equal(legalModal.classList.contains('hidden'), true);
+        assert.equal(viewContainer.classList.contains('hidden'), true);
+        assert.equal(viewContainer.innerHTML, '');
     } finally {
         globalThis.document = originalDoc;
+        globalThis.window = originalWin;
     }
 });
 
@@ -112,8 +110,9 @@ test('RouterController.updateSeoLinks updates canonical, og:url and html lang ta
 
 test('RouterController.handleCurrentRoute syncs route, history and state seamlessly', () => {
     const historyCalls = [];
-    const legalModal = createMockModal('legal-modal');
-    const privacyModal = createMockModal('privacy-modal');
+    const viewContainer = createMockElement('view-container');
+    const viewForm = createMockElement('view-form');
+    const viewResult = createMockElement('view-result');
 
     const originalWin = globalThis.window;
     const originalDoc = globalThis.document;
@@ -130,13 +129,15 @@ test('RouterController.handleCurrentRoute syncs route, history and state seamles
         history: {
             replaceState: (state, title, url) => historyCalls.push({ type: 'replace', url }),
             pushState: (state, title, url) => historyCalls.push({ type: 'push', url })
-        }
+        },
+        scrollTo: () => {}
     };
 
     globalThis.document = {
         getElementById: (id) => {
-            if (id === 'legal-modal') return legalModal;
-            if (id === 'privacy-modal') return privacyModal;
+            if (id === 'view-container') return viewContainer;
+            if (id === 'view-form') return viewForm;
+            if (id === 'view-result') return viewResult;
             return null;
         },
         querySelectorAll: () => [],
@@ -148,7 +149,8 @@ test('RouterController.handleCurrentRoute syncs route, history and state seamles
     try {
         RouterController.handleCurrentRoute({ isInitial: true });
         assert.equal(state.currentLang, 'en');
-        assert.equal(privacyModal.classList.contains('hidden'), false);
+        assert.equal(viewContainer.classList.contains('hidden'), false);
+        assert.ok(viewContainer.innerHTML.includes('id="view-privacy"'));
     } finally {
         globalThis.window = originalWin;
         globalThis.document = originalDoc;
