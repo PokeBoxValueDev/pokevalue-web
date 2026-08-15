@@ -112,3 +112,18 @@ test('visual/dom - verify Tailwind dark mode classes and ARIA accessibility attr
     assert.ok(html.includes('aria-label="Buscar objetos"'));
     assert.ok(html.includes('tabindex="-1"'));
 });
+
+test('visual/dom - index.html contains canonical and hreflang SEO tags and 404.html contains SPA redirect', () => {
+    const htmlPath = path.resolve('index.html');
+    const html = fs.readFileSync(htmlPath, 'utf8');
+
+    assert.ok(html.includes('rel="canonical"'), 'index.html must contain rel="canonical"');
+    assert.ok(html.includes('hreflang="es"'), 'index.html must contain hreflang="es"');
+    assert.ok(html.includes('hreflang="en"'), 'index.html must contain hreflang="en"');
+    assert.ok(html.includes('hreflang="x-default"'), 'index.html must contain hreflang="x-default"');
+
+    const notFoundPath = path.resolve('404.html');
+    const notFoundHtml = fs.readFileSync(notFoundPath, 'utf8');
+    assert.ok(notFoundHtml.includes('SPA Redirect for Static Hosts'), '404.html must contain SPA redirect script');
+});
+

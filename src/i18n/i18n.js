@@ -19,6 +19,7 @@ export function setLanguage(lang) {
 }
 
 export function updateDOMTranslations() {
+    if (typeof document === 'undefined' || typeof document.querySelectorAll !== 'function') return;
     const lang = state.currentLang || 'es';
 
     // 1. Traducir elementos con atributo data-i18n
@@ -40,7 +41,7 @@ export function updateDOMTranslations() {
     });
 
     // 3. Traducir dinámicamente el widget de Ko-fi si está presente
-    const kofiTextElement = document.querySelector('.kofitext');
+    const kofiTextElement = typeof document.querySelector === 'function' ? document.querySelector('.kofitext') : null;
     if (kofiTextElement) {
         // Reemplazar solo el texto para no borrar el icono de la taza (<img>)
         Array.from(kofiTextElement.childNodes).forEach(node => {

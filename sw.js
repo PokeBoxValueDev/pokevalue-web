@@ -28,6 +28,7 @@ const STATIC_ASSETS = [
     './src/ui/controllers/CalculatorController.js',
     './src/ui/controllers/CurrencyController.js',
     './src/ui/controllers/I18nController.js',
+    './src/ui/controllers/RouterController.js',
     './src/ui/controllers/ServiceWorkerController.js',
     './src/ui/controllers/ThemeController.js',
     './src/ui/ios/IOSDeviceDetector.js',

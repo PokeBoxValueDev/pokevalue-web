@@ -42,6 +42,12 @@ const assembledIndexHtml = `<!DOCTYPE html>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="apple-touch-icon" href="favicon.svg">
 
+    <!-- Canonical & SEO Hreflang Tags -->
+    <link rel="canonical" href="https://pokeboxvalue.com/es">
+    <link rel="alternate" hreflang="es" href="https://pokeboxvalue.com/es">
+    <link rel="alternate" hreflang="en" href="https://pokeboxvalue.com/en">
+    <link rel="alternate" hreflang="x-default" href="https://pokeboxvalue.com/es">
+
     <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="PokeBoxValue - Calculadora de Cajas para Pokémon GO">

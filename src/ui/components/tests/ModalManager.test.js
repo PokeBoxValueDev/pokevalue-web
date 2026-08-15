@@ -25,6 +25,9 @@ test('ui/components - ModalManager delegated click opens legal and privacy modal
             if (id === 'privacy-modal') return privacyModal;
             return null;
         },
+        querySelectorAll: () => [],
+        querySelector: () => null,
+        documentElement: { setAttribute: () => {} },
         addEventListener: (event, handler) => {
             if (!listeners.has(event)) listeners.set(event, []);
             listeners.get(event).push(handler);
@@ -34,7 +37,11 @@ test('ui/components - ModalManager delegated click opens legal and privacy modal
     const originalDoc = globalThis.document;
     const originalWin = globalThis.window;
     globalThis.document = mockDocument;
-    globalThis.window = { addEventListener: () => { } };
+    globalThis.window = {
+        location: { pathname: '/es' },
+        history: { pushState: () => {}, replaceState: () => {} },
+        addEventListener: () => { }
+    };
 
     try {
         setupModals();

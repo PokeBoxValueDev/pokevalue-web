@@ -43,17 +43,15 @@ export class CurrencyController {
     }
 
     static updateCurrencyUI() {
+        if (typeof document === 'undefined' || typeof document.querySelectorAll !== 'function') return;
         const currKey = state.currentCurrency || 'EUR';
-        const curr = CURRENCY_CONFIG[currKey] || CURRENCY_CONFIG.EUR;
-        const isCoins = currKey === 'POKECOINS';
+        const curr = CURRENCY_CONFIG[currKey] || CURRENCY_CONFIG['EUR'];
         const isUSD = currKey === 'USD';
-        const isEn = state.currentLang === 'en';
-
-        // Prefijo según el idioma seleccionado
-        const prefix = isEn ? 'Ex:' : 'Ej:';
+        const isCoins = currKey === 'POKECOINS';
+        const prefix = t('boxPricePlaceholderPrefix') || 'Ej:';
 
         // 1. Mostrar/Ocultar aviso para USD
-        const usdDisclaimer = document.getElementById('usd-disclaimer');
+        const usdDisclaimer = typeof document.getElementById === 'function' ? document.getElementById('usd-disclaimer') : null;
         if (usdDisclaimer) {
             if (isUSD) {
                 usdDisclaimer.innerText = t('disclaimerUSD') || '* Los precios se convierten en base a una tasa fija estimada respecto al Euro.';

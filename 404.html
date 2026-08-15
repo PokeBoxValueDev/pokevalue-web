@@ -10,6 +10,23 @@
     <title data-i18n="error_title">Error | PokeBoxValue</title>
 
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    
+    <!-- SPA Redirect for Static Hosts (GitHub Pages) -->
+    <script>
+        (function () {
+            var path = window.location.pathname;
+            var validPrefixes = ['/es', '/en', '/privacy', '/terms', '/legal'];
+            var isKnownRoute = validPrefixes.some(function (prefix) {
+                return path === prefix || path.startsWith(prefix + '/') || path === prefix + '.html';
+            });
+
+            if (isKnownRoute) {
+                var redirectUrl = '/?p=' + encodeURIComponent(path + window.location.search + window.location.hash);
+                window.location.replace(redirectUrl);
+            }
+        })();
+    </script>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = { darkMode: 'class' };

@@ -203,11 +203,15 @@ test('visual/harness - ModalManager opens modals when btn-legal and btn-privacy 
             if (id === 'privacy-modal') return privacyModal;
             return null;
         },
+        querySelectorAll: () => [],
+        querySelector: () => null,
         addEventListener: (event, fn) => {
             if (event === 'click') docClickListeners.push(fn);
         }
     };
     globalThis.window = {
+        location: { pathname: '/es' },
+        history: { pushState: () => {}, replaceState: () => {} },
         addEventListener: () => {}
     };
 

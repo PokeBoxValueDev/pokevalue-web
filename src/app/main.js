@@ -10,6 +10,7 @@ import { I18nController } from '../ui/controllers/I18nController.js';
 import { CurrencyController } from '../ui/controllers/CurrencyController.js';
 import { CalculatorController } from '../ui/controllers/CalculatorController.js';
 import { ServiceWorkerController } from '../ui/controllers/ServiceWorkerController.js';
+import { RouterController } from '../ui/controllers/RouterController.js';
 import { t } from '../i18n/i18n.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -27,6 +28,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 3. Inicializar Controladores de UI Independientes
     ThemeController.init();
     I18nController.init();
+    RouterController.init();
     CurrencyController.init();
     CalculatorController.init();
     ServiceWorkerController.init();

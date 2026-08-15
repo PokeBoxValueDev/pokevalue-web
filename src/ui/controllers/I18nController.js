@@ -4,9 +4,11 @@ import { CalculatorController } from './CalculatorController.js';
 import { renderItems } from '../components/ItemCardRenderer.js';
 import { state } from '../../config/config.js';
 
+import { RouterController } from './RouterController.js';
+
 export class I18nController {
     static detectLanguage() {
-        const savedLang = localStorage.getItem('lang');
+        const savedLang = typeof localStorage !== 'undefined' ? localStorage.getItem('lang') : null;
         if (savedLang) return savedLang;
 
         if (typeof navigator !== 'undefined') {
@@ -21,31 +23,38 @@ export class I18nController {
         return 'es';
     }
 
+    static applyLanguage(lang) {
+        state.currentLang = lang;
+        if (typeof localStorage !== 'undefined') {
+            localStorage.setItem('lang', lang);
+        }
+        setLanguage(lang);
+        updateDOMTranslations();
+
+        const langSelect = typeof document !== 'undefined' ? document.getElementById('lang-select') : null;
+        if (langSelect && langSelect.value !== lang) {
+            langSelect.value = lang;
+        }
+
+        CurrencyController.updateCurrencyUI();
+        I18nController.reRenderItems();
+
+        if (state.lastResult) {
+            CalculatorController.reRenderResults(state.lastResult);
+        }
+    }
+
     static init() {
-        const langSelect = document.getElementById('lang-select');
+        const langSelect = typeof document !== 'undefined' ? document.getElementById('lang-select') : null;
         const initialLang = I18nController.detectLanguage();
         
         if (langSelect) {
             langSelect.value = initialLang;
-            setLanguage(initialLang);
-            updateDOMTranslations();
+            I18nController.applyLanguage(initialLang);
             
             langSelect.addEventListener('change', () => {
                 const selectedLang = langSelect.value;
-                localStorage.setItem('lang', selectedLang);
-                setLanguage(selectedLang);
-                updateDOMTranslations();
-                CurrencyController.updateCurrencyUI();
-                
-                // Re-render items to update translations
-                const filteredItems = state.storeData || []; // Simplification, getFilteredItems was in app.js
-                // We actually need the original filter logic. If there's a search input, we filter by it.
-                // Let's implement a static method to re-render items based on search state.
-                I18nController.reRenderItems();
-                
-                if (state.lastResult) {
-                    CalculatorController.reRenderResults(state.lastResult);
-                }
+                RouterController.navigateToLang(selectedLang);
             });
         }
     }
