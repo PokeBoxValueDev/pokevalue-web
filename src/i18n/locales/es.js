@@ -73,11 +73,15 @@ export default {
     keyMetricsTitle: "Métricas Clave (Coste Efectivo)",
     habitualLabel: "Habitual",
 
-    // Rangos de Oferta (Rating Badges)
-    gradeS: "Grado S (Chollo Total)",
-    gradeA: "Grado A (Muy Buena)",
-    gradeB: "Grado B (Aceptable)",
-    gradeF: "Grado F (Pésima Compra)",
+    // Clasificación de Ofertas (Intuitiva y Directa)
+    gradeS: "🌟 Excelente (Chollo)",
+    gradeA: "👍 Buena compra",
+    gradeB: "⚖️ Aceptable",
+    gradeF: "❌ Mala compra",
+    badgeExcellent: "Excelente",
+    badgeGood: "Buena",
+    badgeFair: "Aceptable",
+    badgePoor: "Mala",
 
     // Categorías (Normalizadas para coincidir con cualquier entrada del JSON)
     catPases: "Pases de Incursión",
@@ -91,14 +95,14 @@ export default {
     // SEO / Descripción
     seoTitle: "Acerca de PokeBoxValue",
     seoDesc1: "PokeBoxValue es una calculadora especializada diseñada para ayudar a los jugadores a analizar la rentabilidad de las cajas de objetos en Pokémon GO. Introduce el precio de la caja y selecciona los objetos que contiene para obtener un desglose detallado de su valor real en comparación con la compra de objetos individuales.",
-    seoDesc2: "Nuestra herramienta utiliza los precios base estándar de la tienda para calcular si estás consiguiendo un buen trato, mostrando métricas clave, porcentajes de descuento y asignando una calificación (Grado S, A, B, o F) para que siempre tomes la mejor decisión con tus monedas.",
+    seoDesc2: "Nuestra herramienta utiliza los precios base estándar de la tienda para calcular si estás consiguiendo un buen trato, mostrando métricas clave, porcentajes de descuento y asignando una calificación clara (Excelente, Buena, Aceptable o Mala) para que siempre tomes la mejor decisión con tus monedas.",
 
     // FAQ
     faqTitle: "Preguntas Frecuentes sobre Cajas de Pokémon GO",
     faqQ1: "¿Cómo calcula PokeBoxValue si una caja es rentable?",
     faqA1: "Comparamos el coste total de la caja con el valor de comprar cada objeto por separado a su precio base oficial de la tienda. Si el valor total de los objetos supera el precio de la caja, se considera rentable y se calcula el porcentaje exacto de ahorro.",
-    faqQ2: "¿Qué significan las calificaciones de Grado S, A, B y F?",
-    faqA2: "El sistema clasifica la oferta según su descuento: Grado S (ahorro ≥ 40%), Grado A (ahorro 25-39%), Grado B (ahorro 1-24%) y Grado F (sin descuento o más cara que comprar objetos sueltos).",
+    faqQ2: "¿Cómo se clasifica si una oferta es excelente, buena o mala?",
+    faqA2: "El sistema clasifica la oferta según su descuento: Excelente (ahorro ≥ 40%), Buena compra (ahorro 25-39%), Aceptable (ahorro 1-24%) y Mala compra (sin descuento o más cara que comprar objetos sueltos).",
     faqQ3: "¿Puedo calcular ofertas en Pokémonedas, Euros y Dólares?",
     faqA3: "Sí, PokeBoxValue soporta cálculos en Euros (€), Dólares ($) y Pokémonedas (PokéCoins). Puedes cambiar de divisa en cualquier momento desde la cabecera.",
     faqQ4: "¿Qué objetos tienen mayor valor en una caja de Pokémon GO?",

@@ -73,11 +73,15 @@ export default {
     keyMetricsTitle: "Key Metrics (Effective Cost)",
     habitualLabel: "Standard",
 
-    // Rating Badges
-    gradeS: "Grade S (Incredible Deal)",
-    gradeA: "Grade A (Great Value)",
-    gradeB: "Grade B (Fair Value)",
-    gradeF: "Grade F (Poor Value)",
+    // Offer Ratings (Clear and Intuitive)
+    gradeS: "🌟 Excellent Deal",
+    gradeA: "👍 Good Value",
+    gradeB: "⚖️ Fair Value",
+    gradeF: "❌ Poor Value",
+    badgeExcellent: "Excellent",
+    badgeGood: "Good",
+    badgeFair: "Fair",
+    badgePoor: "Poor",
 
     // Categories
     catPases: "Raid Passes",
@@ -91,14 +95,14 @@ export default {
     // SEO / Description
     seoTitle: "About PokeBoxValue",
     seoDesc1: "PokeBoxValue is a specialized calculator designed to help players analyze the profitability and value of item boxes in Pokémon GO. Enter the box price and select the items it contains to get a detailed breakdown of its real value compared to buying items individually.",
-    seoDesc2: "Our tool uses standard in-game shop base prices to calculate if you are getting a good deal, displaying key metrics, discount percentages, and assigning a grade (Grade S, A, B, or F) so you always make the best decision with your coins.",
+    seoDesc2: "Our tool uses standard in-game shop base prices to calculate if you are getting a good deal, displaying key metrics, discount percentages, and assigning a clear rating (Excellent, Good, Fair, or Poor) so you always make the best decision with your coins.",
 
     // FAQ
     faqTitle: "Frequently Asked Questions about Pokémon GO Boxes",
     faqQ1: "How does PokeBoxValue calculate if a box is worth it?",
     faqA1: "We compare the total cost of the box with the individual standard shop price of each item. If the total item value exceeds the box price, it is profitable, and the exact discount percentage is calculated.",
-    faqQ2: "What do Grades S, A, B, and F mean?",
-    faqA2: "The system grades the offer based on its savings: Grade S (savings >= 40%), Grade A (25-39%), Grade B (1-24%), and Grade F (no discount or more expensive than buying items separately).",
+    faqQ2: "How is an offer classified as excellent, good, or poor?",
+    faqA2: "The system classifies offers based on their savings: Excellent (savings >= 40%), Good Value (25-39%), Fair Value (1-24%), and Poor Value (no discount or more expensive than buying items separately).",
     faqQ3: "Can I calculate offers in PokéCoins, Euros, and USD?",
     faqA3: "Yes, PokeBoxValue supports calculations in Euros (€), US Dollars ($), and PokéCoins. You can switch currencies at any time in the header.",
     faqQ4: "Which items offer the highest value in Pokémon GO boxes?",
@@ -118,14 +122,14 @@ export default {
     btnLegal: "Legal Notice",
     btnPrivacy: "Privacy & Cookies",
 
-    // Modals
+    // Modales
     legalTitle: "Legal Notice",
     legalBody1: "PokeBoxValue is an independent fan tool. It is not affiliated, endorsed, associated, or supported by Niantic, Inc., The Pokémon Company, Nintendo Co., Ltd., or GAME FREAK Inc.",
     legalBody2: "This website is intended for informational and estimation purposes only. All item names, logos, or trademarks belong to their respective owners.",
     privacyTitle: "Privacy Policy & Cookies (Google Consent Mode v2)",
     privacyBody1: "Google Analytics & Advertising (AdSense): We use Google Tag (GA4) and Google Consent Mode v2 for traffic analytics and Google services integration (including AdSense). By default, all analytical and advertising cookies are denied until you consent in the cookie banner.",
     privacyBody2: "Technical Local Storage (localStorage): We store your visual theme, currency, language, and recent calculation history in your browser. You can accept, reject, or revoke consent for analytics and ads at any time.",
-    privacyBody3: "Third-party vendors, including Google, use cookies to serve ads based on a user's prior visits to this website or other websites. Google's use of advertising cookies enables it and its partners to serve ads to users based on their visit to your sites and/or other sites on the Internet. Users may opt out of personalized advertising by visiting <a href='https://myadcenter.google.com/' target='_blank' class='text-indigo-600 dark:text-indigo-400 hover:underline'>Google Ad Settings</a> or third-party vendors via <a href='https://www.aboutads.info' target='_blank' class='text-indigo-600 dark:text-indigo-400 hover:underline'>www.aboutads.info</a>.",
+    privacyBody3: "Third-party vendors, including Google, use cookies to serve ads based on a user's prior visits to this website or other visits to this website or other sites on the Internet. Users may opt out of personalized advertising by visiting <a href='https://myadcenter.google.com/' target='_blank' class='text-indigo-600 dark:text-indigo-400 hover:underline'>Google Ad Settings</a> or third-party vendors via <a href='https://www.aboutads.info' target='_blank' class='text-indigo-600 dark:text-indigo-400 hover:underline'>www.aboutads.info</a>.",
     btnCloseModal: "Close",
 
     // Error Page

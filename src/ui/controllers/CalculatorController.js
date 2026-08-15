@@ -197,7 +197,10 @@ export class CalculatorController {
                 liveGradeBadge.className = 'px-2 py-0.5 rounded-lg text-xs font-black bg-rose-500 text-white shadow-sm';
             }
 
-            liveGradeBadge.innerText = res.grade;
+            const badgeKey = res.grade === 'S' 
+                ? 'badgeExcellent' 
+                : (res.grade === 'A' ? 'badgeGood' : (res.grade === 'B' ? 'badgeFair' : 'badgePoor'));
+            liveGradeBadge.innerText = t(badgeKey) || res.grade;
 
             stickyBar.classList.remove('translate-y-28', 'opacity-0', 'pointer-events-none');
         } else {
