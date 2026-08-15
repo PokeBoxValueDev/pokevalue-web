@@ -120,6 +120,56 @@
                 </div>
             </div>
         </section>
+
+        <!-- Section 4: Axe-Core Automated Accessibility Audit -->
+        <section class="space-y-4 pt-4 border-t border-gray-800">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-lg font-semibold text-gray-200">4. Auditoría de Accesibilidad Axe-Core en Vivo</h2>
+                    <p class="text-xs text-gray-400">Ejecuta el motor axe-core oficial de Deque Systems directamente en este DOM.</p>
+                </div>
+                <button id="btn-run-axe" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-lg transition shadow-md cursor-pointer">
+                    🔍 Ejecutar Axe-Core
+                </button>
+            </div>
+            <div id="axe-results" class="p-4 bg-gray-800/80 rounded-xl border border-gray-700 text-xs space-y-2 hidden">
+                <div id="axe-summary" class="font-bold"></div>
+                <ul id="axe-violations-list" class="space-y-1 text-gray-300"></ul>
+            </div>
+        </section>
     </div>
+
+    <!-- Axe-Core Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.8.2/axe.min.js"></script>
+    <script>
+        document.getElementById('btn-run-axe')?.addEventListener('click', async () => {
+            const resultsBox = document.getElementById('axe-results');
+            const summaryBox = document.getElementById('axe-summary');
+            const list = document.getElementById('axe-violations-list');
+            
+            if (!resultsBox || !summaryBox || !list || typeof axe === 'undefined') return;
+            
+            resultsBox.classList.remove('hidden');
+            summaryBox.innerHTML = '<span class="text-indigo-400">Analizando DOM con Axe-Core...</span>';
+            list.innerHTML = '';
+
+            try {
+                const results = await axe.run();
+                if (results.violations.length === 0) {
+                    summaryBox.innerHTML = `<span class="text-emerald-400">✅ ¡Enhorabuena! Axe-Core no ha detectado ninguna violación de accesibilidad. (${results.passes.length} reglas WCAG pasadas con éxito).</span>`;
+                } else {
+                    summaryBox.innerHTML = `<span class="text-rose-400">⚠️ Se encontraron ${results.violations.length} problemas de accesibilidad:</span>`;
+                    results.violations.forEach(v => {
+                        const li = document.createElement('li');
+                        li.className = 'p-2 bg-gray-900/60 rounded border border-rose-900/50';
+                        li.innerHTML = `<strong class="text-rose-300">[${v.impact.toUpperCase()}] ${v.help}</strong>: <span class="text-gray-400">${v.description}</span>`;
+                        list.appendChild(li);
+                    });
+                }
+            } catch (err) {
+                summaryBox.innerHTML = `<span class="text-rose-400">Error al ejecutar axe-core: ${err.message}</span>`;
+            }
+        });
+    </script>
 </body>
 </html>
