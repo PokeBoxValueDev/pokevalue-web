@@ -11,10 +11,22 @@ export class ServiceWorkerController {
                 }
             });
 
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .catch(err => console.error('Error al registrar Service Worker:', err));
-            });
+            const registerWorker = async () => {
+                try {
+                    const reg = await navigator.serviceWorker.register('./sw.js');
+                    if (reg && typeof reg.update === 'function') {
+                        reg.update();
+                    }
+                } catch (err) {
+                    console.error('Error al registrar Service Worker:', err);
+                }
+            };
+
+            if (document.readyState === 'complete') {
+                registerWorker();
+            } else {
+                window.addEventListener('load', registerWorker);
+            }
         }
     }
 }
