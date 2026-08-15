@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pokeboxvalue-v1.23.1';
+const CACHE_NAME = 'pokeboxvalue-v1.23.2';
 const STATIC_ASSETS = [
     './',
     './index.html',
@@ -129,18 +129,20 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
-    // 5. Stale-While-Revalidate para assets estáticos propios (CSS, JS, imágenes, SVG)
+    // 5. Cache-First para assets estáticos propios (CSS, JS, imágenes, SVG):
+    // Si está en la caché del Service Worker, responder de inmediato en 0ms sin saturar la red.
     event.respondWith(
         caches.match(event.request).then((cachedResponse) => {
-            const fetchPromise = fetch(event.request).then((networkResponse) => {
+            if (cachedResponse) {
+                return cachedResponse;
+            }
+            return fetch(event.request).then((networkResponse) => {
                 if (networkResponse && networkResponse.status === 200 && event.request.method === 'GET') {
                     const responseClone = networkResponse.clone();
                     caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseClone));
                 }
                 return networkResponse;
             });
-
-            return cachedResponse || fetchPromise;
         })
     );
 });
