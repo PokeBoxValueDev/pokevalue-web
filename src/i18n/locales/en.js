@@ -3,13 +3,11 @@ export default {
     lastUpdated: "Data:",
     disclaimerUSD: "* USD prices are calculated using an estimated currency conversion.",
     metaTitle: "PokeBoxValue - Pokémon GO Box Value Calculator",
-    metaDescription: "Calculate if Pokémon GO shop boxes are worth buying. Discover the true value of raid passes, incubators, and items to save money.",
-
-    // Formulario
+    metaDescription: "Calculate if Pokémon GO shop boxes are worth buying. Discover the true value of raid passes, incubators, and items to save money.",    // Formulario
     boxPriceLabel: "Box Price",
     boxPricePlaceholderPrefix: "e.g.",
     itemsIncluded: "Included Items",
-    searchPlaceholder: "🔍 Search item...",
+    searchPlaceholder: "Search item...",
     loadingItems: "Loading items...",
     btnCalculate: "Calculate Value",
     recentHistory: "Recent History",
@@ -27,30 +25,30 @@ export default {
     noItemsSelected: "No breakdown available",
 
     // Resultados
-    titleProfitable: "GREAT VALUE! 🎉",
-    titleNotProfitable: "NOT WORTH IT ❌",
+    titleProfitable: "GREAT VALUE!",
+    titleNotProfitable: "NOT WORTH IT",
     resBoxPrice: "Box price:",
     resRealValue: "Real value:",
     resDiffSave: "You save:",
     resDiffLose: "You lose:",
     breakdownTitle: "Value Breakdown",
-    btnShare: "📲 Share",
-    btnShareCard: "🖼️ Share Card",
+    btnShare: "Share",
+    btnShareCard: "Share Card",
     shareTitle: "PokeBoxValue",
     shareText: "Check out the profitability of this box on PokeBoxValue:",
     shareNativeTextFallback: "PokeBoxValue - Pokémon GO Box Calculator",
-    shareNativeCardText: "I analyzed this Pokémon GO box value on PokeBoxValue! 📦✨",
+    shareNativeCardText: "I analyzed this Pokémon GO box value on PokeBoxValue!",
     shareCanvasWatermark: "pokeboxvalue.com | Pokémon GO Box Calculator",
-    btnReset: "🔄 Calculate another",
+    btnReset: "Calculate another",
     copiedToClipboard: "Result copied to clipboard!",
-    keyMetricsTitle: "⚡ Key Metrics (Effective Cost)",
+    keyMetricsTitle: "Key Metrics (Effective Cost)",
     habitualLabel: "Standard",
 
     // Rangos de Oferta (Rating Badges)
-    gradeS: "🌟 Grade S (Super Deal)",
-    gradeA: "🟢 Grade A (Great Deal)",
-    gradeB: "🟡 Grade B (Decent Deal)",
-    gradeF: "🔴 Grade F (Bad Deal)",
+    gradeS: "Grade S (Super Deal)",
+    gradeA: "Grade A (Great Deal)",
+    gradeB: "Grade B (Decent Deal)",
+    gradeF: "Grade F (Bad Deal)",
 
     // Categorías (Normalizadas para coincidir con cualquier entrada del JSON)
     catPases: "Raid Passes",
@@ -67,27 +65,27 @@ export default {
     seoDesc2: "Our tool uses standard in-game shop base prices to calculate if you are getting a good deal, displaying key metrics, discount percentages, and assigning a rating (Grade S, A, B, or F) so you always make the smartest choice with your coins.",
 
     // FAQ
-    faqTitle: "❓ Frequently Asked Questions about Pokémon GO Boxes",
+    faqTitle: "Frequently Asked Questions about Pokémon GO Boxes",
     faqQ1: "How does PokeBoxValue calculate if a box is worth it?",
     faqA1: "We compare the total cost of the box with the cost of purchasing each item individually at its official shop base price. If the total item value exceeds the box price, the deal is considered profitable, and the exact discount and savings percentages are calculated.",
     faqQ2: "What do the Grade S, A, B, and F ratings mean?",
     faqA2: "The system grades deals by discount level: Grade S (savings ≥ 40%, legendary value), Grade A (savings 25-39%, great deal), Grade B (savings 1-24%, decent deal), and Grade F (no discount or more expensive than single items).",
     faqQ3: "Can I calculate deals in PokéCoins, Euros, and USD?",
-    faqA3: "Yes, PokeBoxValue supports calculations in Euros (€), US Dollars ($), and PokéCoins (🟡). You can switch currencies at any time from the top header selector.",
+    faqA3: "Yes, PokeBoxValue supports calculations in Euros (€), US Dollars ($), and PokéCoins. You can switch currencies at any time from the top header selector.",
     faqQ4: "Which items carry the highest value in a Pokémon GO box?",
     faqA4: "The most sought-after Key Value Items are typically Premium/Remote Raid Passes and Super Incubators, as they provide the highest savings per PokéCoin spent.",
 
     // Reference Table
-    tableRefTitle: "📋 Official Shop Reference Base Prices",
+    tableRefTitle: "Official Shop Reference Base Prices",
     tableRefSubtitle: "Standard individual values used to compute box profitability:",
     colItem: "Item",
     colCoins: "Coins",
     colEur: "Base Price",
 
     // Footer & Donaciones
-    coffeeBtn: "☕ Enjoyed this? Buy me a coffee",
+    coffeeBtn: "Buy me a coffee",
     footerText: "PokeBoxValue is an independent fan project and is not affiliated with, sponsored, or endorsed by Scopely, Niantic, The Pokémon Company, Nintendo, or GAME FREAK. Pokémon and item names are trademarks of their respective owners.",
-    btnFaq: "❓ FAQ & Guide",
+    btnFaq: "FAQ & Guide",
     btnLegal: "Legal Notice",
     btnPrivacy: "Privacy & Cookies",
 
@@ -109,5 +107,5 @@ export default {
     error_500_message: "Something broke on our servers. Please try again later.",
     error_default_heading: "Oops! Something went wrong",
     error_default_message: "An unexpected error occurred.",
-    error_back_btn: "🏠 Back to Home"
+    error_back_btn: "Back to Home"
 };
