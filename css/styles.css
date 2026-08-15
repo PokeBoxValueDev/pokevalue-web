@@ -100,13 +100,9 @@ html.is-ios #btn-calculate {
 }
 
 /* iOS Glassmorphism for Quantity Controls and Buttons */
-html.is-ios .item-card .gap-1\\.5 {
-    backdrop-filter: blur(20px) saturate(180%) !important;
-    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-    background-color: rgba(255, 255, 255, 0.5) !important;
-}
-html.is-ios.dark .item-card .gap-1\\.5 {
-    background-color: rgba(31, 41, 55, 0.5) !important;
+html.is-ios .btn-quick-add {
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
 }
 
 html.is-ios .btn-increment,
@@ -121,13 +117,11 @@ html.is-ios.dark .btn-decrement {
 }
 
 /* iOS Glassmorphism for Modals (Menus) */
-html.is-ios [role="dialog"] > div.bg-white,
-html.is-ios [role="dialog"] > div.dark\\:bg-gray-800 {
+html.is-ios [role="dialog"] > div {
     backdrop-filter: blur(30px) saturate(200%) !important;
     -webkit-backdrop-filter: blur(30px) saturate(200%) !important;
-    background-color: rgba(255, 255, 255, 0.75) !important;
+    background-color: rgba(255, 255, 255, 0.85) !important;
 }
-html.is-ios.dark [role="dialog"] > div.bg-white,
-html.is-ios.dark [role="dialog"] > div.dark\\:bg-gray-800 {
-    background-color: rgba(17, 24, 39, 0.75) !important;
+html.is-ios.dark [role="dialog"] > div {
+    background-color: rgba(17, 24, 39, 0.85) !important;
 }

@@ -43,3 +43,12 @@ test('contract/architecture - Componentes modulares existen en src/components/',
         assert.ok(fs.existsSync(fullPath), `Componente modular requerido no existe: "${comp}"`);
     });
 });
+
+test('contract/architecture - css/styles.css debe contener sintaxis CSS válida sin dobles barras invertidas', () => {
+    const rootDir = process.cwd();
+    const cssPath = path.join(rootDir, 'css', 'styles.css');
+    const cssContent = fs.readFileSync(cssPath, 'utf8');
+
+    assert.equal(cssContent.includes('\\\\'), false, 'css/styles.css no debe contener secuencias de escape inválidas (\\\\)');
+});
+
