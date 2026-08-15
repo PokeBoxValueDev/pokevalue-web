@@ -2,9 +2,12 @@ export default {
     appName: "PokeBoxValue",
     lastUpdated: "Data:",
     disclaimerUSD: "* USD prices are calculated using an estimated currency conversion.",
+    metaTitle: "PokeBoxValue - Pokémon GO Box Value Calculator",
+    metaDescription: "Calculate if Pokémon GO shop boxes are worth buying. Discover the true value of raid passes, incubators, and items to save money.",
 
     // Formulario
     boxPriceLabel: "Box Price",
+    boxPricePlaceholderPrefix: "e.g.",
     itemsIncluded: "Included Items",
     searchPlaceholder: "🔍 Search item...",
     loadingItems: "Loading items...",
@@ -14,7 +17,7 @@ export default {
     noItemsFound: "No items found.",
     enterValidPrice: "Please enter a valid box price.",
     alertNoItems: "Select at least one item.",
-    btnResetQty: "🧹 Clear selection",
+    btnResetQty: "Clear",
 
     // Historial
     badgeProfitable: "Profitable",

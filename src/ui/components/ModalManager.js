@@ -12,7 +12,7 @@ export function setupModals() {
             const id = targetBtn.id || targetBtn.getAttribute('data-i18n') || targetBtn.getAttribute('data-cc');
 
             if (id === 'btn-legal' || id === 'btnLegal') {
-                RouterController.openModalRoute('terms');
+                RouterController.openModalRoute('legal');
             } else if (id === 'btn-privacy' || id === 'btnPrivacy') {
                 RouterController.openModalRoute('privacy');
             } else if (id === 'btn-cookies' || id === 'show-preferencesModal') {
@@ -23,9 +23,9 @@ export function setupModals() {
         }
     });
 
-    // Cerrar modales al pulsar cualquier botón de cierre dentro de las modales
+    // Cerrar vistas / volver a inicio al pulsar cualquier botón de cierre o volver
     document.addEventListener('click', (e) => {
-        const closeBtn = e.target && e.target.closest ? e.target.closest('#legal-modal button, #privacy-modal button, .btn-close-modal') : null;
+        const closeBtn = e.target && e.target.closest ? e.target.closest('#legal-modal button, #privacy-modal button, #view-legal button, #view-privacy button, .btn-close-modal, .btn-back-home') : null;
         if (closeBtn) {
             e.preventDefault();
             RouterController.closeModalRoute();

@@ -45,9 +45,31 @@ export function updateDOMTranslations() {
     if (kofiTextElement) {
         // Reemplazar solo el texto para no borrar el icono de la taza (<img>)
         Array.from(kofiTextElement.childNodes).forEach(node => {
-            if (node.nodeType === Node.TEXT_NODE && node.nodeValue.trim().length > 0) {
+            if (node.nodeType === 3 && node.nodeValue.trim().length > 0) {
                 node.nodeValue = lang === 'es' ? ' Apoyar proyecto' : ' Support Project';
             }
         });
+    }
+
+    // 4. Actualizar dinámicamente metatags de SEO y redes sociales
+    const titleTranslation = t('metaTitle');
+    if (titleTranslation) {
+        document.title = titleTranslation;
+        const ogTitle = document.querySelector('meta[property="og:title"]');
+        if (ogTitle) ogTitle.setAttribute('content', titleTranslation);
+        const twitterTitle = document.querySelector('meta[name="twitter:title"]');
+        if (twitterTitle) twitterTitle.setAttribute('content', titleTranslation);
+    }
+
+    const descTranslation = t('metaDescription');
+    if (descTranslation) {
+        const metaDesc = document.querySelector('meta[name="description"]');
+        if (metaDesc) metaDesc.setAttribute('content', descTranslation);
+
+        const ogDesc = document.querySelector('meta[property="og:description"]');
+        if (ogDesc) ogDesc.setAttribute('content', descTranslation);
+
+        const twitterDesc = document.querySelector('meta[name="twitter:description"]');
+        if (twitterDesc) twitterDesc.setAttribute('content', descTranslation);
     }
 }

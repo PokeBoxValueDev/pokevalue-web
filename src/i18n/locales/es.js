@@ -2,9 +2,12 @@ export default {
     appName: "PokeBoxValue",
     lastUpdated: "Datos:",
     disclaimerUSD: "* Los precios en USD se calculan mediante conversión fija estimada.",
+    metaTitle: "PokeBoxValue - Calculadora de Cajas para Pokémon GO",
+    metaDescription: "Calcula si las cajas de la tienda de Pokémon GO valen la pena. Descubre el valor real de los pases, incubadoras y objetos para ahorrar dinero.",
 
     // Formulario
     boxPriceLabel: "Precio de la Caja",
+    boxPricePlaceholderPrefix: "Ej:",
     itemsIncluded: "Objetos incluidos",
     searchPlaceholder: "🔍 Buscar objeto...",
     loadingItems: "Cargando objetos...",
@@ -14,7 +17,7 @@ export default {
     noItemsFound: "No se encontraron objetos.",
     enterValidPrice: "Por favor, introduce un precio válido para la caja.",
     alertNoItems: "Selecciona al menos un objeto.",
-    btnResetQty: "🧹 Limpiar selección",
+    btnResetQty: "Limpiar",
 
     // Historial
     badgeProfitable: "Rentable",

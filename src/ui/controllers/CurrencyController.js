@@ -48,7 +48,8 @@ export class CurrencyController {
         const curr = CURRENCY_CONFIG[currKey] || CURRENCY_CONFIG['EUR'];
         const isUSD = currKey === 'USD';
         const isCoins = currKey === 'POKECOINS';
-        const prefix = t('boxPricePlaceholderPrefix') || 'Ej:';
+        const rawPrefix = t('boxPricePlaceholderPrefix');
+        const prefix = (rawPrefix && rawPrefix !== 'boxPricePlaceholderPrefix') ? rawPrefix : (state.currentLang === 'en' ? 'e.g.' : 'Ej:');
 
         // 1. Mostrar/Ocultar aviso para USD
         const usdDisclaimer = typeof document.getElementById === 'function' ? document.getElementById('usd-disclaimer') : null;

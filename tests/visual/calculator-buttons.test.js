@@ -199,8 +199,8 @@ test('visual/harness - ModalManager opens modals when btn-legal and btn-privacy 
     const docClickListeners = [];
     globalThis.document = {
         getElementById: (id) => {
-            if (id === 'legal-modal') return legalModal;
-            if (id === 'privacy-modal') return privacyModal;
+            if (id === 'legal-modal' || id === 'view-legal') return legalModal;
+            if (id === 'privacy-modal' || id === 'view-privacy') return privacyModal;
             return null;
         },
         querySelectorAll: () => [],

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://pokeboxvalue.com/es</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://pokeboxvalue.com/es" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://pokeboxvalue.com/en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pokeboxvalue.com/es" />
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://pokeboxvalue.com/en</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://pokeboxvalue.com/es" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://pokeboxvalue.com/en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pokeboxvalue.com/es" />
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://pokeboxvalue.com/es/legal</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://pokeboxvalue.com/es/legal" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://pokeboxvalue.com/en/legal" />
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://pokeboxvalue.com/en/legal</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://pokeboxvalue.com/es/legal" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://pokeboxvalue.com/en/legal" />
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://pokeboxvalue.com/es/privacy</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://pokeboxvalue.com/es/privacy" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://pokeboxvalue.com/en/privacy" />
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://pokeboxvalue.com/en/privacy</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://pokeboxvalue.com/es/privacy" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://pokeboxvalue.com/en/privacy" />
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+</urlset>

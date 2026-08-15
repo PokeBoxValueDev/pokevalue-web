@@ -27,9 +27,9 @@ export class RouterController {
         }
 
         // Normalizar alias de vistas legales
-        if (view === 'legal') view = 'terms';
+        if (view === 'terms') view = 'legal';
 
-        const validViews = ['', 'privacy', 'terms'];
+        const validViews = ['', 'privacy', 'legal', 'terms'];
         const isRecognized = validViews.includes(view);
 
         return { lang, view, isRecognized };
@@ -165,24 +165,53 @@ export class RouterController {
     }
 
     /**
-     * Sincroniza la visibilidad de los modales en el DOM según la vista actual
+     * Sincroniza la visibilidad de las vistas / modales en el DOM según la vista actual
      * @param {string} view
      */
     static syncModalsWithView(view) {
         if (typeof document === 'undefined') return;
 
+        const viewLegal = document.getElementById('view-legal');
+        const viewPrivacy = document.getElementById('view-privacy');
+        const viewForm = document.getElementById('view-form');
+        const viewResult = document.getElementById('view-result');
         const legalModal = document.getElementById('legal-modal');
         const privacyModal = document.getElementById('privacy-modal');
 
         if (view === 'privacy') {
+            if (viewPrivacy) viewPrivacy.classList.remove('hidden');
             if (privacyModal) privacyModal.classList.remove('hidden');
+            if (viewLegal) viewLegal.classList.add('hidden');
             if (legalModal) legalModal.classList.add('hidden');
-        } else if (view === 'terms') {
+            if (viewForm) viewForm.classList.add('hidden');
+            if (viewResult) viewResult.classList.add('hidden');
+            if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        } else if (view === 'legal' || view === 'terms') {
+            if (viewLegal) viewLegal.classList.remove('hidden');
             if (legalModal) legalModal.classList.remove('hidden');
+            if (viewPrivacy) viewPrivacy.classList.add('hidden');
             if (privacyModal) privacyModal.classList.add('hidden');
+            if (viewForm) viewForm.classList.add('hidden');
+            if (viewResult) viewResult.classList.add('hidden');
+            if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
         } else {
+            if (viewPrivacy) viewPrivacy.classList.add('hidden');
             if (privacyModal) privacyModal.classList.add('hidden');
+            if (viewLegal) viewLegal.classList.add('hidden');
             if (legalModal) legalModal.classList.add('hidden');
+
+            // Si salimos de una vista legal, mostrar el formulario (o resultado si no está oculto)
+            if (viewForm) {
+                if (viewResult && !viewResult.classList.contains('hidden')) {
+                    viewForm.classList.add('hidden');
+                } else {
+                    viewForm.classList.remove('hidden');
+                }
+            }
         }
     }
 

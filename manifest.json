@@ -1,6 +1,16 @@
 {
+  "id": "/",
   "short_name": "PokeBoxValue",
-  "name": "PokeBoxValue - Calculadora de Cajas",
+  "name": "PokeBoxValue - Calculadora de Cajas Pokémon GO",
+  "description": "Calcula la rentabilidad real de las cajas de objetos de la tienda de Pokémon GO.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#111827",
+  "theme_color": "#4f46e5",
+  "categories": ["utilities", "games"],
+  "lang": "es",
   "icons": [
     {
       "src": "favicon.svg",
@@ -8,9 +18,5 @@
       "sizes": "512x512",
       "purpose": "any maskable"
     }
-  ],
-  "start_url": ".",
-  "background_color": "#111827",
-  "theme_color": "#4f46e5",
-  "display": "standalone"
+  ]
 }
