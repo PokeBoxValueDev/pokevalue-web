@@ -19,7 +19,7 @@ jobs:
 
       - name: Descargar último items.json de pokevalue-data
         run: |
-          curl -sSL https://raw.githubusercontent.com/alejandrrolc/pokevalue-data/refs/heads/main/items.json -o src/assets/items-fallback.json
+          curl -sSL https://raw.githubusercontent.com/PokeBoxValueDev/pokevalue-data/refs/heads/main/items.json -o src/assets/items-fallback.json
 
       - name: Crear Pull Request si hay cambios
         uses: peter-evans/create-pull-request@v7
