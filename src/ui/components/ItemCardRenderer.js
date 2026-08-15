@@ -52,15 +52,27 @@ export function getActiveCategoryFilter() {
     return activeCategories.has('all') ? 'all' : Array.from(activeCategories).join(',');
 }
 
+const CATEGORY_PILL_ACTIVE_CLASSES = {
+    all: 'bg-indigo-600 text-white shadow-sm ring-1 ring-indigo-400/50 font-bold',
+    pases: 'bg-indigo-600 text-white shadow-sm ring-1 ring-indigo-400/50 font-bold',
+    incubadoras: 'bg-amber-600 text-white shadow-sm ring-1 ring-amber-400/50 font-bold',
+    potenciadores: 'bg-purple-600 text-white shadow-sm ring-1 ring-purple-400/50 font-bold',
+    mejoras: 'bg-emerald-600 text-white shadow-sm ring-1 ring-emerald-400/50 font-bold',
+    combates: 'bg-rose-600 text-white shadow-sm ring-1 ring-rose-400/50 font-bold',
+    consumibles: 'bg-cyan-600 text-white shadow-sm ring-1 ring-cyan-400/50 font-bold',
+    otros: 'bg-sky-600 text-white shadow-sm ring-1 ring-sky-400/50 font-bold'
+};
+
 export function updateFilterPillsUI() {
     if (typeof document === 'undefined' || typeof document.querySelectorAll !== 'function') return;
     const filterPills = document.querySelectorAll('.category-pill');
     filterPills.forEach(pill => {
         const cat = pill.getAttribute('data-category') || 'all';
         if (activeCategories.has(cat)) {
-            pill.className = 'category-pill whitespace-nowrap px-3 py-1 rounded-full font-bold transition bg-indigo-600 text-white shadow-sm ring-1 ring-indigo-400/40 cursor-pointer';
+            const activeStyle = CATEGORY_PILL_ACTIVE_CLASSES[cat] || CATEGORY_PILL_ACTIVE_CLASSES.all;
+            pill.className = `category-pill whitespace-nowrap px-3 py-1 rounded-full transition cursor-pointer touch-manipulation ${activeStyle}`;
         } else {
-            pill.className = 'category-pill whitespace-nowrap px-3 py-1 rounded-full font-medium transition bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer';
+            pill.className = 'category-pill whitespace-nowrap px-3 py-1 rounded-full font-medium transition bg-gray-100 dark:bg-gray-700/80 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer touch-manipulation';
         }
     });
 }
@@ -79,9 +91,7 @@ export function applyFilters() {
 
         group.querySelectorAll('.item-card').forEach(card => {
             const itemName = (card.getAttribute('data-item-name') || '').toLowerCase();
-            const cardCat = card.getAttribute('data-category');
-
-            const matchesCategory = isAll || activeCategories.has(cardCat) || activeCategories.has(groupCat);
+            const matchesCategory = isAll || activeCategories.has(groupCat);
             const matchesSearch = !searchTerm || itemName.includes(searchTerm);
 
             if (matchesCategory && matchesSearch) {
@@ -130,17 +140,22 @@ export function renderItems(items) {
         const i18nKey = Category.getI18nKey(catKey);
 
         return `
-            <div class="category-group space-y-2" data-category="${catKey}">
-                <!-- Cabecera / Badge de la Categoría -->
-                <div class="flex items-center gap-2 pt-2 border-b border-gray-200 dark:border-gray-700 pb-1">
-                    <span class="w-2.5 h-2.5 rounded-full ${config.color}"></span>
-                    <span class="text-[11px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400" data-i18n="${i18nKey}">
-                        ${categoryLabel}
+            <div class="category-group space-y-2.5" data-category="${catKey}">
+                <!-- Cabecera / Banner estilizado a todo lo ancho con color de categoría -->
+                <div class="w-full flex items-center justify-between px-3 py-1.5 rounded-xl ${config.bg || 'bg-gray-100 dark:bg-gray-800'} border ${config.border || 'border-gray-200/80 dark:border-gray-700/80'} shadow-2xs">
+                    <div class="flex items-center gap-2 min-w-0">
+                        <span class="w-2.5 h-2.5 rounded-full ${config.color} shadow-xs flex-shrink-0"></span>
+                        <span class="text-xs font-bold uppercase tracking-wider ${config.text || 'text-gray-700 dark:text-gray-200'} truncate" data-i18n="${i18nKey}">
+                            ${categoryLabel}
+                        </span>
+                    </div>
+                    <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/80 dark:bg-gray-800/80 ${config.text || 'text-gray-600 dark:text-gray-300'} shadow-2xs flex-shrink-0">
+                        ${categoryItems.length}
                     </span>
                 </div>
 
                 <!-- Lista de Objetos -->
-                <div class="space-y-2.5">
+                <div class="space-y-2">
                     ${categoryItems.map(item => {
             let unitPriceStr = '';
 

@@ -59,3 +59,29 @@ test('ui/category-filters - setCategoryFilter("all") restablece correctamente el
     assert.deepEqual(getActiveCategories(), ['all']);
 });
 
+test('ui/category-filters - updateFilterPillsUI aplica colores temáticos específicos por categoría al estar activo', () => {
+    const mockPills = [
+        { category: 'all', className: '', getAttribute: () => 'all' },
+        { category: 'pases', className: '', getAttribute: () => 'pases' },
+        { category: 'incubadoras', className: '', getAttribute: () => 'incubadoras' }
+    ];
+
+    const originalDoc = globalThis.document;
+    globalThis.document = {
+        querySelectorAll: (selector) => selector === '.category-pill' ? mockPills : []
+    };
+
+    try {
+        // 1. Activar incubadoras
+        toggleCategoryFilter('incubadoras');
+        const incubadorasPill = mockPills.find(p => p.category === 'incubadoras');
+        const pasesPill = mockPills.find(p => p.category === 'pases');
+
+        assert.ok(incubadorasPill.className.includes('bg-amber-600'), 'Píldora de incubadoras debe tener bg-amber-600 al estar activa');
+        assert.ok(!pasesPill.className.includes('bg-amber-600'), 'Píldora de pases no debe tener bg-amber-600');
+    } finally {
+        toggleCategoryFilter('all');
+        globalThis.document = originalDoc;
+    }
+});
+
