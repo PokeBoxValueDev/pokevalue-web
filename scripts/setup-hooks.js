@@ -26,7 +26,7 @@ if [ $LINT_STATUS -ne 0 ]; then
 fi
 
 # 2. Ejecución de la Suite Completa de Tests
-$NODE_BIN --test src/**/tests/*.test.js tests/contract/*.test.js tests/visual/*.test.js
+$NODE_BIN --test tests/**/*.test.js
 TEST_STATUS=$?
 
 if [ $TEST_STATUS -ne 0 ]; then
