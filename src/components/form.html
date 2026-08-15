@@ -10,7 +10,7 @@
             class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none text-base">
         <p id="usd-disclaimer" data-i18n="disclaimerUSD"
             class="text-[11px] text-amber-600 dark:text-amber-400 mt-1 hidden"></p>
-        <p id="box-price-error" class="hidden text-xs text-rose-500 mt-1 font-medium"
+        <p id="box-price-error" role="alert" aria-live="assertive" class="hidden text-xs text-rose-500 mt-1 font-medium"
             data-i18n="enterValidPrice"></p>
     </div>
 
@@ -18,7 +18,7 @@
         <div class="flex justify-between items-center mb-2">
             <h2 data-i18n="itemsIncluded" class="text-sm font-semibold text-gray-700 dark:text-gray-200">
                 Objetos incluidos</h2>
-            <button id="btn-reset-qty" type="button" data-i18n="btnResetQty"
+            <button id="btn-reset-qty" type="button" data-i18n="btnResetQty" aria-label="Limpiar cantidades seleccionadas"
                 class="text-xs text-indigo-600 dark:text-indigo-400 font-semibold hover:underline cursor-pointer touch-manipulation py-1 px-2 -mr-1 rounded-lg hover:bg-indigo-50 dark:hover:bg-gray-700 transition">
                 Limpiar
             </button>
@@ -53,8 +53,8 @@
         </div>
     </div>
 
-    <button id="btn-calculate" data-i18n="btnCalculate"
-        class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl transition shadow-sm">
+    <button id="btn-calculate" data-i18n="btnCalculate" aria-label="Calcular Rentabilidad de la Caja"
+        class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl transition shadow-sm cursor-pointer touch-manipulation">
         Calcular Rentabilidad
     </button>
 
@@ -63,7 +63,7 @@
 </section>
 
 <!-- Barra Flotante de Cálculo en Vivo (Sticky Summary Bar) -->
-<aside id="live-sticky-bar" class="fixed bottom-4 left-1/2 -translate-x-1/2 w-[92%] max-w-md z-40 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border border-gray-200 dark:border-gray-700 rounded-2xl shadow-xl p-3 flex items-center justify-between transition-all duration-300 transform translate-y-28 opacity-0 pointer-events-none">
+<aside id="live-sticky-bar" role="status" aria-live="polite" aria-label="Resumen de cálculo en vivo" class="fixed bottom-4 left-1/2 -translate-x-1/2 w-[92%] max-w-md z-40 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border border-gray-200 dark:border-gray-700 rounded-2xl shadow-xl p-3 flex items-center justify-between transition-all duration-300 transform translate-y-28 opacity-0 pointer-events-none">
     <div class="flex items-center gap-2.5">
         <span id="live-grade-badge" class="px-2 py-0.5 rounded-lg text-xs font-black bg-emerald-500 text-white shadow-sm">S</span>
         <div class="text-xs">
@@ -72,7 +72,7 @@
             <span id="live-diff-tag" class="ml-1 font-bold text-emerald-600 dark:text-emerald-400">(+0.00€)</span>
         </div>
     </div>
-    <button id="btn-live-view-result" type="button" data-i18n="liveBarBtn" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold px-3.5 py-2 rounded-xl transition shadow-sm cursor-pointer">
+    <button id="btn-live-view-result" type="button" data-i18n="liveBarBtn" aria-label="Ver tarjeta completa de resultados" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold px-3.5 py-2 rounded-xl transition shadow-sm cursor-pointer">
         Ver Tarjeta
     </button>
 </aside>

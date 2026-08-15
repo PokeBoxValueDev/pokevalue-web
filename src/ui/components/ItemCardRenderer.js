@@ -196,9 +196,9 @@ export function renderItems(items) {
                 <div class="flex items-center flex-wrap gap-x-2 gap-y-1 mt-0.5">
                     <span class="text-[11px] sm:text-xs text-gray-500 dark:text-gray-400 font-medium whitespace-nowrap">${unitPriceStr}</span>
                     <div class="flex items-center gap-1">
-                        <button type="button" class="btn-quick-add text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-200/80 hover:bg-indigo-600 hover:text-white dark:bg-gray-600 dark:hover:bg-indigo-500 text-gray-700 dark:text-gray-200 transition active:scale-90 cursor-pointer touch-manipulation" data-id="${item.id}" data-add="1">+1</button>
-                        <button type="button" class="btn-quick-add text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-200/80 hover:bg-indigo-600 hover:text-white dark:bg-gray-600 dark:hover:bg-indigo-500 text-gray-700 dark:text-gray-200 transition active:scale-90 cursor-pointer touch-manipulation" data-id="${item.id}" data-add="5">+5</button>
-                        <button type="button" class="btn-quick-add text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-200/80 hover:bg-indigo-600 hover:text-white dark:bg-gray-600 dark:hover:bg-indigo-500 text-gray-700 dark:text-gray-200 transition active:scale-90 cursor-pointer touch-manipulation" data-id="${item.id}" data-add="10">+10</button>
+                        <button type="button" class="btn-quick-add text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-200/80 hover:bg-indigo-600 hover:text-white dark:bg-gray-600 dark:hover:bg-indigo-500 text-gray-700 dark:text-gray-200 transition active:scale-90 cursor-pointer touch-manipulation" data-id="${item.id}" data-add="1" aria-label="Añadir 1 ${name}">+1</button>
+                        <button type="button" class="btn-quick-add text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-200/80 hover:bg-indigo-600 hover:text-white dark:bg-gray-600 dark:hover:bg-indigo-500 text-gray-700 dark:text-gray-200 transition active:scale-90 cursor-pointer touch-manipulation" data-id="${item.id}" data-add="5" aria-label="Añadir 5 ${name}">+5</button>
+                        <button type="button" class="btn-quick-add text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-200/80 hover:bg-indigo-600 hover:text-white dark:bg-gray-600 dark:hover:bg-indigo-500 text-gray-700 dark:text-gray-200 transition active:scale-90 cursor-pointer touch-manipulation" data-id="${item.id}" data-add="10" aria-label="Añadir 10 ${name}">+10</button>
                     </div>
                 </div>
             </div>

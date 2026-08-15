@@ -44,10 +44,34 @@ summary,
     }
 }
 
-/* Anillos de foco visibles para accesibilidad por teclado */
+/* Anillos de foco visibles de alto contraste para accesibilidad por teclado */
 :focus-visible {
-    outline: 2px solid #6366f1;
-    outline-offset: 2px;
+    outline: 3px solid #4f46e5 !important;
+    outline-offset: 2px !important;
+}
+
+/* Soporte para usuarios con sensibilidad vestibular (Prefers Reduced Motion) */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Soporte para Modo de Alto Contraste del Sistema (Prefers More Contrast) */
+@media (prefers-contrast: more) {
+    .item-card,
+    .category-group,
+    #view-form,
+    #view-result,
+    #result-card {
+        border-width: 2px !important;
+        border-color: currentColor !important;
+    }
 }
 
 /* Estilos Nativos iOS 26 (Se aplican automáticamente al detectar un dispositivo iOS o activar el modo iOS) */
