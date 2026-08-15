@@ -70,7 +70,14 @@ test('visual/dom - index.html elements contain data-i18n attributes for localiza
         'privacyBody3',
         'seoTitle',
         'seoDesc1',
-        'seoDesc2'
+        'seoDesc2',
+        'faqTitle',
+        'faqQ1',
+        'faqA1',
+        'tableRefTitle',
+        'colItem',
+        'colCoins',
+        'colEur'
     ];
 
     requiredI18nKeys.forEach(key => {

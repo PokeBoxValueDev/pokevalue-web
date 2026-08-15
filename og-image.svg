@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <!-- Fondo Gradiente Nocturno Índigo/Violeta -->
+    <linearGradient id="bg-banner" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="50%" stop-color="#1E1B4B"/>
+      <stop offset="100%" stop-color="#312E81"/>
+    </linearGradient>
+
+    <!-- Gradiente de Título -->
+    <linearGradient id="title-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#818CF8"/>
+      <stop offset="50%" stop-color="#A5B4FC"/>
+      <stop offset="100%" stop-color="#38BDF8"/>
+    </linearGradient>
+
+    <!-- Gradiente Botón / Acento -->
+    <linearGradient id="accent-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#4F46E5"/>
+      <stop offset="100%" stop-color="#7C3AED"/>
+    </linearGradient>
+
+    <!-- Gradiente Oro -->
+    <linearGradient id="gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDE047"/>
+      <stop offset="100%" stop-color="#F59E0B"/>
+    </linearGradient>
+
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="24" flood-color="#4F46E5" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <!-- Fondo Principal -->
+  <rect width="1200" height="630" fill="url(#bg-banner)"/>
+
+  <!-- Orbes Decorativos de Fondo -->
+  <circle cx="200" cy="150" r="280" fill="#4338CA" opacity="0.3" filter="blur(60px)"/>
+  <circle cx="1000" cy="500" r="320" fill="#6366F1" opacity="0.25" filter="blur(80px)"/>
+
+  <!-- Contenedor Izquierdo: Logotipo 3D -->
+  <g transform="translate(100, 115)" filter="url(#glow)">
+    <!-- Base de la Caja -->
+    <path d="M 100 210 L 320 210 L 308 350 C 304 368 288 380 270 380 L 150 380 C 132 380 116 368 112 350 Z" fill="#FFFFFF"/>
+    <!-- Cinta Vertical -->
+    <rect x="194" y="210" width="32" height="170" fill="url(#gold-grad)"/>
+    <!-- Tapa Roja -->
+    <rect x="80" y="140" width="260" height="78" rx="20" fill="#EF4444"/>
+    <!-- Franja Negra -->
+    <path d="M 80 198 L 340 198 L 340 218 C 340 228 332 238 320 238 L 100 238 C 88 238 80 228 80 218 Z" fill="#0F172A"/>
+    <!-- Cinta Tapa -->
+    <rect x="194" y="140" width="32" height="98" fill="url(#gold-grad)"/>
+    <!-- Botón Pokéball -->
+    <circle cx="210" cy="218" r="28" fill="#0F172A"/>
+    <circle cx="210" cy="218" r="20" fill="#FFFFFF"/>
+    <circle cx="210" cy="218" r="10" fill="#0F172A"/>
+    <circle cx="210" cy="218" r="5" fill="#FFFFFF"/>
+    <!-- Lazo Superior -->
+    <path d="M 194 140 C 170 100 120 100 150 138 Z" fill="url(#gold-grad)"/>
+    <path d="M 226 140 C 250 100 300 100 270 138 Z" fill="url(#gold-grad)"/>
+    <!-- Sparkles de Oro -->
+    <path d="M 330 80 L 340 110 L 370 120 L 340 130 L 330 160 L 320 130 L 290 120 L 320 110 Z" fill="url(#gold-grad)"/>
+  </g>
+
+  <!-- Contenedor Derecho: Textos y Propuesta de Valor -->
+  <g transform="translate(540, 160)">
+    <!-- Badge de Estado -->
+    <rect x="0" y="0" width="280" height="42" rx="21" fill="#312E81" stroke="#6366F1" stroke-width="2"/>
+    <text x="140" y="27" fill="#A5B4FC" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" text-anchor="middle">
+      ⚡ CALCULADORA DE TIENDA
+    </text>
+
+    <!-- Título Principal -->
+    <text x="0" y="115" fill="url(#title-grad)" font-family="system-ui, -apple-system, sans-serif" font-size="56" font-weight="900" letter-spacing="-1">
+      PokeBoxValue
+    </text>
+
+    <!-- Subtítulo / Valor -->
+    <text x="0" y="175" fill="#E2E8F0" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="500">
+      ¿Vale la pena la caja de Pokémon GO?
+    </text>
+    <text x="0" y="215" fill="#94A3B8" font-family="system-ui, -apple-system, sans-serif" font-size="19" font-weight="400">
+      Calcula el valor real, % de ahorro, pases de incursión e incubadoras.
+    </text>
+
+    <!-- Badges de Métricas Destacadas -->
+    <g transform="translate(0, 260)">
+      <!-- Badge Grado S -->
+      <rect x="0" y="0" width="130" height="46" rx="14" fill="#059669"/>
+      <text x="65" y="29" fill="#FFFFFF" font-family="system-ui, sans-serif" font-size="16" font-weight="bold" text-anchor="middle">
+        🏆 GRADO S
+      </text>
+
+      <!-- Badge Monedas -->
+      <rect x="145" y="0" width="180" height="46" rx="14" fill="#1E293B" stroke="#475569" stroke-width="1.5"/>
+      <text x="235" y="29" fill="#FDE047" font-family="system-ui, sans-serif" font-size="16" font-weight="bold" text-anchor="middle">
+        🟡 EUR • USD • POKÉ
+      </text>
+
+      <!-- Badge Web App -->
+      <rect x="340" y="0" width="180" height="46" rx="14" fill="#1E293B" stroke="#475569" stroke-width="1.5"/>
+      <text x="430" y="29" fill="#38BDF8" font-family="system-ui, sans-serif" font-size="15" font-weight="bold" text-anchor="middle">
+        🌐 pokeboxvalue.com
+      </text>
+    </g>
+  </g>
+</svg>

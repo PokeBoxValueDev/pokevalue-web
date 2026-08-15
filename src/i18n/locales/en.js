@@ -66,6 +66,24 @@ export default {
     seoDesc1: "PokeBoxValue is a specialized calculator designed to help players analyze the profitability of item boxes in Pokémon GO. Enter the box price and select the items it contains to get a detailed breakdown of its real value compared to buying items individually.",
     seoDesc2: "Our tool uses standard in-game shop base prices to calculate if you are getting a good deal, displaying key metrics, discount percentages, and assigning a rating (Grade S, A, B, or F) so you always make the smartest choice with your coins.",
 
+    // FAQ
+    faqTitle: "❓ Frequently Asked Questions about Pokémon GO Boxes",
+    faqQ1: "How does PokeBoxValue calculate if a box is worth it?",
+    faqA1: "We compare the total cost of the box with the cost of purchasing each item individually at its official shop base price. If the total item value exceeds the box price, the deal is considered profitable, and the exact discount and savings percentages are calculated.",
+    faqQ2: "What do the Grade S, A, B, and F ratings mean?",
+    faqA2: "The system grades deals by discount level: Grade S (savings ≥ 40%, legendary value), Grade A (savings 25-39%, great deal), Grade B (savings 1-24%, decent deal), and Grade F (no discount or more expensive than single items).",
+    faqQ3: "Can I calculate deals in PokéCoins, Euros, and USD?",
+    faqA3: "Yes, PokeBoxValue supports calculations in Euros (€), US Dollars ($), and PokéCoins (🟡). You can switch currencies at any time from the top header selector.",
+    faqQ4: "Which items carry the highest value in a Pokémon GO box?",
+    faqA4: "The most sought-after Key Value Items are typically Premium/Remote Raid Passes and Super Incubators, as they provide the highest savings per PokéCoin spent.",
+
+    // Reference Table
+    tableRefTitle: "📋 Official Shop Reference Base Prices",
+    tableRefSubtitle: "Standard individual values used to compute box profitability:",
+    colItem: "Item",
+    colCoins: "Coins",
+    colEur: "Base Price",
+
     // Footer & Donaciones
     coffeeBtn: "☕ Enjoyed this? Buy me a coffee",
     footerText: "PokeBoxValue is an independent fan project and is not affiliated with, sponsored, or endorsed by Scopely, Niantic, The Pokémon Company, Nintendo, or GAME FREAK. Pokémon and item names are trademarks of their respective owners.",

@@ -36,30 +36,73 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="PokeBoxValue - Calculadora de Cajas para Pokémon GO">
     <meta property="og:description"
-        content="Calcula si las cajas de la tienda de Pokémon GO valen la pena y descubre cuánto ahorras.">
-    <meta property="og:image" content="https://pokeboxvalue.com/favicon.svg">
+        content="Calcula si las cajas de la tienda de Pokémon GO valen la pena y descubre cuánto ahorras en pases e incubadoras.">
+    <meta property="og:image" content="https://pokeboxvalue.com/og-image.svg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta property="og:url" content="https://pokeboxvalue.com/">
-    <meta name="twitter:card" content="summary">
+    <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="PokeBoxValue - Calculadora de Cajas para Pokémon GO">
-    <meta name="twitter:description" content="Calcula si las cajas de la tienda de Pokémon GO valen la pena y descubre cuánto ahorras.">
-    <meta name="twitter:image" content="https://pokeboxvalue.com/favicon.svg">
+    <meta name="twitter:description" content="Calcula si las cajas de la tienda de Pokémon GO valen la pena y descubre cuánto ahorras en pases e incubadoras.">
+    <meta name="twitter:image" content="https://pokeboxvalue.com/og-image.svg">
 
-    <!-- Schema.org JSON-LD Structured Data -->
+    <!-- Schema.org JSON-LD Structured Data (WebApplication + FAQPage) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "PokeBoxValue",
-      "url": "https://pokeboxvalue.com/",
-      "description": "Calculadora de rentabilidad y valor real de las cajas de la tienda de Pokémon GO.",
-      "applicationCategory": "GameApplication",
-      "operatingSystem": "All",
-      "inLanguage": ["es", "en"],
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "EUR"
-      }
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          "name": "PokeBoxValue",
+          "url": "https://pokeboxvalue.com/",
+          "description": "Calculadora de rentabilidad y valor real de las cajas de la tienda de Pokémon GO.",
+          "applicationCategory": "GameApplication",
+          "operatingSystem": "All",
+          "inLanguage": ["es", "en"],
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "EUR"
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "¿Cómo calcula PokeBoxValue si una caja es rentable?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Comparamos el coste total de la caja con el valor de comprar cada objeto por separado a su precio base oficial de la tienda. Si el valor total de los objetos supera el precio de la caja, se considera rentable y se calcula el porcentaje exacto de ahorro."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "¿Qué significan las calificaciones de Grado S, A, B y F?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "El sistema clasifica la oferta según su descuento: Grado S (ahorro ≥ 40%), Grado A (ahorro 25-39%), Grado B (ahorro 1-24%) y Grado F (sin descuento o más cara que comprar objetos sueltos)."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "¿Puedo calcular ofertas en Pokémonedas, Euros y Dólares?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Sí, PokeBoxValue soporta cálculos en Euros (€), Dólares ($) y Pokémonedas (🟡). Puedes cambiar de divisa en cualquier momento desde la cabecera."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "¿Qué objetos tienen mayor valor en una caja de Pokémon GO?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Los objetos clave más codiciados suelen ser los Pases de Incursión Premium / Remotos y las Super Incubadoras, ya que otorgan el mayor ahorro por Pokémoneda invertida."
+              }
+            }
+          ]
+        }
+      ]
     }
     </script>
 
@@ -437,12 +480,122 @@
         </script>
     </div>
 
+<!-- Preguntas Frecuentes (FAQ) SEO -->
+<section class="max-w-xl mx-auto px-4 mt-6 mb-6">
+    <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 sm:p-6 shadow-sm border border-gray-100 dark:border-gray-700 space-y-4">
+        <h2 class="text-base font-bold text-gray-800 dark:text-gray-100 flex items-center gap-2" data-i18n="faqTitle">
+            ❓ Preguntas Frecuentes sobre Cajas de Pokémon GO
+        </h2>
+
+        <div class="space-y-3 text-xs sm:text-sm">
+            <!-- FAQ 1 -->
+            <details class="group bg-gray-50 dark:bg-gray-700/40 rounded-xl p-3 border border-gray-100 dark:border-gray-700 transition cursor-pointer">
+                <summary class="font-semibold text-gray-800 dark:text-gray-200 list-none flex justify-between items-center select-none" data-i18n="faqQ1">
+                    ¿Cómo calcula PokeBoxValue si una caja es rentable?
+                    <span class="text-indigo-500 group-open:rotate-180 transition-transform font-bold text-xs">▼</span>
+                </summary>
+                <p class="mt-2 text-gray-600 dark:text-gray-300 leading-relaxed text-xs" data-i18n="faqA1">
+                    Comparamos el coste total de la caja con el valor de comprar cada objeto por separado a su precio base oficial de la tienda. Si el valor total de los objetos supera el precio de la caja, se considera rentable y se calcula el porcentaje exacto de ahorro.
+                </p>
+            </details>
+
+            <!-- FAQ 2 -->
+            <details class="group bg-gray-50 dark:bg-gray-700/40 rounded-xl p-3 border border-gray-100 dark:border-gray-700 transition cursor-pointer">
+                <summary class="font-semibold text-gray-800 dark:text-gray-200 list-none flex justify-between items-center select-none" data-i18n="faqQ2">
+                    ¿Qué significan las calificaciones de Grado S, A, B y F?
+                    <span class="text-indigo-500 group-open:rotate-180 transition-transform font-bold text-xs">▼</span>
+                </summary>
+                <p class="mt-2 text-gray-600 dark:text-gray-300 leading-relaxed text-xs" data-i18n="faqA2">
+                    El sistema clasifica la oferta según su descuento: Grado S (ahorro ≥ 40%, oferta legendaria), Grado A (ahorro 25-39%, muy buena oferta), Grado B (ahorro 1-24%, compra aceptable) y Grado F (sin descuento o más cara que comprar objetos sueltos).
+                </p>
+            </details>
+
+            <!-- FAQ 3 -->
+            <details class="group bg-gray-50 dark:bg-gray-700/40 rounded-xl p-3 border border-gray-100 dark:border-gray-700 transition cursor-pointer">
+                <summary class="font-semibold text-gray-800 dark:text-gray-200 list-none flex justify-between items-center select-none" data-i18n="faqQ3">
+                    ¿Puedo calcular ofertas en Pokémonedas, Euros y Dólares?
+                    <span class="text-indigo-500 group-open:rotate-180 transition-transform font-bold text-xs">▼</span>
+                </summary>
+                <p class="mt-2 text-gray-600 dark:text-gray-300 leading-relaxed text-xs" data-i18n="faqA3">
+                    Sí, PokeBoxValue soporta cálculos en Euros (€), Dólares ($) y Pokémonedas (🟡). Puedes cambiar de divisa en cualquier momento desde la cabecera.
+                </p>
+            </details>
+
+            <!-- FAQ 4 -->
+            <details class="group bg-gray-50 dark:bg-gray-700/40 rounded-xl p-3 border border-gray-100 dark:border-gray-700 transition cursor-pointer">
+                <summary class="font-semibold text-gray-800 dark:text-gray-200 list-none flex justify-between items-center select-none" data-i18n="faqQ4">
+                    ¿Qué objetos tienen mayor valor en una caja de Pokémon GO?
+                    <span class="text-indigo-500 group-open:rotate-180 transition-transform font-bold text-xs">▼</span>
+                </summary>
+                <p class="mt-2 text-gray-600 dark:text-gray-300 leading-relaxed text-xs" data-i18n="faqA4">
+                    Los objetos clave más codiciados suelen ser los Pases de Incursión Premium / Remotos y las Super Incubadoras, ya que otorgan el mayor ahorro por Pokémoneda invertida.
+                </p>
+            </details>
+        </div>
+    </div>
+</section>
+
+<!-- Tabla de Referencia de Precios Base de la Tienda -->
+<section class="max-w-xl mx-auto px-4 mt-6 mb-6">
+    <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 sm:p-6 shadow-sm border border-gray-100 dark:border-gray-700 space-y-3">
+        <h2 class="text-base font-bold text-gray-800 dark:text-gray-100" data-i18n="tableRefTitle">
+            📋 Precios de Referencia Oficiales de la Tienda
+        </h2>
+        <p class="text-xs text-gray-500 dark:text-gray-400" data-i18n="tableRefSubtitle">
+            Valores estándar individuales utilizados para calcular la rentabilidad:
+        </p>
+        <div class="overflow-x-auto">
+            <table class="w-full text-xs text-left text-gray-700 dark:text-gray-300">
+                <thead class="bg-gray-50 dark:bg-gray-700/50 text-[11px] uppercase font-bold text-gray-500 dark:text-gray-400 border-b border-gray-100 dark:border-gray-700">
+                    <tr>
+                        <th class="py-2 px-3" data-i18n="colItem">Objeto</th>
+                        <th class="py-2 px-2 text-center" data-i18n="colCoins">Monedas</th>
+                        <th class="py-2 px-2 text-right" data-i18n="colEur">Precio Base</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100 dark:divide-gray-700/60">
+                    <tr>
+                        <td class="py-2 px-3 font-semibold">🎟️ Pase de Incursión Premium</td>
+                        <td class="py-2 px-2 text-center font-mono">100 🟡</td>
+                        <td class="py-2 px-2 text-right font-mono">1.00 €</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2 px-3 font-semibold">🌐 Pase de Incursión Remota</td>
+                        <td class="py-2 px-2 text-center font-mono">195 🟡</td>
+                        <td class="py-2 px-2 text-right font-mono">1.95 €</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2 px-3 font-semibold">🥚 Super Incubadora</td>
+                        <td class="py-2 px-2 text-center font-mono">200 🟡</td>
+                        <td class="py-2 px-2 text-right font-mono">2.00 €</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2 px-3 font-semibold">🐣 Incubadora</td>
+                        <td class="py-2 px-2 text-center font-mono">150 🟡</td>
+                        <td class="py-2 px-2 text-right font-mono">1.50 €</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2 px-3 font-semibold">⭐ Trozo Estrella / Huevo Suerte</td>
+                        <td class="py-2 px-2 text-center font-mono">80 🟡</td>
+                        <td class="py-2 px-2 text-right font-mono">0.80 €</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2 px-3 font-semibold">💨 Pokocho</td>
+                        <td class="py-2 px-2 text-center font-mono">100 🟡</td>
+                        <td class="py-2 px-2 text-right font-mono">1.00 €</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
 <!-- SEO Description Section -->
-<section class="max-w-xl mx-auto px-4 mt-8 mb-6">
+<section class="max-w-xl mx-auto px-4 mt-6 mb-6">
     <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 sm:p-6 shadow-sm border border-gray-100 dark:border-gray-700 text-sm text-gray-600 dark:text-gray-300">
         <h2 class="text-base font-bold text-gray-800 dark:text-gray-100 mb-2" data-i18n="seoTitle">Acerca de PokeBoxValue</h2>
-        <p class="mb-2 leading-relaxed" data-i18n="seoDesc1">PokeBoxValue es una calculadora especializada diseñada para ayudar a los jugadores a analizar la rentabilidad de las cajas de objetos en el juego. Introduce el precio de la caja y selecciona los objetos que contiene para obtener un desglose detallado de su valor real en comparación con la compra de objetos individuales.</p>
-        <p class="leading-relaxed" data-i18n="seoDesc2">Nuestra herramienta utiliza los precios base estándar de la tienda para calcular si estás consiguiendo un buen trato, mostrando métricas clave, porcentajes de descuento y asignando una calificación (Grado S, A, B, o F) para que siempre tomes la mejor decisión con tus monedas.</p>
+        <p class="mb-2 leading-relaxed text-xs sm:text-sm" data-i18n="seoDesc1">PokeBoxValue es una calculadora especializada diseñada para ayudar a los jugadores a analizar la rentabilidad de las cajas de objetos en Pokémon GO. Introduce el precio de la caja y selecciona los objetos que contiene para obtener un desglose detallado de su valor real en comparación con la compra de objetos individuales.</p>
+        <p class="leading-relaxed text-xs sm:text-sm" data-i18n="seoDesc2">Nuestra herramienta utiliza los precios base estándar de la tienda para calcular si estás consiguiendo un buen trato, mostrando métricas clave, porcentajes de descuento y asignando una calificación (Grado S, A, B, o F) para que siempre tomes la mejor decisión con tus monedas.</p>
     </div>
 </section>
 
@@ -453,11 +606,11 @@
         PokeBoxValue es un proyecto independiente desarrollado por fans y no está afiliado, patrocinado ni respaldado por Scopely, Niantic, The Pokémon Company, Nintendo o GAME FREAK. Pokémon y los nombres de los objetos son marcas registradas de sus respectivos propietarios.
     </p>
     <div class="flex justify-center items-center gap-3 pt-1 text-gray-500 dark:text-gray-400">
-        <button id="btn-legal" data-i18n="btnLegal" class="hover:underline">Aviso Legal</button>
+        <button id="btn-legal" data-i18n="btnLegal" class="hover:underline cursor-pointer">Aviso Legal</button>
         <span>•</span>
-        <button id="btn-privacy" data-i18n="btnPrivacy" class="hover:underline">Política de Privacidad</button>
+        <button id="btn-privacy" data-i18n="btnPrivacy" class="hover:underline cursor-pointer">Política de Privacidad</button>
         <span>•</span>
-        <button id="btn-cookies" data-cc="show-preferencesModal" class="hover:underline">Configurar Cookies</button>
+        <button id="btn-cookies" data-cc="show-preferencesModal" class="hover:underline cursor-pointer">Configurar Cookies</button>
         <span>•</span>
         <p>PokeBoxValue <span id="app-version" class="font-mono"></span></p>
     </div>

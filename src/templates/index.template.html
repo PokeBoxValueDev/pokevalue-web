@@ -36,30 +36,73 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="PokeBoxValue - Calculadora de Cajas para Pokémon GO">
     <meta property="og:description"
-        content="Calcula si las cajas de la tienda de Pokémon GO valen la pena y descubre cuánto ahorras.">
-    <meta property="og:image" content="https://pokeboxvalue.com/favicon.svg">
+        content="Calcula si las cajas de la tienda de Pokémon GO valen la pena y descubre cuánto ahorras en pases e incubadoras.">
+    <meta property="og:image" content="https://pokeboxvalue.com/og-image.svg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta property="og:url" content="https://pokeboxvalue.com/">
-    <meta name="twitter:card" content="summary">
+    <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="PokeBoxValue - Calculadora de Cajas para Pokémon GO">
-    <meta name="twitter:description" content="Calcula si las cajas de la tienda de Pokémon GO valen la pena y descubre cuánto ahorras.">
-    <meta name="twitter:image" content="https://pokeboxvalue.com/favicon.svg">
+    <meta name="twitter:description" content="Calcula si las cajas de la tienda de Pokémon GO valen la pena y descubre cuánto ahorras en pases e incubadoras.">
+    <meta name="twitter:image" content="https://pokeboxvalue.com/og-image.svg">
 
-    <!-- Schema.org JSON-LD Structured Data -->
+    <!-- Schema.org JSON-LD Structured Data (WebApplication + FAQPage) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "PokeBoxValue",
-      "url": "https://pokeboxvalue.com/",
-      "description": "Calculadora de rentabilidad y valor real de las cajas de la tienda de Pokémon GO.",
-      "applicationCategory": "GameApplication",
-      "operatingSystem": "All",
-      "inLanguage": ["es", "en"],
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "EUR"
-      }
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          "name": "PokeBoxValue",
+          "url": "https://pokeboxvalue.com/",
+          "description": "Calculadora de rentabilidad y valor real de las cajas de la tienda de Pokémon GO.",
+          "applicationCategory": "GameApplication",
+          "operatingSystem": "All",
+          "inLanguage": ["es", "en"],
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "EUR"
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "¿Cómo calcula PokeBoxValue si una caja es rentable?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Comparamos el coste total de la caja con el valor de comprar cada objeto por separado a su precio base oficial de la tienda. Si el valor total de los objetos supera el precio de la caja, se considera rentable y se calcula el porcentaje exacto de ahorro."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "¿Qué significan las calificaciones de Grado S, A, B y F?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "El sistema clasifica la oferta según su descuento: Grado S (ahorro ≥ 40%), Grado A (ahorro 25-39%), Grado B (ahorro 1-24%) y Grado F (sin descuento o más cara que comprar objetos sueltos)."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "¿Puedo calcular ofertas en Pokémonedas, Euros y Dólares?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Sí, PokeBoxValue soporta cálculos en Euros (€), Dólares ($) y Pokémonedas (🟡). Puedes cambiar de divisa en cualquier momento desde la cabecera."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "¿Qué objetos tienen mayor valor en una caja de Pokémon GO?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Los objetos clave más codiciados suelen ser los Pases de Incursión Premium / Remotos y las Super Incubadoras, ya que otorgan el mayor ahorro por Pokémoneda invertida."
+              }
+            }
+          ]
+        }
+      ]
     }
     </script>
 
@@ -205,6 +248,7 @@
         </script>
     </div>
 
+<!-- @include faq -->
 <!-- @include footer -->
 
     <!-- Canvas Confetti Library -->

@@ -66,6 +66,24 @@ export default {
     seoDesc1: "PokeBoxValue es una calculadora especializada diseñada para ayudar a los jugadores a analizar la rentabilidad de las cajas de objetos en Pokémon GO. Introduce el precio de la caja y selecciona los objetos que contiene para obtener un desglose detallado de su valor real en comparación con la compra de objetos individuales.",
     seoDesc2: "Nuestra herramienta utiliza los precios base estándar de la tienda para calcular si estás consiguiendo un buen trato, mostrando métricas clave, porcentajes de descuento y asignando una calificación (Grado S, A, B, o F) para que siempre tomes la mejor decisión con tus monedas.",
 
+    // FAQ
+    faqTitle: "❓ Preguntas Frecuentes sobre Cajas de Pokémon GO",
+    faqQ1: "¿Cómo calcula PokeBoxValue si una caja es rentable?",
+    faqA1: "Comparamos el coste total de la caja con el valor de comprar cada objeto por separado a su precio base oficial de la tienda. Si el valor total de los objetos supera el precio de la caja, se considera rentable y se calcula el porcentaje exacto de ahorro.",
+    faqQ2: "¿Qué significan las calificaciones de Grado S, A, B y F?",
+    faqA2: "El sistema clasifica la oferta según su descuento: Grado S (ahorro ≥ 40%), Grado A (ahorro 25-39%), Grado B (ahorro 1-24%) y Grado F (sin descuento o más cara que comprar objetos sueltos).",
+    faqQ3: "¿Puedo calcular ofertas en Pokémonedas, Euros y Dólares?",
+    faqA3: "Sí, PokeBoxValue soporta cálculos en Euros (€), Dólares ($) y Pokémonedas (🟡). Puedes cambiar de divisa en cualquier momento desde la cabecera.",
+    faqQ4: "¿Qué objetos tienen mayor valor en una caja de Pokémon GO?",
+    faqA4: "Los objetos clave más codiciados suelen ser los Pases de Incursión Premium / Remotos y las Super Incubadoras, ya que otorgan el mayor ahorro por Pokémoneda invertida.",
+
+    // Tabla de Referencia
+    tableRefTitle: "📋 Precios de Referencia Oficiales de la Tienda",
+    tableRefSubtitle: "Valores estándar individuales utilizados para calcular la rentabilidad:",
+    colItem: "Objeto",
+    colCoins: "Monedas",
+    colEur: "Precio Base",
+
     // Footer & Donaciones
     coffeeBtn: "☕ ¿Te ha servido? Invítame a un café",
     footerText: "PokeBoxValue es un proyecto independiente desarrollado por fans y no está afiliado, patrocinado ni respaldado por Scopely, Niantic, The Pokémon Company, Nintendo o GAME FREAK. Pokémon y los nombres de los objetos son marcas registradas de sus respectivos propietarios.",

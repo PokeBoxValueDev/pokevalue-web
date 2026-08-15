@@ -37,6 +37,7 @@ test('SEO - Schema.org JSON-LD structured data en plantilla y HTML generado', (t
         const fileLabel = idx === 0 ? 'index.template.html' : 'index.html';
         assert.ok(html.includes('application/ld+json'), `${fileLabel} debe contener script application/ld+json`);
         assert.ok(html.includes('"@type": "WebApplication"'), `${fileLabel} debe definir Schema WebApplication`);
+        assert.ok(html.includes('"@type": "FAQPage"'), `${fileLabel} debe definir Schema FAQPage`);
         assert.ok(html.includes('"name": "PokeBoxValue"'), `${fileLabel} debe contener el nombre de la app`);
     });
 });
@@ -54,4 +55,5 @@ test('PWA - manifest.json contiene metadatos completos y sw.js incluye assets de
     // Service Worker
     assert.ok(swContent.includes("'./robots.txt'"), 'sw.js debe incluir robots.txt en STATIC_ASSETS');
     assert.ok(swContent.includes("'./sitemap.xml'"), 'sw.js debe incluir sitemap.xml en STATIC_ASSETS');
+    assert.ok(swContent.includes("'./og-image.svg'"), 'sw.js debe incluir og-image.svg en STATIC_ASSETS');
 });
