@@ -63,7 +63,7 @@ test('i18n - updateDOMTranslations updates elements with data-i18n and data-i18n
 
     assert.equal(mockElements[0].innerHTML, 'Rentable');
     assert.equal(mockElements[1].innerHTML, 'Restaurar');
-    assert.equal(mockPlaceholders[0].placeholder, '🔍 Buscar objeto...');
+    assert.equal(mockPlaceholders[0].placeholder, 'Buscar objeto...');
 
     setLanguage('es'); // Restaurar estado
 });
