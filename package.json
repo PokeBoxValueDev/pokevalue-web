@@ -15,5 +15,9 @@
     "test:visual": "node --test tests/visual/*.test.js",
     "tag": "node scripts/tag-release.js",
     "prepare": "node scripts/build-components.js && node scripts/setup-hooks.js"
+  },
+  "devDependencies": {
+    "axe-core": "^4.13.0",
+    "jsdom": "^30.0.1"
   }
 }
