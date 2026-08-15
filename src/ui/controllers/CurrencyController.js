@@ -28,12 +28,11 @@ export class CurrencyController {
         
         if (currSelect) {
             currSelect.value = initialCurrency;
-            state.currentCurrency = initialCurrency;
+            state.setCurrency(initialCurrency);
             
             currSelect.addEventListener('change', () => {
                 const selectedCurr = currSelect.value;
-                state.currentCurrency = selectedCurr;
-                localStorage.setItem('currency', selectedCurr);
+                state.setCurrency(selectedCurr);
                 CurrencyController.updateCurrencyUI();
                 I18nController.reRenderItems();
             });

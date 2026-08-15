@@ -1,4 +1,4 @@
-export const APP_VERSION = '1.20.1';
+export const APP_VERSION = '1.20.2';
 export const JSON_URL = 'https://raw.githubusercontent.com/PokeBoxValueDev/pokevalue-data/refs/heads/main/items.json';
 export const FALLBACK_JSON_URL = 'src/assets/items-fallback.json';
 
@@ -64,5 +64,51 @@ export const state = {
     storeData: [], // Armazena objetos de dominio Item[]
     currentCurrency: (typeof localStorage !== 'undefined' && localStorage.getItem('currency')) || 'EUR',
     currentLang: (typeof localStorage !== 'undefined' && localStorage.getItem('lang')) || ((typeof navigator !== 'undefined' && navigator.language?.startsWith('es')) ? 'es' : 'en'),
-    lastCalculationText: ''
+    lastCalculationText: '',
+    lastResult: null,
+    lastBoxPrice: null,
+
+    // Métodos de mutación y acceso encapsulados
+    setStoreData(items) {
+        this.storeData = Array.isArray(items) ? items : [];
+    },
+    getStoreData() {
+        return this.storeData;
+    },
+    setCurrency(currency) {
+        if (CURRENCY_CONFIG[currency]) {
+            this.currentCurrency = currency;
+            if (typeof localStorage !== 'undefined') {
+                localStorage.setItem('currency', currency);
+            }
+        }
+    },
+    getCurrency() {
+        return this.currentCurrency;
+    },
+    setLanguage(lang) {
+        if (lang === 'es' || lang === 'en') {
+            this.currentLang = lang;
+            if (typeof localStorage !== 'undefined') {
+                localStorage.setItem('lang', lang);
+            }
+        }
+    },
+    getLanguage() {
+        return this.currentLang;
+    },
+    setCalculationResult(result, boxPrice) {
+        this.lastResult = result;
+        this.lastBoxPrice = boxPrice;
+    },
+    clearCalculationResult() {
+        this.lastResult = null;
+        this.lastBoxPrice = null;
+    },
+    getLastResult() {
+        return this.lastResult;
+    },
+    getLastBoxPrice() {
+        return this.lastBoxPrice;
+    }
 };

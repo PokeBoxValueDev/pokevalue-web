@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const { items, lastUpdated } = await repo.getItems();
 
         if (items && items.length > 0) {
-            state.storeData = items;
+            state.setStoreData(items);
 
             const lastUpdatedEl = document.getElementById('last-updated');
             if (lastUpdatedEl) {

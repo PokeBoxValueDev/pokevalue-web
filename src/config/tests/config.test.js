@@ -40,3 +40,29 @@ test('config - state object initializes correctly', () => {
     assert.ok(['es', 'en'].includes(state.currentLang));
     assert.equal(typeof state.lastCalculationText, 'string');
 });
+
+test('config - state encapsulated methods update state predictably', () => {
+    state.setStoreData([{ id: 1, name: 'Pase' }]);
+    assert.equal(state.getStoreData().length, 1);
+    assert.equal(state.getStoreData()[0].id, 1);
+
+    state.setCurrency('USD');
+    assert.equal(state.getCurrency(), 'USD');
+    state.setCurrency('INVALID');
+    assert.equal(state.getCurrency(), 'USD'); // Ignora divisas no soportadas
+
+    state.setLanguage('en');
+    assert.equal(state.getLanguage(), 'en');
+    state.setLanguage('de');
+    assert.equal(state.getLanguage(), 'en'); // Ignora idiomas no soportados
+
+    const sampleRes = { totalValue: 10, isProfitable: true };
+    state.setCalculationResult(sampleRes, 8);
+    assert.equal(state.getLastResult(), sampleRes);
+    assert.equal(state.getLastBoxPrice(), 8);
+
+    state.clearCalculationResult();
+    assert.equal(state.getLastResult(), null);
+    assert.equal(state.getLastBoxPrice(), null);
+});
+

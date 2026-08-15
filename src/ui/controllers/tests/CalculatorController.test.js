@@ -83,3 +83,25 @@ test('calculateResult - edge cases (zero quantity, missing item)', () => {
     assert.equal(result.isProfitable, false);
     assert.deepEqual(result.itemSummary, []);
 });
+
+test('CalculatorController - supports dependency injection for valuationService and historyRepository', async () => {
+    const { CalculatorController } = await import('../CalculatorController.js');
+
+    const customValuationService = {
+        calculate: () => ({ totalValue: 999, diff: 900, isProfitable: true, grade: 'S' })
+    };
+    const customHistoryRepo = {
+        savedItems: [],
+        saveCalculation: (item) => { customHistoryRepo.savedItems.push(item); },
+        clearHistory: () => { customHistoryRepo.savedItems = []; }
+    };
+
+    CalculatorController.init({
+        valuationService: customValuationService,
+        historyRepository: customHistoryRepo
+    });
+
+    assert.equal(CalculatorController._valuationService, customValuationService);
+    assert.equal(CalculatorController._historyRepository, customHistoryRepo);
+});
+

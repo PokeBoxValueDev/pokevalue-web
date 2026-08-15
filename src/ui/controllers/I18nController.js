@@ -24,10 +24,7 @@ export class I18nController {
     }
 
     static applyLanguage(lang) {
-        state.currentLang = lang;
-        if (typeof localStorage !== 'undefined') {
-            localStorage.setItem('lang', lang);
-        }
+        state.setLanguage(lang);
         setLanguage(lang);
         updateDOMTranslations();
 

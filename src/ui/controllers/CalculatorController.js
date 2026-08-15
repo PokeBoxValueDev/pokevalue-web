@@ -9,7 +9,17 @@ import { HistoryRepository } from '../../infrastructure/repositories/HistoryRepo
 import { generateSocialCardCanvas } from '../components/SocialCardGenerator.js';
 
 export class CalculatorController {
-    static init() {
+    static _valuationService = ValuationService;
+    static _historyRepository = HistoryRepository;
+
+    /**
+     * Inicializa el controlador permitiendo inyectar servicios y repositorios (Inyección de Dependencias)
+     * @param {{ valuationService?: typeof ValuationService, historyRepository?: typeof HistoryRepository }} [dependencies]
+     */
+    static init({ valuationService = ValuationService, historyRepository = HistoryRepository } = {}) {
+        CalculatorController._valuationService = valuationService;
+        CalculatorController._historyRepository = historyRepository;
+
         const btnCalculate = document.getElementById('btn-calculate');
         const priceInput = document.getElementById('box-price');
         const priceError = document.getElementById('price-error');
@@ -48,7 +58,7 @@ export class CalculatorController {
 
         if (btnClearHistory) {
             btnClearHistory.addEventListener('click', () => {
-                HistoryRepository.clearHistory();
+                CalculatorController._historyRepository.clearHistory();
                 renderHistory(CalculatorController.restoreFromHistory);
             });
         }
@@ -249,9 +259,8 @@ export class CalculatorController {
             return;
         }
 
-        const res = ValuationService.calculate(boxPrice, quantities, state.storeData, state.currentCurrency, state.currentLang);
-        state.lastResult = res;
-        state.lastBoxPrice = boxPrice;
+        const res = CalculatorController._valuationService.calculate(boxPrice, quantities, state.storeData, state.currentCurrency, state.currentLang);
+        state.setCalculationResult(res, boxPrice);
         
         CalculatorController.renderResults(boxPrice, res, quantities);
     }
@@ -295,7 +304,7 @@ export class CalculatorController {
         renderKeyMetrics(res.keyMetrics);
         renderBreakdown(res.categoryTotals, res.totalValue);
 
-        HistoryRepository.saveCalculation({
+        CalculatorController._historyRepository.saveCalculation({
             boxPrice,
             totalValue: res.totalValue,
             diff: res.diff,
