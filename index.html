@@ -296,6 +296,7 @@
         </button>
     </div>
 </header>
+
 <!-- Formulario -->
 <section id="view-form"
     class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 space-y-6 border border-gray-100 dark:border-gray-700 transition-all duration-200">
@@ -371,6 +372,7 @@
 </div>
 
 </section>
+
 <!-- Resultado -->
 <div id="view-result" class="hidden space-y-4">
     <div id="result-card" class="p-6 rounded-xl text-center space-y-4 text-white relative">
@@ -429,7 +431,8 @@
         </button>
     </div>
 </div>
-<!-- Vista Aviso Legal -->
+
+<!-- Vista Página: Aviso Legal (/legal) -->
 <section id="view-legal"
     class="hidden bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 space-y-6 border border-gray-100 dark:border-gray-700 transition-all duration-200">
     <div class="border-b border-gray-100 dark:border-gray-700 pb-3">
@@ -449,7 +452,7 @@
     </div>
 </section>
 
-<!-- Vista Privacidad y Cookies -->
+<!-- Vista Página: Privacidad y Cookies (/privacy) -->
 <section id="view-privacy"
     class="hidden bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 space-y-6 border border-gray-100 dark:border-gray-700 transition-all duration-200">
     <div class="border-b border-gray-100 dark:border-gray-700 pb-3">
@@ -470,7 +473,7 @@
     </div>
 </section>
 
-<!-- Vista Preguntas Frecuentes y Precios de Referencia (/faq) -->
+<!-- Vista Página: Preguntas Frecuentes y Precios de Referencia (/faq) -->
 <section id="view-faq"
     class="hidden bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 space-y-6 border border-gray-100 dark:border-gray-700 transition-all duration-200">
     <div class="border-b border-gray-100 dark:border-gray-700 pb-3">
@@ -587,22 +590,32 @@
         </button>
     </div>
 </section>
+
     </div>
 
-    <!-- Sección de Donaciones (Ko-fi) -->
-    <div id="kofi-widget-container" class="text-center my-6 max-w-xl mx-auto px-4 flex justify-center min-h-[42px]">
-        <script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js' onload="if(typeof kofiwidget2 !== 'undefined'){ const lang = localStorage.getItem('lang') || (navigator.language.startsWith('es') ? 'es' : 'en'); const text = lang === 'es' ? 'Apoyar proyecto' : 'Support Project'; kofiwidget2.init(text, '#72a4f2', 'E1U623YPMD'); kofiwidget2.draw(); }"></script>
-        <script type='text/javascript'>
-            window.addEventListener('DOMContentLoaded', () => {
-                if (typeof kofiwidget2 !== 'undefined' && !document.querySelector('.kofi-button')) {
-                    const lang = localStorage.getItem('lang') || (navigator.language.startsWith('es') ? 'es' : 'en');
-                    const text = lang === 'es' ? 'Apoyar proyecto' : 'Support Project';
-                    kofiwidget2.init(text, '#72a4f2', 'E1U623YPMD');
-                    kofiwidget2.draw();
-                }
-            });
-        </script>
+<!-- Sección de Donaciones (Ko-fi) -->
+<div id="kofi-widget-container" class="text-center my-6 max-w-xl mx-auto px-4 flex justify-center min-h-[42px]">
+    <script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js' onload="if(typeof kofiwidget2 !== 'undefined'){ const lang = localStorage.getItem('lang') || (navigator.language.startsWith('es') ? 'es' : 'en'); const text = lang === 'es' ? 'Apoyar proyecto' : 'Support Project'; kofiwidget2.init(text, '#72a4f2', 'E1U623YPMD'); kofiwidget2.draw(); }"></script>
+    <script type='text/javascript'>
+        window.addEventListener('DOMContentLoaded', () => {
+            if (typeof kofiwidget2 !== 'undefined' && !document.querySelector('.kofi-button')) {
+                const lang = localStorage.getItem('lang') || (navigator.language.startsWith('es') ? 'es' : 'en');
+                const text = lang === 'es' ? 'Apoyar proyecto' : 'Support Project';
+                kofiwidget2.init(text, '#72a4f2', 'E1U623YPMD');
+                kofiwidget2.draw();
+            }
+        });
+    </script>
+</div>
+
+<!-- Sección Informativa SEO -->
+<section class="max-w-xl mx-auto px-4 mt-8 mb-6">
+    <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 sm:p-6 shadow-sm border border-gray-100 dark:border-gray-700 text-sm text-gray-600 dark:text-gray-300">
+        <h2 class="text-base font-bold text-gray-800 dark:text-gray-100 mb-2" data-i18n="seoTitle">Acerca de PokeBoxValue</h2>
+        <p class="mb-2 leading-relaxed text-xs sm:text-sm" data-i18n="seoDesc1">PokeBoxValue es una calculadora especializada diseñada para ayudar a los jugadores a analizar la rentabilidad de las cajas de objetos en Pokémon GO. Introduce el precio de la caja y selecciona los objetos que contiene para obtener un desglose detallado de su valor real en comparación con la compra de objetos individuales.</p>
+        <p class="leading-relaxed text-xs sm:text-sm" data-i18n="seoDesc2">Nuestra herramienta utiliza los precios base estándar de la tienda para calcular si estás consiguiendo un buen trato, mostrando métricas clave, porcentajes de descuento y asignando una calificación (Grado S, A, B, o F) para que siempre tomes la mejor decisión con tus monedas.</p>
     </div>
+</section>
 
 <!-- SEO Description Section -->
 <section class="max-w-xl mx-auto px-4 mt-8 mb-6">
@@ -631,6 +644,7 @@
         <p>PokeBoxValue <span id="app-version" class="font-mono"></span></p>
     </div>
 </footer>
+
 
     <!-- Canvas Confetti Library -->
     <script defer src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js"></script>

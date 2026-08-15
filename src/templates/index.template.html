@@ -236,24 +236,13 @@
 <!-- @include header -->
 <!-- @include form -->
 <!-- @include result -->
-<!-- @include modals -->
+<!-- @include view-legal -->
+<!-- @include view-privacy -->
+<!-- @include view-faq -->
     </div>
 
-    <!-- Sección de Donaciones (Ko-fi) -->
-    <div id="kofi-widget-container" class="text-center my-6 max-w-xl mx-auto px-4 flex justify-center min-h-[42px]">
-        <script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js' onload="if(typeof kofiwidget2 !== 'undefined'){ const lang = localStorage.getItem('lang') || (navigator.language.startsWith('es') ? 'es' : 'en'); const text = lang === 'es' ? 'Apoyar proyecto' : 'Support Project'; kofiwidget2.init(text, '#72a4f2', 'E1U623YPMD'); kofiwidget2.draw(); }"></script>
-        <script type='text/javascript'>
-            window.addEventListener('DOMContentLoaded', () => {
-                if (typeof kofiwidget2 !== 'undefined' && !document.querySelector('.kofi-button')) {
-                    const lang = localStorage.getItem('lang') || (navigator.language.startsWith('es') ? 'es' : 'en');
-                    const text = lang === 'es' ? 'Apoyar proyecto' : 'Support Project';
-                    kofiwidget2.init(text, '#72a4f2', 'E1U623YPMD');
-                    kofiwidget2.draw();
-                }
-            });
-        </script>
-    </div>
-
+<!-- @include kofi -->
+<!-- @include about-seo -->
 <!-- @include footer -->
 
     <!-- Canvas Confetti Library -->

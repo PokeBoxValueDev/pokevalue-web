@@ -20,6 +20,8 @@ export class CalculatorController {
         CalculatorController._valuationService = valuationService;
         CalculatorController._historyRepository = historyRepository;
 
+        if (typeof document === 'undefined') return;
+
         const btnCalculate = document.getElementById('btn-calculate');
         const priceInput = document.getElementById('box-price');
         const priceError = document.getElementById('price-error');

@@ -2,7 +2,7 @@ import { APP_VERSION, state } from '../config/config.js';
 import { ItemsRepository } from '../infrastructure/repositories/ItemsRepository.js';
 import { HistoryRepository } from '../infrastructure/repositories/HistoryRepository.js';
 import { IOSDeviceDetector } from '../ui/ios/IOSDeviceDetector.js';
-import { setupModals } from '../ui/components/ModalManager.js';
+import { setupViews } from '../ui/components/ViewManager.js';
 import { renderItems } from '../ui/components/ItemCardRenderer.js';
 
 import { ThemeController } from '../ui/controllers/ThemeController.js';
@@ -32,7 +32,7 @@ export async function initApp() {
     CurrencyController.init();
     CalculatorController.init();
     ServiceWorkerController.init();
-    setupModals();
+    setupViews();
 
     // 4. Mostrar sección de historial si hay elementos
     if (HistoryRepository.getHistory().length > 0) {

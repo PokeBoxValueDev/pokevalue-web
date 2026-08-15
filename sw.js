@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pokeboxvalue-v1.22.5';
+const CACHE_NAME = 'pokeboxvalue-v1.23.0';
 const STATIC_ASSETS = [
     './',
     './index.html',
@@ -26,6 +26,7 @@ const STATIC_ASSETS = [
     './src/ui/components/HistoryRenderer.js',
     './src/ui/components/ItemCardRenderer.js',
     './src/ui/components/ModalManager.js',
+    './src/ui/components/ViewManager.js',
     './src/ui/components/SocialCardGenerator.js',
     './src/ui/components/ValuationBadgesRenderer.js',
     './src/ui/controllers/CalculatorController.js',

@@ -33,8 +33,8 @@ test('RouterController.parseUrl parses routes, localized paths and aliases corre
     assert.deepEqual(RouterController.parseUrl('/es/'), { lang: 'es', view: '', isRecognized: true });
     assert.deepEqual(RouterController.parseUrl('/privacy'), { lang: null, view: 'privacy', isRecognized: true });
     assert.deepEqual(RouterController.parseUrl('/es/privacy'), { lang: 'es', view: 'privacy', isRecognized: true });
-    assert.deepEqual(RouterController.parseUrl('/en/terms'), { lang: 'en', view: 'terms', isRecognized: true });
-    assert.deepEqual(RouterController.parseUrl('/es/legal'), { lang: 'es', view: 'terms', isRecognized: true });
+    assert.deepEqual(RouterController.parseUrl('/en/terms'), { lang: 'en', view: 'legal', isRecognized: true });
+    assert.deepEqual(RouterController.parseUrl('/es/legal'), { lang: 'es', view: 'legal', isRecognized: true });
     assert.deepEqual(RouterController.parseUrl('/unknown-route'), { lang: null, view: 'unknown-route', isRecognized: false });
 });
 
@@ -43,7 +43,7 @@ test('RouterController.buildPath constructs clean canonical paths', () => {
     assert.equal(RouterController.buildPath('es'), '/es');
     assert.equal(RouterController.buildPath('en'), '/en');
     assert.equal(RouterController.buildPath('es', 'privacy'), '/es/privacy');
-    assert.equal(RouterController.buildPath('en', 'terms'), '/en/terms');
+    assert.equal(RouterController.buildPath('en', 'legal'), '/en/legal');
 });
 
 test('RouterController.syncModalsWithView toggles modal visibility correctly', () => {
