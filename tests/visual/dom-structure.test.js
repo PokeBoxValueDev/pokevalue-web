@@ -109,6 +109,8 @@ test('visual/dom - Content Security Policy (CSP) header includes required domain
     assert.ok(html.includes('https://ko-fi.com'), 'CSP must allow Ko-fi domain');
     assert.ok(html.includes('https://region1.google-analytics.com'), 'CSP connect-src must allow region1.google-analytics.com');
     assert.ok(html.includes('https://*.google-analytics.com'), 'CSP connect-src must allow *.google-analytics.com');
+    assert.ok(html.includes('https://fundingchoicesmessages.google.com'), 'CSP must allow Google Funding Choices CMP');
+    assert.ok(html.includes('https://*.googleadservices.com'), 'CSP must allow Google Ad Services');
 
     // Safe Ko-fi widget script evaluation
     assert.ok(html.includes("typeof kofiwidget2 !== 'undefined'"), 'Ko-fi widget script must guard against ReferenceError if script is blocked');

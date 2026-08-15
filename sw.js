@@ -1,8 +1,8 @@
-const CACHE_NAME = 'pokeboxvalue-v1.28.4';
+const CACHE_NAME = 'pokeboxvalue-v1.28.5';
 const STATIC_ASSETS = [
     './',
     './index.html',
-    './css/styles.css',
+    './404.html',
     './ads.txt',
     './robots.txt',
     './sitemap.xml',
@@ -11,42 +11,18 @@ const STATIC_ASSETS = [
     './logo.png',
     './og-image.svg',
     './manifest.json',
-    './src/app/main.js',
-    './src/assets/items-fallback.json',
-    './src/config/config.js',
-    './src/domain/models/CalculationResult.js',
-    './src/domain/models/Item.js',
-    './src/domain/services/ValuationService.js',
-    './src/domain/services/ComparisonService.js',
-    './src/domain/valueObjects/Category.js',
-    './src/i18n/i18n.js',
-    './src/i18n/locales/en.js',
-    './src/i18n/locales/es.js',
-    './src/infrastructure/mappers/ItemMapper.js',
-    './src/infrastructure/repositories/HistoryRepository.js',
-    './src/infrastructure/repositories/ItemsRepository.js',
-    './src/ui/components/BreakdownRenderer.js',
-    './src/ui/components/HistoryRenderer.js',
-    './src/ui/components/ItemCardRenderer.js',
-    './src/ui/components/ModalManager.js',
-    './src/ui/components/ViewManager.js',
-    './src/ui/components/SocialCardGenerator.js',
-    './src/ui/components/ValuationBadgesRenderer.js',
-    './src/ui/controllers/CalculatorController.js',
-    './src/ui/controllers/CurrencyController.js',
-    './src/ui/controllers/I18nController.js',
-    './src/ui/controllers/RouterController.js',
-    './src/ui/controllers/ServiceWorkerController.js',
-    './src/ui/controllers/ThemeController.js',
-    './src/ui/ios/IOSDeviceDetector.js',
-    './src/ui/utils/AnimationUtils.js'
+    './src/assets/items-fallback.json'
 ];
 
-// Instalación: Cachear App Shell
+// Instalación: Cachear App Shell de forma resiliente
 self.addEventListener('install', (event) => {
     event.waitUntil(
-        caches.open(CACHE_NAME).then((cache) => {
-            return cache.addAll(STATIC_ASSETS);
+        caches.open(CACHE_NAME).then(async (cache) => {
+            await Promise.allSettled(
+                STATIC_ASSETS.map(url => cache.add(url).catch(err => {
+                    console.warn(`[ServiceWorker] Fallo al precachear ${url}:`, err);
+                }))
+            );
         }).then(() => self.skipWaiting())
     );
 });
