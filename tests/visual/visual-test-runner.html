@@ -12,10 +12,10 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         button, input, select, .category-pill, .item-card { touch-action: manipulation; }
-        .preview-box { transition: width 0.3s ease, font-size 0.2s ease; }
+        .preview-box { transition: width 0.25s ease, max-width 0.25s ease; }
     </style>
 </head>
-<body class="bg-gray-950 text-white min-h-screen p-4 sm:p-6 font-sans">
+<body class="bg-gray-950 text-white min-h-screen p-4 sm:p-6 font-sans antialiased">
     <div class="max-w-6xl mx-auto space-y-6">
         
         <!-- Header del Test Runner -->
@@ -25,10 +25,10 @@
                     <span>🎨 PokeBoxValue</span>
                     <span class="text-xs bg-indigo-900/60 text-indigo-300 px-2 py-0.5 rounded-full border border-indigo-700 font-mono">v1.30.0</span>
                 </h1>
-                <p class="text-xs sm:text-sm text-gray-400 mt-0.5">Dashboard dinámico conectado en tiempo real a los módulos de código del proyecto.</p>
+                <p class="text-xs sm:text-sm text-gray-400 mt-0.5">Dashboard interactivo de pruebas visuales, responsive y accesibilidad WCAG 2.1.</p>
             </div>
             
-            <button id="btn-run-axe" class="px-5 py-2.5 bg-indigo-700 hover:bg-indigo-600 text-white text-xs sm:text-sm font-bold rounded-xl transition shadow-lg shadow-indigo-700/40 flex items-center gap-2 cursor-pointer self-start md:self-auto">
+            <button id="btn-run-axe" type="button" class="px-5 py-2.5 bg-indigo-700 hover:bg-indigo-600 text-white text-xs sm:text-sm font-bold rounded-xl transition shadow-lg shadow-indigo-700/40 flex items-center gap-2 cursor-pointer self-start md:self-auto active:scale-95">
                 🔍 Ejecutar Axe-Core en Vivo
             </button>
         </header>
@@ -39,8 +39,8 @@
             <div class="flex items-center gap-2">
                 <span class="text-xs font-semibold text-gray-400">Tema:</span>
                 <div class="flex bg-gray-800 p-1 rounded-xl border border-gray-700 text-xs">
-                    <button id="btn-mode-light" class="px-3 py-1 rounded-lg transition font-medium text-gray-400 hover:text-white">☀️ Claro</button>
-                    <button id="btn-mode-dark" class="px-3 py-1 rounded-lg transition font-bold bg-indigo-700 text-white shadow-sm">🌙 Oscuro</button>
+                    <button id="btn-mode-light" type="button" class="px-3 py-1 rounded-lg transition font-medium text-gray-400 hover:text-white cursor-pointer">☀️ Claro</button>
+                    <button id="btn-mode-dark" type="button" class="px-3 py-1 rounded-lg transition font-bold bg-indigo-700 text-white shadow-sm cursor-pointer">🌙 Oscuro</button>
                 </div>
             </div>
 
@@ -48,18 +48,18 @@
             <div class="flex items-center gap-2">
                 <span class="text-xs font-semibold text-gray-400">Pantalla:</span>
                 <div class="flex bg-gray-800 p-1 rounded-xl border border-gray-700 text-xs gap-1">
-                    <button class="btn-viewport px-2.5 py-1 rounded-lg text-gray-400 hover:text-white transition" data-width="320">320px (SE)</button>
-                    <button class="btn-viewport px-2.5 py-1 rounded-lg text-gray-400 hover:text-white transition" data-width="390">390px (iPhone)</button>
-                    <button class="btn-viewport px-2.5 py-1 rounded-lg text-gray-400 hover:text-white transition" data-width="480">480px (Max)</button>
-                    <button class="btn-viewport px-2.5 py-1 rounded-lg text-gray-400 hover:text-white transition" data-width="768">768px (iPad)</button>
-                    <button class="btn-viewport px-2.5 py-1 rounded-lg bg-indigo-700 text-white font-bold transition" data-width="100%">100% (Fluido)</button>
+                    <button class="btn-viewport px-2.5 py-1 rounded-lg text-gray-400 hover:text-white transition cursor-pointer" data-width="320">320px (SE)</button>
+                    <button class="btn-viewport px-2.5 py-1 rounded-lg text-gray-400 hover:text-white transition cursor-pointer" data-width="390">390px (iPhone)</button>
+                    <button class="btn-viewport px-2.5 py-1 rounded-lg text-gray-400 hover:text-white transition cursor-pointer" data-width="480">480px (Max)</button>
+                    <button class="btn-viewport px-2.5 py-1 rounded-lg text-gray-400 hover:text-white transition cursor-pointer" data-width="768">768px (iPad)</button>
+                    <button class="btn-viewport px-2.5 py-1 rounded-lg bg-indigo-700 text-white font-bold transition cursor-pointer" data-width="100%">100% (Fluido)</button>
                 </div>
             </div>
 
             <!-- 3. Zoom de Texto (200% Resize Text) -->
             <div class="flex items-center gap-2">
                 <span class="text-xs font-semibold text-gray-400">Texto:</span>
-                <button id="btn-toggle-zoom" class="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 border border-gray-700 text-xs rounded-xl transition text-gray-300 font-medium">
+                <button id="btn-toggle-zoom" type="button" class="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 border border-gray-700 text-xs rounded-xl transition text-gray-300 font-medium cursor-pointer">
                     🔍 Zoom 200%: <b id="zoom-status" class="text-indigo-400">Normal (100%)</b>
                 </button>
             </div>
@@ -75,7 +75,7 @@
             <ul id="axe-violations-list" class="space-y-2 text-xs text-gray-300"></ul>
         </section>
 
-        <!-- Contenedor Principal Dinámico (Alimentado por módulos reales) -->
+        <!-- Contenedor Principal Simulado -->
         <main role="main" class="space-y-6">
             <div id="preview-wrapper" class="flex justify-center">
                 
@@ -91,16 +91,16 @@
                             </div>
                         </div>
                         <div class="flex items-center gap-2">
-                            <select aria-label="Seleccionar idioma" class="bg-gray-800 text-xs px-2.5 py-1 rounded-lg border border-gray-700 text-gray-200">
+                            <select aria-label="Seleccionar idioma" class="bg-gray-800 text-xs px-2.5 py-1 rounded-lg border border-gray-700 text-gray-200 cursor-pointer">
                                 <option value="es">ES</option>
                                 <option value="en">EN</option>
                             </select>
-                            <select aria-label="Seleccionar divisa" class="bg-gray-800 text-xs px-2.5 py-1 rounded-lg border border-gray-700 text-gray-200">
+                            <select aria-label="Seleccionar divisa" class="bg-gray-800 text-xs px-2.5 py-1 rounded-lg border border-gray-700 text-gray-200 cursor-pointer">
                                 <option value="EUR">€</option>
                                 <option value="USD">$</option>
                                 <option value="POKECOINS">🟡</option>
                             </select>
-                            <button type="button" aria-label="Cambiar tema" class="p-1.5 bg-gray-800 text-gray-300 rounded-lg hover:bg-gray-700 border border-gray-700">🌙</button>
+                            <button type="button" aria-label="Cambiar tema" class="p-1.5 bg-gray-800 text-gray-300 rounded-lg hover:bg-gray-700 border border-gray-700 cursor-pointer">🌙</button>
                         </div>
                     </header>
 
@@ -123,21 +123,21 @@
 
                             <!-- Píldoras de Categoría con Colores Temáticos Accesibles -->
                             <div role="toolbar" id="category-filter-pills" aria-label="Filtro de categorías de objetos" class="flex gap-1.5 overflow-x-auto pb-1.5 mb-2.5 no-scrollbar text-xs">
-                                <button type="button" data-category="all" aria-label="Mostrar todas las categorías" class="category-pill whitespace-nowrap px-3 py-1 bg-indigo-700 text-white font-bold rounded-full shadow-sm ring-1 ring-indigo-400/50">Todos</button>
-                                <button type="button" data-category="pases" aria-label="Filtrar por Pases de Incursión" class="category-pill whitespace-nowrap px-3 py-1 bg-gray-800 text-gray-300 hover:bg-gray-700 rounded-full">Pases</button>
-                                <button type="button" data-category="incubadoras" aria-label="Filtrar por Incubadoras" class="category-pill whitespace-nowrap px-3 py-1 bg-gray-800 text-gray-300 hover:bg-gray-700 rounded-full">Incubadoras</button>
-                                <button type="button" data-category="potenciadores" aria-label="Filtrar por Potenciadores" class="category-pill whitespace-nowrap px-3 py-1 bg-gray-800 text-gray-300 hover:bg-gray-700 rounded-full">Potenciadores</button>
-                                <button type="button" data-category="mejoras" aria-label="Filtrar por Mejoras" class="category-pill whitespace-nowrap px-3 py-1 bg-gray-800 text-gray-300 hover:bg-gray-700 rounded-full">Mejoras</button>
+                                <button type="button" data-category="all" aria-label="Mostrar todas las categorías" class="category-pill whitespace-nowrap px-3 py-1 bg-indigo-700 text-white font-bold rounded-full shadow-sm ring-1 ring-indigo-400/50 cursor-pointer">Todos</button>
+                                <button type="button" data-category="pases" aria-label="Filtrar por Pases de Incursión" class="category-pill whitespace-nowrap px-3 py-1 bg-gray-800 text-gray-300 hover:bg-gray-700 rounded-full cursor-pointer">Pases</button>
+                                <button type="button" data-category="incubadoras" aria-label="Filtrar por Incubadoras" class="category-pill whitespace-nowrap px-3 py-1 bg-gray-800 text-gray-300 hover:bg-gray-700 rounded-full cursor-pointer">Incubadoras</button>
+                                <button type="button" data-category="potenciadores" aria-label="Filtrar por Potenciadores" class="category-pill whitespace-nowrap px-3 py-1 bg-gray-800 text-gray-300 hover:bg-gray-700 rounded-full cursor-pointer">Potenciadores</button>
+                                <button type="button" data-category="mejoras" aria-label="Filtrar por Mejoras" class="category-pill whitespace-nowrap px-3 py-1 bg-gray-800 text-gray-300 hover:bg-gray-700 rounded-full cursor-pointer">Mejoras</button>
                             </div>
 
                             <input type="text" id="search-input" aria-label="Buscar objetos en la tienda" placeholder="Buscar objeto..." class="w-full px-3 py-2 text-xs bg-gray-800 border border-gray-700 text-white rounded-xl focus:ring-2 focus:ring-indigo-500 mb-3">
 
-                            <!-- Contenedor Dinámico donde ItemCardRenderer renderiza los objetos reales del proyecto -->
+                            <!-- Contenedor Dinámico de Objetos con Categorías -->
                             <div id="items-container" class="space-y-4 max-h-96 overflow-y-auto pr-1"></div>
                         </div>
 
                         <!-- Botón Calcular -->
-                        <button type="button" id="btn-calculate" aria-label="Calcular Rentabilidad de la Caja" class="w-full py-3.5 bg-indigo-700 hover:bg-indigo-600 text-white font-bold rounded-2xl text-sm transition shadow-lg shadow-indigo-700/40 cursor-pointer">
+                        <button type="button" id="btn-calculate" aria-label="Calcular Rentabilidad de la Caja" class="w-full py-3.5 bg-indigo-700 hover:bg-indigo-600 text-white font-bold rounded-2xl text-sm transition shadow-lg shadow-indigo-700/40 cursor-pointer active:scale-98">
                             Calcular Rentabilidad
                         </button>
                     </section>
@@ -171,65 +171,257 @@
     <!-- Axe-Core Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.8.2/axe.min.js"></script>
     
-    <!-- Carga Dinámica de los Módulos Reales del Proyecto (Sin Duplicación de Código) -->
-    <script type="module">
-        import { renderItems, initItemCardEvents, toggleCategoryFilter } from '../../src/ui/components/ItemCardRenderer.js';
-        import { state } from '../../src/config/config.js';
+    <!-- Script de Control Robusto (Funciona inmediatamente en file:// y http://) -->
+    <script>
+        // Datos de objetos pre-cargados para máxima resiliencia sin bloqueo CORS en file://
+        const DEFAULT_ITEMS = [
+            {
+                id: 'pase_incursion_remota',
+                name: 'Pase de incursión remota',
+                category: 'pases',
+                unitPrice: '1.65 €',
+                svg: '<svg viewBox="0 0 64 64" fill="none" class="w-full h-full"><rect x="8" y="16" width="48" height="32" rx="6" fill="#2979FF"/><circle cx="32" cy="32" r="10" fill="#1A237E"/><circle cx="32" cy="32" r="6" stroke="#00E5FF" stroke-width="2"/></svg>'
+            },
+            {
+                id: 'pase_combate_premium',
+                name: 'Pase de combate prémium',
+                category: 'pases',
+                unitPrice: '1.10 €',
+                svg: '<svg viewBox="0 0 64 64" fill="none" class="w-full h-full"><rect x="8" y="16" width="48" height="32" rx="6" fill="#00C853"/><circle cx="32" cy="32" r="10" fill="#1B5E20"/></svg>'
+            },
+            {
+                id: 'superincubadora',
+                name: 'Superincubadora',
+                category: 'incubadoras',
+                unitPrice: '1.65 €',
+                svg: '<svg viewBox="0 0 64 64" fill="none" class="w-full h-full"><circle cx="32" cy="32" r="18" fill="#7C4DFF"/></svg>'
+            },
+            {
+                id: 'incubadora',
+                name: 'Incubadora',
+                category: 'incubadoras',
+                unitPrice: '1.10 €',
+                svg: '<svg viewBox="0 0 64 64" fill="none" class="w-full h-full"><path d="M24 16 C24 10, 40 10, 40 16 Z" fill="#FF9800"/><rect x="24" y="16" width="16" height="32" fill="#80DEEA" opacity="0.8"/></svg>'
+            },
+            {
+                id: 'huevo_suerte',
+                name: 'Huevo Suerte',
+                category: 'potenciadores',
+                unitPrice: '0.69 €',
+                svg: '<svg viewBox="0 0 64 64" fill="none" class="w-full h-full"><circle cx="32" cy="32" r="20" fill="#80DEEA"/></svg>'
+            },
+            {
+                id: 'trozo_estrella',
+                name: 'Trozo Estrella',
+                category: 'potenciadores',
+                unitPrice: '0.81 €',
+                svg: '<svg viewBox="0 0 64 64" fill="none" class="w-full h-full"><polygon points="32,8 40,26 58,26 44,38 50,56 32,44 14,56 20,38 6,26 24,26" fill="#FFC107"/></svg>'
+            },
+            {
+                id: 'almacenamiento_pokemon',
+                name: 'Almacenamiento de Pokémon',
+                category: 'mejoras',
+                unitPrice: '2.19 €',
+                svg: '<svg viewBox="0 0 64 64" fill="none" class="w-full h-full"><rect x="12" y="16" width="40" height="36" rx="4" fill="#B0BEC5"/><rect x="16" y="22" width="32" height="16" rx="2" fill="#00B0FF"/></svg>'
+            }
+        ];
 
-        // 1. Cargar datos reales de items-fallback.json
-        async function loadRealItems() {
-            try {
-                const res = await fetch('../../src/assets/items-fallback.json');
-                const data = await res.json();
-                const container = document.getElementById('items-container');
-                if (container && data.objetos) {
-                    renderItems(container, data.objetos, () => {});
-                    initItemCardEvents(container, () => {});
-                }
-            } catch (err) {
-                console.warn('Cargando items mediante fallback estático dinámico...', err);
+        const CATEGORY_NAMES = {
+            pases: { label: 'Pases de Incursión', color: 'indigo' },
+            incubadoras: { label: 'Incubadoras', color: 'amber' },
+            potenciadores: { label: 'Potenciadores', color: 'purple' },
+            mejoras: { label: 'Mejoras de Espacio', color: 'emerald' }
+        };
+
+        // Renderizador de grupos y tarjetas de objetos
+        function renderItemsList(items) {
+            const container = document.getElementById('items-container');
+            if (!container) return;
+
+            const groups = {};
+            items.forEach(item => {
+                const cat = item.category || 'otros';
+                if (!groups[cat]) groups[cat] = [];
+                groups[cat].push(item);
+            });
+
+            container.innerHTML = Object.keys(groups).map(catKey => {
+                const groupItems = groups[catKey];
+                const catInfo = CATEGORY_NAMES[catKey] || { label: catKey.toUpperCase(), color: 'indigo' };
+                const color = catInfo.color;
+
+                return `
+                    <div class="category-group p-3 rounded-2xl border border-${color}-800/60 bg-${color}-950/20 space-y-2.5" data-category="${catKey}">
+                        <div class="w-full flex items-center justify-between px-3 py-1.5 rounded-xl bg-${color}-950/70 border border-${color}-800/60">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-${color}-500"></span>
+                                <span class="text-xs font-bold text-${color}-300 uppercase tracking-wider">${catInfo.label}</span>
+                            </div>
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-gray-800 text-${color}-300">${groupItems.length}</span>
+                        </div>
+                        <div class="space-y-2">
+                            ${groupItems.map(item => `
+                                <div class="item-card flex items-center justify-between p-2.5 bg-gray-800/90 rounded-xl border border-gray-700 transition" data-id="${item.id}">
+                                    <div class="flex items-center gap-2.5 min-w-0 flex-1 pr-2">
+                                        <div class="w-11 h-11 rounded-xl bg-gray-900 flex-shrink-0 flex items-center justify-center p-1 border border-gray-700">
+                                            ${item.svg}
+                                        </div>
+                                        <div class="min-w-0 flex-1">
+                                            <p class="text-xs font-bold text-white break-words">${item.name}</p>
+                                            <div class="flex items-center gap-2 mt-0.5">
+                                                <span class="text-[11px] text-gray-400">${item.unitPrice}</span>
+                                                <div class="flex items-center gap-1">
+                                                    <button type="button" class="btn-quick-add text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-700 hover:bg-indigo-600 text-gray-300 hover:text-white transition cursor-pointer active:scale-90" data-id="${item.id}" data-add="1" aria-label="Añadir 1 ${item.name}">+1</button>
+                                                    <button type="button" class="btn-quick-add text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-700 hover:bg-indigo-600 text-gray-300 hover:text-white transition cursor-pointer active:scale-90" data-id="${item.id}" data-add="5" aria-label="Añadir 5 ${item.name}">+5</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-1 bg-gray-900 border border-gray-700 rounded-lg p-1 flex-shrink-0">
+                                        <button type="button" class="btn-dec w-7 h-7 text-gray-300 hover:bg-gray-800 rounded font-bold transition active:scale-90 cursor-pointer" data-id="${item.id}" aria-label="Disminuir ${item.name}">-</button>
+                                        <input type="number" class="item-qty w-7 text-center text-xs font-bold bg-transparent text-white focus:outline-none" value="0" min="0" data-id="${item.id}" aria-label="Cantidad de ${item.name}">
+                                        <button type="button" class="btn-inc w-7 h-7 text-gray-300 hover:bg-gray-800 rounded font-bold transition active:scale-90 cursor-pointer" data-id="${item.id}" aria-label="Aumentar ${item.name}">+</button>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            bindItemEvents();
+        }
+
+        // Vincular eventos de incremento y decremento
+        function bindItemEvents() {
+            document.querySelectorAll('.btn-inc').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = btn.getAttribute('data-id');
+                    const input = document.querySelector(`.item-qty[data-id="${id}"]`);
+                    if (input) {
+                        input.value = (parseInt(input.value) || 0) + 1;
+                        highlightCard(id, input.value);
+                    }
+                });
+            });
+
+            document.querySelectorAll('.btn-dec').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = btn.getAttribute('data-id');
+                    const input = document.querySelector(`.item-qty[data-id="${id}"]`);
+                    if (input) {
+                        const next = Math.max(0, (parseInt(input.value) || 0) - 1);
+                        input.value = next;
+                        highlightCard(id, next);
+                    }
+                });
+            });
+
+            document.querySelectorAll('.btn-quick-add').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = btn.getAttribute('data-id');
+                    const add = parseInt(btn.getAttribute('data-add')) || 1;
+                    const input = document.querySelector(`.item-qty[data-id="${id}"]`);
+                    if (input) {
+                        const next = (parseInt(input.value) || 0) + add;
+                        input.value = next;
+                        highlightCard(id, next);
+                    }
+                });
+            });
+
+            document.querySelectorAll('.item-qty').forEach(input => {
+                input.addEventListener('input', () => {
+                    const id = input.getAttribute('data-id');
+                    highlightCard(id, input.value);
+                });
+            });
+        }
+
+        function highlightCard(id, val) {
+            const card = document.querySelector(`.item-card[data-id="${id}"]`);
+            if (!card) return;
+            const count = parseInt(val) || 0;
+            if (count > 0) {
+                card.classList.add('border-indigo-500', 'bg-indigo-950/40');
+                card.classList.remove('border-gray-700', 'bg-gray-800/90');
+            } else {
+                card.classList.remove('border-indigo-500', 'bg-indigo-950/40');
+                card.classList.add('border-gray-700', 'bg-gray-800/90');
             }
         }
-        loadRealItems();
 
-        // 2. Conectar píldoras de filtrado a los eventos del renderer
-        document.querySelectorAll('#category-filter-pills .category-pill').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const cat = btn.getAttribute('data-category');
-                if (cat) toggleCategoryFilter(cat);
+        // Ejecutar carga inicial
+        renderItemsList(DEFAULT_ITEMS);
+
+        // Botón Limpiar cantidades
+        document.getElementById('btn-reset-qty')?.addEventListener('click', () => {
+            document.querySelectorAll('.item-qty').forEach(input => {
+                input.value = '0';
+                highlightCard(input.getAttribute('data-id'), 0);
             });
         });
 
-        // 3. Controles del Dashboard Interactivo
+        // Filtrado por píldoras de categoría
+        const pills = document.querySelectorAll('#category-filter-pills .category-pill');
+        pills.forEach(pill => {
+            pill.addEventListener('click', () => {
+                pills.forEach(p => {
+                    p.className = 'category-pill whitespace-nowrap px-3 py-1 bg-gray-800 text-gray-300 hover:bg-gray-700 rounded-full cursor-pointer transition';
+                });
+                pill.className = 'category-pill whitespace-nowrap px-3 py-1 bg-indigo-700 text-white font-bold rounded-full shadow-sm ring-1 ring-indigo-400/50 cursor-pointer transition';
+
+                const cat = pill.getAttribute('data-category');
+                document.querySelectorAll('.category-group').forEach(group => {
+                    if (cat === 'all' || group.getAttribute('data-category') === cat) {
+                        group.classList.remove('hidden');
+                    } else {
+                        group.classList.add('hidden');
+                    }
+                });
+            });
+        });
+
+        // Buscador de objetos en vivo
+        document.getElementById('search-input')?.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            document.querySelectorAll('.item-card').forEach(card => {
+                const name = card.querySelector('p')?.innerText.toLowerCase() || '';
+                if (name.includes(query)) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        });
+
+        // 1. Selector de Tema Claro / Oscuro
         const btnLight = document.getElementById('btn-mode-light');
         const btnDark = document.getElementById('btn-mode-dark');
-        const btnZoom = document.getElementById('btn-toggle-zoom');
-        const zoomStatus = document.getElementById('zoom-status');
-        const viewportButtons = document.querySelectorAll('.btn-viewport');
         const previewContainer = document.getElementById('preview-container');
-
-        let isZoomed = false;
 
         btnLight?.addEventListener('click', () => {
             document.documentElement.classList.remove('dark');
-            btnLight.className = 'px-3 py-1 rounded-lg transition font-bold bg-indigo-700 text-white shadow-sm';
-            btnDark.className = 'px-3 py-1 rounded-lg transition font-medium text-gray-400 hover:text-white';
+            btnLight.className = 'px-3 py-1 rounded-lg transition font-bold bg-indigo-700 text-white shadow-sm cursor-pointer';
+            btnDark.className = 'px-3 py-1 rounded-lg transition font-medium text-gray-400 hover:text-white cursor-pointer';
             previewContainer.classList.remove('bg-slate-900', 'text-white', 'border-gray-800');
-            previewContainer.classList.add('bg-white', 'text-gray-900', 'border-gray-200');
+            previewContainer.classList.add('bg-slate-100', 'text-gray-900', 'border-gray-300');
         });
 
         btnDark?.addEventListener('click', () => {
             document.documentElement.classList.add('dark');
-            btnDark.className = 'px-3 py-1 rounded-lg transition font-bold bg-indigo-700 text-white shadow-sm';
-            btnLight.className = 'px-3 py-1 rounded-lg transition font-medium text-gray-400 hover:text-white';
-            previewContainer.classList.remove('bg-white', 'text-gray-900', 'border-gray-200');
+            btnDark.className = 'px-3 py-1 rounded-lg transition font-bold bg-indigo-700 text-white shadow-sm cursor-pointer';
+            btnLight.className = 'px-3 py-1 rounded-lg transition font-medium text-gray-400 hover:text-white cursor-pointer';
+            previewContainer.classList.remove('bg-slate-100', 'text-gray-900', 'border-gray-300');
             previewContainer.classList.add('bg-slate-900', 'text-white', 'border-gray-800');
         });
 
+        // 2. Selector de Viewports
+        const viewportButtons = document.querySelectorAll('.btn-viewport');
         viewportButtons.forEach(btn => {
             btn.addEventListener('click', () => {
-                viewportButtons.forEach(b => b.className = 'btn-viewport px-2.5 py-1 rounded-lg text-gray-400 hover:text-white transition');
-                btn.className = 'btn-viewport px-2.5 py-1 rounded-lg bg-indigo-700 text-white font-bold transition';
+                viewportButtons.forEach(b => b.className = 'btn-viewport px-2.5 py-1 rounded-lg text-gray-400 hover:text-white transition cursor-pointer');
+                btn.className = 'btn-viewport px-2.5 py-1 rounded-lg bg-indigo-700 text-white font-bold transition cursor-pointer';
 
                 const w = btn.getAttribute('data-width');
                 if (w === '100%') {
@@ -242,6 +434,10 @@
             });
         });
 
+        // 3. Zoom de Texto 200%
+        let isZoomed = false;
+        const btnZoom = document.getElementById('btn-toggle-zoom');
+        const zoomStatus = document.getElementById('zoom-status');
         btnZoom?.addEventListener('click', () => {
             isZoomed = !isZoomed;
             if (isZoomed) {
