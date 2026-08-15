@@ -1,0 +1,38 @@
+<!-- Anti-Flash Theme Auto-Detection -->
+<script>
+    if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+    } else {
+        document.documentElement.classList.remove('dark');
+    }
+</script>
+
+<!-- Silenciar aviso CDN de Tailwind -->
+<script>
+    const origWarn = console.warn;
+    console.warn = function (...args) {
+        if (args[0] && typeof args[0] === 'string' && args[0].includes('cdn.tailwindcss.com')) return;
+        origWarn.apply(console, args);
+    };
+</script>
+
+<!-- Tailwind CDN + Configuración -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: {
+            extend: {
+                colors: {
+                    indigo: {
+                        50: '#eef2ff',
+                        100: '#e0e7ff',
+                        500: '#6366f1',
+                        600: '#4f46e5',
+                        700: '#4338ca',
+                    }
+                }
+            }
+        }
+    }
+</script>

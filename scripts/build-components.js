@@ -3,6 +3,7 @@ import path from 'node:path';
 
 const rootDir = process.cwd();
 const componentsDir = path.join(rootDir, 'src', 'components');
+const headDir = path.join(componentsDir, 'head');
 const viewsDir = path.join(componentsDir, 'views');
 const templatesDir = path.join(rootDir, 'src', 'templates');
 const templateHtmlPath = path.join(templatesDir, 'index.template.html');
@@ -11,6 +12,14 @@ const indexHtmlPath = path.join(rootDir, 'index.html');
 console.log('🔨 Ensamblando index.html desde componentes y vistas modulares...');
 
 const templateHtml = fs.readFileSync(templateHtmlPath, 'utf8');
+
+// Componentes de Cabecera (Head)
+const headSeoSchemaHtml = fs.readFileSync(path.join(headDir, 'seo-schema.html'), 'utf8');
+const headThemeInitHtml = fs.readFileSync(path.join(headDir, 'theme-init.html'), 'utf8');
+const headCookieConsentHtml = fs.readFileSync(path.join(headDir, 'cookie-consent.html'), 'utf8');
+const headAnalyticsHtml = fs.readFileSync(path.join(headDir, 'analytics.html'), 'utf8');
+
+// Componentes Principales
 const headerHtml = fs.readFileSync(path.join(componentsDir, 'header.html'), 'utf8');
 let formHtml = fs.readFileSync(path.join(componentsDir, 'form.html'), 'utf8');
 const historyHtml = fs.readFileSync(path.join(componentsDir, 'history.html'), 'utf8');
@@ -31,6 +40,10 @@ formHtml = formHtml.replace('<!--#include "history.html"-->', historyHtml);
 
 // Sustituir componentes y vistas modulares en la plantilla
 const assembledIndexHtml = templateHtml
+    .replace('<!-- @include head-seo-schema -->', headSeoSchemaHtml)
+    .replace('<!-- @include head-theme-init -->', headThemeInitHtml)
+    .replace('<!-- @include head-cookie-consent -->', headCookieConsentHtml)
+    .replace('<!-- @include head-analytics -->', headAnalyticsHtml)
     .replace('<!-- @include header -->', headerHtml)
     .replace('<!-- @include form -->', formHtml)
     .replace('<!-- @include result -->', resultHtml)

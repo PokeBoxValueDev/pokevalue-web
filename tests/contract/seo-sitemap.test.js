@@ -29,14 +29,14 @@ test('SEO - Verificación de robots.txt y sitemap.xml', (t) => {
 
 test('SEO - Schema.org JSON-LD structured data en plantilla y HTML generado', (t) => {
     const rootDir = process.cwd();
-    const templatePath = path.join(rootDir, 'src', 'templates', 'index.template.html');
+    const schemaComponentPath = path.join(rootDir, 'src', 'components', 'head', 'seo-schema.html');
     const indexPath = path.join(rootDir, 'index.html');
 
-    const templateContent = fs.readFileSync(templatePath, 'utf8');
+    const schemaContent = fs.readFileSync(schemaComponentPath, 'utf8');
     const indexContent = fs.readFileSync(indexPath, 'utf8');
 
-    [templateContent, indexContent].forEach((html, idx) => {
-        const fileLabel = idx === 0 ? 'index.template.html' : 'index.html';
+    [schemaContent, indexContent].forEach((html, idx) => {
+        const fileLabel = idx === 0 ? 'seo-schema.html' : 'index.html';
         assert.ok(html.includes('application/ld+json'), `${fileLabel} debe contener script application/ld+json`);
         assert.ok(html.includes('"@type": "WebApplication"'), `${fileLabel} debe definir Schema WebApplication`);
         assert.ok(html.includes('"@type": "FAQPage"'), `${fileLabel} debe definir Schema FAQPage`);

@@ -1,0 +1,59 @@
+<!-- Schema.org JSON-LD Structured Data (WebApplication + FAQPage) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "PokeBoxValue",
+      "url": "https://pokeboxvalue.com/",
+      "description": "Calculadora de rentabilidad y valor real de las cajas de la tienda de Pokémon GO.",
+      "applicationCategory": "GameApplication",
+      "operatingSystem": "All",
+      "inLanguage": ["es", "en"],
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Cómo calcula PokeBoxValue si una caja es rentable?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Comparamos el coste total de la caja con el valor de comprar cada objeto por separado a su precio base oficial de la tienda. Si el valor total de los objetos supera el precio de la caja, se considera rentable y se calcula el porcentaje exacto de ahorro."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Qué significan las calificaciones de Grado S, A, B y F?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "El sistema clasifica la oferta según su descuento: Grado S (ahorro ≥ 40%), Grado A (ahorro 25-39%), Grado B (ahorro 1-24%) y Grado F (sin descuento o más cara que comprar objetos sueltos)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Puedo calcular ofertas en Pokémonedas, Euros y Dólares?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sí, PokeBoxValue soporta cálculos en Euros (€), Dólares ($) y Pokémonedas (🟡). Puedes cambiar de divisa en cualquier momento desde la cabecera."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Qué objetos tienen mayor valor en una caja de Pokémon GO?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Los objetos clave más codiciados suelen ser los Pases de Incursión Premium / Remotos y las Super Incubadoras, ya que otorgan el mayor ahorro por Pokémoneda invertida."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>

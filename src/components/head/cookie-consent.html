@@ -1,0 +1,55 @@
+<!-- CookieConsent v3 -->
+<script src="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@v3.0.0/dist/cookieconsent.umd.js"></script>
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        if (typeof CookieConsent !== 'undefined' && typeof CookieConsent.run === 'function') {
+            CookieConsent.run({
+                guiOptions: {
+                    consentModal: { layout: 'box', position: 'bottom right' },
+                    preferencesModal: { layout: 'box' }
+                },
+                categories: {
+                    necessary: { readOnly: true, enabled: true },
+                    analytics: { enabled: false }
+                },
+                language: {
+                    default: 'es',
+                    translations: {
+                        es: {
+                            consentModal: {
+                                title: 'Privacidad y Cookies',
+                                description: 'Utilizamos cookies mínimas para analítica y medición con Google Analytics. Puedes aceptar o configurar tus preferencias.',
+                                acceptAllBtn: 'Aceptar',
+                                acceptNecessaryBtn: 'Solo necesarias',
+                                showPreferencesBtn: 'Configurar'
+                            },
+                            preferencesModal: {
+                                title: 'Preferencias de Cookies',
+                                acceptAllBtn: 'Aceptar todas',
+                                acceptNecessaryBtn: 'Rechazar analítica',
+                                savePreferencesBtn: 'Guardar selección',
+                                sections: [
+                                    { title: 'Preferencias de almacenamiento', description: 'Personaliza los permisos de cookies.' },
+                                    { title: 'Necesarias', description: 'Guarda tus preferencias de idioma, tema e historial en tu navegador.', linkedCategory: 'necessary' },
+                                    { title: 'Analítica (Google Analytics)', description: 'Permite medir tráfico anónimo para mejorar la aplicación.', linkedCategory: 'analytics' }
+                                ]
+                            }
+                        }
+                    }
+                },
+                onConsent: ({ cookie }) => {
+                    if (cookie.categories.includes('analytics')) {
+                        if (typeof gtag === 'function') gtag('consent', 'update', { 'analytics_storage': 'granted' });
+                    }
+                },
+                onChange: ({ cookie }) => {
+                    if (typeof gtag === 'function') {
+                        gtag('consent', 'update', {
+                            'analytics_storage': cookie.categories.includes('analytics') ? 'granted' : 'denied'
+                        });
+                    }
+                }
+            });
+        }
+    });
+</script>
