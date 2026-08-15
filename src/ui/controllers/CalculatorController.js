@@ -7,6 +7,7 @@ import { renderBreakdown } from '../components/BreakdownRenderer.js';
 import { renderHistory } from '../components/HistoryRenderer.js';
 import { HistoryRepository } from '../../infrastructure/repositories/HistoryRepository.js';
 import { generateSocialCardCanvas } from '../components/SocialCardGenerator.js';
+import { RouterController } from './RouterController.js';
 
 export class CalculatorController {
     static _valuationService = ValuationService;
@@ -68,6 +69,7 @@ export class CalculatorController {
         if (siteLogo) {
             siteLogo.addEventListener('click', () => {
                 CalculatorController.switchView('form');
+                RouterController.navigate(RouterController.buildPath(state.currentLang, ''));
             });
         }
 

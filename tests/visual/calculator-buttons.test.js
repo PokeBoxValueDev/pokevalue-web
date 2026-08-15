@@ -262,6 +262,7 @@ test('visual/harness - site-logo header click returns to main view-form', () => 
             if (id === 'btn-calculate') return btnCalculate;
             return null;
         },
+        querySelector: () => null,
         querySelectorAll: () => []
     };
     globalThis.window = {
