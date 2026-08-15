@@ -263,9 +263,9 @@
         <!-- Selector de Idioma -->
         <div class="relative">
             <select id="lang-select" aria-label="Seleccionar idioma"
-                class="appearance-none bg-transparent py-1 pl-2 pr-6 text-xs sm:text-sm font-medium rounded-md border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer">
-                <option value="es">ES</option>
-                <option value="en">EN</option>
+                class="appearance-none bg-white dark:bg-gray-800 text-gray-900 dark:text-white py-1 pl-2.5 pr-6 text-xs sm:text-sm font-semibold rounded-md border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer shadow-sm">
+                <option value="es" class="bg-white dark:bg-gray-800 text-gray-900 dark:text-white font-medium">ES</option>
+                <option value="en" class="bg-white dark:bg-gray-800 text-gray-900 dark:text-white font-medium">EN</option>
             </select>
             <div class="pointer-events-none absolute inset-y-0 right-1 flex items-center px-1 text-gray-500">
                 <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -278,10 +278,10 @@
         <!-- Selector de Moneda -->
         <div class="relative">
             <select id="currency-select" aria-label="Seleccionar divisa"
-                class="appearance-none bg-transparent py-1 pl-2 pr-6 text-xs sm:text-sm font-medium rounded-md border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer">
-                <option value="EUR">€</option>
-                <option value="USD">$</option>
-                <option value="POKECOINS">🟡</option>
+                class="appearance-none bg-white dark:bg-gray-800 text-gray-900 dark:text-white py-1 pl-2.5 pr-6 text-xs sm:text-sm font-semibold rounded-md border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer shadow-sm">
+                <option value="EUR" class="bg-white dark:bg-gray-800 text-gray-900 dark:text-white font-medium">€</option>
+                <option value="USD" class="bg-white dark:bg-gray-800 text-gray-900 dark:text-white font-medium">$</option>
+                <option value="POKECOINS" class="bg-white dark:bg-gray-800 text-gray-900 dark:text-white font-medium">🟡</option>
             </select>
             <div class="pointer-events-none absolute inset-y-0 right-1 flex items-center px-1 text-gray-500">
                 <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -479,7 +479,7 @@
 </div>
 
 <!-- Sección Informativa SEO -->
-<section class="max-w-xl mx-auto px-4 mt-8 mb-6">
+<section id="about-seo-section" class="max-w-xl mx-auto px-4 mt-8 mb-6">
     <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 sm:p-6 shadow-sm border border-gray-100 dark:border-gray-700 text-sm text-gray-600 dark:text-gray-300">
         <h2 class="text-base font-bold text-gray-800 dark:text-gray-100 mb-2" data-i18n="seoTitle">Acerca de PokeBoxValue</h2>
         <p class="mb-2 leading-relaxed text-xs sm:text-sm" data-i18n="seoDesc1">PokeBoxValue es una calculadora especializada diseñada para ayudar a los jugadores a analizar la rentabilidad de las cajas de objetos en Pokémon GO. Introduce el precio de la caja y selecciona los objetos que contiene para obtener un desglose detallado de su valor real en comparación con la compra de objetos individuales.</p>

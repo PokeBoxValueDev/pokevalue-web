@@ -77,9 +77,11 @@ export class RouterController {
 
     /**
      * Procesa la ruta actual de window.location.pathname
+    /**
+     * Procesa la ruta actual de window.location.pathname o targetPath especificado
      */
-    static handleCurrentRoute({ isInitial = false } = {}) {
-        const currentPath = (typeof window !== 'undefined' && window.location && window.location.pathname) ? window.location.pathname : '/';
+    static handleCurrentRoute({ targetPath = null, isInitial = false } = {}) {
+        const currentPath = targetPath || ((typeof window !== 'undefined' && window.location && window.location.pathname) ? window.location.pathname : '/');
         const { lang, view, isRecognized } = RouterController.parseUrl(currentPath);
 
         // Si la ruta no es reconocida y no es raíz ni /index.html, no interferir
@@ -122,10 +124,6 @@ export class RouterController {
         const currentPath = (typeof window !== 'undefined' && window.location && window.location.pathname) ? window.location.pathname : '';
         if (currentPath === path) return;
 
-        if (typeof window !== 'undefined' && window.location) {
-            window.location.pathname = path;
-        }
-
         if (typeof window !== 'undefined' && window.history) {
             if (replace && typeof window.history.replaceState === 'function') {
                 window.history.replaceState(null, '', path);
@@ -134,7 +132,7 @@ export class RouterController {
             }
         }
 
-        RouterController.handleCurrentRoute({ isInitial: false });
+        RouterController.handleCurrentRoute({ targetPath: path, isInitial: false });
     }
 
     /**

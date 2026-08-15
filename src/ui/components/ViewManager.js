@@ -11,18 +11,23 @@ export function renderView(viewName) {
     const viewContainer = document.getElementById('view-container');
     const viewForm = document.getElementById('view-form');
     const viewResult = document.getElementById('view-result');
+    const kofiContainer = document.getElementById('kofi-widget-container');
+    const aboutSeoSection = document.getElementById('about-seo-section');
 
     if (!viewContainer) return;
 
     if (viewName && VIEW_TEMPLATES[viewName]) {
         if (viewForm) viewForm.classList.add('hidden');
         if (viewResult) viewResult.classList.add('hidden');
+        if (kofiContainer) kofiContainer.classList.add('hidden');
+        if (aboutSeoSection) aboutSeoSection.classList.add('hidden');
 
         viewContainer.innerHTML = VIEW_TEMPLATES[viewName];
         viewContainer.classList.remove('hidden');
 
-        // Traducir los elementos inyectados en la vista dinámicamente
-        I18nController.applyLanguage();
+        // Traducir los elementos inyectados en la vista dinámicamente con el idioma actual
+        const currentLang = I18nController.detectLanguage();
+        I18nController.applyLanguage(currentLang);
 
         if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -30,6 +35,9 @@ export function renderView(viewName) {
     } else {
         viewContainer.innerHTML = '';
         viewContainer.classList.add('hidden');
+        if (kofiContainer) kofiContainer.classList.remove('hidden');
+        if (aboutSeoSection) aboutSeoSection.classList.remove('hidden');
+
         if (viewForm) {
             if (viewResult && !viewResult.classList.contains('hidden')) {
                 viewForm.classList.add('hidden');
