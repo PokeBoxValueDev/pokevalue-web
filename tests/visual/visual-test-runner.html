@@ -14,9 +14,9 @@
 <body class="bg-gray-900 text-white p-4 sm:p-6 font-sans">
     <div class="max-w-4xl mx-auto space-y-8">
         <!-- Header del Runner -->
-        <header class="border-b border-gray-800 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <header role="banner" class="border-b border-gray-800 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-                <h1 class="text-2xl font-bold text-indigo-400">🎨 PokeBoxValue - Visual & A11y Test Runner</h1>
+                <h1 id="main-runner-title" class="text-2xl font-bold text-indigo-400">🎨 PokeBoxValue - Visual & A11y Test Runner</h1>
                 <p class="text-xs sm:text-sm text-gray-400">Auditoría visual interactiva y análisis en vivo con <code>axe-core</code>.</p>
             </div>
             <button id="btn-run-axe" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs sm:text-sm font-bold rounded-xl transition shadow-lg shadow-indigo-600/30 flex items-center gap-2 cursor-pointer self-start sm:self-auto">
@@ -25,7 +25,7 @@
         </header>
 
         <!-- Resultados de Axe-Core -->
-        <section id="axe-results-section" class="hidden p-5 bg-gray-800/95 rounded-2xl border border-indigo-900/60 shadow-xl space-y-3">
+        <section id="axe-results-section" aria-label="Resultados de Axe-Core" class="hidden p-5 bg-gray-800/95 rounded-2xl border border-indigo-900/60 shadow-xl space-y-3">
             <div class="flex items-center justify-between">
                 <h2 class="text-sm font-bold uppercase tracking-wider text-indigo-300">📊 Informe de Accesibilidad Axe-Core</h2>
                 <span id="axe-timestamp" class="text-[11px] text-gray-400"></span>
@@ -34,231 +34,234 @@
             <ul id="axe-violations-list" class="space-y-2 text-xs text-gray-300"></ul>
         </section>
 
-        <!-- 1. Formulario Principal de la Aplicación (Simulado con Renderizado Completo) -->
-        <section class="space-y-4">
-            <h2 class="text-base sm:text-lg font-semibold text-gray-200">1. Aplicación Principal Interactiva Completa</h2>
-            
-            <main role="main" class="max-w-xl mx-auto bg-slate-900/90 border border-gray-700/80 rounded-3xl p-5 sm:p-6 shadow-2xl space-y-6">
-                <!-- Cabecera de la App -->
-                <header class="flex justify-between items-center pb-4 border-b border-gray-800">
-                    <div class="flex items-center gap-3 select-none">
-                        <img src="../../favicon.svg" alt="PokeBoxValue Logo" class="w-9 h-9">
+        <!-- Contenedor Principal con Landmark Semántico -->
+        <main role="main" class="space-y-8">
+            <!-- 1. Formulario Principal de la Aplicación -->
+            <section aria-labelledby="section-app-title" class="space-y-4">
+                <h2 id="section-app-title" class="text-base sm:text-lg font-semibold text-gray-200">1. Aplicación Principal Interactiva Completa</h2>
+                
+                <div class="max-w-xl mx-auto bg-slate-900/90 border border-gray-700/80 rounded-3xl p-5 sm:p-6 shadow-2xl space-y-6">
+                    <!-- Cabecera de la App -->
+                    <div class="flex justify-between items-center pb-4 border-b border-gray-800">
+                        <div class="flex items-center gap-3 select-none">
+                            <img src="../../favicon.svg" alt="PokeBoxValue Logo" class="w-9 h-9">
+                            <div>
+                                <h3 class="text-xl font-bold text-indigo-400 leading-tight">PokeBoxValue</h3>
+                                <p class="text-[10px] text-gray-400">Data: 16/08/2026</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <select aria-label="Seleccionar idioma" class="bg-gray-800 text-xs px-2.5 py-1 rounded-lg border border-gray-700 text-gray-200">
+                                <option value="es">ES</option>
+                                <option value="en">EN</option>
+                            </select>
+                            <select aria-label="Seleccionar divisa" class="bg-gray-800 text-xs px-2.5 py-1 rounded-lg border border-gray-700 text-gray-200">
+                                <option value="EUR">€</option>
+                                <option value="USD">$</option>
+                                <option value="POKECOINS">🟡</option>
+                            </select>
+                            <button type="button" aria-label="Cambiar tema" class="p-1.5 bg-gray-800 text-gray-300 rounded-lg hover:bg-gray-700 border border-gray-700">🌙</button>
+                        </div>
+                    </div>
+
+                    <!-- Formulario -->
+                    <div class="space-y-5">
                         <div>
-                            <h2 class="text-xl font-bold text-indigo-400 leading-tight">PokeBoxValue</h2>
-                            <p class="text-[10px] text-gray-400">Data: 16/08/2026</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <select aria-label="Seleccionar idioma" class="bg-gray-800 text-xs px-2.5 py-1 rounded-lg border border-gray-700 text-gray-200">
-                            <option value="es">ES</option>
-                            <option value="en">EN</option>
-                        </select>
-                        <select aria-label="Seleccionar divisa" class="bg-gray-800 text-xs px-2.5 py-1 rounded-lg border border-gray-700 text-gray-200">
-                            <option value="EUR">€</option>
-                            <option value="USD">$</option>
-                            <option value="POKECOINS">🟡</option>
-                        </select>
-                        <button type="button" aria-label="Cambiar tema" class="p-1.5 bg-gray-800 text-gray-300 rounded-lg hover:bg-gray-700 border border-gray-700">🌙</button>
-                    </div>
-                </header>
-
-                <!-- Formulario -->
-                <div class="space-y-5">
-                    <div>
-                        <label for="runner-box-price" class="block text-xs font-semibold text-gray-300 mb-1.5">
-                            Precio de la Caja (<span class="text-indigo-400 font-bold">EUR €</span>)
-                        </label>
-                        <input type="number" id="runner-box-price" placeholder="Ej: 8.99" value="10.00" aria-label="Precio de la Caja" class="w-full px-3.5 py-2.5 text-sm bg-gray-800 border border-gray-700 text-white rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-                    </div>
-
-                    <div>
-                        <div class="flex justify-between items-center mb-2">
-                            <h3 class="text-xs font-bold text-gray-300 uppercase tracking-wider">Objetos incluidos</h3>
-                            <button type="button" aria-label="Limpiar cantidades seleccionadas" class="text-xs text-indigo-400 hover:underline">Limpiar</button>
+                            <label for="runner-box-price" class="block text-xs font-semibold text-gray-300 mb-1.5">
+                                Precio de la Caja (<span class="text-indigo-400 font-bold">EUR €</span>)
+                            </label>
+                            <input type="number" id="runner-box-price" placeholder="Ej: 8.99" value="10.00" aria-label="Precio de la Caja" class="w-full px-3.5 py-2.5 text-sm bg-gray-800 border border-gray-700 text-white rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                         </div>
 
-                        <!-- Barra de Píldoras de Categoría con Colores Temáticos -->
-                        <div role="toolbar" aria-label="Filtro de categorías de objetos" class="flex gap-1.5 overflow-x-auto pb-1.5 mb-2.5 no-scrollbar text-xs">
-                            <button type="button" aria-label="Mostrar todas las categorías" class="px-3 py-1 bg-indigo-600 text-white font-bold rounded-full shadow-sm ring-1 ring-indigo-400/50">Todos</button>
-                            <button type="button" aria-label="Filtrar por Pases de Incursión" class="px-3 py-1 bg-gray-800 text-gray-300 hover:bg-gray-700 rounded-full">Pases</button>
-                            <button type="button" aria-label="Filtrar por Incubadoras" class="px-3 py-1 bg-gray-800 text-gray-300 hover:bg-gray-700 rounded-full">Incubadoras</button>
-                            <button type="button" aria-label="Filtrar por Potenciadores" class="px-3 py-1 bg-gray-800 text-gray-300 hover:bg-gray-700 rounded-full">Potenciadores</button>
-                            <button type="button" aria-label="Filtrar por Mejoras" class="px-3 py-1 bg-gray-800 text-gray-300 hover:bg-gray-700 rounded-full">Mejoras</button>
-                        </div>
-
-                        <!-- Buscador -->
-                        <input type="text" aria-label="Buscar objetos en la tienda" placeholder="Buscar objeto..." class="w-full px-3 py-2 text-xs bg-gray-800 border border-gray-700 text-white rounded-xl focus:ring-2 focus:ring-indigo-500 mb-3">
-
-                        <!-- Contenedores de Sección Delimitados -->
-                        <div class="space-y-4 max-h-96 overflow-y-auto pr-1">
-                            
-                            <!-- Grupo 1: Pases de Incursión -->
-                            <div class="category-group p-3 rounded-2xl border border-indigo-800/60 bg-indigo-950/20 shadow-xs space-y-2.5">
-                                <div class="w-full flex items-center justify-between px-3 py-1.5 rounded-xl bg-indigo-950/70 border border-indigo-800/60">
-                                    <div class="flex items-center gap-2">
-                                        <span class="w-2.5 h-2.5 rounded-full bg-indigo-500 shadow-xs"></span>
-                                        <span class="text-xs font-bold text-indigo-300 uppercase tracking-wider">Pases de Incursión</span>
-                                    </div>
-                                    <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-gray-800 text-indigo-300">2</span>
-                                </div>
-
-                                <div class="space-y-2">
-                                    <!-- Pase Remoto -->
-                                    <div class="flex items-center justify-between p-2.5 bg-gray-800/90 rounded-xl border border-gray-700">
-                                        <div class="flex items-center gap-2.5">
-                                            <div class="w-11 h-11 rounded-xl bg-gray-900 flex items-center justify-center p-1 border border-gray-700">
-                                                <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full object-contain"><rect x="8" y="16" width="48" height="32" rx="6" fill="#2979FF"/><circle cx="32" cy="32" r="10" fill="#1A237E"/><circle cx="32" cy="32" r="6" stroke="#00E5FF" stroke-width="2"/></svg>
-                                            </div>
-                                            <div>
-                                                <p class="text-xs font-bold text-white">Pase de incursión remota</p>
-                                                <div class="flex items-center gap-2 mt-0.5">
-                                                    <span class="text-[11px] text-gray-400">1.65 € / u.</span>
-                                                    <div class="flex items-center gap-1">
-                                                        <button type="button" aria-label="Añadir 1 Pase de incursión remota" class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-700 hover:bg-indigo-600 text-gray-300 hover:text-white">+1</button>
-                                                        <button type="button" aria-label="Añadir 5 Pase de incursión remota" class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-700 hover:bg-indigo-600 text-gray-300 hover:text-white">+5</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="flex items-center gap-1 bg-gray-900 border border-gray-700 rounded-lg p-1">
-                                            <button type="button" aria-label="Disminuir Pase de incursión remota" class="w-7 h-7 text-gray-300 hover:bg-gray-800 rounded font-bold">-</button>
-                                            <input type="number" aria-label="Cantidad de Pase de incursión remota" value="3" class="w-6 text-center text-xs font-bold bg-transparent text-white focus:outline-none">
-                                            <button type="button" aria-label="Aumentar Pase de incursión remota" class="w-7 h-7 text-gray-300 hover:bg-gray-800 rounded font-bold">+</button>
-                                        </div>
-                                    </div>
-
-                                    <!-- Pase Premium -->
-                                    <div class="flex items-center justify-between p-2.5 bg-gray-800/90 rounded-xl border border-gray-700">
-                                        <div class="flex items-center gap-2.5">
-                                            <div class="w-11 h-11 rounded-xl bg-gray-900 flex items-center justify-center p-1 border border-gray-700">
-                                                <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full object-contain"><rect x="8" y="16" width="48" height="32" rx="6" fill="#00C853"/><circle cx="32" cy="32" r="10" fill="#1B5E20"/></svg>
-                                            </div>
-                                            <div>
-                                                <p class="text-xs font-bold text-white">Pase de combate prémium</p>
-                                                <div class="flex items-center gap-2 mt-0.5">
-                                                    <span class="text-[11px] text-gray-400">1.10 € / u.</span>
-                                                    <div class="flex items-center gap-1">
-                                                        <button type="button" aria-label="Añadir 1 Pase de combate prémium" class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-700 hover:bg-indigo-600 text-gray-300 hover:text-white">+1</button>
-                                                        <button type="button" aria-label="Añadir 5 Pase de combate prémium" class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-700 hover:bg-indigo-600 text-gray-300 hover:text-white">+5</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="flex items-center gap-1 bg-gray-900 border border-gray-700 rounded-lg p-1">
-                                            <button type="button" aria-label="Disminuir Pase de combate prémium" class="w-7 h-7 text-gray-300 hover:bg-gray-800 rounded font-bold">-</button>
-                                            <input type="number" aria-label="Cantidad de Pase de combate prémium" value="5" class="w-6 text-center text-xs font-bold bg-transparent text-white focus:outline-none">
-                                            <button type="button" aria-label="Aumentar Pase de combate prémium" class="w-7 h-7 text-gray-300 hover:bg-gray-800 rounded font-bold">+</button>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <h4 class="text-xs font-bold text-gray-300 uppercase tracking-wider">Objetos incluidos</h4>
+                                <button type="button" aria-label="Limpiar cantidades seleccionadas" class="text-xs text-indigo-400 hover:underline">Limpiar</button>
                             </div>
 
-                            <!-- Grupo 2: Incubadoras -->
-                            <div class="category-group p-3 rounded-2xl border border-amber-800/60 bg-amber-950/20 shadow-xs space-y-2.5">
-                                <div class="w-full flex items-center justify-between px-3 py-1.5 rounded-xl bg-amber-950/70 border border-amber-800/60">
-                                    <div class="flex items-center gap-2">
-                                        <span class="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-xs"></span>
-                                        <span class="text-xs font-bold text-amber-300 uppercase tracking-wider">Incubadoras</span>
-                                    </div>
-                                    <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-gray-800 text-amber-300">2</span>
-                                </div>
+                            <!-- Barra de Píldoras de Categoría con Colores Temáticos -->
+                            <div role="toolbar" aria-label="Filtro de categorías de objetos" class="flex gap-1.5 overflow-x-auto pb-1.5 mb-2.5 no-scrollbar text-xs">
+                                <button type="button" aria-label="Mostrar todas las categorías" class="px-3 py-1 bg-indigo-600 text-white font-bold rounded-full shadow-sm ring-1 ring-indigo-400/50">Todos</button>
+                                <button type="button" aria-label="Filtrar por Pases de Incursión" class="px-3 py-1 bg-gray-800 text-gray-300 hover:bg-gray-700 rounded-full">Pases</button>
+                                <button type="button" aria-label="Filtrar por Incubadoras" class="px-3 py-1 bg-gray-800 text-gray-300 hover:bg-gray-700 rounded-full">Incubadoras</button>
+                                <button type="button" aria-label="Filtrar por Potenciadores" class="px-3 py-1 bg-gray-800 text-gray-300 hover:bg-gray-700 rounded-full">Potenciadores</button>
+                                <button type="button" aria-label="Filtrar por Mejoras" class="px-3 py-1 bg-gray-800 text-gray-300 hover:bg-gray-700 rounded-full">Mejoras</button>
+                            </div>
 
-                                <div class="space-y-2">
-                                    <!-- Superincubadora -->
-                                    <div class="flex items-center justify-between p-2.5 bg-gray-800/90 rounded-xl border border-gray-700">
-                                        <div class="flex items-center gap-2.5">
-                                            <div class="w-11 h-11 rounded-xl bg-gray-900 flex items-center justify-center p-1 border border-gray-700">
-                                                <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full object-contain"><circle cx="32" cy="32" r="18" fill="#7C4DFF"/></svg>
-                                            </div>
-                                            <div>
-                                                <p class="text-xs font-bold text-white">Superincubadora</p>
-                                                <div class="flex items-center gap-2 mt-0.5">
-                                                    <span class="text-[11px] text-gray-400">1.65 € / u.</span>
-                                                    <div class="flex items-center gap-1">
-                                                        <button type="button" aria-label="Añadir 1 Superincubadora" class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-700 hover:bg-indigo-600 text-gray-300 hover:text-white">+1</button>
-                                                        <button type="button" aria-label="Añadir 5 Superincubadora" class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-700 hover:bg-indigo-600 text-gray-300 hover:text-white">+5</button>
+                            <!-- Buscador -->
+                            <input type="text" aria-label="Buscar objetos en la tienda" placeholder="Buscar objeto..." class="w-full px-3 py-2 text-xs bg-gray-800 border border-gray-700 text-white rounded-xl focus:ring-2 focus:ring-indigo-500 mb-3">
+
+                            <!-- Contenedores de Sección Delimitados -->
+                            <div class="space-y-4 max-h-96 overflow-y-auto pr-1">
+                                
+                                <!-- Grupo 1: Pases de Incursión -->
+                                <div class="category-group p-3 rounded-2xl border border-indigo-800/60 bg-indigo-950/20 shadow-xs space-y-2.5">
+                                    <div class="w-full flex items-center justify-between px-3 py-1.5 rounded-xl bg-indigo-950/70 border border-indigo-800/60">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2.5 h-2.5 rounded-full bg-indigo-500 shadow-xs"></span>
+                                            <span class="text-xs font-bold text-indigo-300 uppercase tracking-wider">Pases de Incursión</span>
+                                        </div>
+                                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-gray-800 text-indigo-300">2</span>
+                                    </div>
+
+                                    <div class="space-y-2">
+                                        <!-- Pase Remoto -->
+                                        <div class="flex items-center justify-between p-2.5 bg-gray-800/90 rounded-xl border border-gray-700">
+                                            <div class="flex items-center gap-2.5">
+                                                <div class="w-11 h-11 rounded-xl bg-gray-900 flex items-center justify-center p-1 border border-gray-700">
+                                                    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full object-contain"><rect x="8" y="16" width="48" height="32" rx="6" fill="#2979FF"/><circle cx="32" cy="32" r="10" fill="#1A237E"/><circle cx="32" cy="32" r="6" stroke="#00E5FF" stroke-width="2"/></svg>
+                                                </div>
+                                                <div>
+                                                    <p class="text-xs font-bold text-white">Pase de incursión remota</p>
+                                                    <div class="flex items-center gap-2 mt-0.5">
+                                                        <span class="text-[11px] text-gray-400">1.65 € / u.</span>
+                                                        <div class="flex items-center gap-1">
+                                                            <button type="button" aria-label="Añadir 1 Pase de incursión remota" class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-700 hover:bg-indigo-600 text-gray-300 hover:text-white">+1</button>
+                                                            <button type="button" aria-label="Añadir 5 Pase de incursión remota" class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-700 hover:bg-indigo-600 text-gray-300 hover:text-white">+5</button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="flex items-center gap-1 bg-gray-900 border border-gray-700 rounded-lg p-1">
+                                                <button type="button" aria-label="Disminuir Pase de incursión remota" class="w-7 h-7 text-gray-300 hover:bg-gray-800 rounded font-bold">-</button>
+                                                <input type="number" aria-label="Cantidad de Pase de incursión remota" value="3" class="w-6 text-center text-xs font-bold bg-transparent text-white focus:outline-none">
+                                                <button type="button" aria-label="Aumentar Pase de incursión remota" class="w-7 h-7 text-gray-300 hover:bg-gray-800 rounded font-bold">+</button>
+                                            </div>
                                         </div>
-                                        <div class="flex items-center gap-1 bg-gray-900 border border-gray-700 rounded-lg p-1">
-                                            <button type="button" aria-label="Disminuir Superincubadora" class="w-7 h-7 text-gray-300 hover:bg-gray-800 rounded font-bold">-</button>
-                                            <input type="number" aria-label="Cantidad de Superincubadora" value="2" class="w-6 text-center text-xs font-bold bg-transparent text-white focus:outline-none">
-                                            <button type="button" aria-label="Aumentar Superincubadora" class="w-7 h-7 text-gray-300 hover:bg-gray-800 rounded font-bold">+</button>
+
+                                        <!-- Pase Premium -->
+                                        <div class="flex items-center justify-between p-2.5 bg-gray-800/90 rounded-xl border border-gray-700">
+                                            <div class="flex items-center gap-2.5">
+                                                <div class="w-11 h-11 rounded-xl bg-gray-900 flex items-center justify-center p-1 border border-gray-700">
+                                                    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full object-contain"><rect x="8" y="16" width="48" height="32" rx="6" fill="#00C853"/><circle cx="32" cy="32" r="10" fill="#1B5E20"/></svg>
+                                                </div>
+                                                <div>
+                                                    <p class="text-xs font-bold text-white">Pase de combate prémium</p>
+                                                    <div class="flex items-center gap-2 mt-0.5">
+                                                        <span class="text-[11px] text-gray-400">1.10 € / u.</span>
+                                                        <div class="flex items-center gap-1">
+                                                            <button type="button" aria-label="Añadir 1 Pase de combate prémium" class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-700 hover:bg-indigo-600 text-gray-300 hover:text-white">+1</button>
+                                                            <button type="button" aria-label="Añadir 5 Pase de combate prémium" class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-700 hover:bg-indigo-600 text-gray-300 hover:text-white">+5</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center gap-1 bg-gray-900 border border-gray-700 rounded-lg p-1">
+                                                <button type="button" aria-label="Disminuir Pase de combate prémium" class="w-7 h-7 text-gray-300 hover:bg-gray-800 rounded font-bold">-</button>
+                                                <input type="number" aria-label="Cantidad de Pase de combate prémium" value="5" class="w-6 text-center text-xs font-bold bg-transparent text-white focus:outline-none">
+                                                <button type="button" aria-label="Aumentar Pase de combate prémium" class="w-7 h-7 text-gray-300 hover:bg-gray-800 rounded font-bold">+</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
+                                <!-- Grupo 2: Incubadoras -->
+                                <div class="category-group p-3 rounded-2xl border border-amber-800/60 bg-amber-950/20 shadow-xs space-y-2.5">
+                                    <div class="w-full flex items-center justify-between px-3 py-1.5 rounded-xl bg-amber-950/70 border border-amber-800/60">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-xs"></span>
+                                            <span class="text-xs font-bold text-amber-300 uppercase tracking-wider">Incubadoras</span>
+                                        </div>
+                                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-gray-800 text-amber-300">2</span>
+                                    </div>
+
+                                    <div class="space-y-2">
+                                        <!-- Superincubadora -->
+                                        <div class="flex items-center justify-between p-2.5 bg-gray-800/90 rounded-xl border border-gray-700">
+                                            <div class="flex items-center gap-2.5">
+                                                <div class="w-11 h-11 rounded-xl bg-gray-900 flex items-center justify-center p-1 border border-gray-700">
+                                                    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full object-contain"><circle cx="32" cy="32" r="18" fill="#7C4DFF"/></svg>
+                                                </div>
+                                                <div>
+                                                    <p class="text-xs font-bold text-white">Superincubadora</p>
+                                                    <div class="flex items-center gap-2 mt-0.5">
+                                                        <span class="text-[11px] text-gray-400">1.65 € / u.</span>
+                                                        <div class="flex items-center gap-1">
+                                                            <button type="button" aria-label="Añadir 1 Superincubadora" class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-700 hover:bg-indigo-600 text-gray-300 hover:text-white">+1</button>
+                                                            <button type="button" aria-label="Añadir 5 Superincubadora" class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-700 hover:bg-indigo-600 text-gray-300 hover:text-white">+5</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center gap-1 bg-gray-900 border border-gray-700 rounded-lg p-1">
+                                                <button type="button" aria-label="Disminuir Superincubadora" class="w-7 h-7 text-gray-300 hover:bg-gray-800 rounded font-bold">-</button>
+                                                <input type="number" aria-label="Cantidad de Superincubadora" value="2" class="w-6 text-center text-xs font-bold bg-transparent text-white focus:outline-none">
+                                                <button type="button" aria-label="Aumentar Superincubadora" class="w-7 h-7 text-gray-300 hover:bg-gray-800 rounded font-bold">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Botón Calcular -->
+                        <button type="button" aria-label="Calcular Rentabilidad de la Caja" class="w-full py-3.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-2xl text-sm transition shadow-lg shadow-indigo-600/30 cursor-pointer">
+                            Calcular Rentabilidad
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. Estados de Tarjetas de Resultado con Alto Contraste -->
+            <section aria-labelledby="section-results-title" class="space-y-4 pt-4 border-t border-gray-800">
+                <h2 id="section-results-title" class="text-base sm:text-lg font-semibold text-gray-200">2. Estados de Tarjetas de Resultado</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Oferta Rentable -->
+                    <div class="p-6 rounded-2xl text-center space-y-4 text-white bg-emerald-700 shadow-lg">
+                        <div class="inline-block px-3 py-1 text-xs font-black rounded-full bg-black/40 text-white border border-white/40">GRADO S (EXCELENTE)</div>
+                        <h3 class="text-xl font-bold text-white">¡OFERTA RENTABLE! 🎉</h3>
+                        <div class="grid grid-cols-2 gap-2 text-sm bg-black/30 p-3 rounded-xl backdrop-blur-sm">
+                            <div><span class="block text-xs font-medium text-white">Precio caja:</span><strong class="text-base text-white">10.00€</strong></div>
+                            <div><span class="block text-xs font-medium text-white">Valor real:</span><strong class="text-base text-white">18.50€</strong></div>
+                        </div>
+                        <div class="pt-2 border-t border-white/30">
+                            <span class="block text-xs uppercase tracking-wider font-bold text-white">Ahorras:</span>
+                            <span class="text-3xl font-black text-white">+8.50€</span>
                         </div>
                     </div>
 
-                    <!-- Botón Calcular -->
-                    <button type="button" aria-label="Calcular Rentabilidad de la Caja" class="w-full py-3.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-2xl text-sm transition shadow-lg shadow-indigo-600/30 cursor-pointer">
-                        Calcular Rentabilidad
-                    </button>
+                    <!-- No Rentable -->
+                    <div class="p-6 rounded-2xl text-center space-y-4 text-white bg-rose-700 shadow-lg">
+                        <div class="inline-block px-3 py-1 text-xs font-black rounded-full bg-black/40 text-white border border-white/40">GRADO F (POBRE)</div>
+                        <h3 class="text-xl font-bold text-white">NO VALE LA PENA ❌</h3>
+                        <div class="grid grid-cols-2 gap-2 text-sm bg-black/30 p-3 rounded-xl backdrop-blur-sm">
+                            <div><span class="block text-xs font-medium text-white">Precio caja:</span><strong class="text-base text-white">20.00€</strong></div>
+                            <div><span class="block text-xs font-medium text-white">Valor real:</span><strong class="text-base text-white">12.00€</strong></div>
+                        </div>
+                        <div class="pt-2 border-t border-white/30">
+                            <span class="block text-xs uppercase tracking-wider font-bold text-white">Pierdes:</span>
+                            <span class="text-3xl font-black text-white">-8.00€</span>
+                        </div>
+                    </div>
                 </div>
-            </main>
-        </section>
+            </section>
 
-        <!-- 2. Estados de Tarjetas de Resultado -->
-        <section class="space-y-4 pt-4 border-t border-gray-800">
-            <h2 class="text-base sm:text-lg font-semibold text-gray-200">2. Estados de Tarjetas de Resultado</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <!-- Oferta Rentable -->
-                <div class="p-6 rounded-2xl text-center space-y-4 text-white bg-emerald-600 shadow-lg">
-                    <div class="inline-block px-3 py-1 text-xs font-black rounded-full bg-white/20">GRADO S (EXCELENTE)</div>
-                    <h3 class="text-xl font-bold">¡OFERTA RENTABLE! 🎉</h3>
-                    <div class="grid grid-cols-2 gap-2 text-sm bg-black/20 p-3 rounded-xl backdrop-blur-sm">
-                        <div><span class="block text-xs opacity-80">Precio caja:</span><strong class="text-base">10.00€</strong></div>
-                        <div><span class="block text-xs opacity-80">Valor real:</span><strong class="text-base">18.50€</strong></div>
+            <!-- 3. Desglose del Valor por Categorías -->
+            <section aria-labelledby="section-breakdown-title" class="space-y-4 pt-4 border-t border-gray-800">
+                <h2 id="section-breakdown-title" class="text-base sm:text-lg font-semibold text-gray-200">3. Desglose de Categorías y Gráficos</h2>
+                <div class="p-4 bg-gray-800/80 rounded-2xl border border-gray-700 space-y-3">
+                    <div class="space-y-1">
+                        <div class="flex justify-between text-xs font-semibold">
+                            <span class="text-gray-300 flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span> Pases de Incursión</span>
+                            <span class="text-white font-bold">10.00 € (54%)</span>
+                        </div>
+                        <div class="w-full bg-gray-700 h-2.5 rounded-full overflow-hidden">
+                            <div class="bg-indigo-500 h-full rounded-full" style="width: 54%"></div>
+                        </div>
                     </div>
-                    <div class="pt-2 border-t border-white/20">
-                        <span class="block text-xs uppercase tracking-wider font-semibold opacity-80">Ahorras:</span>
-                        <span class="text-3xl font-extrabold">+8.50€</span>
-                    </div>
-                </div>
-
-                <!-- No Rentable -->
-                <div class="p-6 rounded-2xl text-center space-y-4 text-white bg-rose-600 shadow-lg">
-                    <div class="inline-block px-3 py-1 text-xs font-black rounded-full bg-white/20">GRADO F (POBRE)</div>
-                    <h3 class="text-xl font-bold">NO VALE LA PENA ❌</h3>
-                    <div class="grid grid-cols-2 gap-2 text-sm bg-black/20 p-3 rounded-xl backdrop-blur-sm">
-                        <div><span class="block text-xs opacity-80">Precio caja:</span><strong class="text-base">20.00€</strong></div>
-                        <div><span class="block text-xs opacity-80">Valor real:</span><strong class="text-base">12.00€</strong></div>
-                    </div>
-                    <div class="pt-2 border-t border-white/20">
-                        <span class="block text-xs uppercase tracking-wider font-semibold opacity-80">Pierdes:</span>
-                        <span class="text-3xl font-extrabold">-8.00€</span>
+                    <div class="space-y-1">
+                        <div class="flex justify-between text-xs font-semibold">
+                            <span class="text-gray-300 flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Incubadoras</span>
+                            <span class="text-white font-bold">6.00 € (32%)</span>
+                        </div>
+                        <div class="w-full bg-gray-700 h-2.5 rounded-full overflow-hidden">
+                            <div class="bg-amber-500 h-full rounded-full" style="width: 32%"></div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <!-- 3. Desglose del Valor por Categorías -->
-        <section class="space-y-4 pt-4 border-t border-gray-800">
-            <h2 class="text-base sm:text-lg font-semibold text-gray-200">3. Desglose de Categorías y Gráficos</h2>
-            <div class="p-4 bg-gray-800/80 rounded-2xl border border-gray-700 space-y-3">
-                <div class="space-y-1">
-                    <div class="flex justify-between text-xs font-semibold">
-                        <span class="text-gray-300 flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span> Pases de Incursión</span>
-                        <span class="text-white font-bold">10.00 € (54%)</span>
-                    </div>
-                    <div class="w-full bg-gray-700 h-2.5 rounded-full overflow-hidden">
-                        <div class="bg-indigo-500 h-full rounded-full" style="width: 54%"></div>
-                    </div>
-                </div>
-                <div class="space-y-1">
-                    <div class="flex justify-between text-xs font-semibold">
-                        <span class="text-gray-300 flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Incubadoras</span>
-                        <span class="text-white font-bold">6.00 € (32%)</span>
-                    </div>
-                    <div class="w-full bg-gray-700 h-2.5 rounded-full overflow-hidden">
-                        <div class="bg-amber-500 h-full rounded-full" style="width: 32%"></div>
-                    </div>
-                </div>
-            </div>
-        </section>
+            </section>
+        </main>
     </div>
 
     <!-- Librería Axe-Core Oficial de Deque Systems -->
