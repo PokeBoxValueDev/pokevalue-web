@@ -87,6 +87,7 @@ export default {
     // Footer & Donaciones
     coffeeBtn: "☕ Enjoyed this? Buy me a coffee",
     footerText: "PokeBoxValue is an independent fan project and is not affiliated with, sponsored, or endorsed by Scopely, Niantic, The Pokémon Company, Nintendo, or GAME FREAK. Pokémon and item names are trademarks of their respective owners.",
+    btnFaq: "❓ FAQ & Guide",
     btnLegal: "Legal Notice",
     btnPrivacy: "Privacy & Cookies",
 

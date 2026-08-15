@@ -15,7 +15,7 @@
     <script>
         (function () {
             var path = window.location.pathname;
-            var validPrefixes = ['/es', '/en', '/privacy', '/terms', '/legal'];
+            var validPrefixes = ['/es', '/en', '/privacy', '/terms', '/legal', '/faq', '/faqs'];
             var isKnownRoute = validPrefixes.some(function (prefix) {
                 return path === prefix || path.startsWith(prefix + '/') || path === prefix + '.html';
             });

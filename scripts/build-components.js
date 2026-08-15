@@ -15,7 +15,6 @@ let formHtml = fs.readFileSync(path.join(componentsDir, 'form.html'), 'utf8');
 const historyHtml = fs.readFileSync(path.join(componentsDir, 'history.html'), 'utf8');
 const resultHtml = fs.readFileSync(path.join(componentsDir, 'result.html'), 'utf8');
 const modalsHtml = fs.readFileSync(path.join(componentsDir, 'modals.html'), 'utf8');
-const faqHtml = fs.readFileSync(path.join(componentsDir, 'faq.html'), 'utf8');
 const footerHtml = fs.readFileSync(path.join(componentsDir, 'footer.html'), 'utf8');
 
 // Sustituir include de historial en form.html si existe
@@ -27,7 +26,6 @@ const assembledIndexHtml = templateHtml
     .replace('<!-- @include form -->', formHtml)
     .replace('<!-- @include result -->', resultHtml)
     .replace('<!-- @include modals -->', modalsHtml)
-    .replace('<!-- @include faq -->', faqHtml)
     .replace('<!-- @include footer -->', footerHtml);
 
 fs.writeFileSync(indexHtmlPath, assembledIndexHtml, 'utf8');

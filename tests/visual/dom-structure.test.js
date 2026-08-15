@@ -35,6 +35,8 @@ test('visual/dom - index.html contains all critical UI containers and IDs', () =
         'privacy-modal',
         'view-legal',
         'view-privacy',
+        'view-faq',
+        'btn-faq',
         'kofi-widget-container'
     ];
 
@@ -63,6 +65,7 @@ test('visual/dom - index.html elements contain data-i18n attributes for localiza
         'btnShareCard',
         'btnReset',
         'footerText',
+        'btnFaq',
         'btnLegal',
         'btnPrivacy',
         'legalTitle',

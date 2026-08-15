@@ -190,17 +190,20 @@ test('visual/harness - ThemeController auto-detects OS prefers-color-scheme dark
     assert.ok(docClasses.has('dark'), 'must automatically enable dark mode when OS prefers dark mode');
 });
 
-test('visual/harness - ModalManager opens modals when btn-legal and btn-privacy are clicked', async () => {
+test('visual/harness - ModalManager opens modals when btn-legal, btn-privacy, and btn-faq are clicked', async () => {
     const legalModal = createMockElement('legal-modal');
     const privacyModal = createMockElement('privacy-modal');
+    const faqView = createMockElement('view-faq');
     legalModal.classList.add('hidden');
     privacyModal.classList.add('hidden');
+    faqView.classList.add('hidden');
 
     const docClickListeners = [];
     globalThis.document = {
         getElementById: (id) => {
             if (id === 'legal-modal' || id === 'view-legal') return legalModal;
             if (id === 'privacy-modal' || id === 'view-privacy') return privacyModal;
+            if (id === 'view-faq') return faqView;
             return null;
         },
         querySelectorAll: () => [],
@@ -233,6 +236,13 @@ test('visual/harness - ModalManager opens modals when btn-legal and btn-privacy 
     docClickListeners.forEach(fn => fn({ target: btnPrivacy, preventDefault: () => {} }));
 
     assert.ok(!privacyModal.classList.contains('hidden'), 'privacy-modal must show (remove hidden) when btn-privacy is clicked');
+
+    // Simulate clicking btn-faq
+    const btnFaq = createMockElement('btn-faq');
+    btnFaq.closest = (selector) => (selector.includes('#btn-faq') ? btnFaq : null);
+    docClickListeners.forEach(fn => fn({ target: btnFaq, preventDefault: () => {} }));
+
+    assert.ok(!faqView.classList.contains('hidden'), 'view-faq must show (remove hidden) when btn-faq is clicked');
 });
 
 test('visual/harness - site-logo header click returns to main view-form', () => {

@@ -20,6 +20,8 @@ test('SEO - Verificación de robots.txt y sitemap.xml', (t) => {
     const sitemapContent = fs.readFileSync(sitemapPath, 'utf8');
     assert.ok(sitemapContent.includes('https://pokeboxvalue.com/es'), 'sitemap.xml debe contener la ruta /es');
     assert.ok(sitemapContent.includes('https://pokeboxvalue.com/en'), 'sitemap.xml debe contener la ruta /en');
+    assert.ok(sitemapContent.includes('https://pokeboxvalue.com/es/faq'), 'sitemap.xml debe contener la ruta /es/faq');
+    assert.ok(sitemapContent.includes('https://pokeboxvalue.com/en/faq'), 'sitemap.xml debe contener la ruta /en/faq');
     assert.ok(sitemapContent.includes('hreflang="es"'), 'sitemap.xml debe contener hreflang es');
     assert.ok(sitemapContent.includes('hreflang="en"'), 'sitemap.xml debe contener hreflang en');
     assert.ok(sitemapContent.includes('hreflang="x-default"'), 'sitemap.xml debe contener hreflang x-default');

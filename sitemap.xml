@@ -45,4 +45,18 @@
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
+  <url>
+    <loc>https://pokeboxvalue.com/es/faq</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://pokeboxvalue.com/es/faq" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://pokeboxvalue.com/en/faq" />
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pokeboxvalue.com/en/faq</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://pokeboxvalue.com/es/faq" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://pokeboxvalue.com/en/faq" />
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
 </urlset>

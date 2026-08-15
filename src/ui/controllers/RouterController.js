@@ -26,10 +26,11 @@ export class RouterController {
             view = parts.join('/');
         }
 
-        // Normalizar alias de vistas legales
+        // Normalizar alias de vistas
         if (view === 'terms') view = 'legal';
+        if (view === 'faqs') view = 'faq';
 
-        const validViews = ['', 'privacy', 'legal', 'terms'];
+        const validViews = ['', 'privacy', 'legal', 'terms', 'faq', 'faqs'];
         const isRecognized = validViews.includes(view);
 
         return { lang, view, isRecognized };
@@ -173,6 +174,7 @@ export class RouterController {
 
         const viewLegal = document.getElementById('view-legal');
         const viewPrivacy = document.getElementById('view-privacy');
+        const viewFaq = document.getElementById('view-faq');
         const viewForm = document.getElementById('view-form');
         const viewResult = document.getElementById('view-result');
         const legalModal = document.getElementById('legal-modal');
@@ -182,6 +184,7 @@ export class RouterController {
             if (viewPrivacy) viewPrivacy.classList.remove('hidden');
             if (privacyModal) privacyModal.classList.remove('hidden');
             if (viewLegal) viewLegal.classList.add('hidden');
+            if (viewFaq) viewFaq.classList.add('hidden');
             if (legalModal) legalModal.classList.add('hidden');
             if (viewForm) viewForm.classList.add('hidden');
             if (viewResult) viewResult.classList.add('hidden');
@@ -192,6 +195,18 @@ export class RouterController {
             if (viewLegal) viewLegal.classList.remove('hidden');
             if (legalModal) legalModal.classList.remove('hidden');
             if (viewPrivacy) viewPrivacy.classList.add('hidden');
+            if (viewFaq) viewFaq.classList.add('hidden');
+            if (privacyModal) privacyModal.classList.add('hidden');
+            if (viewForm) viewForm.classList.add('hidden');
+            if (viewResult) viewResult.classList.add('hidden');
+            if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        } else if (view === 'faq' || view === 'faqs') {
+            if (viewFaq) viewFaq.classList.remove('hidden');
+            if (viewLegal) viewLegal.classList.add('hidden');
+            if (viewPrivacy) viewPrivacy.classList.add('hidden');
+            if (legalModal) legalModal.classList.add('hidden');
             if (privacyModal) privacyModal.classList.add('hidden');
             if (viewForm) viewForm.classList.add('hidden');
             if (viewResult) viewResult.classList.add('hidden');
@@ -202,9 +217,10 @@ export class RouterController {
             if (viewPrivacy) viewPrivacy.classList.add('hidden');
             if (privacyModal) privacyModal.classList.add('hidden');
             if (viewLegal) viewLegal.classList.add('hidden');
+            if (viewFaq) viewFaq.classList.add('hidden');
             if (legalModal) legalModal.classList.add('hidden');
 
-            // Si salimos de una vista legal, mostrar el formulario (o resultado si no está oculto)
+            // Si salimos de una vista, mostrar el formulario (o resultado si no está oculto)
             if (viewForm) {
                 if (viewResult && !viewResult.classList.contains('hidden')) {
                     viewForm.classList.add('hidden');
