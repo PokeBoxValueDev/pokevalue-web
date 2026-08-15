@@ -12,6 +12,11 @@
     scrollbar-width: none !important;  /* Firefox */
 }
 
+/* Soporte de Safe Areas para iPhone y dispositivos con barra de gestos */
+#live-sticky-bar {
+    bottom: max(1rem, env(safe-area-inset-bottom, 1rem)) !important;
+}
+
 /* Transiciones suaves de vistas */
 .fade-in {
     animation: fadeIn 0.25s ease-in-out forwards;
