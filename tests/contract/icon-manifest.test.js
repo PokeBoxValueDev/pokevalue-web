@@ -11,11 +11,12 @@ test('Icon y Manifest - Verificación de configuración y assets', (t) => {
     const indexPath = path.join(rootDir, 'index.html');
     const notFoundPath = path.join(rootDir, '404.html');
 
-    // 1. Verificar existencia de favicon.svg y contenido SVG válido
+    // 1. Verificar existencia de favicon.svg y contenido SVG válido con soporte de Modo Claro y Oscuro
     assert.strictEqual(fs.existsSync(faviconPath), true, 'favicon.svg debe existir en la raíz');
     const faviconContent = fs.readFileSync(faviconPath, 'utf8');
     assert.match(faviconContent, /<svg[^>]+viewBox="0 0 512 512"/, 'favicon.svg debe tener un viewBox 512x512');
-    assert.match(faviconContent, /<rect[^>]+width="512"[^>]+height="512"/, 'favicon.svg debe ser edge-to-edge (512x512 rect)');
+    assert.ok(faviconContent.includes('prefers-color-scheme: dark'), 'favicon.svg debe incluir media query para modo oscuro');
+    assert.ok(faviconContent.includes('icon-light') && faviconContent.includes('icon-dark'), 'favicon.svg debe incluir capas adaptativas para modo claro y oscuro');
 
     // 2. Verificar manifest.json y propósito maskable
     assert.strictEqual(fs.existsSync(manifestPath), true, 'manifest.json debe existir');
