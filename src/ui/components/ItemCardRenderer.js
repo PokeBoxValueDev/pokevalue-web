@@ -19,6 +19,51 @@ export function getCategoryTranslation(catKey) {
     return CATEGORY_CONFIG[normKey]?.label || catKey.toUpperCase();
 }
 
+let activeCategoryFilter = 'all';
+
+export function setCategoryFilter(category) {
+    activeCategoryFilter = category;
+    applyFilters();
+}
+
+export function getActiveCategoryFilter() {
+    return activeCategoryFilter;
+}
+
+export function applyFilters() {
+    const container = document.getElementById('items-container');
+    const searchInput = document.getElementById('search-input');
+    if (!container) return;
+
+    const searchTerm = (searchInput ? searchInput.value : '').toLowerCase().trim();
+
+    container.querySelectorAll('.category-group').forEach(group => {
+        const groupCat = group.getAttribute('data-category');
+        let hasVisibleCards = false;
+
+        group.querySelectorAll('.item-card').forEach(card => {
+            const itemName = (card.getAttribute('data-item-name') || '').toLowerCase();
+            const cardCat = card.getAttribute('data-category');
+
+            const matchesCategory = (activeCategoryFilter === 'all' || cardCat === activeCategoryFilter || groupCat === activeCategoryFilter);
+            const matchesSearch = !searchTerm || itemName.includes(searchTerm);
+
+            if (matchesCategory && matchesSearch) {
+                card.classList.remove('hidden');
+                hasVisibleCards = true;
+            } else {
+                card.classList.add('hidden');
+            }
+        });
+
+        if (hasVisibleCards) {
+            group.classList.remove('hidden');
+        } else {
+            group.classList.add('hidden');
+        }
+    });
+}
+
 /**
  * Renderiza la lista de objetos agrupados por categoría.
  */
@@ -49,7 +94,7 @@ export function renderItems(items) {
         const i18nKey = Category.getI18nKey(catKey);
 
         return `
-            <div class="space-y-2">
+            <div class="category-group space-y-2" data-category="${catKey}">
                 <!-- Cabecera / Badge de la Categoría -->
                 <div class="flex items-center gap-2 pt-2 border-b border-gray-200 dark:border-gray-700 pb-1">
                     <span class="w-2.5 h-2.5 rounded-full ${config.color}"></span>
@@ -88,23 +133,29 @@ export function renderItems(items) {
                 : (item.image ? `<img src="${item.image}" alt="${name}" class="w-full h-full object-contain filter drop-shadow-sm">` : '');
 
             return `
-    <div class="item-card flex items-center justify-between p-2.5 sm:p-3.5 bg-gray-50/80 dark:bg-gray-700/50 hover:bg-white dark:hover:bg-gray-700/80 rounded-2xl border border-gray-200/60 dark:border-gray-700/60 shadow-2xs hover:shadow-md transition-all duration-200 group" data-card-id="${item.id}">
+    <div class="item-card flex flex-col sm:flex-row sm:items-center justify-between p-2.5 sm:p-3.5 bg-gray-50/80 dark:bg-gray-700/50 hover:bg-white dark:hover:bg-gray-700/80 rounded-2xl border border-gray-200/60 dark:border-gray-700/60 shadow-2xs hover:shadow-md transition-all duration-200 group" data-card-id="${item.id}" data-category="${catKey}" data-item-name="${name}">
         
         <!-- Icono SVG / Imagen del Item + Información -->
         <div class="flex items-center gap-2.5 sm:gap-3 min-w-0 pr-1.5 sm:pr-2 flex-1">
-            <div class="w-14 h-14 sm:w-16 sm:h-16 flex-shrink-0 flex items-center justify-center rounded-2xl p-1 bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-850 border border-gray-200/80 dark:border-gray-600/80 shadow-xs group-hover:scale-105 transition-transform duration-200">
+            <div class="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 flex items-center justify-center rounded-2xl p-1 bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-850 border border-gray-200/80 dark:border-gray-600/80 shadow-xs group-hover:scale-105 transition-transform duration-200">
                 ${svgContent}
             </div>
             <div class="min-w-0 flex-1">
-                <p class="text-sm sm:text-base font-bold text-gray-900 dark:text-white leading-tight break-words whitespace-normal">${name}</p>
+                <p class="text-sm font-bold text-gray-900 dark:text-white leading-tight break-words whitespace-normal">${name}</p>
                 <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5 font-medium">
                     ${unitPriceStr}
                 </p>
+                <!-- Píldoras de Incremento Rápido (+1, +5, +10) -->
+                <div class="flex items-center gap-1.5 mt-1.5">
+                    <button type="button" class="btn-quick-add text-[11px] font-bold px-2.5 py-0.5 rounded-lg bg-gray-200/80 hover:bg-indigo-600 hover:text-white dark:bg-gray-600 dark:hover:bg-indigo-500 text-gray-700 dark:text-gray-200 transition active:scale-95 cursor-pointer touch-manipulation" data-id="${item.id}" data-add="1">+1</button>
+                    <button type="button" class="btn-quick-add text-[11px] font-bold px-2.5 py-0.5 rounded-lg bg-gray-200/80 hover:bg-indigo-600 hover:text-white dark:bg-gray-600 dark:hover:bg-indigo-500 text-gray-700 dark:text-gray-200 transition active:scale-95 cursor-pointer touch-manipulation" data-id="${item.id}" data-add="5">+5</button>
+                    <button type="button" class="btn-quick-add text-[11px] font-bold px-2.5 py-0.5 rounded-lg bg-gray-200/80 hover:bg-indigo-600 hover:text-white dark:bg-gray-600 dark:hover:bg-indigo-500 text-gray-700 dark:text-gray-200 transition active:scale-95 cursor-pointer touch-manipulation" data-id="${item.id}" data-add="10">+10</button>
+                </div>
             </div>
         </div>
 
         <!-- Controles de Cantidad (+ / -) con Touch Targets Accesibles -->
-        <div class="flex items-center gap-0.5 sm:gap-1 bg-white dark:bg-gray-800 border border-gray-200/90 dark:border-gray-600 rounded-xl p-0.5 sm:p-1 shadow-xs flex-shrink-0">
+        <div class="flex items-center justify-end gap-1 mt-2 sm:mt-0 bg-white dark:bg-gray-800 border border-gray-200/90 dark:border-gray-600 rounded-xl p-1 shadow-xs flex-shrink-0 self-end sm:self-center">
             <button type="button" 
                 class="btn-decrement w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center text-base font-extrabold text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition active:scale-95 touch-manipulation" 
                 data-id="${item.id}"
@@ -117,7 +168,7 @@ export function renderItems(items) {
                 aria-label="Cantidad de ${name}"
                 inputmode="numeric"
                 pattern="[0-9]*"
-                class="item-qty w-8 sm:w-9 text-center text-sm font-extrabold bg-transparent text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                class="item-qty w-9 sm:w-10 text-center text-sm font-extrabold bg-transparent text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
             
             <button type="button" 
                 class="btn-increment w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center text-base font-extrabold text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition active:scale-95 touch-manipulation" 
@@ -139,10 +190,19 @@ export function renderItems(items) {
         const val = parseInt(input.value) || 0;
         if (card) {
             if (val > 0) {
-                card.className = 'item-card flex items-center justify-between p-2.5 sm:p-3.5 bg-indigo-50/90 dark:bg-indigo-950/50 rounded-2xl border border-indigo-400 dark:border-indigo-500 shadow-md ring-1 ring-indigo-400/30 transition-all duration-200 group';
+                card.classList.add('bg-indigo-50/90', 'dark:bg-indigo-950/50', 'border-indigo-400', 'dark:border-indigo-500', 'shadow-md', 'ring-1', 'ring-indigo-400/30');
+                card.classList.remove('bg-gray-50/80', 'dark:bg-gray-700/50');
             } else {
-                card.className = 'item-card flex items-center justify-between p-2.5 sm:p-3.5 bg-gray-50/80 dark:bg-gray-700/50 hover:bg-white dark:hover:bg-gray-700/80 rounded-2xl border border-gray-200/60 dark:border-gray-700/60 shadow-2xs hover:shadow-md transition-all duration-200 group';
+                card.classList.remove('bg-indigo-50/90', 'dark:bg-indigo-950/50', 'border-indigo-400', 'dark:border-indigo-500', 'shadow-md', 'ring-1', 'ring-indigo-400/30');
+                card.classList.add('bg-gray-50/80', 'dark:bg-gray-700/50');
             }
+        }
+        // Disparar evento personalizado para actualizar la barra en vivo
+        if (typeof document !== 'undefined' && typeof document.dispatchEvent === 'function') {
+            try {
+                const event = (typeof CustomEvent === 'function') ? new CustomEvent('pokevalue:itemsChanged') : { type: 'pokevalue:itemsChanged' };
+                document.dispatchEvent(event);
+            } catch (_) {}
         }
     }
 
@@ -176,4 +236,46 @@ export function renderItems(items) {
             }
         });
     });
+
+    // Escuchadores de píldoras de incremento rápido (+1, +5, +10)
+    container.querySelectorAll('.btn-quick-add').forEach(btn => {
+        btn.addEventListener('click', () => {
+            IOSDeviceDetector.triggerHapticFeedback(15);
+            const id = btn.getAttribute('data-id');
+            const toAdd = parseInt(btn.getAttribute('data-add')) || 1;
+            const input = container.querySelector(`input[data-id="${id}"]`);
+            if (input) {
+                const currentVal = parseInt(input.value) || 0;
+                input.value = currentVal + toAdd;
+                updateCardHighlight(input);
+            }
+        });
+    });
+
+    // Escuchadores de búsqueda y filtros de categoría
+    const searchInput = (typeof document !== 'undefined' && typeof document.getElementById === 'function') ? document.getElementById('search-input') : null;
+    if (searchInput && typeof searchInput.addEventListener === 'function') {
+        searchInput.addEventListener('input', () => applyFilters());
+    }
+
+    const filterPills = (typeof document !== 'undefined' && typeof document.querySelectorAll === 'function') ? document.querySelectorAll('.category-pill') : [];
+    filterPills.forEach(pill => {
+        if (typeof pill.addEventListener === 'function') {
+            pill.addEventListener('click', () => {
+                IOSDeviceDetector.triggerHapticFeedback(10);
+                const cat = pill.getAttribute('data-category') || 'all';
+                
+                // Actualizar estilo visual de la píldora activa
+                filterPills.forEach(p => {
+                    p.className = 'category-pill whitespace-nowrap px-3 py-1 rounded-full font-medium transition bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer';
+                });
+                pill.className = 'category-pill whitespace-nowrap px-3 py-1 rounded-full font-medium transition bg-indigo-600 text-white shadow-sm cursor-pointer';
+
+                setCategoryFilter(cat);
+            });
+        }
+    });
+
+    // Aplicar filtros iniciales
+    applyFilters();
 }

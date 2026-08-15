@@ -1,6 +1,6 @@
 {
-  "name": "pokevalue-web",
-  "version": "1.25.0",
+  "name": "pokeboxvalue-web",
+  "version": "1.26.0",
   "private": true,
   "license": "UNLICENSED",
   "type": "module",

@@ -5,7 +5,7 @@ export default {
     metaTitle: "PokeBoxValue - Calculadora de Cajas para Pokémon GO",
     metaDescription: "Calcula si las cajas de la tienda de Pokémon GO valen la pena. Descubre el valor real de los pases, incubadoras y objetos para ahorrar dinero.",
 
-    // Formulario
+    // Formulario & Filtros
     boxPriceLabel: "Precio de la Caja",
     boxPricePlaceholderPrefix: "Ej:",
     itemsIncluded: "Objetos incluidos",
@@ -18,6 +18,33 @@ export default {
     enterValidPrice: "Por favor, introduce un precio válido para la caja.",
     alertNoItems: "Selecciona al menos un objeto.",
     btnResetQty: "Limpiar",
+    btnInstallApp: "Instalar App",
+
+    // Píldoras de Filtros Rápidos
+    filterAll: "Todos",
+    filterPasses: "Pases",
+    filterIncubators: "Incubadoras",
+    filterBoosts: "Potenciadores",
+    filterUpgrades: "Mejoras",
+    filterConsumables: "Consumibles",
+    filterOther: "Otros",
+
+    // Barra Flotante en Vivo
+    liveBarTotal: "Valor:",
+    liveBarSave: "Ahorras:",
+    liveBarLose: "Pierdes:",
+    liveBarBtn: "Ver Tarjeta",
+
+    // Modos & Comparador
+    modeSingle: "Calculadora",
+    modeCompare: "Comparar 2 Cajas",
+    comparatorTitle: "Comparador de Cajas",
+    comparatorBoxA: "Caja A",
+    comparatorBoxB: "Caja B",
+    comparatorWinnerA: "La Caja A es más rentable",
+    comparatorWinnerB: "La Caja B es más rentable",
+    comparatorWinnerEqual: "Ambas cajas ofrecen la misma rentabilidad",
+    comparatorDiffMore: "un {diff}% más de ahorro",
 
     // Historial
     badgeProfitable: "Rentable",

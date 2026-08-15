@@ -12,6 +12,7 @@ import { RouterController } from './RouterController.js';
 export class CalculatorController {
     static _valuationService = ValuationService;
     static _historyRepository = HistoryRepository;
+    static _deferredPrompt = null;
 
     /**
      * Inicializa el controlador permitiendo inyectar servicios y repositorios (Inyección de Dependencias)
@@ -32,6 +33,8 @@ export class CalculatorController {
         const btnShare = document.getElementById('btn-share');
         const btnShareCard = document.getElementById('btn-share-card');
         const btnReset = document.getElementById('btn-reset');
+        const btnLiveViewResult = document.getElementById('btn-live-view-result');
+        const btnInstallPwa = document.getElementById('btn-install-pwa');
 
         if (priceInput) {
             priceInput.addEventListener('input', () => {
@@ -40,6 +43,19 @@ export class CalculatorController {
                     priceInput.classList.remove('border-rose-500', 'focus:ring-rose-500');
                     if (priceError) priceError.classList.add('hidden');
                 }
+                CalculatorController.updateLiveSummary();
+            });
+        }
+
+        if (typeof document !== 'undefined' && typeof document.addEventListener === 'function') {
+            document.addEventListener('pokevalue:itemsChanged', () => {
+                CalculatorController.updateLiveSummary();
+            });
+        }
+
+        if (btnLiveViewResult) {
+            btnLiveViewResult.addEventListener('click', () => {
+                CalculatorController.handleCalculate(priceInput, priceError);
             });
         }
 
@@ -56,6 +72,7 @@ export class CalculatorController {
                     input.value = 0;
                     input.dispatchEvent(new Event('input'));
                 });
+                CalculatorController.updateLiveSummary();
             });
         }
 
@@ -105,21 +122,104 @@ export class CalculatorController {
             });
         }
 
+        // PWA Install prompt
+        if (typeof window !== 'undefined' && typeof window.addEventListener === 'function') {
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                CalculatorController._deferredPrompt = e;
+                if (btnInstallPwa) {
+                    btnInstallPwa.classList.remove('hidden');
+                }
+            });
+
+            if (btnInstallPwa) {
+                btnInstallPwa.addEventListener('click', async () => {
+                    if (CalculatorController._deferredPrompt) {
+                        CalculatorController._deferredPrompt.prompt();
+                        const choiceResult = await CalculatorController._deferredPrompt.userChoice;
+                        if (choiceResult && choiceResult.outcome === 'accepted') {
+                            btnInstallPwa.classList.add('hidden');
+                        }
+                        CalculatorController._deferredPrompt = null;
+                    }
+                });
+            }
+        }
+
         renderHistory(CalculatorController.restoreFromHistory);
+    }
+
+    static updateLiveSummary() {
+        const stickyBar = document.getElementById('live-sticky-bar');
+        const liveTotalVal = document.getElementById('live-total-val');
+        const liveDiffTag = document.getElementById('live-diff-tag');
+        const liveGradeBadge = document.getElementById('live-grade-badge');
+        const priceInput = document.getElementById('box-price');
+
+        if (!stickyBar || !liveTotalVal || !liveDiffTag || !liveGradeBadge || !priceInput) return;
+
+        const boxPrice = parseFloat(priceInput.value) || 0;
+        const quantities = {};
+        document.querySelectorAll('.item-qty').forEach(input => {
+            const qty = parseInt(input.value) || 0;
+            if (qty > 0) {
+                quantities[input.getAttribute('data-id')] = qty;
+            }
+        });
+
+        const hasItems = Object.keys(quantities).length > 0;
+
+        if (boxPrice > 0 && hasItems) {
+            const res = CalculatorController._valuationService.calculate(
+                boxPrice,
+                quantities,
+                state.storeData,
+                state.currentCurrency,
+                state.currentLang
+            );
+
+            const curr = CURRENCY_CONFIG[state.currentCurrency] || { symbol: '€' };
+            const isCoins = state.currentCurrency === 'POKECOINS';
+            const formattedTotal = isCoins ? `${Math.round(res.totalValue)} ${curr.symbol}` : `${res.totalValue.toFixed(2)} ${curr.symbol}`;
+            const diffSign = res.diff >= 0 ? '+' : '-';
+            const formattedDiff = isCoins ? `${diffSign}${Math.round(Math.abs(res.diff))} ${curr.symbol}` : `${diffSign}${Math.abs(res.diff).toFixed(2)} ${curr.symbol}`;
+
+            liveTotalVal.innerText = formattedTotal;
+            liveDiffTag.innerText = `(${formattedDiff})`;
+
+            if (res.isProfitable) {
+                liveDiffTag.className = 'ml-1 font-bold text-emerald-600 dark:text-emerald-400';
+                liveGradeBadge.className = res.grade === 'S' 
+                    ? 'px-2 py-0.5 rounded-lg text-xs font-black bg-emerald-500 text-white shadow-sm'
+                    : 'px-2 py-0.5 rounded-lg text-xs font-black bg-indigo-500 text-white shadow-sm';
+            } else {
+                liveDiffTag.className = 'ml-1 font-bold text-rose-600 dark:text-rose-400';
+                liveGradeBadge.className = 'px-2 py-0.5 rounded-lg text-xs font-black bg-rose-500 text-white shadow-sm';
+            }
+
+            liveGradeBadge.innerText = res.grade;
+
+            stickyBar.classList.remove('translate-y-28', 'opacity-0', 'pointer-events-none');
+        } else {
+            stickyBar.classList.add('translate-y-28', 'opacity-0', 'pointer-events-none');
+        }
     }
 
     static switchView(viewName) {
         const viewForm = document.getElementById('view-form');
         const viewResult = document.getElementById('view-result');
+        const stickyBar = document.getElementById('live-sticky-bar');
 
         if (viewName === 'form') {
             if (viewResult) viewResult.classList.add('hidden');
             if (viewForm) viewForm.classList.remove('hidden');
             const btnCalculate = document.getElementById('btn-calculate');
             if (btnCalculate) btnCalculate.focus();
+            CalculatorController.updateLiveSummary();
         } else if (viewName === 'result') {
             if (viewForm) viewForm.classList.add('hidden');
             if (viewResult) viewResult.classList.remove('hidden');
+            if (stickyBar) stickyBar.classList.add('translate-y-28', 'opacity-0', 'pointer-events-none');
             const resTitle = document.getElementById('result-title');
             if (resTitle) resTitle.focus();
         }
@@ -146,6 +246,7 @@ export class CalculatorController {
             }
         });
 
+        CalculatorController.updateLiveSummary();
         CalculatorController.switchView('form');
         if (priceInput) priceInput.focus();
     }
@@ -159,23 +260,33 @@ export class CalculatorController {
             ? (t('titleProfitable') || '¡Renta comprarla!')
             : (t('titleNotProfitable') || 'No renta comprarla');
 
-        const decimals = state.currentCurrency === 'POKECOINS' ? 0 : 2;
-        const itemsSummary = (state.lastResult.itemSummary && state.lastResult.itemSummary.length > 0)
-            ? `\n📋 ${state.lastResult.itemSummary.join(', ')}`
-            : '';
+        const isCoins = state.currentCurrency === 'POKECOINS';
+        const formattedPrice = isCoins ? `${Math.round(state.lastBoxPrice)} ${curr.symbol}` : `${state.lastBoxPrice.toFixed(2)} ${curr.symbol}`;
+        const formattedValue = isCoins ? `${Math.round(state.lastResult.totalValue)} ${curr.symbol}` : `${state.lastResult.totalValue.toFixed(2)} ${curr.symbol}`;
+        const diffSign = state.lastResult.diff >= 0 ? '+' : '-';
+        const formattedDiff = isCoins ? `${diffSign}${Math.round(Math.abs(state.lastResult.diff))} ${curr.symbol}` : `${diffSign}${Math.abs(state.lastResult.diff).toFixed(2)} ${curr.symbol}`;
 
-        const shareText = `📦 PokeBoxValue: ${statusTitle}\n` +
-            `${t('resBoxPrice') || 'Precio:'} ${state.lastBoxPrice} ${curr.symbol} | ` +
-            `${t('resRealValue') || 'Valor real:'} ${state.lastResult.totalValue.toFixed(decimals)} ${curr.symbol}` +
-            itemsSummary;
+        let itemsSummaryText = '';
+        if (state.lastResult.itemSummary && state.lastResult.itemSummary.length > 0) {
+            itemsSummaryText = '\n' + state.lastResult.itemSummary.map(item => `  • ${item}`).join('\n');
+        }
 
-        const pageUrl = (typeof window !== 'undefined' && window.location) ? window.location.href : '';
+        const shareText = `📦 PokeBoxValue - Resultado de la Caja:
+━━━━━━━━━━━━━━━━━━━━
+Status: ${statusTitle} (${state.lastResult.grade})
+• Precio Caja: ${formattedPrice}
+• Valor Real:  ${formattedValue} (${formattedDiff})
+━━━━━━━━━━━━━━━━━━━━
+Objetos incluidos:${itemsSummaryText || ' No especificados'}`;
+
+        const pageUrl = (typeof window !== 'undefined' && window.location && window.location.href) ? window.location.href : 'https://pokeboxvalue.com';
+
         try {
             if (navigator.share) {
                 await navigator.share({
-                    title: 'PokeBoxValue - Resultado',
+                    title: 'PokeBoxValue - Calculadora de Cajas',
                     text: shareText,
-                    ...(pageUrl ? { url: pageUrl } : {})
+                    url: pageUrl
                 });
             } else if (navigator.clipboard) {
                 const copyContent = pageUrl ? `${shareText}\n${pageUrl}` : shareText;
@@ -392,5 +503,7 @@ export class CalculatorController {
                 }
             });
         }
+
+        CalculatorController.updateLiveSummary();
     }
 }

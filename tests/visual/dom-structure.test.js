@@ -35,7 +35,12 @@ test('visual/dom - index.html contains all critical UI containers and IDs', () =
         'btn-faq',
         'btn-legal',
         'btn-privacy',
-        'kofi-widget-container'
+        'kofi-widget-container',
+        'category-filter-pills',
+        'live-sticky-bar',
+        'live-grade-badge',
+        'btn-live-view-result',
+        'btn-install-pwa'
     ];
 
     requiredIds.forEach(id => {
