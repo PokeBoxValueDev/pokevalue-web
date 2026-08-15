@@ -127,3 +127,17 @@ test('visual/dom - index.html contains canonical and hreflang SEO tags and 404.h
     assert.ok(notFoundHtml.includes('SPA Redirect for Static Hosts'), '404.html must contain SPA redirect script');
 });
 
+test('visual/dom - Google AdSense, Consent Mode and GA4 configuration are preserved in HTML heads', () => {
+    const indexHtml = fs.readFileSync(path.resolve('index.html'), 'utf8');
+    const notFoundHtml = fs.readFileSync(path.resolve('404.html'), 'utf8');
+
+    // Google AdSense
+    assert.ok(indexHtml.includes('ca-pub-7043156975807845'), 'index.html must include Google AdSense ca-pub ID');
+    assert.ok(notFoundHtml.includes('ca-pub-7043156975807845'), '404.html must include Google AdSense ca-pub ID');
+
+    // Google Tag Manager / GA4 & Consent Mode v2
+    assert.ok(indexHtml.includes('G-ES8GHFDWRP'), 'index.html must include GA4 tracking ID');
+    assert.ok(indexHtml.includes("gtag('consent', 'default'"), 'index.html must include Google Consent Mode v2');
+});
+
+
