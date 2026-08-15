@@ -80,11 +80,37 @@ test('contract/items - ItemMapper handles corrupt or missing data gracefully', (
 });
 
 test('security - ItemMapper.sanitizeSvg strips script tags and event handlers to prevent XSS', () => {
-    const maliciousSvg = '<svg onload="alert(1)"><script>alert("xss")</script><circle cx="10" cy="10" r="5" onclick="bad()"/></svg>';
+    const maliciousSvg = '<svg onload="alert(1)"><script>alert("xss")</script><foreignObject><body xmlns="http://www.w3.org/1999/xhtml"><script>alert(2)</script></body></foreignObject><animate onbegin="alert(3)"/><circle cx="10" cy="10" r="5" onclick="bad()"/><a href="javascript:alert(4)"/><a xlink:href="data:text/html;base64,PHNjcmlwdD5hbGVydCgxKTwvc2NyaXB0Pg=="/></svg>';
     const cleanSvg = ItemMapper.sanitizeSvg(maliciousSvg);
 
     assert.equal(cleanSvg.includes('<script>'), false);
+    assert.equal(cleanSvg.includes('foreignObject'), false);
     assert.equal(cleanSvg.includes('onload='), false);
     assert.equal(cleanSvg.includes('onclick='), false);
+    assert.equal(cleanSvg.includes('onbegin='), false);
+    assert.equal(cleanSvg.includes('javascript:'), false);
+    assert.equal(cleanSvg.includes('data:text/html'), false);
     assert.ok(cleanSvg.includes('<circle cx="10" cy="10" r="5" />') || cleanSvg.includes('<circle'));
 });
+
+test('security - ItemMapper.escapeHtml neutralizes dangerous HTML characters in item fields', () => {
+    const input = '<img src=x onerror="alert(1)"> & "hello" \'world\'';
+    const escaped = ItemMapper.escapeHtml(input);
+
+    assert.equal(escaped.includes('<img'), false);
+    assert.equal(escaped.includes('&lt;img'), true);
+    assert.equal(escaped.includes('&quot;hello&quot;'), true);
+    assert.equal(escaped.includes('&#039;world&#039;'), true);
+
+    const maliciousDto = {
+        id: '<script>alert(1)</script>',
+        name_es: '<b onmouseover="bad()">Pase Peligroso</b>',
+        name_en: '<marquee>Attack</marquee>'
+    };
+    const domainItem = ItemMapper.toDomain(maliciousDto);
+
+    assert.equal(domainItem.id.includes('<script>'), false);
+    assert.equal(domainItem.nameEs.includes('<b'), false);
+    assert.equal(domainItem.nameEn.includes('<marquee'), false);
+});
+

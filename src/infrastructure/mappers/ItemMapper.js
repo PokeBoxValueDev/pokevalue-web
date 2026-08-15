@@ -27,22 +27,40 @@ export class ItemMapper {
     }
 
     /**
-     * Sanitiza cadenas SVG eliminando etiquetas de script, manejadores de eventos (on*) y URLs javascript:.
+     * Escapa caracteres HTML especiales para prevenir Cross-Site Scripting (XSS)
+     * al insertar cadenas dinámicas del servidor en el DOM.
+     * @param {string} str Cadena de texto a procesar.
+     * @returns {string} Cadena sanitizada.
+     */
+    static escapeHtml(str) {
+        if (!str || typeof str !== 'string') return '';
+        return str
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    /**
+     * Sanitiza código SVG eliminando scripts, manejadores de eventos (on*), URLs javascript:/data:
+     * y elementos peligrosos como foreignObject, object, embed, iframe, animate, set.
      * @param {string} svgString - Código SVG sin procesar.
      * @returns {string} SVG limpio y seguro.
      */
     static sanitizeSvg(svgString) {
         if (!svgString || typeof svgString !== 'string') return '';
         return svgString
-            .replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, '')
+            .replace(/<(script|foreignobject|object|embed|iframe|animate|set)[\s\S]*?>[\s\S]*?<\/\1>/gi, '')
+            .replace(/<(script|foreignobject|object|embed|iframe|animate|set)[\s\S]*?\/>/gi, '')
             .replace(/on\w+\s*=\s*(['"]).*?\1/gi, '')
             .replace(/on\w+\s*=\s*[^ >]+/gi, '')
-            .replace(/href\s*=\s*(['"])javascript:.*?\1/gi, '')
-            .replace(/src\s*=\s*(['"])javascript:.*?\1/gi, '');
+            .replace(/(href|src|xlink:href)\s*=\s*(['"])\s*(javascript:|data:text\/html).*?\2/gi, '')
+            .replace(/(href|src|xlink:href)\s*=\s*(javascript:|data:text\/html)[^ >]+/gi, '');
     }
 
     /**
-     * Convierte un objeto DTO crudo a una entidad Item del Dominio.
+     * Convierte un objeto DTO crudo a una entidad Item del Dominio con valores sanitizados.
      * @param {Object} dto - Objeto DTO.
      * @param {number} index - Índice de respaldo.
      * @returns {Item}
@@ -52,10 +70,14 @@ export class ItemMapper {
             return new Item({ id: `item-${index}` });
         }
 
-        const id = dto.id || dto.key || dto.item_id || `item-${index}`;
-        const nameEs = dto.name_es || dto.name || dto.item || dto.nombre || 'Objeto';
-        const nameEn = dto.name_en || dto.name || dto.item || dto.nombre || nameEs;
-        const category = Category.normalizeKey(dto.category || dto.categoria || dto.cat || nameEs);
+        const rawId = String(dto.id || dto.key || dto.item_id || `item-${index}`);
+        const rawNameEs = String(dto.name_es || dto.name || dto.item || dto.nombre || 'Objeto');
+        const rawNameEn = String(dto.name_en || dto.name || dto.item || dto.nombre || rawNameEs);
+
+        const id = this.escapeHtml(rawId);
+        const nameEs = this.escapeHtml(rawNameEs);
+        const nameEn = this.escapeHtml(rawNameEn);
+        const category = Category.normalizeKey(dto.category || dto.categoria || dto.cat || rawNameEs);
 
         const unitPriceEur = dto.unit_price_eur ?? dto.price_eur ?? dto.unit_price ?? dto.precio_eur ?? 0;
         const unitPriceUsd = dto.unit_price_usd ?? dto.price_usd ?? dto.precio_usd ?? null;
