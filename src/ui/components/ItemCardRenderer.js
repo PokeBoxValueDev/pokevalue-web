@@ -140,7 +140,7 @@ export function renderItems(items) {
         const i18nKey = Category.getI18nKey(catKey);
 
         return `
-            <div class="category-group space-y-2.5" data-category="${catKey}">
+            <div class="category-group p-2.5 sm:p-3 rounded-2xl border ${config.containerBorder || config.border || 'border-gray-200 dark:border-gray-700'} ${config.containerBg || 'bg-gray-50/40 dark:bg-gray-800/40'} shadow-2xs space-y-2.5 transition-all" data-category="${catKey}">
                 <!-- Cabecera / Banner estilizado a todo lo ancho con color de categoría -->
                 <div class="w-full flex items-center justify-between px-3 py-1.5 rounded-xl ${config.bg || 'bg-gray-100 dark:bg-gray-800'} border ${config.border || 'border-gray-200/80 dark:border-gray-700/80'} shadow-2xs">
                     <div class="flex items-center gap-2 min-w-0">
@@ -154,7 +154,7 @@ export function renderItems(items) {
                     </span>
                 </div>
 
-                <!-- Lista de Objetos -->
+                <!-- Lista de Objetos de la Categoría -->
                 <div class="space-y-2">
                     ${categoryItems.map(item => {
             let unitPriceStr = '';
@@ -184,7 +184,7 @@ export function renderItems(items) {
                 : (item.image ? `<img src="${item.image}" alt="${name}" class="w-full h-full object-contain filter drop-shadow-sm">` : '');
 
             return `
-    <div class="item-card flex items-center justify-between p-2.5 sm:p-3 bg-gray-50/80 dark:bg-gray-700/50 hover:bg-white dark:hover:bg-gray-700/80 rounded-2xl border border-gray-200/60 dark:border-gray-700/60 shadow-2xs hover:shadow-md transition-all duration-200 group" data-card-id="${item.id}" data-category="${catKey}" data-item-name="${name}">
+    <div class="item-card flex items-center justify-between p-2.5 sm:p-3 bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-750 rounded-xl border border-gray-200/70 dark:border-gray-700/70 shadow-xs hover:shadow-sm transition-all duration-200 group" data-card-id="${item.id}" data-category="${catKey}" data-item-name="${name}">
         
         <!-- Icono SVG / Imagen del Item + Información -->
         <div class="flex items-center gap-2.5 sm:gap-3 min-w-0 pr-1.5 flex-1">
