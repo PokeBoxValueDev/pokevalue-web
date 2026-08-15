@@ -35,14 +35,15 @@ export async function generateSocialCardCanvas({ boxPrice, totalValue, diff, isP
         ctx.strokeRect(20, 20, 560, 400);
     }
 
-    // 3. Cargar el icono de la web (favicon)
+    // 3. Cargar el icono de la web
     const logoImg = new Image();
-    logoImg.crossOrigin = "Anonymous";
-    logoImg.src = 'favicon.svg';
+    logoImg.crossOrigin = "anonymous";
+    logoImg.src = '/favicon.png';
 
     await new Promise(resolve => {
         logoImg.onload = resolve;
         logoImg.onerror = resolve;
+        setTimeout(resolve, 250);
     });
 
     // 4. Dibujar Logo y Título perfectamente centrados sin superposición

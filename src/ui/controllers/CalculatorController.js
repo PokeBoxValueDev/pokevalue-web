@@ -211,25 +211,35 @@ export class CalculatorController {
 
         if (!blob) return;
 
+        const downloadBlob = (cardBlob) => {
+            const url = URL.createObjectURL(cardBlob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = 'pokeboxvalue-tarjeta.png';
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 1000);
+        };
+
         try {
-            const file = new File([blob], 'pokeboxvalue-result.png', { type: 'image/png' });
+            const file = new File([blob], 'pokeboxvalue-tarjeta.png', { type: 'image/png' });
             if (navigator.canShare && navigator.canShare({ files: [file] })) {
                 await navigator.share({
                     title: 'PokeBoxValue - Resultado',
-                    text: t('shareNativeCardText') || '¡He calculado la rentabilidad de esta caja en PokeBoxValue! 📦✨',
+                    text: t('shareNativeCardText') || 'He calculado la rentabilidad de esta caja en PokeBoxValue:',
                     files: [file]
                 });
             } else {
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'pokeboxvalue-result.png';
-                a.click();
-                URL.revokeObjectURL(url);
+                downloadBlob(blob);
             }
         } catch (err) {
             if (err.name !== 'AbortError' && err.name !== 'InvalidStateError') {
                 console.error("Error compartiendo tarjeta:", err);
+                downloadBlob(blob);
             }
         }
     }
@@ -289,7 +299,7 @@ export class CalculatorController {
         if (resCard && resTitle && resDiffLabel && resDiffVal) {
             if (res.isProfitable) {
                 resCard.className = 'p-6 rounded-xl text-center space-y-4 text-white bg-emerald-600 shadow-lg relative';
-                resTitle.innerText = `🎉 ${t('titleProfitable') || '¡Renta comprarla!'}`;
+                resTitle.innerText = t('titleProfitable') || '¡Renta comprarla!';
                 resDiffLabel.innerText = t('resDiffSave') || 'Ahorras:';
                 animateValue(resDiffVal, 0, Math.abs(res.diff), 900, `+`, ` ${curr.symbol}`, decimals);
 
@@ -298,7 +308,7 @@ export class CalculatorController {
                 }
             } else {
                 resCard.className = 'p-6 rounded-xl text-center space-y-4 text-white bg-rose-600 shadow-lg relative';
-                resTitle.innerText = `⚠️ ${t('titleNotProfitable') || 'No renta comprarla'}`;
+                resTitle.innerText = t('titleNotProfitable') || 'No renta comprarla';
                 resDiffLabel.innerText = t('resDiffLose') || 'Pierdes:';
                 animateValue(resDiffVal, 0, Math.abs(res.diff), 900, `-`, ` ${curr.symbol}`, decimals);
             }
