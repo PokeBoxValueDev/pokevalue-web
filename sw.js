@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pokeboxvalue-v1.23.0';
+const CACHE_NAME = 'pokeboxvalue-v1.23.1';
 const STATIC_ASSETS = [
     './',
     './index.html',
@@ -69,7 +69,7 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
     const url = new URL(event.request.url);
 
-    // Ignorar esquemas no soportados por Cache API (chrome-extension://, moz-extension://, file://, etc.)
+    // 1. Ignorar esquemas no soportados por Cache API (chrome-extension://, moz-extension://, etc.)
     if (url.protocol !== 'http:' && url.protocol !== 'https:') {
         return;
     }
@@ -77,7 +77,13 @@ self.addEventListener('fetch', (event) => {
     const isNavigation = event.request.mode === 'navigate' || event.request.headers.get('accept')?.includes('text/html');
     const isItemsJson = url.href.includes('items.json');
 
-    // 1. Navegación (HTML): Cache-First con actualización en segundo plano para carga en 0ms
+    // 2. Ignorar peticiones externas de analítica, anuncios o widgets de terceros (GA4, GTM, AdSense, Ko-fi)
+    // El navegador las gestiona de forma nativa sin interceptarlas ni fallar si hay bloqueadores
+    if (url.origin !== self.location.origin && !isItemsJson) {
+        return;
+    }
+
+    // 3. Navegación (HTML): Cache-First con actualización en segundo plano (0ms de carga)
     if (isNavigation) {
         event.respondWith(
             caches.match('./index.html').then((cachedHtml) => {
@@ -85,19 +91,25 @@ self.addEventListener('fetch', (event) => {
                     .then((networkResponse) => {
                         if (networkResponse && networkResponse.status === 200) {
                             const responseClone = networkResponse.clone();
-                            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseClone));
+                            caches.open(CACHE_NAME).then((cache) => cache.put('./index.html', responseClone));
                         }
                         return networkResponse;
                     })
                     .catch(() => cachedHtml);
 
-                return cachedHtml || networkFetch;
+                if (cachedHtml) {
+                    // Si ya está en caché, responder de inmediato y actualizar en segundo plano
+                    networkFetch.catch(() => {});
+                    return cachedHtml;
+                }
+
+                return networkFetch;
             })
         );
         return;
     }
 
-    // 2. Datos de items.json: Stale-While-Revalidate con fallback local inmediato
+    // 4. Datos de items.json: Stale-While-Revalidate con fallback local inmediato
     if (isItemsJson) {
         event.respondWith(
             caches.match(event.request).then((cachedResponse) => {
@@ -117,7 +129,7 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
-    // 3. Stale-While-Revalidate para todos los assets estáticos (CSS, JS, imágenes, iconos)
+    // 5. Stale-While-Revalidate para assets estáticos propios (CSS, JS, imágenes, SVG)
     event.respondWith(
         caches.match(event.request).then((cachedResponse) => {
             const fetchPromise = fetch(event.request).then((networkResponse) => {
@@ -126,7 +138,7 @@ self.addEventListener('fetch', (event) => {
                     caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseClone));
                 }
                 return networkResponse;
-            }).catch(() => { });
+            });
 
             return cachedResponse || fetchPromise;
         })
