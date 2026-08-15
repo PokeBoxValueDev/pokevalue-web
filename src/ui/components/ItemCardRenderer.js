@@ -169,31 +169,30 @@ export function renderItems(items) {
                 : (item.image ? `<img src="${item.image}" alt="${name}" class="w-full h-full object-contain filter drop-shadow-sm">` : '');
 
             return `
-    <div class="item-card flex flex-col sm:flex-row sm:items-center justify-between p-2.5 sm:p-3.5 bg-gray-50/80 dark:bg-gray-700/50 hover:bg-white dark:hover:bg-gray-700/80 rounded-2xl border border-gray-200/60 dark:border-gray-700/60 shadow-2xs hover:shadow-md transition-all duration-200 group" data-card-id="${item.id}" data-category="${catKey}" data-item-name="${name}">
+    <div class="item-card flex items-center justify-between p-2.5 sm:p-3 bg-gray-50/80 dark:bg-gray-700/50 hover:bg-white dark:hover:bg-gray-700/80 rounded-2xl border border-gray-200/60 dark:border-gray-700/60 shadow-2xs hover:shadow-md transition-all duration-200 group" data-card-id="${item.id}" data-category="${catKey}" data-item-name="${name}">
         
         <!-- Icono SVG / Imagen del Item + Información -->
-        <div class="flex items-center gap-2.5 sm:gap-3 min-w-0 pr-1.5 sm:pr-2 flex-1">
-            <div class="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 flex items-center justify-center rounded-2xl p-1 bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-850 border border-gray-200/80 dark:border-gray-600/80 shadow-xs group-hover:scale-105 transition-transform duration-200">
+        <div class="flex items-center gap-2.5 sm:gap-3 min-w-0 pr-1.5 flex-1">
+            <div class="w-11 h-11 sm:w-13 sm:h-13 flex-shrink-0 flex items-center justify-center rounded-xl p-1 bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-850 border border-gray-200/80 dark:border-gray-600/80 shadow-xs">
                 ${svgContent}
             </div>
             <div class="min-w-0 flex-1">
-                <p class="text-sm font-bold text-gray-900 dark:text-white leading-tight break-words whitespace-normal">${name}</p>
-                <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5 font-medium">
-                    ${unitPriceStr}
-                </p>
-                <!-- Píldoras de Incremento Rápido (+1, +5, +10) -->
-                <div class="flex items-center gap-1.5 mt-1.5">
-                    <button type="button" class="btn-quick-add text-[11px] font-bold px-2.5 py-0.5 rounded-lg bg-gray-200/80 hover:bg-indigo-600 hover:text-white dark:bg-gray-600 dark:hover:bg-indigo-500 text-gray-700 dark:text-gray-200 transition active:scale-95 cursor-pointer touch-manipulation" data-id="${item.id}" data-add="1">+1</button>
-                    <button type="button" class="btn-quick-add text-[11px] font-bold px-2.5 py-0.5 rounded-lg bg-gray-200/80 hover:bg-indigo-600 hover:text-white dark:bg-gray-600 dark:hover:bg-indigo-500 text-gray-700 dark:text-gray-200 transition active:scale-95 cursor-pointer touch-manipulation" data-id="${item.id}" data-add="5">+5</button>
-                    <button type="button" class="btn-quick-add text-[11px] font-bold px-2.5 py-0.5 rounded-lg bg-gray-200/80 hover:bg-indigo-600 hover:text-white dark:bg-gray-600 dark:hover:bg-indigo-500 text-gray-700 dark:text-gray-200 transition active:scale-95 cursor-pointer touch-manipulation" data-id="${item.id}" data-add="10">+10</button>
+                <p class="text-xs sm:text-sm font-bold text-gray-900 dark:text-white leading-tight break-words whitespace-normal">${name}</p>
+                <div class="flex items-center flex-wrap gap-x-2 gap-y-1 mt-0.5">
+                    <span class="text-[11px] sm:text-xs text-gray-500 dark:text-gray-400 font-medium whitespace-nowrap">${unitPriceStr}</span>
+                    <div class="flex items-center gap-1">
+                        <button type="button" class="btn-quick-add text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-200/80 hover:bg-indigo-600 hover:text-white dark:bg-gray-600 dark:hover:bg-indigo-500 text-gray-700 dark:text-gray-200 transition active:scale-90 cursor-pointer touch-manipulation" data-id="${item.id}" data-add="1">+1</button>
+                        <button type="button" class="btn-quick-add text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-200/80 hover:bg-indigo-600 hover:text-white dark:bg-gray-600 dark:hover:bg-indigo-500 text-gray-700 dark:text-gray-200 transition active:scale-90 cursor-pointer touch-manipulation" data-id="${item.id}" data-add="5">+5</button>
+                        <button type="button" class="btn-quick-add text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-200/80 hover:bg-indigo-600 hover:text-white dark:bg-gray-600 dark:hover:bg-indigo-500 text-gray-700 dark:text-gray-200 transition active:scale-90 cursor-pointer touch-manipulation" data-id="${item.id}" data-add="10">+10</button>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Controles de Cantidad (+ / -) con Touch Targets Accesibles -->
-        <div class="flex items-center justify-end gap-1 mt-2 sm:mt-0 bg-white dark:bg-gray-800 border border-gray-200/90 dark:border-gray-600 rounded-xl p-1 shadow-xs flex-shrink-0 self-end sm:self-center">
+        <div class="flex items-center gap-0.5 sm:gap-1 bg-white dark:bg-gray-800 border border-gray-200/90 dark:border-gray-600 rounded-xl p-0.5 sm:p-1 shadow-xs flex-shrink-0 ml-1">
             <button type="button" 
-                class="btn-decrement w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center text-base font-extrabold text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition active:scale-95 touch-manipulation" 
+                class="btn-decrement w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center text-sm sm:text-base font-extrabold text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition active:scale-95 touch-manipulation" 
                 data-id="${item.id}"
                 aria-label="Disminuir cantidad de ${name}">-</button>
             
@@ -204,10 +203,10 @@ export function renderItems(items) {
                 aria-label="Cantidad de ${name}"
                 inputmode="numeric"
                 pattern="[0-9]*"
-                class="item-qty w-9 sm:w-10 text-center text-sm font-extrabold bg-transparent text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                class="item-qty w-7 sm:w-8 text-center text-xs sm:text-sm font-extrabold bg-transparent text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
             
             <button type="button" 
-                class="btn-increment w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center text-base font-extrabold text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition active:scale-95 touch-manipulation" 
+                class="btn-increment w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center text-sm sm:text-base font-extrabold text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition active:scale-95 touch-manipulation" 
                 data-id="${item.id}"
                 aria-label="Aumentar cantidad de ${name}">+</button>
         </div>
