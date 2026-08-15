@@ -12,6 +12,17 @@
     scrollbar-width: none !important;  /* Firefox */
 }
 
+/* Prevención de zoom accidental por doble toque y latencia táctil en móviles */
+button,
+input,
+select,
+summary,
+.category-pill,
+.item-card,
+.touch-manipulation {
+    touch-action: manipulation !important;
+}
+
 /* Soporte de Safe Areas para iPhone y dispositivos con barra de gestos */
 #live-sticky-bar {
     bottom: max(1rem, env(safe-area-inset-bottom, 1rem)) !important;
