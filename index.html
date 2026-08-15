@@ -20,6 +20,12 @@
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#4f46e5">
 
+    <!-- Preconnect & Resource Hints -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="dns-prefetch" href="https://raw.githubusercontent.com">
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+
     <!-- CSS & Styles -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@v3.0.0/dist/cookieconsent.css">
     <link rel="stylesheet" href="css/styles.css">
@@ -627,7 +633,7 @@
 </footer>
 
     <!-- Canvas Confetti Library -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js"></script>
 
     <!-- JS Principal -->
     <script type="module" src="src/app/main.js"></script>
