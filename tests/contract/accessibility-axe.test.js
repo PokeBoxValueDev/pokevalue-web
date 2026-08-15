@@ -53,7 +53,6 @@ test('accessibility/axe - Auditoría Oficial Axe-Core en Vistas Secundarias (Leg
         if (!fs.existsSync(filePath)) continue;
 
         const viewHtml = fs.readFileSync(filePath, 'utf8');
-        // Envolver la vista en un documento accesible válido
         const fullDocHtml = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Test ${file}</title></head><body><main role="main">${viewHtml}</main></body></html>`;
 
         const dom = new JSDOM(fullDocHtml, { pretendToBeVisual: true });
@@ -81,4 +80,19 @@ test('accessibility/axe - Auditoría Oficial Axe-Core en 404.html (Página de Er
     });
 
     assert.equal(results.violations.length, 0, `Axe-Core detectó violaciones en 404.html: ${results.violations.map(v => v.help).join(', ')}`);
+});
+
+test('accessibility/axe - Auditoría Oficial Axe-Core en visual-test-runner.html (Todas las 7 Secciones)', async () => {
+    const htmlPath = path.resolve('tests/visual/visual-test-runner.html');
+    const html = fs.readFileSync(htmlPath, 'utf8');
+
+    const dom = new JSDOM(html, { pretendToBeVisual: true });
+    const results = await axe.run(dom.window.document.documentElement, {
+        runOnly: {
+            type: 'tag',
+            values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']
+        }
+    });
+
+    assert.equal(results.violations.length, 0, `Axe-Core detectó violaciones en visual-test-runner.html: ${results.violations.map(v => v.help).join(', ')}`);
 });
