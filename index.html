@@ -29,9 +29,9 @@
 
     <!-- CSS & Styles -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@v3.0.0/dist/cookieconsent.css">
-    <link rel="stylesheet" href="/css/styles.css?v=1.29.1">
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=1.29.1">
-    <link rel="apple-touch-icon" href="/favicon.svg?v=1.29.1">
+    <link rel="stylesheet" href="/css/styles.css?v=1.30.0">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=1.30.0">
+    <link rel="apple-touch-icon" href="/favicon.svg?v=1.30.0">
 
     <!-- Canonical & SEO Hreflang Tags -->
     <link rel="canonical" href="https://pokeboxvalue.com/es">
@@ -234,7 +234,7 @@
 <body
     class="bg-slate-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 min-h-full font-sans antialiased selection:bg-indigo-500 selection:text-white transition-colors duration-200">
 
-    <div class="max-w-xl mx-auto px-4 py-6">
+    <main role="main" class="max-w-xl mx-auto px-4 py-6">
 <!-- Header -->
 <header class="flex justify-between items-center mb-6">
     <div id="site-logo" class="flex items-center gap-3 cursor-pointer select-none">
@@ -335,14 +335,14 @@
         </div>
 
         <!-- Píldoras de Filtrado Rápido por Categoría -->
-        <div id="category-filter-pills" class="flex gap-1.5 overflow-x-auto pb-1.5 mb-2 no-scrollbar scrollbar-none text-xs">
-            <button type="button" data-category="all" data-i18n="filterAll" class="category-pill whitespace-nowrap px-3 py-1 rounded-full font-medium transition bg-indigo-600 text-white shadow-sm">Todos</button>
-            <button type="button" data-category="pases" data-i18n="filterPasses" class="category-pill whitespace-nowrap px-3 py-1 rounded-full font-medium transition bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600">Pases</button>
-            <button type="button" data-category="incubadoras" data-i18n="filterIncubators" class="category-pill whitespace-nowrap px-3 py-1 rounded-full font-medium transition bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600">Incubadoras</button>
-            <button type="button" data-category="potenciadores" data-i18n="filterBoosts" class="category-pill whitespace-nowrap px-3 py-1 rounded-full font-medium transition bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600">Potenciadores</button>
-            <button type="button" data-category="mejoras" data-i18n="filterUpgrades" class="category-pill whitespace-nowrap px-3 py-1 rounded-full font-medium transition bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600">Mejoras</button>
-            <button type="button" data-category="consumibles" data-i18n="filterConsumables" class="category-pill whitespace-nowrap px-3 py-1 rounded-full font-medium transition bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600">Consumibles</button>
-            <button type="button" data-category="otros" data-i18n="filterOther" class="category-pill whitespace-nowrap px-3 py-1 rounded-full font-medium transition bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600">Otros</button>
+        <div id="category-filter-pills" role="toolbar" aria-label="Filtro de categorías de objetos" class="flex gap-1.5 overflow-x-auto pb-1.5 mb-2 no-scrollbar scrollbar-none text-xs">
+            <button type="button" data-category="all" data-i18n="filterAll" aria-label="Mostrar todas las categorías" class="category-pill whitespace-nowrap px-3 py-1 rounded-full font-medium transition bg-indigo-600 text-white shadow-sm">Todos</button>
+            <button type="button" data-category="pases" data-i18n="filterPasses" aria-label="Filtrar por Pases de Incursión" class="category-pill whitespace-nowrap px-3 py-1 rounded-full font-medium transition bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600">Pases</button>
+            <button type="button" data-category="incubadoras" data-i18n="filterIncubators" aria-label="Filtrar por Incubadoras" class="category-pill whitespace-nowrap px-3 py-1 rounded-full font-medium transition bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600">Incubadoras</button>
+            <button type="button" data-category="potenciadores" data-i18n="filterBoosts" aria-label="Filtrar por Potenciadores" class="category-pill whitespace-nowrap px-3 py-1 rounded-full font-medium transition bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600">Potenciadores</button>
+            <button type="button" data-category="mejoras" data-i18n="filterUpgrades" aria-label="Filtrar por Mejoras" class="category-pill whitespace-nowrap px-3 py-1 rounded-full font-medium transition bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600">Mejoras</button>
+            <button type="button" data-category="consumibles" data-i18n="filterConsumables" aria-label="Filtrar por Consumibles" class="category-pill whitespace-nowrap px-3 py-1 rounded-full font-medium transition bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600">Consumibles</button>
+            <button type="button" data-category="otros" data-i18n="filterOther" aria-label="Filtrar por Otros" class="category-pill whitespace-nowrap px-3 py-1 rounded-full font-medium transition bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600">Otros</button>
         </div>
 
         <input type="text" id="search-input" data-i18n-placeholder="searchPlaceholder" aria-label="Buscar objetos"
@@ -463,7 +463,7 @@
 </div>
 
         <div id="view-container"></div>
-    </div>
+    </main>
 
 <!-- Sección de Donaciones (Ko-fi) -->
 <div id="kofi-widget-container" class="text-center my-6 max-w-xl mx-auto px-4 flex justify-center min-h-[42px]">
