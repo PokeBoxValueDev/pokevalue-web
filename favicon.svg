@@ -1,114 +1,175 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
   <defs>
-    <!-- Fondo Gradiente Índigo Profundo con matices Violeta -->
+    <!-- Fondo Gradiente Nocturno Índigo Premium -->
     <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#4338CA"/>
-      <stop offset="50%" stop-color="#4F46E5"/>
-      <stop offset="100%" stop-color="#6366F1"/>
+      <stop offset="0%" stop-color="#1E1B4B"/>
+      <stop offset="50%" stop-color="#312E81"/>
+      <stop offset="100%" stop-color="#4338CA"/>
     </linearGradient>
 
-    <!-- Gradiente de Tapa Pokéball Roja Ultra Vibrante -->
-    <linearGradient id="lid-red" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#FF334B"/>
-      <stop offset="50%" stop-color="#EE1535"/>
+    <!-- Gradientes Tapa Roja 3D Isométrica -->
+    <linearGradient id="red-top" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#EF4444"/>
+      <stop offset="50%" stop-color="#DC2626"/>
       <stop offset="100%" stop-color="#B91C1C"/>
     </linearGradient>
-
-    <!-- Gradiente de Base de Caja Blanca Perla -->
-    <linearGradient id="box-white" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#FFFFFF"/>
-      <stop offset="60%" stop-color="#F1F5F9"/>
-      <stop offset="100%" stop-color="#CBD5E1"/>
+    <linearGradient id="red-left" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#DC2626"/>
+      <stop offset="100%" stop-color="#991B1B"/>
+    </linearGradient>
+    <linearGradient id="red-right" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#B91C1C"/>
+      <stop offset="100%" stop-color="#7F1D1D"/>
     </linearGradient>
 
-    <!-- Gradiente Cinta Dorada Premium -->
-    <linearGradient id="gold-ribbon" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#FDE047"/>
-      <stop offset="50%" stop-color="#F59E0B"/>
+    <!-- Gradientes Base Blanca Perlada 3D -->
+    <linearGradient id="white-left" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="60%" stop-color="#E2E8F0"/>
+      <stop offset="100%" stop-color="#CBD5E1"/>
+    </linearGradient>
+    <linearGradient id="white-right" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#CBD5E1"/>
+      <stop offset="100%" stop-color="#94A3B8"/>
+    </linearGradient>
+
+    <!-- Gradientes Lazo de Oro Resplandeciente -->
+    <linearGradient id="gold-glow-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFBEB"/>
+      <stop offset="30%" stop-color="#FDE047"/>
+      <stop offset="70%" stop-color="#F59E0B"/>
       <stop offset="100%" stop-color="#D97706"/>
     </linearGradient>
 
-    <!-- Gradiente de Destello Estelar Neón -->
-    <linearGradient id="star-sparkle" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#FFFFFF"/>
-      <stop offset="40%" stop-color="#FEF08A"/>
-      <stop offset="100%" stop-color="#F59E0B"/>
+    <linearGradient id="gold-ribbon-left" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDE047"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+    <linearGradient id="gold-ribbon-right" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#B45309"/>
     </linearGradient>
 
-    <!-- Sombra Suave y Profunda -->
-    <filter id="soft-shadow" x="-30%" y="-30%" width="160%" height="160%">
-      <feDropShadow dx="0" dy="16" stdDeviation="20" flood-color="#0F172A" flood-opacity="0.45"/>
+    <!-- Filtros de Sombra y Resplandor Neón -->
+    <filter id="box-shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="24" stdDeviation="22" flood-color="#020617" flood-opacity="0.6"/>
     </filter>
-
-    <!-- Resplandor Dorado de Valor y Rentabilidad -->
-    <filter id="gold-glow" x="-40%" y="-40%" width="180%" height="180%">
-      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#F59E0B" flood-opacity="0.75"/>
+    <filter id="neon-glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="0" stdDeviation="10" flood-color="#FBBF24" flood-opacity="0.85"/>
+    </filter>
+    <filter id="core-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#38BDF8" flood-opacity="0.9"/>
     </filter>
   </defs>
 
-  <!-- Fondo Edge-to-Edge completo (512x512) para soporte PWA maskable -->
+  <!-- Fondo Completo (Maskable Safe) -->
   <rect width="512" height="512" fill="url(#bg-grad)"/>
 
-  <!-- Halo de Luz Sutil Superior -->
-  <circle cx="256" cy="120" r="180" fill="#818CF8" opacity="0.25"/>
+  <!-- Halo de Luz de Fondo -->
+  <ellipse cx="256" cy="270" rx="190" ry="140" fill="#6366F1" opacity="0.25"/>
 
-  <!-- Grupo Principal de la Caja de Regalo Pokéball -->
-  <g filter="url(#soft-shadow)">
-    
-    <!-- 1. Base de la Caja (Blanco Perlado con Perspectiva Curvada Moderna) -->
-    <path d="M 120 230 L 392 230 L 376 400 C 372 422 352 438 330 438 L 182 438 C 160 438 140 422 136 400 Z" 
-          fill="url(#box-white)"/>
+  <!-- Sombra Proyectada en el Suelo -->
+  <ellipse cx="256" cy="425" rx="160" ry="45" fill="#020617" opacity="0.5"/>
 
-    <!-- Cinta Dorada Vertical en la Base -->
-    <rect x="236" y="230" width="40" height="208" fill="url(#gold-ribbon)"/>
+  <!-- CONTENEDOR 3D DE LA CAJA POKÉ-REGALO -->
+  <g filter="url(#box-shadow)">
 
-    <!-- Sombra oclusiva bajo la tapa -->
-    <path d="M 122 230 L 390 230 L 388 250 L 124 250 Z" fill="#0F172A" opacity="0.2"/>
+    <!-- 1. BASE INFERIOR (BLANCO PERLADO ISOMÉTRICO) -->
+    <!-- Cara Izquierda Base -->
+    <path d="M 125 255 L 256 325 L 256 415 L 125 345 Z" fill="url(#white-left)"/>
+    <!-- Cara Derecha Base -->
+    <path d="M 256 325 L 387 255 L 387 345 L 256 415 Z" fill="url(#white-right)"/>
 
-    <!-- 2. Tapa de la Caja Pokéball (Rojo Intenso con Esquinas Suaves) -->
-    <rect x="100" y="148" width="312" height="92" rx="24" fill="url(#lid-red)"/>
+    <!-- Franja Negra divisoria Pokéball en la Base -->
+    <path d="M 125 255 L 256 325 L 256 270 L 125 200 Z" fill="#0F172A"/>
+    <path d="M 256 325 L 387 255 L 387 200 L 256 270 Z" fill="#020617"/>
 
-    <!-- Franja Negra divisoria de la Pokéball en el borde inferior de la tapa -->
-    <path d="M 100 216 L 412 216 L 412 240 C 412 253 401 264 388 264 L 124 264 C 111 264 100 253 100 240 Z" fill="#0F172A"/>
+    <!-- Cintas Doradas en la Base -->
+    <path d="M 183 286 L 208 300 L 208 389 L 183 376 Z" fill="url(#gold-ribbon-left)"/>
+    <path d="M 304 300 L 329 286 L 329 376 L 304 389 Z" fill="url(#gold-ribbon-right)"/>
 
-    <!-- Cinta Dorada Vertical en la Tapa -->
-    <rect x="236" y="148" width="40" height="116" fill="url(#gold-ribbon)"/>
+    <!-- 2. TAPA SUPERIOR (ROJO CARMESÍ BRILLANTE) -->
+    <!-- Cara Izquierda Tapa -->
+    <path d="M 112 215 L 256 292 L 256 242 L 112 165 Z" fill="url(#red-left)"/>
+    <!-- Cara Derecha Tapa -->
+    <path d="M 256 292 L 400 215 L 400 165 L 256 242 Z" fill="url(#red-right)"/>
+    <!-- Cara Superior Tapa (Rombo Isométrico) -->
+    <path d="M 256 95 L 400 165 L 256 242 L 112 165 Z" fill="url(#red-top)"/>
 
-    <!-- Reflejo Brillante Curvo en la Tapa Roja (Efecto Glass/Glossy Moderno) -->
-    <path d="M 124 162 C 180 154 332 154 388 162 C 374 176 138 176 124 162 Z" fill="#FFFFFF" opacity="0.45"/>
+    <!-- Reflejos Glossy en la Tapa Superior -->
+    <path d="M 256 105 L 380 165 L 256 230 L 132 165 Z" fill="#FFFFFF" opacity="0.18"/>
+    <path d="M 116 166 L 256 98 L 246 98 L 112 168 Z" fill="#FFFFFF" opacity="0.6"/>
 
-    <!-- 3. Lazo / Cierre de Regalo Superior -->
-    <g transform="translate(0, -6)">
-      <!-- Bucle Izquierdo del Lazo -->
-      <path d="M 238 152 C 210 105 150 105 180 148 C 196 158 225 155 240 152 Z" fill="url(#gold-ribbon)"/>
-      <path d="M 230 148 C 210 115 170 118 190 144 Z" fill="#FFFFFF" opacity="0.3"/>
+    <!-- Cintas Doradas en la Tapa -->
+    <!-- Cara Superior -->
+    <path d="M 238 104 L 274 122 L 274 233 L 238 215 Z" fill="url(#gold-ribbon-right)" opacity="0.95"/>
+    <path d="M 148 184 L 364 184 L 340 197 L 172 197 Z" fill="url(#gold-ribbon-left)" opacity="0.85"/>
+    <!-- Cara Izquierda -->
+    <path d="M 176 200 L 202 214 L 202 263 L 176 249 Z" fill="url(#gold-ribbon-left)"/>
+    <!-- Cara Derecha -->
+    <path d="M 310 214 L 336 200 L 336 249 L 310 263 Z" fill="url(#gold-ribbon-right)"/>
 
-      <!-- Bucle Derecho del Lazo -->
-      <path d="M 274 152 C 302 105 362 105 332 148 C 316 158 287 155 272 152 Z" fill="url(#gold-ribbon)"/>
-      <path d="M 282 148 C 302 115 342 118 322 144 Z" fill="#FFFFFF" opacity="0.3"/>
-
-      <!-- Nudo Central del Lazo -->
-      <ellipse cx="256" cy="150" rx="16" ry="12" fill="#D97706"/>
+    <!-- 3. BOTÓN POKÉBALL FRONTAL (CENTRO ISOMÉTRICO) -->
+    <g transform="translate(256, 292)">
+      <!-- Anillo Exterior Dorado -->
+      <circle cx="0" cy="0" r="32" fill="#D97706"/>
+      <circle cx="0" cy="0" r="28" fill="url(#gold-glow-grad)"/>
+      <!-- Borde Negro Interior -->
+      <circle cx="0" cy="0" r="20" fill="#0F172A"/>
+      <!-- Núcleo Neón Azul Brillante -->
+      <circle cx="0" cy="0" r="14" fill="#0284C7"/>
+      <circle cx="0" cy="0" r="10" fill="#38BDF8" filter="url(#core-glow)"/>
+      <circle cx="0" cy="0" r="5" fill="#E0F2FE"/>
     </g>
 
-    <!-- 4. Emblema Pokéball Central en el Cierre -->
-    <circle cx="256" cy="240" r="34" fill="#0F172A"/>
-    <circle cx="256" cy="240" r="26" fill="url(#gold-ribbon)"/>
-    <circle cx="256" cy="240" r="20" fill="url(#box-white)"/>
-    <circle cx="256" cy="240" r="11" fill="#0F172A"/>
-    <circle cx="256" cy="240" r="6" fill="#FFFFFF"/>
+    <!-- 4. LAZO DE REGALO DORADO SUPERIOR (3D BOW) -->
+    <g filter="url(#neon-glow)" transform="translate(256, 110)">
+      <!-- Bucle Izquierdo -->
+      <path d="M 0 -8 C -45 -65 -110 -25 -65 15 C -35 25 -10 5 0 -4 Z" fill="url(#gold-glow-grad)"/>
+      <path d="M -5 -6 C -40 -48 -85 -18 -52 10 C -28 16 -12 4 -5 -3 Z" fill="#1E1B4B" opacity="0.35"/>
+      <path d="M -15 -25 C -45 -55 -85 -25 -55 5 Z" fill="#FFFFFF" opacity="0.45"/>
+
+      <!-- Bucle Derecho -->
+      <path d="M 0 -8 C 45 -65 110 -25 65 15 C 35 25 10 5 0 -4 Z" fill="url(#gold-glow-grad)"/>
+      <path d="M 5 -6 C 40 -48 85 -18 52 10 C 28 16 12 4 5 -3 Z" fill="#1E1B4B" opacity="0.35"/>
+      <path d="M 15 -25 C 45 -55 85 -25 55 5 Z" fill="#FFFFFF" opacity="0.45"/>
+
+      <!-- Cintas Colgantes del Lazo -->
+      <path d="M -8 2 C -30 20 -60 55 -85 75 C -75 75 -50 45 -5 18 Z" fill="url(#gold-glow-grad)"/>
+      <path d="M 8 2 C 30 20 60 55 85 75 C 75 75 50 45 5 18 Z" fill="url(#gold-glow-grad)"/>
+
+      <!-- Nudo Central Esférico -->
+      <circle cx="0" cy="-2" r="15" fill="url(#gold-glow-grad)"/>
+      <ellipse cx="-3" cy="-5" rx="5" ry="3" fill="#FFFFFF" opacity="0.75"/>
+    </g>
+
   </g>
 
-  <!-- 5. Destellos de Valor y Ahorro (Sparkles Dinámicos con Brillo) -->
-  <g filter="url(#gold-glow)">
-    <!-- Gran Estrella Superior Derecha -->
-    <path d="M 408 72 L 420 114 L 462 126 L 420 138 L 408 180 L 396 138 L 354 126 L 396 114 Z" fill="url(#star-sparkle)"/>
-    
-    <!-- Estrella Secundaria Superior Izquierda -->
-    <path d="M 104 88 L 112 110 L 134 118 L 112 126 L 104 148 L 96 126 L 74 118 L 96 110 Z" fill="url(#star-sparkle)" opacity="0.9"/>
+  <!-- 5. PARTÍCULAS, MONEDAS FLOTANTES Y DESTELLOS DE VALOR -->
+  <g filter="url(#neon-glow)">
+    <!-- Moneda Pokémoneda Flotante Superior Derecha -->
+    <g transform="translate(415, 120) scale(0.95)">
+      <circle cx="0" cy="0" r="22" fill="#F59E0B" stroke="#FDE047" stroke-width="3"/>
+      <circle cx="0" cy="0" r="16" fill="#FDE047" opacity="0.4"/>
+      <text x="0" y="7" font-family="Arial, sans-serif" font-size="20" font-weight="900" text-anchor="middle" fill="#78350F">P</text>
+    </g>
 
-    <!-- Pequeño Destello Inferior Derecho -->
-    <circle cx="430" cy="380" r="6" fill="#FDE047" opacity="0.85"/>
-    <circle cx="82" cy="320" r="5" fill="#FDE047" opacity="0.75"/>
+    <!-- Moneda Pokémoneda Flotante Superior Izquierda -->
+    <g transform="translate(95, 135) scale(0.8)">
+      <circle cx="0" cy="0" r="22" fill="#F59E0B" stroke="#FDE047" stroke-width="3"/>
+      <circle cx="0" cy="0" r="16" fill="#FDE047" opacity="0.4"/>
+      <text x="0" y="7" font-family="Arial, sans-serif" font-size="20" font-weight="900" text-anchor="middle" fill="#78350F">P</text>
+    </g>
+
+    <!-- Destellos Estelares -->
+    <path d="M 390 290 L 396 308 L 414 314 L 396 320 L 390 338 L 384 320 L 366 314 L 384 308 Z" fill="#FEF08A"/>
+    <path d="M 120 310 L 124 322 L 136 326 L 124 330 L 120 342 L 116 330 L 104 326 L 116 322 Z" fill="#FEF08A"/>
+    <path d="M 256 40 L 260 52 L 272 56 L 260 60 L 256 72 L 252 60 L 240 56 L 252 52 Z" fill="#FFFFFF"/>
+
+    <!-- Puntos de Luz / Chispas Mágicas -->
+    <circle cx="340" cy="90" r="4" fill="#FDE047"/>
+    <circle cx="165" cy="85" r="3.5" fill="#FDE047"/>
+    <circle cx="445" cy="220" r="3" fill="#FDE047"/>
+    <circle cx="75" cy="240" r="3.5" fill="#FDE047"/>
   </g>
 </svg>
