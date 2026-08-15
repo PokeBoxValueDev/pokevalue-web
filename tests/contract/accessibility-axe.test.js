@@ -82,17 +82,35 @@ test('accessibility/axe - Auditoría Oficial Axe-Core en 404.html (Página de Er
     assert.equal(results.violations.length, 0, `Axe-Core detectó violaciones en 404.html: ${results.violations.map(v => v.help).join(', ')}`);
 });
 
-test('accessibility/axe - Auditoría Oficial Axe-Core en visual-test-runner.html (Todas las 7 Secciones)', async () => {
+test('accessibility/axe - Auditoría Oficial Axe-Core en visual-test-runner.html (Modo Claro, Oscuro y Zoom 200%)', async () => {
     const htmlPath = path.resolve('tests/visual/visual-test-runner.html');
     const html = fs.readFileSync(htmlPath, 'utf8');
 
-    const dom = new JSDOM(html, { pretendToBeVisual: true });
-    const results = await axe.run(dom.window.document.documentElement, {
-        runOnly: {
-            type: 'tag',
-            values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']
-        }
+    // 1. Estado Base (Modo Oscuro)
+    const domDark = new JSDOM(html, { pretendToBeVisual: true });
+    const resultsDark = await axe.run(domDark.window.document.documentElement, {
+        runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'] }
     });
+    assert.equal(resultsDark.violations.length, 0, `Axe-Core detectó violaciones en visual-test-runner.html (Modo Oscuro): ${resultsDark.violations.map(v => v.help).join(', ')}`);
 
-    assert.equal(results.violations.length, 0, `Axe-Core detectó violaciones en visual-test-runner.html: ${results.violations.map(v => v.help).join(', ')}`);
+    // 2. Estado Modo Claro
+    const domLight = new JSDOM(html, { pretendToBeVisual: true });
+    domLight.window.document.documentElement.classList.remove('dark');
+    const resultsLight = await axe.run(domLight.window.document.documentElement, {
+        runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'] }
+    });
+    assert.equal(resultsLight.violations.length, 0, `Axe-Core detectó violaciones en visual-test-runner.html (Modo Claro): ${resultsLight.violations.map(v => v.help).join(', ')}`);
+
+    // 3. Estado con Zoom 200% Activo (Texto Grande)
+    const domZoom = new JSDOM(html, { pretendToBeVisual: true });
+    domZoom.window.document.documentElement.classList.remove('dark');
+    const zoomStatus = domZoom.window.document.getElementById('zoom-status');
+    if (zoomStatus) {
+        zoomStatus.innerText = 'Zoom 200% (Grande)';
+        zoomStatus.className = 'text-amber-800 dark:text-amber-300 font-bold';
+    }
+    const resultsZoom = await axe.run(domZoom.window.document.documentElement, {
+        runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'] }
+    });
+    assert.equal(resultsZoom.violations.length, 0, `Axe-Core detectó violaciones en visual-test-runner.html (Zoom 200% Activo): ${resultsZoom.violations.map(v => v.help).join(', ')}`);
 });
