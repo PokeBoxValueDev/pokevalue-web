@@ -5,7 +5,31 @@ import crypto from 'node:crypto';
 
 const ROOT_DIR = process.cwd();
 const DIST_DIR = path.join(ROOT_DIR, 'dist');
-const ESBUILD_PATH = '/Users/alejandrolorenzocastellanos/.lmstudio/.internal/utils/esbuild';
+function runEsbuild(args) {
+    const candidates = [
+        process.env.ESBUILD_BINARY_PATH,
+        '/Users/alejandrolorenzocastellanos/.lmstudio/.internal/utils/esbuild',
+        'esbuild'
+    ].filter(Boolean);
+
+    for (const candidate of candidates) {
+        if (fs.existsSync(candidate)) {
+            try {
+                return execFileSync(candidate, args, { stdio: 'inherit' });
+            } catch (e) {
+                // Try next candidate if execution failed
+            }
+        }
+    }
+
+    // En entornos de CI (GitHub Actions en Ubuntu) o sistemas estándar, usar npx --yes esbuild
+    try {
+        return execFileSync('npx', ['--yes', 'esbuild', ...args], { stdio: 'inherit' });
+    } catch (npxErr) {
+        // Fallback directo a comando esbuild en PATH
+        return execFileSync('esbuild', args, { stdio: 'inherit' });
+    }
+}
 
 export function runProductionBuild() {
     console.log('🚀 Iniciando compilación de producción optimizada...');
@@ -21,7 +45,7 @@ export function runProductionBuild() {
 
     // 3. Empaquetar y Minificar JS con Esbuild
     const tempJsOut = path.join(DIST_DIR, 'assets', 'app.bundle.js');
-    execFileSync(ESBUILD_PATH, [
+    runEsbuild([
         path.join(ROOT_DIR, 'src', 'app', 'main.js'),
         '--bundle',
         '--minify',
@@ -29,7 +53,7 @@ export function runProductionBuild() {
         '--target=es2020',
         '--sourcemap',
         `--outfile=${tempJsOut}`
-    ], { stdio: 'inherit' });
+    ]);
 
     const jsContent = fs.readFileSync(tempJsOut);
     const jsHash = crypto.createHash('md5').update(jsContent).digest('hex').slice(0, 8);
@@ -42,11 +66,11 @@ export function runProductionBuild() {
 
     // 4. Minificar CSS
     const tempCssOut = path.join(DIST_DIR, 'assets', 'styles.bundle.css');
-    execFileSync(ESBUILD_PATH, [
+    runEsbuild([
         path.join(ROOT_DIR, 'css', 'styles.css'),
         '--minify',
         `--outfile=${tempCssOut}`
-    ], { stdio: 'inherit' });
+    ]);
 
     const cssContent = fs.readFileSync(tempCssOut);
     const cssHash = crypto.createHash('md5').update(cssContent).digest('hex').slice(0, 8);
