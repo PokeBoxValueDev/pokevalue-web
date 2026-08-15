@@ -46,8 +46,8 @@
     </filter>
   </defs>
 
-  <!-- Fondo redondeado suave estilo App Icon moderno -->
-  <rect x="16" y="16" width="480" height="480" rx="108" fill="url(#bg-grad)"/>
+  <!-- Fondo Edge-to-Edge completo (512x512) para soporte PWA maskable -->
+  <rect width="512" height="512" fill="url(#bg-grad)"/>
 
   <!-- Halo de Luz Sutil Superior -->
   <circle cx="256" cy="120" r="180" fill="#818CF8" opacity="0.25"/>
