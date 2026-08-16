@@ -9,10 +9,9 @@ permissions:
   contents: write
 
 jobs:
-  release:
-    name: Create GitHub Release
+  test-and-validate:
+    name: Run Verification Test Suite
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -31,6 +30,12 @@ jobs:
       - name: Run Complete Test Suite
         run: npm test
 
+  release:
+    name: Create GitHub Release
+    needs: test-and-validate
+    if: success()
+    runs-on: ubuntu-latest
+    steps:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
