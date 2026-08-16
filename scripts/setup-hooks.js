@@ -9,7 +9,9 @@ echo "🔍 [Git Pre-Push Hook] Verificando sintaxis de JavaScript y Suite de Pru
 
 # Buscar binario de Node dinámicamente
 NODE_BIN="node"
-if [ -n "$HOME" ] && [ -f "$HOME/.lmstudio/.internal/utils/node" ]; then
+if [ -n "$PATH" ] && command -v node >/dev/null 2>&1; then
+    NODE_BIN="node"
+elif [ -n "$HOME" ] && [ -f "$HOME/.lmstudio/.internal/utils/node" ]; then
     NODE_BIN="$HOME/.lmstudio/.internal/utils/node"
 fi
 
