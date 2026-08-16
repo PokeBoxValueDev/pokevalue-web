@@ -29,9 +29,9 @@
 
     <!-- CSS & Styles -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@v3.0.0/dist/cookieconsent.css">
-    <link rel="stylesheet" href="/css/styles.css?v=1.31.7">
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=1.31.7">
-    <link rel="apple-touch-icon" href="/favicon.svg?v=1.31.7">
+    <link rel="stylesheet" href="/css/styles.css?v=1.31.8">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=1.31.8">
+    <link rel="apple-touch-icon" href="/favicon.svg?v=1.31.8">
 
     <!-- Canonical & SEO Hreflang Tags -->
     <link rel="canonical" href="https://pokeboxvalue.com/es">
@@ -466,18 +466,14 @@
         <div id="view-container"></div>
 <!-- Sección de Donaciones (Ko-fi) -->
 <div id="kofi-widget-container" class="text-center my-6 max-w-xl mx-auto px-4 flex justify-center min-h-[42px]">
-    <script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js' onload="if(typeof kofiwidget2 !== 'undefined'){ const lang = localStorage.getItem('lang') || (navigator.language.startsWith('es') ? 'es' : 'en'); const text = lang === 'es' ? 'Apoyar proyecto' : 'Support Project'; kofiwidget2.init(text, '#72a4f2', 'E1U623YPMD'); kofiwidget2.draw(); }"></script>
-    <script type='text/javascript'>
-        window.addEventListener('DOMContentLoaded', () => {
-            if (typeof kofiwidget2 !== 'undefined' && !document.querySelector('.kofi-button')) {
-                const lang = localStorage.getItem('lang') || (navigator.language.startsWith('es') ? 'es' : 'en');
-                const text = lang === 'es' ? 'Apoyar proyecto' : 'Support Project';
-                kofiwidget2.init(text, '#72a4f2', 'E1U623YPMD');
-                kofiwidget2.draw();
-            }
-        });
-    </script>
+    <a title="Support me on ko-fi.com" class="kofi-button inline-flex items-center gap-2 px-4 py-2.5 bg-[#72a4f2] hover:bg-[#5c8ee0] text-white font-bold rounded-xl text-xs sm:text-sm transition shadow-sm active:scale-[0.98] cursor-pointer touch-manipulation" href="https://ko-fi.com/E1U623YPMD" target="_blank" rel="noopener noreferrer">
+        <span class="kofitext flex items-center gap-2">
+            <img src="https://storage.ko-fi.com/cdn/cup-border.png" alt="Ko-fi donations" class="w-4 h-4 kofiimg inline-block">
+            <span data-i18n="coffeeBtn">Invítame a un café</span>
+        </span>
+    </a>
 </div>
+
 
 <!-- Sección Informativa SEO -->
 <section id="about-seo-section" class="max-w-xl mx-auto px-4 mt-8 mb-6">

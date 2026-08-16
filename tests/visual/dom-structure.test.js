@@ -112,8 +112,8 @@ test('visual/dom - Content Security Policy (CSP) header includes required domain
     assert.ok(html.includes('https://fundingchoicesmessages.google.com'), 'CSP must allow Google Funding Choices CMP');
     assert.ok(html.includes('https://*.googleadservices.com'), 'CSP must allow Google Ad Services');
 
-    // Safe Ko-fi widget script evaluation
-    assert.ok(html.includes("typeof kofiwidget2 !== 'undefined'"), 'Ko-fi widget script must guard against ReferenceError if script is blocked');
+    // Safe Ko-fi button check
+    assert.ok(html.includes('https://ko-fi.com/E1U623YPMD'), 'Ko-fi donation link must point to project account');
 });
 
 test('visual/dom - 404.html contains data-i18n localization attributes', () => {
