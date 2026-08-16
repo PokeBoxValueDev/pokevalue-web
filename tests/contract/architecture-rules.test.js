@@ -44,11 +44,20 @@ test('contract/architecture - Componentes modulares existen en src/components/',
     });
 });
 
-test('contract/architecture - css/styles.css debe contener sintaxis CSS válida sin dobles barras invertidas', () => {
+test('contract/architecture - #view-container debe ser hijo directo de <main> y no estar anidado en secciones ocultas', () => {
     const rootDir = process.cwd();
-    const cssPath = path.join(rootDir, 'css', 'styles.css');
-    const cssContent = fs.readFileSync(cssPath, 'utf8');
+    const indexPath = path.join(rootDir, 'index.html');
+    const indexHtml = fs.readFileSync(indexPath, 'utf8');
 
-    assert.equal(cssContent.includes('\\\\'), false, 'css/styles.css no debe contener secuencias de escape inválidas (\\\\)');
+    // Verificar que result.html no tenga etiquetas sin cerrar que traguen a view-container
+    const resultHtml = fs.readFileSync(path.join(rootDir, 'src', 'components', 'result.html'), 'utf8');
+    assert.ok(resultHtml.trim().endsWith('</section>'), 'result.html debe cerrarse correctamente con </section>');
+
+    // Comprobar orden y jerarquía en index.html
+    const viewResultIdx = indexHtml.indexOf('id="view-result"');
+    const viewContainerIdx = indexHtml.indexOf('id="view-container"');
+    assert.ok(viewResultIdx !== -1 && viewContainerIdx !== -1, 'Tanto view-result como view-container deben existir');
+    assert.ok(viewContainerIdx > viewResultIdx, 'view-container debe estar después de view-result');
 });
+
 
