@@ -23,6 +23,18 @@ summary,
     touch-action: manipulation !important;
 }
 
+/* Ocultar flechas/spinners en inputs de tipo numérico (Chrome, Safari, Edge, Opera, Firefox) */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0 !important;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield !important;
+    appearance: textfield !important;
+}
+
 /* Soporte de Safe Areas para iPhone y dispositivos con barra de gestos */
 #live-sticky-bar {
     bottom: max(1rem, env(safe-area-inset-bottom, 1rem)) !important;

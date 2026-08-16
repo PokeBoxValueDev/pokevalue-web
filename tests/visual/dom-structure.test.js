@@ -172,4 +172,14 @@ test('visual/dom - Google AdSense, Consent Mode and GA4 configuration are preser
     assert.ok(indexHtml.includes("gtag('consent', 'default'"), 'index.html must include Google Consent Mode v2');
 });
 
+test('visual/dom - css/styles.css hides native number input spinners for clean UX', () => {
+    const cssPath = path.resolve('css/styles.css');
+    const css = fs.readFileSync(cssPath, 'utf8');
+
+    assert.ok(css.includes('-webkit-outer-spin-button'), 'styles.css must style -webkit-outer-spin-button');
+    assert.ok(css.includes('-webkit-inner-spin-button'), 'styles.css must style -webkit-inner-spin-button');
+    assert.ok(css.includes('-moz-appearance: textfield'), 'styles.css must set -moz-appearance: textfield');
+});
+
+
 
