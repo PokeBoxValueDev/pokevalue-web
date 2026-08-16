@@ -13,8 +13,11 @@ export class RouterController {
             return { lang: null, view: '', isRecognized: true };
         }
 
-        // Limpiar slashes iniciales, finales y .html si existiera
-        const clean = pathname.replace(/^\/+|\/+$/g, '').replace(/\.html$/, '');
+        // Limpiar slashes iniciales, finales, /index y .html si existiera
+        const clean = pathname
+            .replace(/^\/+|\/+$/g, '')
+            .replace(/(\/index)?\.html$/i, '')
+            .replace(/\/index$/i, '');
         const parts = clean.split('/').filter(Boolean);
 
         let lang = null;
@@ -26,6 +29,8 @@ export class RouterController {
         } else {
             view = parts.join('/');
         }
+
+        view = (view || '').toLowerCase().trim();
 
         // Normalizar alias de vistas
         if (view === 'terms') view = 'legal';

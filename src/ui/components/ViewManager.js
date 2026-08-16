@@ -15,12 +15,20 @@ export function renderView(viewName) {
 
     if (!viewContainer) return;
 
-    if (viewName && VIEW_TEMPLATES[viewName]) {
+    // Normalizar viewName (quitar barras, minúsculas, mapear alias)
+    const normalizedView = (viewName || '').toLowerCase().replace(/^\/+|\/+$/g, '');
+    const canonicalKey = (normalizedView === 'terms' ? 'legal' : (normalizedView === 'faqs' ? 'faq' : normalizedView));
+
+    if (canonicalKey && VIEW_TEMPLATES[canonicalKey]) {
         if (viewForm) viewForm.classList.add('hidden');
         if (viewResult) viewResult.classList.add('hidden');
         if (kofiContainer) kofiContainer.classList.add('hidden');
 
-        viewContainer.innerHTML = VIEW_TEMPLATES[viewName];
+        // Si ya contiene la vista estática, no re-inyectar innecesariamente
+        const existingViewEl = document.getElementById(`view-${canonicalKey}`);
+        if (!existingViewEl) {
+            viewContainer.innerHTML = VIEW_TEMPLATES[canonicalKey];
+        }
         viewContainer.classList.remove('hidden');
 
         // Traducir los elementos inyectados en la vista dinámicamente
@@ -29,7 +37,8 @@ export function renderView(viewName) {
         if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-    } else {
+    } else if (!canonicalKey) {
+        // Solo limpiar si explícitamente se vuelve a la raíz (sin vista)
         viewContainer.innerHTML = '';
         viewContainer.classList.add('hidden');
         if (kofiContainer) kofiContainer.classList.remove('hidden');
