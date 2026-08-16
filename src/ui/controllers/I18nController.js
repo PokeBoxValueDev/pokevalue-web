@@ -4,8 +4,6 @@ import { CalculatorController } from './CalculatorController.js';
 import { renderItems } from '../components/ItemCardRenderer.js';
 import { state } from '../../config/config.js';
 
-import { RouterController } from './RouterController.js';
-
 export class I18nController {
     static detectLanguage() {
         const savedLang = typeof localStorage !== 'undefined' ? localStorage.getItem('lang') : null;
@@ -47,13 +45,8 @@ export class I18nController {
         
         if (langSelect) {
             langSelect.value = initialLang;
-            I18nController.applyLanguage(initialLang);
-            
-            langSelect.addEventListener('change', () => {
-                const selectedLang = langSelect.value;
-                RouterController.navigateToLang(selectedLang);
-            });
         }
+        I18nController.applyLanguage(initialLang);
     }
 
     static reRenderItems() {

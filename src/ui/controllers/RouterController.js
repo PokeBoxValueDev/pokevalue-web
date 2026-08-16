@@ -111,6 +111,14 @@ export class RouterController {
                     }
                 }
             });
+
+            // Sincronización de cambio de idioma desde el selector UI
+            const langSelect = document.getElementById('lang-select');
+            if (langSelect) {
+                langSelect.addEventListener('change', () => {
+                    RouterController.navigateToLang(langSelect.value);
+                });
+            }
         }
 
         // Procesar la ruta actual inicial

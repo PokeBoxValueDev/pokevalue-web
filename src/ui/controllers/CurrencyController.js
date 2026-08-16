@@ -1,6 +1,6 @@
 import { CURRENCY_CONFIG, state } from '../../config/config.js';
 import { t } from '../../i18n/i18n.js';
-import { I18nController } from './I18nController.js';
+import { renderItems } from '../components/ItemCardRenderer.js';
 
 export class CurrencyController {
     static detectCurrency() {
@@ -34,7 +34,8 @@ export class CurrencyController {
                 const selectedCurr = currSelect.value;
                 state.setCurrency(selectedCurr);
                 CurrencyController.updateCurrencyUI();
-                I18nController.reRenderItems();
+                const searchInput = document.getElementById('search-input');
+                renderItems(state.storeData, searchInput ? searchInput.value : '');
             });
         }
         
