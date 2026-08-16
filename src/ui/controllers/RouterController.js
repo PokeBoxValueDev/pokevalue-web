@@ -122,9 +122,8 @@ export class RouterController {
      */
     static navigate(path, { replace = false } = {}) {
         const currentPath = (typeof window !== 'undefined' && window.location && window.location.pathname) ? window.location.pathname : '';
-        if (currentPath === path) return;
 
-        if (typeof window !== 'undefined' && window.history) {
+        if (typeof window !== 'undefined' && window.history && currentPath !== path) {
             if (replace && typeof window.history.replaceState === 'function') {
                 window.history.replaceState(null, '', path);
             } else if (!replace && typeof window.history.pushState === 'function') {

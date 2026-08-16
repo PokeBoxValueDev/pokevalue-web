@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pokeboxvalue-v1.31.2';
+const CACHE_NAME = 'pokeboxvalue-v1.31.3';
 const STATIC_ASSETS = [
     './',
     './index.html',
@@ -61,28 +61,20 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
-    // 3. Navegación (HTML): Cache-First con actualización en segundo plano (0ms de carga)
+    // 3. Navegación (HTML): Network-First con fallback a caché (resiliente para todas las rutas y vistas)
     if (isNavigation) {
         event.respondWith(
-            caches.match('./index.html').then((cachedHtml) => {
-                const networkFetch = fetch(event.request)
-                    .then((networkResponse) => {
-                        if (networkResponse && networkResponse.status === 200) {
-                            const responseClone = networkResponse.clone();
-                            caches.open(CACHE_NAME).then((cache) => cache.put('./index.html', responseClone));
-                        }
-                        return networkResponse;
-                    })
-                    .catch(() => cachedHtml);
-
-                if (cachedHtml) {
-                    // Si ya está en caché, responder de inmediato y actualizar en segundo plano
-                    networkFetch.catch(() => {});
-                    return cachedHtml;
-                }
-
-                return networkFetch;
-            })
+            fetch(event.request)
+                .then((networkResponse) => {
+                    if (networkResponse && networkResponse.status === 200) {
+                        const responseClone = networkResponse.clone();
+                        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseClone));
+                    }
+                    return networkResponse;
+                })
+                .catch(async () => {
+                    return (await caches.match(event.request)) || (await caches.match('./index.html')) || (await caches.match('./404.html'));
+                })
         );
         return;
     }
