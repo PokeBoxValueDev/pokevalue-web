@@ -29,6 +29,9 @@ jobs:
         with:
           node-version: 22
 
+      - name: Install Dependencies
+        run: npm ci
+
       - name: Run Syntax Linter and Full Test Suite (Generates dist/)
         run: npm test
 

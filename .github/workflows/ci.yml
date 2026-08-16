@@ -20,6 +20,9 @@ jobs:
         with:
           node-version: 22
 
+      - name: Install Dependencies
+        run: npm ci
+
       - name: Verify JavaScript Syntax & Lint
         run: npm run lint
 
