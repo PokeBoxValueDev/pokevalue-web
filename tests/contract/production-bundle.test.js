@@ -38,8 +38,6 @@ test('contract/production-bundle - Genera bundle de producción minificado con h
         'manifest.json',
         'favicon.svg',
         'favicon-light.svg',
-        'favicon.png',
-        'logo.png',
         'og-image.svg',
         '404.html'
     ];
