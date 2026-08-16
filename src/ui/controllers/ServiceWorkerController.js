@@ -13,7 +13,7 @@ export class ServiceWorkerController {
 
             const registerWorker = async () => {
                 try {
-                    const reg = await navigator.serviceWorker.register('./sw.js');
+                    const reg = await navigator.serviceWorker.register('/sw.js', { scope: '/' });
                     if (reg && typeof reg.update === 'function') {
                         reg.update();
                     }

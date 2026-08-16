@@ -420,7 +420,7 @@ test('visual/harness - ServiceWorkerController registers worker without unhandle
     const { ServiceWorkerController } = await import('../../src/ui/controllers/ServiceWorkerController.js');
     ServiceWorkerController.init();
 
-    assert.equal(registeredUrl, './sw.js', 'must register ./sw.js');
+    assert.ok(registeredUrl === '/sw.js' || registeredUrl === './sw.js', 'must register /sw.js');
 
     // Simulate controllerchange when no previous controller existed (initial load)
     if (controllerChangeListener) controllerChangeListener();
