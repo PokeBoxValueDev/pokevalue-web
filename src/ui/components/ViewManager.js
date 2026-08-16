@@ -1,4 +1,3 @@
-import { RouterController } from '../controllers/RouterController.js';
 import { updateDOMTranslations } from '../../i18n/i18n.js';
 import { VIEW_TEMPLATES } from './views-data.js';
 
@@ -19,7 +18,7 @@ export function renderView(viewName) {
     const normalizedView = (viewName || '').toLowerCase().replace(/^\/+|\/+$/g, '');
     const canonicalKey = (normalizedView === 'terms' ? 'legal' : (normalizedView === 'faqs' ? 'faq' : normalizedView));
 
-    if (canonicalKey && VIEW_TEMPLATES[canonicalKey]) {
+    if (canonicalKey && VIEW_TEMPLATES && VIEW_TEMPLATES[canonicalKey]) {
         if (viewForm) {
             viewForm.classList.add('hidden');
             if (viewForm.style) viewForm.style.display = 'none';
@@ -68,7 +67,7 @@ export function renderView(viewName) {
 
 /**
  * Gestor de Vistas y Páginas Secundarias (/faq, /legal, /privacy)
- * Maneja la navegación, delegación de eventos y accesibilidad por teclado.
+ * Maneja la navegación y delegación de eventos en el DOM.
  */
 export function setupViews() {
     if (typeof document === 'undefined') return;
@@ -81,11 +80,11 @@ export function setupViews() {
             const id = targetBtn.id || targetBtn.getAttribute('data-i18n') || targetBtn.getAttribute('data-cc');
 
             if (id === 'btn-legal' || id === 'btnLegal') {
-                RouterController.openModalRoute('legal');
+                renderView('legal');
             } else if (id === 'btn-privacy' || id === 'btnPrivacy') {
-                RouterController.openModalRoute('privacy');
+                renderView('privacy');
             } else if (id === 'btn-faq' || id === 'btnFaq') {
-                RouterController.openModalRoute('faq');
+                renderView('faq');
             } else if (id === 'btn-cookies' || id === 'show-preferencesModal') {
                 if (typeof window !== 'undefined' && typeof window.CookieConsent !== 'undefined' && typeof window.CookieConsent.showPreferences === 'function') {
                     window.CookieConsent.showPreferences();
@@ -99,22 +98,11 @@ export function setupViews() {
         const closeBtn = e.target && e.target.closest ? e.target.closest('#legal-modal button, #privacy-modal button, #view-legal button, #view-privacy button, #view-faq button, .btn-close-modal, .btn-back-home') : null;
         if (closeBtn) {
             e.preventDefault();
-            RouterController.closeModalRoute();
+            renderView('');
         }
     });
-
-    // Volver a la calculadora al pulsar la tecla Escape (Accesibilidad por teclado)
-    if (typeof window !== 'undefined' && typeof window.addEventListener === 'function') {
-        window.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                const viewContainer = document.getElementById('view-container');
-                if (viewContainer && !viewContainer.classList.contains('hidden') && viewContainer.innerHTML.trim() !== '') {
-                    RouterController.closeModalRoute();
-                }
-            }
-        });
-    }
 }
 
 // Alias de retrocompatibilidad
 export const setupModals = setupViews;
+
