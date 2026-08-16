@@ -84,6 +84,7 @@ export function runProductionBuild() {
         'ads.txt',
         'CNAME',
         'favicon.svg',
+        'favicon-light.svg',
         'favicon.png',
         'logo.png',
         'og-image.svg',

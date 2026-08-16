@@ -9,6 +9,7 @@ import { RouterController } from '../../src/ui/controllers/RouterController.js';
 test('visual/views - renderView renders faq, legal and privacy without hidden class and toggles kofi and about-seo', () => {
     const html = fs.readFileSync(path.resolve('index.html'), 'utf8');
     const dom = new JSDOM(html, { url: 'https://pokeboxvalue.com/es' });
+    dom.window.scrollTo = () => {};
     global.window = dom.window;
     global.document = dom.window.document;
     global.localStorage = dom.window.localStorage;
@@ -28,7 +29,7 @@ test('visual/views - renderView renders faq, legal and privacy without hidden cl
     assert.equal(viewContainer.querySelector('#view-faq')?.classList.contains('hidden'), false, 'view-faq no debe tener la clase hidden');
     assert.equal(viewForm.classList.contains('hidden'), true, 'view-form debe estar oculto');
     if (kofiContainer) assert.equal(kofiContainer.classList.contains('hidden'), true, 'kofi debe estar oculto en vista secundaria');
-    if (aboutSeo) assert.equal(aboutSeo.classList.contains('hidden'), true, 'about-seo debe estar oculto en vista secundaria');
+    if (aboutSeo) assert.equal(aboutSeo.classList.contains('hidden'), false, 'about-seo debe permanecer visible como sección informativa');
 
     // 2. Abrir vista Legal
     renderView('legal');
@@ -45,7 +46,7 @@ test('visual/views - renderView renders faq, legal and privacy without hidden cl
     assert.equal(viewContainer.classList.contains('hidden'), true, 'view-container debe ocultarse');
     assert.equal(viewForm.classList.contains('hidden'), false, 'view-form debe volver a ser visible');
     if (kofiContainer) assert.equal(kofiContainer.classList.contains('hidden'), false, 'kofi debe volver a ser visible');
-    if (aboutSeo) assert.equal(aboutSeo.classList.contains('hidden'), false, 'about-seo debe volver a ser visible');
+    if (aboutSeo) assert.equal(aboutSeo.classList.contains('hidden'), false, 'about-seo debe permanecer visible');
 });
 
 test('visual/views - lang-select y currency-select poseen estilos visibles y valores válidos', () => {

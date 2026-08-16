@@ -12,7 +12,6 @@ export function renderView(viewName) {
     const viewForm = document.getElementById('view-form');
     const viewResult = document.getElementById('view-result');
     const kofiContainer = document.getElementById('kofi-widget-container');
-    const aboutSeoSection = document.getElementById('about-seo-section');
 
     if (!viewContainer) return;
 
@@ -20,7 +19,6 @@ export function renderView(viewName) {
         if (viewForm) viewForm.classList.add('hidden');
         if (viewResult) viewResult.classList.add('hidden');
         if (kofiContainer) kofiContainer.classList.add('hidden');
-        if (aboutSeoSection) aboutSeoSection.classList.add('hidden');
 
         viewContainer.innerHTML = VIEW_TEMPLATES[viewName];
         viewContainer.classList.remove('hidden');
@@ -36,7 +34,6 @@ export function renderView(viewName) {
         viewContainer.innerHTML = '';
         viewContainer.classList.add('hidden');
         if (kofiContainer) kofiContainer.classList.remove('hidden');
-        if (aboutSeoSection) aboutSeoSection.classList.remove('hidden');
 
         if (viewForm) {
             if (viewResult && !viewResult.classList.contains('hidden')) {
