@@ -93,11 +93,11 @@ export class RouterController {
                 }
             });
 
-            // Cerrar vistas / volver a inicio al pulsar cualquier botón de volver
+            // Cerrar vistas / volver a inicio al pulsar cualquier botón de volver o el logo de cabecera
             document.addEventListener('click', (e) => {
-                const closeBtn = e.target && e.target.closest ? e.target.closest('#legal-modal button, #privacy-modal button, #view-legal button, #view-privacy button, #view-faq button, .btn-close-modal, .btn-back-home') : null;
+                const closeBtn = e.target && e.target.closest ? e.target.closest('#legal-modal button, #privacy-modal button, #view-legal button, #view-privacy button, #view-faq button, .btn-close-modal, .btn-back-home, #site-logo') : null;
                 if (closeBtn) {
-                    e.preventDefault();
+                    if (e && typeof e.preventDefault === 'function') e.preventDefault();
                     RouterController.closeModalRoute();
                 }
             });

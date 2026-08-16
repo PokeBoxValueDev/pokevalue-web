@@ -8,6 +8,7 @@ import { renderHistory } from '../components/HistoryRenderer.js';
 import { HistoryRepository } from '../../infrastructure/repositories/HistoryRepository.js';
 import { generateSocialCardCanvas } from '../components/SocialCardGenerator.js';
 import { setCategoryFilter } from '../components/ItemCardRenderer.js';
+import { renderView } from '../components/ViewManager.js';
 
 export class CalculatorController {
     static _valuationService = ValuationService;
@@ -92,6 +93,7 @@ export class CalculatorController {
                 if (e && typeof e.preventDefault === 'function') e.preventDefault();
                 CalculatorController.switchView(false);
                 CalculatorController.resetForm();
+                renderView('');
                 if (typeof window !== 'undefined' && window.history && typeof window.history.pushState === 'function') {
                     const currentLang = state.currentLang || 'es';
                     window.history.pushState(null, '', `/${currentLang}`);
