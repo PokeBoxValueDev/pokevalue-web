@@ -77,14 +77,20 @@ let assembledIndexHtml = templateHtml
     .replace(/href="\/favicon\.png(\?v=[^"]*)?"/g, `href="/favicon.png?v=${appVersion}"`)
     .replace(/href="\/css\/styles\.css(\?v=[^"]*)?"/g, `href="/css/styles.css?v=${appVersion}"`);
 
-fs.writeFileSync(indexHtmlPath, assembledIndexHtml, 'utf8');
+function atomicWrite(targetPath, content) {
+    const tempPath = `${targetPath}.tmp.${Date.now()}.${Math.random().toString(36).slice(2, 8)}`;
+    fs.writeFileSync(tempPath, content, 'utf8');
+    fs.renameSync(tempPath, targetPath);
+}
+
+atomicWrite(indexHtmlPath, assembledIndexHtml);
 console.log(`✅ index.html ensamblado con éxito (Cache-Busting activado para v${appVersion}).`);
 
 // Actualizar también 404.html con versión para cache busting del favicon
 if (fs.existsSync(notFoundHtmlPath)) {
     let notFoundHtml = fs.readFileSync(notFoundHtmlPath, 'utf8');
     notFoundHtml = notFoundHtml.replace(/href="\/favicon\.svg(\?v=[^"]*)?"/g, `href="/favicon.svg?v=${appVersion}"`);
-    fs.writeFileSync(notFoundHtmlPath, notFoundHtml, 'utf8');
+    atomicWrite(notFoundHtmlPath, notFoundHtml);
     console.log(`✅ 404.html actualizado con Cache-Busting del favicon v${appVersion}.`);
 }
 
@@ -93,6 +99,6 @@ const visualRunnerPath = path.join(rootDir, 'tests', 'visual', 'visual-test-runn
 if (fs.existsSync(visualRunnerPath)) {
     let visualRunnerHtml = fs.readFileSync(visualRunnerPath, 'utf8');
     visualRunnerHtml = visualRunnerHtml.replace(/v\d+\.\d+\.\d+/g, `v${appVersion}`);
-    fs.writeFileSync(visualRunnerPath, visualRunnerHtml, 'utf8');
+    atomicWrite(visualRunnerPath, visualRunnerHtml);
     console.log(`✅ visual-test-runner.html sincronizado con versión v${appVersion}.`);
 }
