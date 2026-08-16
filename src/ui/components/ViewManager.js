@@ -1,5 +1,5 @@
 import { RouterController } from '../controllers/RouterController.js';
-import { I18nController } from '../controllers/I18nController.js';
+import { updateDOMTranslations } from '../../i18n/i18n.js';
 import { VIEW_TEMPLATES } from './views-data.js';
 
 /**
@@ -23,9 +23,8 @@ export function renderView(viewName) {
         viewContainer.innerHTML = VIEW_TEMPLATES[viewName];
         viewContainer.classList.remove('hidden');
 
-        // Traducir los elementos inyectados en la vista dinámicamente con el idioma actual
-        const currentLang = I18nController.detectLanguage();
-        I18nController.applyLanguage(currentLang);
+        // Traducir los elementos inyectados en la vista dinámicamente
+        updateDOMTranslations();
 
         if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
             window.scrollTo({ top: 0, behavior: 'smooth' });
