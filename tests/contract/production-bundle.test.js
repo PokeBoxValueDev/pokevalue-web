@@ -44,4 +44,17 @@ test('contract/production-bundle - Genera bundle de producción minificado con h
     requiredStaticFiles.forEach(file => {
         assert.ok(fs.existsSync(path.join(distDir, file)), `dist/${file} debe existir en el bundle de producción`);
     });
+
+    // 5. Verificar generación de páginas estáticas para rutas secundarias y SEO
+    const requiredStaticRoutes = [
+        'es/index.html',
+        'en/index.html',
+        'es/faq/index.html',
+        'es/legal/index.html',
+        'es/privacy/index.html'
+    ];
+    requiredStaticRoutes.forEach(routeFile => {
+        const routePath = path.join(distDir, routeFile);
+        assert.ok(fs.existsSync(routePath), `dist/${routeFile} debe existir para acceso directo y SEO`);
+    });
 });

@@ -123,7 +123,55 @@ export function runProductionBuild() {
         }
     });
 
-    console.log(`✅ [Production Build] Dist generado con éxito en dist/`);
+    // 7. Generar páginas estáticas dedicadas en dist/ para todas las rutas y vistas (GitHub Pages / SEO)
+    const viewTemplates = {
+        faq: fs.readFileSync(path.join(ROOT_DIR, 'src', 'components', 'views', 'faq.html'), 'utf8'),
+        legal: fs.readFileSync(path.join(ROOT_DIR, 'src', 'components', 'views', 'legal.html'), 'utf8'),
+        terms: fs.readFileSync(path.join(ROOT_DIR, 'src', 'components', 'views', 'legal.html'), 'utf8'),
+        privacy: fs.readFileSync(path.join(ROOT_DIR, 'src', 'components', 'views', 'privacy.html'), 'utf8')
+    };
+
+    const routes = [
+        { path: 'es', lang: 'es', view: null },
+        { path: 'en', lang: 'en', view: null },
+        { path: 'faq', lang: 'es', view: 'faq' },
+        { path: 'es/faq', lang: 'es', view: 'faq' },
+        { path: 'en/faq', lang: 'en', view: 'faq' },
+        { path: 'faqs', lang: 'es', view: 'faq' },
+        { path: 'es/faqs', lang: 'es', view: 'faq' },
+        { path: 'en/faqs', lang: 'en', view: 'faq' },
+        { path: 'legal', lang: 'es', view: 'legal' },
+        { path: 'es/legal', lang: 'es', view: 'legal' },
+        { path: 'en/legal', lang: 'en', view: 'legal' },
+        { path: 'terms', lang: 'es', view: 'terms' },
+        { path: 'es/terms', lang: 'es', view: 'terms' },
+        { path: 'en/terms', lang: 'en', view: 'terms' },
+        { path: 'privacy', lang: 'es', view: 'privacy' },
+        { path: 'es/privacy', lang: 'es', view: 'privacy' },
+        { path: 'en/privacy', lang: 'en', view: 'privacy' }
+    ];
+
+    const baseDistHtml = fs.readFileSync(path.join(DIST_DIR, 'index.html'), 'utf8');
+
+    routes.forEach(route => {
+        const routeDir = path.join(DIST_DIR, ...route.path.split('/'));
+        fs.mkdirSync(routeDir, { recursive: true });
+
+        let routeHtml = baseDistHtml;
+        if (route.view && viewTemplates[route.view]) {
+            // Ocultar formulario de calculadora y renderizar la vista secundaria directamente en el HTML
+            routeHtml = routeHtml
+                .replace(/id="view-form"\s+class="/, 'id="view-form" class="hidden ')
+                .replace('<div id="view-container"></div>', `<div id="view-container">${viewTemplates[route.view]}</div>`);
+        }
+        if (route.lang) {
+            routeHtml = routeHtml.replace(/<html lang="[^"]*"/, `<html lang="${route.lang}"`);
+        }
+
+        fs.writeFileSync(path.join(routeDir, 'index.html'), routeHtml, 'utf8');
+    });
+
+    console.log(`✅ [Production Build] Dist generado con éxito en dist/ con soporte estático para ${routes.length} rutas.`);
     console.log(`📦 JS Bundle: /assets/${finalJsName} (${(jsContent.length / 1024).toFixed(1)} KB)`);
     console.log(`🎨 CSS Bundle: /assets/${finalCssName} (${(cssContent.length / 1024).toFixed(1)} KB)`);
 }
