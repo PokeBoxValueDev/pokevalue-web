@@ -59,8 +59,17 @@ test('visual/category-filter - Consumibles filter and all category pills filter 
     const pasesGroup = container.querySelector('.category-group[data-category="pases"]');
     assert.ok(pasesGroup.classList.contains('hidden'), 'Pases group must be hidden when consumibles is active');
 
-    // 3. Switch back to 'all'
+    // 3. Deselect consumibles and select 'combates' filter
+    toggleCategoryFilter('consumibles'); // toggles off consumibles
+    toggleCategoryFilter('combates'); // toggles on combates
+    const combatesGroup = container.querySelector('.category-group[data-category="combates"]');
+    assert.ok(combatesGroup, 'Combates group must exist');
+    assert.ok(!combatesGroup.classList.contains('hidden'), 'Combates group must be visible when combates filter is active');
+    assert.ok(consumiblesGroup.classList.contains('hidden'), 'Consumibles group must be hidden when only combates is active');
+
+    // 4. Switch back to 'all'
     toggleCategoryFilter('all');
     assert.ok(!consumiblesGroup.classList.contains('hidden'), 'Consumibles group must be visible when all is active');
+    assert.ok(!combatesGroup.classList.contains('hidden'), 'Combates group must be visible when all is active');
     assert.ok(!pasesGroup.classList.contains('hidden'), 'Pases group must be visible when all is active');
 });

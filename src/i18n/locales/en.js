@@ -20,12 +20,13 @@ export default {
     btnResetQty: "Clear",
     btnInstallApp: "Install App",
 
-    // Quick Filter Pills
+    // Quick Category Filter Pills
     filterAll: "All",
     filterPasses: "Passes",
     filterIncubators: "Incubators",
-    filterBoosts: "Boosts",
+    filterBoosts: "Boosters",
     filterUpgrades: "Upgrades",
+    filterBattles: "Battles",
     filterConsumables: "Consumables",
     filterOther: "Other",
 

@@ -26,6 +26,7 @@ export default {
     filterIncubators: "Incubadoras",
     filterBoosts: "Potenciadores",
     filterUpgrades: "Mejoras",
+    filterBattles: "Combates",
     filterConsumables: "Consumibles",
     filterOther: "Otros",
 
