@@ -18,23 +18,36 @@ test('i18n/localization - t() traduce claves y maneja fallbacks', () => {
 });
 
 test('i18n/localization - I18nController detecta idioma del navegador automáticamente', () => {
-    const originalNavigator = globalThis.navigator;
+    const originalLanguage = globalThis.navigator?.language;
+    const originalLanguages = globalThis.navigator?.languages;
     const originalStorage = globalThis.localStorage;
 
     globalThis.localStorage = { getItem: () => null, setItem: () => {} };
 
     // Español
-    globalThis.navigator = { language: 'es-ES', languages: ['es-ES', 'es'] };
+    try {
+        Object.defineProperty(globalThis.navigator, 'language', { value: 'es-ES', configurable: true });
+        Object.defineProperty(globalThis.navigator, 'languages', { value: ['es-ES', 'es'], configurable: true });
+    } catch {}
     assert.equal(I18nController.detectLanguage(), 'es');
 
     // Inglés
-    globalThis.navigator = { language: 'en-US', languages: ['en-US', 'en'] };
+    try {
+        Object.defineProperty(globalThis.navigator, 'language', { value: 'en-US', configurable: true });
+        Object.defineProperty(globalThis.navigator, 'languages', { value: ['en-US', 'en'], configurable: true });
+    } catch {}
     assert.equal(I18nController.detectLanguage(), 'en');
 
     // Idioma no soportado (fallback a es)
-    globalThis.navigator = { language: 'fr-FR', languages: ['fr-FR', 'fr'] };
+    try {
+        Object.defineProperty(globalThis.navigator, 'language', { value: 'fr-FR', configurable: true });
+        Object.defineProperty(globalThis.navigator, 'languages', { value: ['fr-FR', 'fr'], configurable: true });
+    } catch {}
     assert.equal(I18nController.detectLanguage(), 'es');
 
-    globalThis.navigator = originalNavigator;
+    try {
+        Object.defineProperty(globalThis.navigator, 'language', { value: originalLanguage, configurable: true });
+        Object.defineProperty(globalThis.navigator, 'languages', { value: originalLanguages, configurable: true });
+    } catch {}
     globalThis.localStorage = originalStorage;
 });

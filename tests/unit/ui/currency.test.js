@@ -4,20 +4,32 @@ import { CurrencyController } from '../../../src/ui/controllers/CurrencyControll
 import { state } from '../../../src/config/config.js';
 
 test('ui/currency - detectCurrency detecta divisa regional (EUR/USD)', () => {
-    const originalNavigator = globalThis.navigator;
+    const originalLanguage = globalThis.navigator?.language;
+    const originalLanguages = globalThis.navigator?.languages;
     const originalStorage = globalThis.localStorage;
 
     globalThis.localStorage = { getItem: () => null, setItem: () => {} };
 
     // Estados Unidos -> USD
-    globalThis.navigator = { language: 'en-US' };
+    try {
+        Object.defineProperty(globalThis.navigator, 'language', { value: 'en-US', configurable: true });
+        Object.defineProperty(globalThis.navigator, 'languages', { value: ['en-US'], configurable: true });
+    } catch {
+        // Fallback if navigator is not defineProperty configurable
+    }
     assert.equal(CurrencyController.detectCurrency(), 'USD');
 
     // España -> EUR
-    globalThis.navigator = { language: 'es-ES' };
+    try {
+        Object.defineProperty(globalThis.navigator, 'language', { value: 'es-ES', configurable: true });
+        Object.defineProperty(globalThis.navigator, 'languages', { value: ['es-ES'], configurable: true });
+    } catch {}
     assert.equal(CurrencyController.detectCurrency(), 'EUR');
 
-    globalThis.navigator = originalNavigator;
+    try {
+        Object.defineProperty(globalThis.navigator, 'language', { value: originalLanguage, configurable: true });
+        Object.defineProperty(globalThis.navigator, 'languages', { value: originalLanguages, configurable: true });
+    } catch {}
     globalThis.localStorage = originalStorage;
 });
 
