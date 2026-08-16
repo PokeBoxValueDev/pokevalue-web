@@ -149,8 +149,8 @@ export function renderItems(items) {
                             ${categoryLabel}
                         </span>
                     </div>
-                    <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/80 dark:bg-gray-800/80 ${config.text || 'text-gray-600 dark:text-gray-300'} shadow-2xs flex-shrink-0">
-                        ${categoryItems.length}
+                    <span class="category-count-badge text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/80 dark:bg-gray-800/80 ${config.text || 'text-gray-600 dark:text-gray-300'} shadow-2xs flex-shrink-0" data-category="${catKey}" data-total="${categoryItems.length}">
+                        0/${categoryItems.length}
                     </span>
                 </div>
 
@@ -233,6 +233,23 @@ export function renderItems(items) {
         `;
     }).join('');
 
+    function updateCategoryCountBadges() {
+        if (!container || typeof container.querySelectorAll !== 'function') return;
+        container.querySelectorAll('.category-group').forEach(group => {
+            const badge = group.querySelector('.category-count-badge');
+            if (!badge) return;
+            const total = parseInt(badge.getAttribute('data-total')) || group.querySelectorAll('.item-card').length;
+            let countWithData = 0;
+            group.querySelectorAll('.item-card').forEach(card => {
+                const input = card.querySelector('.item-qty');
+                if (input && (parseInt(input.value) || 0) > 0) {
+                    countWithData++;
+                }
+            });
+            badge.textContent = `${countWithData}/${total}`;
+        });
+    }
+
     function updateCardHighlight(input) {
         if (!input) return;
         const id = input.getAttribute('data-id');
@@ -247,6 +264,7 @@ export function renderItems(items) {
                 card.classList.add('bg-gray-50/80', 'dark:bg-gray-700/50');
             }
         }
+        updateCategoryCountBadges();
         // Disparar evento personalizado para actualizar la barra en vivo
         if (typeof document !== 'undefined' && typeof document.dispatchEvent === 'function') {
             try {
@@ -319,6 +337,7 @@ export function renderItems(items) {
         }
     });
 
-    // Aplicar filtros iniciales
+    // Sincronizar contadores iniciales (0/N) y aplicar filtros
+    updateCategoryCountBadges();
     applyFilters();
 }
