@@ -59,7 +59,7 @@ export function renderView(viewName) {
                 if (viewForm.style) viewForm.style.display = 'none';
             } else {
                 viewForm.classList.remove('hidden');
-                if (viewForm.style) viewForm.style.display = 'block';
+                if (viewForm.style) viewForm.style.display = '';
             }
         }
     }

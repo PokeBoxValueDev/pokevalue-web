@@ -78,7 +78,7 @@ async function generatePostCardCanvas({ boxPrice, totalValue, diff, isProfitable
     ctx.fillText(titleText, startX + logoWidth + gap, 64);
 
     // 5. Insignia Rango
-    const gradeLabel = t('grade' + grade) || (isProfitable ? '🌟 Excelente compra' : '❌ Mala compra');
+    const gradeLabel = t('grade' + grade) || (isProfitable ? 'Excelente compra' : 'Mala compra');
     ctx.font = 'bold 18px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillStyle = isProfitable ? '#a7f3d0' : '#fecdd3';
@@ -101,7 +101,7 @@ async function generatePostCardCanvas({ boxPrice, totalValue, diff, isProfitable
         ctx.fillStyle = '#ffffff';
         ctx.textAlign = 'center';
 
-        let displayItems = `📦 ${itemsListStr}`;
+        let displayItems = itemsListStr;
         if (ctx.measureText(displayItems).width > 470) {
             while (displayItems.length > 5 && ctx.measureText(displayItems + '...').width > 470) {
                 displayItems = displayItems.slice(0, -1);
@@ -244,7 +244,7 @@ async function generateStoryCardCanvas({ boxPrice, totalValue, diff, isProfitabl
     ctx.fill();
 
     // Insignia de Calificación
-    const gradeLabel = t('grade' + grade) || (isProfitable ? '🌟 Excelente (Chollo)' : '❌ Mala compra');
+    const gradeLabel = t('grade' + grade) || (isProfitable ? 'Excelente compra' : 'Mala compra');
     ctx.font = 'bold 22px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillStyle = isProfitable ? '#a7f3d0' : '#fecdd3';
@@ -253,7 +253,7 @@ async function generateStoryCardCanvas({ boxPrice, totalValue, diff, isProfitabl
     // Título Principal de la Oferta
     ctx.font = '900 36px sans-serif';
     ctx.fillStyle = '#ffffff';
-    const mainTitle = isProfitable ? (t('titleProfitable') || '¡RENTA COMPRARLA!') : (t('titleNotProfitable') || 'NO RENTA COMPRARLA');
+    const mainTitle = isProfitable ? (t('titleProfitable') || 'RENTA COMPRARLA') : (t('titleNotProfitable') || 'NO RENTA COMPRARLA');
     ctx.fillText(mainTitle, 360, 310);
 
     // Diferencia y Ahorro Destacado
@@ -305,7 +305,7 @@ async function generateStoryCardCanvas({ boxPrice, totalValue, diff, isProfitabl
     ctx.font = 'bold 20px sans-serif';
     ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
     ctx.textAlign = 'center';
-    ctx.fillText(t('storyItemsTitle') || '📦 OBJETOS INCLUIDOS', 360, 725);
+    ctx.fillText(t('storyItemsTitle') || 'OBJETOS INCLUIDOS', 360, 725);
 
     const validItems = Array.isArray(items) ? items : [];
     const maxItemsToShow = 6;
@@ -358,7 +358,7 @@ async function generateStoryCardCanvas({ boxPrice, totalValue, diff, isProfitabl
     ctx.font = 'bold 18px sans-serif';
     ctx.fillStyle = '#ffffff';
     ctx.textAlign = 'center';
-    ctx.fillText('🔗 pokeboxvalue.com', 360, 1192);
+    ctx.fillText('pokeboxvalue.com', 360, 1192);
 
     return new Promise((resolve) => {
         canvas.toBlob((blob) => resolve(blob), 'image/png');

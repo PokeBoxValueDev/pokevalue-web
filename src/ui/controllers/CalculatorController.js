@@ -237,14 +237,26 @@ export class CalculatorController {
         const stickyBar = document.getElementById('live-sticky-bar');
 
         if (viewName === 'form') {
-            if (viewResult) viewResult.classList.add('hidden');
-            if (viewForm) viewForm.classList.remove('hidden');
+            if (viewResult) {
+                viewResult.classList.add('hidden');
+                if (viewResult.style) viewResult.style.display = 'none';
+            }
+            if (viewForm) {
+                viewForm.classList.remove('hidden');
+                if (viewForm.style) viewForm.style.display = '';
+            }
             const btnCalculate = document.getElementById('btn-calculate');
             if (btnCalculate) btnCalculate.focus();
             CalculatorController.updateLiveSummary();
         } else if (viewName === 'result') {
-            if (viewForm) viewForm.classList.add('hidden');
-            if (viewResult) viewResult.classList.remove('hidden');
+            if (viewForm) {
+                viewForm.classList.add('hidden');
+                if (viewForm.style) viewForm.style.display = 'none';
+            }
+            if (viewResult) {
+                viewResult.classList.remove('hidden');
+                if (viewResult.style) viewResult.style.display = '';
+            }
             if (stickyBar) stickyBar.classList.add('translate-y-28', 'opacity-0', 'pointer-events-none');
             const resTitle = document.getElementById('result-title');
             if (resTitle) resTitle.focus();
@@ -301,7 +313,7 @@ export class CalculatorController {
             itemsSummaryText = '\n' + state.lastResult.itemSummary.map(item => `  • ${item}`).join('\n');
         }
 
-        const shareText = `📦 PokeBoxValue - Resultado de la Caja:
+        const shareText = `PokeBoxValue - Resultado de la Caja:
 ━━━━━━━━━━━━━━━━━━━━
 Status: ${statusTitle} (${state.lastResult.grade})
 • Precio Caja: ${formattedPrice}
