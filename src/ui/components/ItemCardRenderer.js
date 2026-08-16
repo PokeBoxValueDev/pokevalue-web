@@ -82,21 +82,33 @@ export function applyFilters() {
     const searchInput = (typeof document !== 'undefined' && typeof document.getElementById === 'function') ? document.getElementById('search-input') : null;
     if (!container || typeof container.querySelectorAll !== 'function') return;
 
-    const searchTerm = (searchInput ? searchInput.value : '').toLowerCase().trim();
+    const rawSearch = (searchInput ? searchInput.value : '').toLowerCase().trim();
+    const searchTerm = rawSearch
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
+
     const isAll = activeCategories.has('all');
+    let totalVisibleCards = 0;
 
     container.querySelectorAll('.category-group').forEach(group => {
         const groupCat = group.getAttribute('data-category');
         let hasVisibleCards = false;
 
         group.querySelectorAll('.item-card').forEach(card => {
-            const itemName = (card.getAttribute('data-item-name') || '').toLowerCase();
+            const rawItemName = (card.getAttribute('data-item-name') || '').toLowerCase();
+            const nameEs = (card.getAttribute('data-name-es') || '').toLowerCase();
+            const nameEn = (card.getAttribute('data-name-en') || '').toLowerCase();
+            const cleanSearchTarget = `${rawItemName} ${nameEs} ${nameEn}`
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '');
+
             const matchesCategory = isAll || activeCategories.has(groupCat);
-            const matchesSearch = !searchTerm || itemName.includes(searchTerm);
+            const matchesSearch = !searchTerm || cleanSearchTarget.includes(searchTerm);
 
             if (matchesCategory && matchesSearch) {
                 card.classList.remove('hidden');
                 hasVisibleCards = true;
+                totalVisibleCards++;
             } else {
                 card.classList.add('hidden');
             }
@@ -108,6 +120,24 @@ export function applyFilters() {
             group.classList.add('hidden');
         }
     });
+
+    let noResultsEl = (typeof container.querySelector === 'function') ? container.querySelector('#no-search-results') : null;
+    if (totalVisibleCards === 0) {
+        if (!noResultsEl && typeof document !== 'undefined' && typeof document.createElement === 'function') {
+            noResultsEl = document.createElement('p');
+            noResultsEl.id = 'no-search-results';
+            noResultsEl.className = 'text-xs text-gray-400 py-4 text-center col-span-full';
+            noResultsEl.setAttribute('data-i18n', 'noItemsFound');
+            noResultsEl.textContent = t('noItemsFound') || 'No se encontraron objetos.';
+            if (typeof container.appendChild === 'function') {
+                container.appendChild(noResultsEl);
+            }
+        } else if (noResultsEl) {
+            noResultsEl.classList.remove('hidden');
+        }
+    } else if (noResultsEl) {
+        noResultsEl.classList.add('hidden');
+    }
 }
 
 /**
@@ -183,8 +213,11 @@ export function renderItems(items) {
                 ? item.svg.replace(/class="[^"]*"/, 'class="w-full h-full object-contain filter drop-shadow-sm"').replace(/w-10 h-10/, 'w-full h-full')
                 : (item.image ? `<img src="${item.image}" alt="${name}" class="w-full h-full object-contain filter drop-shadow-sm">` : '');
 
+            const nameEs = item.nameEs || item.name_es || name;
+            const nameEn = item.nameEn || item.name_en || name;
+
             return `
-    <div class="item-card flex items-center justify-between p-2.5 sm:p-3 bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-750 rounded-xl border border-gray-200/70 dark:border-gray-700/70 shadow-xs hover:shadow-sm transition-all duration-200 group" data-card-id="${item.id}" data-category="${catKey}" data-item-name="${name}">
+    <div class="item-card flex items-center justify-between p-2.5 sm:p-3 bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-750 rounded-xl border border-gray-200/70 dark:border-gray-700/70 shadow-xs hover:shadow-sm transition-all duration-200 group" data-card-id="${item.id}" data-category="${catKey}" data-item-name="${name}" data-name-es="${nameEs}" data-name-en="${nameEn}">
         
         <!-- Icono SVG / Imagen del Item + Información -->
         <div class="flex items-center gap-2.5 sm:gap-3 min-w-0 pr-1.5 flex-1">

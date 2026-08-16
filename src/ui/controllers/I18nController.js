@@ -50,17 +50,6 @@ export class I18nController {
     }
 
     static reRenderItems() {
-        const searchInput = document.getElementById('search-input');
-        const query = searchInput ? searchInput.value.toLowerCase() : '';
-        let items = state.storeData || [];
-
-        if (query) {
-            items = items.filter(item => {
-                const nameEs = (item.name_es || item.name || '').toLowerCase();
-                const nameEn = (item.name_en || '').toLowerCase();
-                return nameEs.includes(query) || nameEn.includes(query);
-            });
-        }
-        renderItems(items);
+        renderItems(state.storeData || []);
     }
 }

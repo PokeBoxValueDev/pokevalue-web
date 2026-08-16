@@ -55,14 +55,7 @@ export async function initApp() {
                 lastUpdatedEl.innerHTML = `<span data-i18n="lastUpdated">${t('lastUpdated')}</span>: ${lastUpdated || '--/--/----'}`;
             }
 
-            // Configurar buscador
-            if (searchInput) {
-                searchInput.addEventListener('input', () => {
-                    I18nController.reRenderItems();
-                });
-            }
-
-            I18nController.reRenderItems();
+            renderItems(state.storeData || []);
         } else {
             throw new Error("No items returned from repository.");
         }
