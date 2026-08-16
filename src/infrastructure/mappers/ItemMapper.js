@@ -77,7 +77,7 @@ export class ItemMapper {
         const id = this.escapeHtml(rawId);
         const nameEs = this.escapeHtml(rawNameEs);
         const nameEn = this.escapeHtml(rawNameEn);
-        const category = Category.normalizeKey(dto.category || dto.categoria || dto.cat || rawNameEs);
+        const category = Category.normalizeKey(dto.category || dto.categoria || dto.cat, rawNameEs || rawId);
 
         const unitPriceEur = dto.unit_price_eur ?? dto.price_eur ?? dto.unit_price ?? dto.precio_eur ?? 0;
         const unitPriceUsd = dto.unit_price_usd ?? dto.price_usd ?? dto.precio_usd ?? null;

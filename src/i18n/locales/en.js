@@ -92,7 +92,7 @@ export default {
     catPotenciadores: "Boosters",
     catMejoras: "Storage Upgrades",
     catCombates: "Battles & Particles",
-    catConsumibles: "Consumibles",
+    catConsumibles: "Consumables",
     catOtros: "Other Items",
 
     // SEO / Description

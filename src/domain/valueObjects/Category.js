@@ -17,23 +17,31 @@ export class Category {
     /**
      * Normaliza cualquier nombre de categoría a la clave estándar.
      */
-    static normalizeKey(catKey) {
-        if (!catKey) return 'otros';
-
-        const clean = String(catKey)
+    static normalizeKey(catKey, itemName = '') {
+        const cleanCat = String(catKey || '')
             .normalize('NFD')
             .replace(/[\u0300-\u036f]/g, '')
             .toLowerCase()
             .trim();
 
-        if (clean.includes('pase') || clean.includes('raid') || clean.includes('pass')) return 'pases';
-        if (clean.includes('incubadora') || clean.includes('incubator')) return 'incubadoras';
-        if (clean.includes('potenciador') || clean.includes('booster')) return 'potenciadores';
-        if (clean.includes('mejora') || clean.includes('upgrade')) return 'mejoras';
-        if (clean.includes('combate') || clean.includes('battle') || clean.includes('particle')) return 'combates';
-        if (clean.includes('pocion') || clean.includes('reviv') || clean.includes('potion')) return 'consumibles';
+        const cleanName = String(itemName || '')
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .toLowerCase()
+            .trim();
 
-        return this.CATEGORY_MAP[clean] ? clean : 'otros';
+        const combined = `${cleanCat} ${cleanName}`;
+
+        if (combined.includes('pase') || combined.includes('raid') || combined.includes('pass')) return 'pases';
+        if (combined.includes('incubadora') || combined.includes('incubator')) return 'incubadoras';
+        if (combined.includes('potenciador') || combined.includes('booster') || combined.includes('huevo suerte') || combined.includes('lucky egg') || combined.includes('trozo estrella') || combined.includes('star piece') || combined.includes('incienso') || combined.includes('incense') || combined.includes('modulo cebo') || combined.includes('lure')) return 'potenciadores';
+        if (combined.includes('mejora') || combined.includes('upgrade') || combined.includes('almacenamiento') || combined.includes('storage') || combined.includes('aumento de espacio') || combined.includes('bag upgrade') || combined.includes('medallon') || combined.includes('medallion')) return 'mejoras';
+        if (combined.includes('combate') || combined.includes('battle') || combined.includes('particula') || combined.includes('particle') || combined.includes('carga union') || combined.includes('fusion energy') || combined.includes('maxiseta') || combined.includes('max mushroom') || combined.includes('radar')) return 'combates';
+        if (combined.includes('consumible') || combined.includes('consumable') || combined.includes('pocion') || combined.includes('potion') || combined.includes('reviv') || combined.includes('baya') || combined.includes('berry') || combined.includes('pokocho') || combined.includes('poffin')) return 'consumibles';
+
+        if (this.CATEGORY_MAP[cleanCat] && cleanCat !== 'otros') return cleanCat;
+
+        return 'otros';
     }
 
     /**
