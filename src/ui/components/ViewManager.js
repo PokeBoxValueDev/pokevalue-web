@@ -20,16 +20,22 @@ export function renderView(viewName) {
     const canonicalKey = (normalizedView === 'terms' ? 'legal' : (normalizedView === 'faqs' ? 'faq' : normalizedView));
 
     if (canonicalKey && VIEW_TEMPLATES[canonicalKey]) {
-        if (viewForm) viewForm.classList.add('hidden');
-        if (viewResult) viewResult.classList.add('hidden');
-        if (kofiContainer) kofiContainer.classList.add('hidden');
-
-        // Si ya contiene la vista estática, no re-inyectar innecesariamente
-        const existingViewEl = document.getElementById(`view-${canonicalKey}`);
-        if (!existingViewEl) {
-            viewContainer.innerHTML = VIEW_TEMPLATES[canonicalKey];
+        if (viewForm) {
+            viewForm.classList.add('hidden');
+            if (viewForm.style) viewForm.style.display = 'none';
         }
+        if (viewResult) {
+            viewResult.classList.add('hidden');
+            if (viewResult.style) viewResult.style.display = 'none';
+        }
+        if (kofiContainer) {
+            kofiContainer.classList.add('hidden');
+            if (kofiContainer.style) kofiContainer.style.display = 'none';
+        }
+
+        viewContainer.innerHTML = VIEW_TEMPLATES[canonicalKey];
         viewContainer.classList.remove('hidden');
+        if (viewContainer.style) viewContainer.style.display = 'block';
 
         // Traducir los elementos inyectados en la vista dinámicamente
         updateDOMTranslations();
@@ -41,13 +47,20 @@ export function renderView(viewName) {
         // Solo limpiar si explícitamente se vuelve a la raíz (sin vista)
         viewContainer.innerHTML = '';
         viewContainer.classList.add('hidden');
-        if (kofiContainer) kofiContainer.classList.remove('hidden');
+        if (viewContainer.style) viewContainer.style.display = 'none';
+
+        if (kofiContainer) {
+            kofiContainer.classList.remove('hidden');
+            if (kofiContainer.style) kofiContainer.style.display = '';
+        }
 
         if (viewForm) {
-            if (viewResult && !viewResult.classList.contains('hidden')) {
+            if (viewResult && !viewResult.classList.contains('hidden') && (!viewResult.style || viewResult.style.display !== 'none')) {
                 viewForm.classList.add('hidden');
+                if (viewForm.style) viewForm.style.display = 'none';
             } else {
                 viewForm.classList.remove('hidden');
+                if (viewForm.style) viewForm.style.display = 'block';
             }
         }
     }

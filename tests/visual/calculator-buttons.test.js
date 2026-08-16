@@ -13,6 +13,7 @@ function createMockElement(id, attrs = {}) {
             remove: (c) => classes.delete(c),
             contains: (c) => classes.has(c)
         },
+        style: {},
         getAttribute: (attr) => attrs[attr] || (attr === 'id' ? id : null),
         addEventListener: (event, fn) => {
             listeners[event] = fn;

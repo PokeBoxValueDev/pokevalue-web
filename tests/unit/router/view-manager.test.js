@@ -7,6 +7,7 @@ function createMockElement(id) {
     return {
         id,
         innerHTML: '',
+        style: {},
         classList: {
             add: (c) => classList.add(c),
             remove: (c) => classList.delete(c),
