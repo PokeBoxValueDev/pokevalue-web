@@ -360,7 +360,7 @@ export function renderItems(items) {
         
         <!-- Icono + Información -->
         <div class="card-info-container flex items-center gap-2.5 sm:gap-3 min-w-0 pr-1.5 flex-1">
-            <div class="card-icon-wrapper w-13 h-13 sm:w-15 sm:h-15 flex-shrink-0 flex items-center justify-center rounded-2xl p-1 bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-850 border border-gray-200/80 dark:border-gray-600/80 shadow-xs">
+            <div class="card-icon-wrapper w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 flex items-center justify-center rounded-xl p-1 bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-850 border border-gray-200/80 dark:border-gray-600/80 shadow-xs">
                 ${svgContent}
             </div>
             <div class="card-text-wrapper min-w-0 flex-1">
