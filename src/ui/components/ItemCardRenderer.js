@@ -534,14 +534,20 @@ export function renderItems(items) {
         });
     }
 
-    // Inicializar layout guardado
-    let savedLayout = 'list';
+    // Inicializar layout guardado o por defecto según dispositivo (Móvil = Cuadrícula, Desktop = Lista)
+    let initialLayout = 'list';
     try {
         if (typeof localStorage !== 'undefined') {
-            savedLayout = localStorage.getItem('pokevalue_view_layout') || 'list';
+            const stored = localStorage.getItem('pokevalue_view_layout');
+            if (stored) {
+                initialLayout = stored;
+            } else {
+                const isMobile = (typeof window !== 'undefined' && (window.innerWidth < 640 || (typeof window.matchMedia === 'function' && window.matchMedia('(max-width: 639px)').matches)));
+                initialLayout = isMobile ? 'grid' : 'list';
+            }
         }
     } catch (_) {}
-    setLayoutMode(savedLayout);
+    setLayoutMode(initialLayout);
 
     // Sincronizar contadores iniciales (0/N), bandeja y aplicar filtros
     updateCategoryCountBadges();

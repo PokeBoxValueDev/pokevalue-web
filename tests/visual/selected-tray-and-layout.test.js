@@ -117,4 +117,38 @@ describe('visual/selected-tray-and-layout - Selected Items Tray and Layout Densi
         assert.ok(!container.classList.contains('items-layout-grid'), 'Container must not have items-layout-grid class');
         assert.equal(global.localStorage.getItem('pokevalue_view_layout'), 'list', 'Must persist list in localStorage');
     });
+
+    it('defaults to grid layout on mobile viewport (<640px) when no preference is stored', () => {
+        const dom = new JSDOM(`
+            <!DOCTYPE html>
+            <html>
+            <body>
+                <div id="layout-toggle-group">
+                    <button id="btn-layout-list" data-layout="list"></button>
+                    <button id="btn-layout-grid" data-layout="grid"></button>
+                </div>
+                <input type="text" id="search-input" value="">
+                <div id="items-container"></div>
+            </body>
+            </html>
+        `, { pretendToBeVisual: true });
+
+        dom.window.innerWidth = 375;
+        global.window = dom.window;
+        global.document = dom.window.document;
+        global.localStorage = {
+            _data: {},
+            getItem(key) { return this._data[key] || null; },
+            setItem(key, val) { this._data[key] = String(val); }
+        };
+
+        const rawData = JSON.parse(fs.readFileSync(path.resolve('src/assets/items-fallback.json'), 'utf8'));
+        const domainItems = ItemMapper.toDomainList(rawData);
+        state.setStoreData(domainItems);
+
+        renderItems(domainItems);
+
+        const container = document.getElementById('items-container');
+        assert.ok(container.classList.contains('items-layout-grid'), 'Mobile viewport must default to items-layout-grid');
+    });
 });
