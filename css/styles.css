@@ -282,7 +282,7 @@ html.is-ios.dark [role="dialog"] > div {
     flex-direction: column !important;
     align-items: center !important;
     gap: 0 !important;
-    margin-top: 0.15rem !important;
+    margin-top: 0.2rem !important;
     width: 100% !important;
 }
 
@@ -297,23 +297,6 @@ html.is-ios.dark [role="dialog"] > div {
     white-space: nowrap !important;
     text-align: center !important;
     margin: 0 !important;
-}
-
-.items-layout-grid .item-card .card-quick-buttons {
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    height: 1.4rem !important;
-    min-height: 1.4rem !important;
-    max-height: 1.4rem !important;
-    gap: 0.25rem !important;
-    margin-top: 0.2rem !important;
-}
-
-.items-layout-grid .item-card .card-quick-buttons .btn-quick-add {
-    font-size: 0.625rem !important;
-    padding: 0.1rem 0.35rem !important;
-    border-radius: 0.35rem !important;
 }
 
 .items-layout-grid .item-card .card-actions-container {

@@ -358,29 +358,21 @@ export function renderItems(items) {
             return `
     <div class="item-card flex items-center justify-between p-2.5 sm:p-3 bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-750 rounded-xl border border-gray-200/70 dark:border-gray-700/70 shadow-xs hover:shadow-sm transition-all duration-200 group" data-card-id="${item.id}" data-category="${catKey}" data-item-name="${name}" data-name-es="${nameEs}" data-name-en="${nameEn}">
         
-        <!-- Fila Superior / Principal: Icono + Info -->
+        <!-- Icono + Información -->
         <div class="card-info-container flex items-center gap-2.5 sm:gap-3 min-w-0 pr-1.5 flex-1">
             <div class="card-icon-wrapper w-11 h-11 sm:w-13 sm:h-13 flex-shrink-0 flex items-center justify-center rounded-xl p-1 bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-850 border border-gray-200/80 dark:border-gray-600/80 shadow-xs">
                 ${svgContent}
             </div>
             <div class="card-text-wrapper min-w-0 flex-1">
                 <p class="card-item-title text-xs sm:text-sm font-bold text-gray-900 dark:text-white leading-tight break-words whitespace-normal">${name}</p>
-                <div class="card-quick-actions flex items-center flex-wrap gap-x-2 gap-y-1 mt-0.5">
+                <div class="card-quick-actions flex items-center gap-2 mt-0.5">
                     <span class="card-price-label text-[11px] sm:text-xs text-gray-500 dark:text-gray-400 font-medium whitespace-nowrap">${unitPriceStr}</span>
-                    <div class="card-quick-buttons flex items-center gap-1">
-                        <button type="button" class="btn-quick-add text-[10px] font-bold px-2 py-0.5 rounded bg-gray-200/80 hover:bg-indigo-600 hover:text-white dark:bg-gray-600 dark:hover:bg-indigo-500 text-gray-700 dark:text-gray-200 transition active:scale-90 cursor-pointer touch-manipulation" data-id="${item.id}" data-add="5" aria-label="Añadir 5 ${name}">+5</button>
-                        <button type="button" class="btn-quick-add text-[10px] font-bold px-2 py-0.5 rounded bg-gray-200/80 hover:bg-indigo-600 hover:text-white dark:bg-gray-600 dark:hover:bg-indigo-500 text-gray-700 dark:text-gray-200 transition active:scale-90 cursor-pointer touch-manipulation" data-id="${item.id}" data-add="10" aria-label="Añadir 10 ${name}">+10</button>
-                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Fila Inferior (Grid) / Controles a la derecha (Lista): Stepper (+ / -) -->
-        <div class="card-actions-container flex items-center justify-between gap-1 bg-white dark:bg-gray-800 border border-gray-200/90 dark:border-gray-600 rounded-xl p-0.5 sm:p-1 shadow-xs flex-shrink-0 ml-1">
-            <div class="grid-quick-buttons hidden items-center gap-1">
-                <button type="button" class="btn-quick-add text-[9px] font-bold px-1.5 py-0.5 rounded bg-gray-200/80 hover:bg-indigo-600 hover:text-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 transition active:scale-90 cursor-pointer touch-manipulation" data-id="${item.id}" data-add="5" aria-label="Añadir 5 ${name}">+5</button>
-                <button type="button" class="btn-quick-add text-[9px] font-bold px-1.5 py-0.5 rounded bg-gray-200/80 hover:bg-indigo-600 hover:text-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 transition active:scale-90 cursor-pointer touch-manipulation" data-id="${item.id}" data-add="10" aria-label="Añadir 10 ${name}">+10</button>
-            </div>
+        <!-- Controles de Cantidad Stepper (+ / -) -->
+        <div class="card-actions-container flex items-center justify-center bg-white dark:bg-gray-800 border border-gray-200/90 dark:border-gray-600 rounded-xl p-0.5 sm:p-1 shadow-xs flex-shrink-0 ml-1">
             <div class="stepper-wrapper flex items-center gap-0.5 sm:gap-1">
                 <button type="button" 
                     class="btn-decrement w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center text-sm sm:text-base font-extrabold text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition active:scale-95 touch-manipulation" 
@@ -482,22 +474,6 @@ export function renderItems(items) {
                 const currentVal = parseInt(input.value) || 0;
                 input.value = currentVal + 1;
                 showFloatingFeedback(btn, '+1', true);
-                updateCardHighlight(input);
-            }
-        });
-    });
-
-    // Escuchadores de píldoras de incremento rápido (+5, +10)
-    container.querySelectorAll('.btn-quick-add').forEach(btn => {
-        btn.addEventListener('click', () => {
-            IOSDeviceDetector.triggerHapticFeedback(15);
-            const id = btn.getAttribute('data-id');
-            const toAdd = parseInt(btn.getAttribute('data-add')) || 1;
-            const input = container.querySelector(`input[data-id="${id}"]`);
-            if (input) {
-                const currentVal = parseInt(input.value) || 0;
-                input.value = currentVal + toAdd;
-                showFloatingFeedback(btn, `+${toAdd}`, true);
                 updateCardHighlight(input);
             }
         });
