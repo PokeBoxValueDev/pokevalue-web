@@ -253,10 +253,10 @@ html.is-ios.dark [role="dialog"] > div {
     align-items: center !important;
     text-align: center !important;
     justify-content: flex-start !important;
-    padding: 0.625rem 0.5rem 0.5rem 0.5rem !important;
+    padding: 0.875rem 0.625rem 0.625rem 0.625rem !important;
     gap: 0 !important;
     height: 100% !important;
-    min-height: 175px !important;
+    min-height: 185px !important;
 }
 
 .items-layout-grid .item-card .card-info-container {
@@ -288,7 +288,7 @@ html.is-ios.dark [role="dialog"] > div {
 .items-layout-grid .item-card .card-text-wrapper {
     width: 100% !important;
     text-align: center !important;
-    margin-top: 0.35rem !important;
+    margin-top: 0.45rem !important;
     flex: none !important;
 }
 
@@ -312,7 +312,7 @@ html.is-ios.dark [role="dialog"] > div {
     flex-direction: column !important;
     align-items: center !important;
     gap: 0 !important;
-    margin-top: 0.2rem !important;
+    margin-top: 0.4rem !important;
     width: 100% !important;
 }
 
@@ -335,8 +335,8 @@ html.is-ios.dark [role="dialog"] > div {
     justify-content: center !important;
     align-items: center !important;
     margin-left: 0 !important;
-    margin-top: auto !important;
-    padding: 0.125rem 0.25rem !important;
+    margin-top: 0.65rem !important;
+    padding: 0.15rem 0.25rem !important;
     border-radius: 0.75rem !important;
     background: rgba(0, 0, 0, 0.04) !important;
     border: 1px solid rgba(0, 0, 0, 0.06) !important;
