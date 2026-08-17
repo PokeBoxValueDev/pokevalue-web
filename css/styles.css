@@ -255,26 +255,30 @@ html.is-ios.dark [role="dialog"] > div {
 
 .items-layout-grid .item-card .card-item-title {
     font-size: 0.75rem !important;
-    line-height: 1.2 !important;
+    line-height: 1.15 !important;
     font-weight: 700 !important;
-    display: -webkit-box !important;
-    -webkit-line-clamp: 2 !important;
-    -webkit-box-orient: vertical !important;
+    height: 2.1rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
     overflow: hidden !important;
     word-break: break-word !important;
-    min-height: 1.8rem !important;
-    text-align: center !important;
 }
 
 .items-layout-grid .item-card .card-quick-actions {
     flex-direction: column !important;
     align-items: center !important;
-    gap: 0.25rem !important;
-    margin-top: 0.15rem !important;
+    gap: 0.2rem !important;
+    margin-top: 0.1rem !important;
 }
 
 .items-layout-grid .item-card .card-price-label {
     font-size: 0.6875rem !important;
+    height: 1rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     white-space: nowrap !important;
     text-align: center !important;
 }
@@ -282,6 +286,8 @@ html.is-ios.dark [role="dialog"] > div {
 .items-layout-grid .item-card .card-quick-buttons {
     display: flex !important;
     justify-content: center !important;
+    align-items: center !important;
+    height: 1.35rem !important;
     gap: 0.25rem !important;
 }
 
