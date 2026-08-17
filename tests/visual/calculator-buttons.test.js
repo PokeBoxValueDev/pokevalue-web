@@ -501,3 +501,39 @@ test('visual/harness - CalculatorController.resetForm resets box price, price er
     assert.equal(priceError.classList.contains('hidden'), true, 'price-error must be hidden on resetForm');
     assert.equal(itemQty1.value, 0, 'item quantity input value must be reset to 0 on resetForm');
 });
+
+test('visual/harness - IOSDeviceDetector shows install banner on iOS Safari and hides on close', async () => {
+    const { IOSDeviceDetector } = await import('../../src/ui/ios/IOSDeviceDetector.js');
+    const banner = createMockElement('ios-install-banner');
+    banner.classList.add('hidden');
+    const closeBtn = createMockElement('btn-close-ios-banner');
+
+    const mockStorage = {
+        _data: {},
+        getItem(k) { return this._data[k] || null; },
+        setItem(k, v) { this._data[k] = String(v); }
+    };
+    globalThis.localStorage = mockStorage;
+
+    const mockWindow = {
+        navigator: { userAgent: 'iPhone; CPU iPhone OS 17_0 like Mac OS X', platform: 'iPhone', vendor: 'Apple Computer, Inc.' },
+        matchMedia: () => ({ matches: false })
+    };
+
+    const mockDoc = {
+        getElementById: (id) => {
+            if (id === 'ios-install-banner') return banner;
+            if (id === 'btn-close-ios-banner') return closeBtn;
+            return null;
+        }
+    };
+
+    assert.equal(IOSDeviceDetector.shouldShowIOSInstallPrompt(mockWindow), true, 'Should show install prompt on iOS Safari');
+
+    IOSDeviceDetector.setupIOSInstallBanner(mockDoc, mockWindow);
+    assert.equal(banner.classList.contains('hidden'), false, 'Banner must be visible on iOS Safari');
+
+    closeBtn.click();
+    assert.equal(banner.classList.contains('hidden'), true, 'Banner must hide when close button is clicked');
+    assert.equal(mockStorage.getItem('ios-install-dismissed'), 'true', 'Dismissed preference must be saved in localStorage');
+});

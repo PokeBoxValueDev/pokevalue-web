@@ -48,6 +48,60 @@ export class IOSDeviceDetector {
     }
 
     /**
+     * Comprueba si se debe mostrar la sugerencia de instalación en iOS (iPhone/iPad en Safari no standalone).
+     * @param {Object} [customWindow]
+     * @returns {boolean}
+     */
+    static shouldShowIOSInstallPrompt(customWindow = (typeof window !== 'undefined' ? window : null)) {
+        if (!this.isIOS(customWindow)) return false;
+
+        // Comprobar si ya está ejecutándose como PWA standalone
+        const isStandalone = Boolean(
+            (customWindow && customWindow.navigator && customWindow.navigator.standalone) ||
+            (customWindow && customWindow.matchMedia && customWindow.matchMedia('(display-mode: standalone)').matches)
+        );
+        if (isStandalone) return false;
+
+        // Comprobar si el usuario ya cerró el banner
+        try {
+            if (typeof localStorage !== 'undefined' && localStorage.getItem('ios-install-dismissed') === 'true') {
+                return false;
+            }
+        } catch (_) { }
+
+        return true;
+    }
+
+    /**
+     * Inicializa los eventos y visibilidad del banner de instalación inteligente de iOS.
+     * @param {Object} [customDocument]
+     * @param {Object} [customWindow]
+     */
+    static setupIOSInstallBanner(customDocument = (typeof document !== 'undefined' ? document : null), customWindow = (typeof window !== 'undefined' ? window : null)) {
+        if (!customDocument) return;
+        const banner = customDocument.getElementById('ios-install-banner');
+        if (!banner) return;
+
+        if (this.shouldShowIOSInstallPrompt(customWindow)) {
+            banner.classList.remove('hidden');
+        } else {
+            banner.classList.add('hidden');
+        }
+
+        const closeBtn = customDocument.getElementById('btn-close-ios-banner');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                banner.classList.add('hidden');
+                try {
+                    if (typeof localStorage !== 'undefined') {
+                        localStorage.setItem('ios-install-dismissed', 'true');
+                    }
+                } catch (_) { }
+            });
+        }
+    }
+
+    /**
      * Activa una vibración háptica sutil de confirmación táctil de 10ms si el navegador lo soporta.
      */
     static triggerHapticFeedback(durationMs = 10) {

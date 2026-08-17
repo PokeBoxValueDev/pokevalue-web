@@ -20,6 +20,7 @@ export async function initApp() {
     if (iosBadge && isIOSDevice) {
         iosBadge.classList.remove('hidden');
     }
+    IOSDeviceDetector.setupIOSInstallBanner();
 
     // 2. Versión de la App en Footer
     const verEl = document.getElementById('app-version');

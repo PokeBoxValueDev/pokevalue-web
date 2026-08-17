@@ -28,6 +28,7 @@ test('visual/dom - index.html contains all critical UI containers and IDs', () =
         'breakdown-legend',
         'btn-share',
         'btn-share-story',
+        'btn-share-sticker',
         'btn-share-card',
         'btn-reset',
         'lang-select',
@@ -41,7 +42,9 @@ test('visual/dom - index.html contains all critical UI containers and IDs', () =
         'live-sticky-bar',
         'live-grade-badge',
         'btn-live-view-result',
-        'btn-install-pwa'
+        'btn-install-pwa',
+        'ios-install-banner',
+        'btn-close-ios-banner'
     ];
 
     requiredIds.forEach(id => {
