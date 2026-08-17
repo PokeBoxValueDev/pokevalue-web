@@ -58,6 +58,7 @@ describe('visual/selected-tray-and-layout - Selected Items Tray and Layout Densi
         assert.ok(!tray.classList.contains('hidden'), 'Tray must become visible when item quantity > 0');
         assert.equal(chipsList.children.length, 1, '1 chip must be rendered');
         assert.ok(chipsList.textContent.includes('2x'), 'Chip must display 2x quantity');
+        assert.ok(chipsList.children[0].innerHTML.includes('bg-indigo-500'), 'Pass chip must have pases category color');
 
         // Add 3 Incubators
         const incInput = document.querySelector('input[data-id="incubadora"]');
@@ -66,6 +67,7 @@ describe('visual/selected-tray-and-layout - Selected Items Tray and Layout Densi
         incInput.dispatchEvent(new dom.window.Event('input'));
 
         assert.equal(chipsList.children.length, 2, '2 chips must now be rendered');
+        assert.ok(chipsList.children[1].innerHTML.includes('bg-amber-500'), 'Incubator chip must have incubadoras category color');
 
         // Remove incubator using chip remove button
         const removeIncBtn = chipsList.querySelector('.btn-remove-chip[data-id="incubadora"]');

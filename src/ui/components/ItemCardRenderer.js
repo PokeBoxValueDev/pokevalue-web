@@ -215,7 +215,8 @@ export function updateSelectedTray() {
         if (qty > 0) {
             const id = card.getAttribute('data-card-id');
             const name = card.getAttribute('data-item-name') || 'Objeto';
-            selectedCards.push({ id, name, qty, card, input });
+            const category = card.getAttribute('data-category') || 'pases';
+            selectedCards.push({ id, name, qty, category, card, input });
         }
     });
 
@@ -226,15 +227,20 @@ export function updateSelectedTray() {
     }
 
     tray.classList.remove('hidden');
-    chipsList.innerHTML = selectedCards.map(item => `
-        <div class="selected-chip inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-white dark:bg-gray-800 border border-indigo-200 dark:border-indigo-800/60 shadow-2xs text-[11px] font-semibold text-gray-900 dark:text-white hover:border-indigo-400 transition cursor-pointer" data-id="${item.id}">
-            <span class="px-1 py-0.2 rounded bg-indigo-600 text-white text-[9px] font-extrabold">${item.qty}x</span>
+    chipsList.innerHTML = selectedCards.map(item => {
+        const catConfig = CATEGORY_CONFIG[item.category] || { color: 'bg-indigo-500', border: 'border-indigo-200/80 dark:border-indigo-800/60' };
+        const badgeColor = catConfig.color || 'bg-indigo-500';
+        const borderClass = catConfig.border || 'border-indigo-200/80 dark:border-indigo-800/60';
+        return `
+        <div class="selected-chip inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-white dark:bg-gray-800 border ${borderClass} shadow-2xs text-[11px] font-semibold text-gray-900 dark:text-white hover:opacity-90 transition cursor-pointer" data-id="${item.id}">
+            <span class="px-1 py-0.2 rounded ${badgeColor} text-white text-[9px] font-extrabold">${item.qty}x</span>
             <span class="truncate max-w-[100px] sm:max-w-[150px]">${item.name}</span>
             <button type="button" class="btn-remove-chip p-0.5 text-gray-400 hover:text-rose-500 rounded transition cursor-pointer touch-manipulation" data-id="${item.id}" aria-label="Eliminar ${item.name}">
                 <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
         </div>
-    `).join('');
+    `;
+    }).join('');
 
     // Escuchador para borrar chips individuales
     chipsList.querySelectorAll('.btn-remove-chip').forEach(btn => {
