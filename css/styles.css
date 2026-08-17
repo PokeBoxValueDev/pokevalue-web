@@ -374,10 +374,15 @@ html.is-ios.dark [role="dialog"] > div {
 
 /* Barra Superior Unificada: Expansión suave del buscador en foco */
 #top-controls-bar:has(#search-input:focus) #box-price-container {
-    width: 26% !important;
-    min-width: 82px !important;
+    flex: 0 0 85px !important;
+    min-width: 85px !important;
 }
 
 #top-controls-bar:has(#search-input:focus) #search-layout-container {
-    flex: 1 1 74% !important;
+    flex: 1 1 auto !important;
+}
+
+#top-controls-bar:has(#search-input:focus) #search-input-wrapper {
+    width: 100% !important;
+    flex: 1 1 auto !important;
 }
