@@ -513,7 +513,7 @@ test('visual/harness - IOSDeviceDetector shows install banner on iOS Safari and 
         getItem(k) { return this._data[k] || null; },
         setItem(k, v) { this._data[k] = String(v); }
     };
-    globalThis.localStorage = mockStorage;
+    globalThis.sessionStorage = mockStorage;
 
     const mockWindow = {
         navigator: { userAgent: 'iPhone; CPU iPhone OS 17_0 like Mac OS X', platform: 'iPhone', vendor: 'Apple Computer, Inc.' },
@@ -530,10 +530,17 @@ test('visual/harness - IOSDeviceDetector shows install banner on iOS Safari and 
 
     assert.equal(IOSDeviceDetector.shouldShowIOSInstallPrompt(mockWindow), true, 'Should show install prompt on iOS Safari');
 
+    // Standalone check: When opened from Home Screen, it must NOT show
+    const standaloneWindow = {
+        navigator: { userAgent: 'iPhone; CPU iPhone OS 17_0 like Mac OS X', platform: 'iPhone', vendor: 'Apple Computer, Inc.', standalone: true },
+        matchMedia: () => ({ matches: false })
+    };
+    assert.equal(IOSDeviceDetector.shouldShowIOSInstallPrompt(standaloneWindow), false, 'Must NOT show banner when in standalone home screen mode');
+
     IOSDeviceDetector.setupIOSInstallBanner(mockDoc, mockWindow);
     assert.equal(banner.classList.contains('hidden'), false, 'Banner must be visible on iOS Safari');
 
     closeBtn.click();
     assert.equal(banner.classList.contains('hidden'), true, 'Banner must hide when close button is clicked');
-    assert.equal(mockStorage.getItem('ios-install-dismissed'), 'true', 'Dismissed preference must be saved in localStorage');
+    assert.equal(mockStorage.getItem('ios-install-dismissed'), 'true', 'Dismissed preference must be saved in sessionStorage');
 });

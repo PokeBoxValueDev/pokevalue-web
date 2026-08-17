@@ -48,23 +48,35 @@ export class IOSDeviceDetector {
     }
 
     /**
-     * Comprueba si se debe mostrar la sugerencia de instalación en iOS (iPhone/iPad en Safari no standalone).
+     * Comprueba si la aplicación está ejecutándose como PWA instalada desde la pantalla de inicio.
+     * @param {Object} [customWindow]
+     * @returns {boolean}
+     */
+    static isStandalone(customWindow = (typeof window !== 'undefined' ? window : null)) {
+        if (!customWindow) return false;
+        const isIOSStandalone = Boolean(customWindow.navigator && customWindow.navigator.standalone === true);
+        const isDisplayStandalone = Boolean(customWindow.matchMedia && (
+            customWindow.matchMedia('(display-mode: standalone)').matches ||
+            customWindow.matchMedia('(display-mode: fullscreen)').matches ||
+            customWindow.matchMedia('(display-mode: minimal-ui)').matches
+        ));
+        return isIOSStandalone || isDisplayStandalone;
+    }
+
+    /**
+     * Comprueba si se debe mostrar la sugerencia de instalación (siempre que se acceda desde el navegador y no desde el icono de inicio).
      * @param {Object} [customWindow]
      * @returns {boolean}
      */
     static shouldShowIOSInstallPrompt(customWindow = (typeof window !== 'undefined' ? window : null)) {
         if (!this.isIOS(customWindow)) return false;
 
-        // Comprobar si ya está ejecutándose como PWA standalone
-        const isStandalone = Boolean(
-            (customWindow && customWindow.navigator && customWindow.navigator.standalone) ||
-            (customWindow && customWindow.matchMedia && customWindow.matchMedia('(display-mode: standalone)').matches)
-        );
-        if (isStandalone) return false;
+        // Si ya se accede desde el acceso de la pantalla de inicio (Standalone), NO mostrar nunca
+        if (this.isStandalone(customWindow)) return false;
 
-        // Comprobar si el usuario ya cerró el banner
+        // Si el usuario lo cerró en la pestaña/sesión actual, ocultarlo hasta la siguiente visita
         try {
-            if (typeof localStorage !== 'undefined' && localStorage.getItem('ios-install-dismissed') === 'true') {
+            if (typeof sessionStorage !== 'undefined' && sessionStorage.getItem('ios-install-dismissed') === 'true') {
                 return false;
             }
         } catch (_) { }
@@ -93,8 +105,8 @@ export class IOSDeviceDetector {
             closeBtn.addEventListener('click', () => {
                 banner.classList.add('hidden');
                 try {
-                    if (typeof localStorage !== 'undefined') {
-                        localStorage.setItem('ios-install-dismissed', 'true');
+                    if (typeof sessionStorage !== 'undefined') {
+                        sessionStorage.setItem('ios-install-dismissed', 'true');
                     }
                 } catch (_) { }
             });
