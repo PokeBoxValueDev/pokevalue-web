@@ -42,7 +42,7 @@ export class CalculatorController {
             priceInput.addEventListener('input', () => {
                 const boxPrice = parseFloat(priceInput.value);
                 if (!isNaN(boxPrice) && boxPrice > 0) {
-                    priceInput.classList.remove('border-rose-500', 'focus:ring-rose-500');
+                    priceInput.classList.remove('border-rose-500', 'ring-2', 'ring-rose-500', 'focus:ring-rose-500');
                     if (priceError) priceError.classList.add('hidden');
                 }
                 CalculatorController.updateLiveSummary();
@@ -313,7 +313,7 @@ export class CalculatorController {
         const priceError = document.getElementById('price-error');
         if (priceInput) {
             priceInput.value = '';
-            priceInput.classList.remove('border-rose-500', 'focus:ring-rose-500');
+            priceInput.classList.remove('border-rose-500', 'ring-2', 'ring-rose-500', 'focus:ring-rose-500');
         }
         if (priceError) priceError.classList.add('hidden');
 
@@ -442,14 +442,17 @@ Objetos incluidos:${itemsSummaryText || ' No especificados'}`;
     static handleCalculate(priceInput, priceError) {
         const boxPrice = parseFloat(priceInput.value);
 
-        priceInput.classList.remove('border-rose-500', 'focus:ring-rose-500');
+        priceInput.classList.remove('border-rose-500', 'ring-2', 'ring-rose-500', 'focus:ring-rose-500');
         if (priceError) priceError.classList.add('hidden');
 
         if (isNaN(boxPrice) || boxPrice <= 0) {
-            priceInput.classList.add('border-rose-500', 'focus:ring-rose-500');
+            priceInput.classList.add('border-rose-500', 'ring-2', 'ring-rose-500');
             if (priceError) {
                 priceError.innerText = t('enterValidPrice');
                 priceError.classList.remove('hidden');
+            }
+            if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
             return;
         }
