@@ -1,6 +1,6 @@
 export default {
     appName: "PokeBoxValue",
-    lastUpdated: "Data:",
+    lastUpdated: "Data",
     disclaimerUSD: "* USD prices are estimated using fixed currency rates.",
     metaTitle: "PokeBoxValue - Pokémon GO Box Value Calculator",
     metaDescription: "Calculate if Pokémon GO shop boxes are worth buying. Discover the true value of raid passes, incubators, and items to save money.",

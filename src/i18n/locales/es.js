@@ -1,6 +1,6 @@
 export default {
     appName: "PokeBoxValue",
-    lastUpdated: "Datos:",
+    lastUpdated: "Datos",
     disclaimerUSD: "* Los precios en USD se calculan mediante conversión fija estimada.",
     metaTitle: "PokeBoxValue - Calculadora de Cajas para Pokémon GO",
     metaDescription: "Calcula si las cajas de la tienda de Pokémon GO valen la pena. Descubre el valor real de los pases, incubadoras y objetos para ahorrar dinero.",
