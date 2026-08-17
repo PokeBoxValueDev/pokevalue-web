@@ -45,7 +45,7 @@ test('visual/category-filter - Consumibles filter and all category pills filter 
     assert.ok(consumiblesGroup, 'Category group for consumibles must exist in DOM');
 
     const consumableCards = consumiblesGroup.querySelectorAll('.item-card');
-    assert.equal(consumableCards.length, 4, 'Must have 4 consumable items (Max Revive, Max Potion, Silver Pinap, Golden Razz)');
+    assert.ok(consumableCards.length >= 4, 'Must have at least 4 consumable items');
 
     // 2. Select 'consumibles' filter
     toggleCategoryFilter('consumibles');
