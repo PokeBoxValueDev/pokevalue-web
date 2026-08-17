@@ -349,8 +349,8 @@ export function renderItems(items) {
                 : ((state.currentLang === 'en' && item.name_en) ? item.name_en : (item.name_es || item.name || 'Objeto'));
 
             const svgContent = item.svg
-                ? item.svg.replace(/class="[^"]*"/, 'class="w-full h-full object-contain filter drop-shadow-sm"').replace(/w-10 h-10/, 'w-full h-full')
-                : (item.image ? `<img src="${item.image}" alt="${name}" class="w-full h-full object-contain filter drop-shadow-sm">` : '');
+                ? item.svg.replace(/class="[^"]*"/, 'class="w-full h-full object-contain filter drop-shadow-sm block mx-auto"').replace(/w-10 h-10/, 'w-full h-full')
+                : (item.image ? `<img src="${item.image}" alt="${name}" class="w-full h-full object-contain filter drop-shadow-sm block mx-auto">` : '');
 
             const nameEs = item.nameEs || item.name_es || name;
             const nameEn = item.nameEn || item.name_en || name;
@@ -360,7 +360,7 @@ export function renderItems(items) {
         
         <!-- Icono + Información -->
         <div class="card-info-container flex items-center gap-2.5 sm:gap-3 min-w-0 pr-1.5 flex-1">
-            <div class="card-icon-wrapper w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 flex items-center justify-center rounded-xl p-1 bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-850 border border-gray-200/80 dark:border-gray-600/80 shadow-xs">
+            <div class="card-icon-wrapper w-13 h-13 sm:w-15 sm:h-15 flex-shrink-0 flex items-center justify-center rounded-2xl p-1 bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-850 border border-gray-200/80 dark:border-gray-600/80 shadow-xs">
                 ${svgContent}
             </div>
             <div class="card-text-wrapper min-w-0 flex-1">
