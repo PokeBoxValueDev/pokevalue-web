@@ -245,12 +245,12 @@ html.is-ios.dark [role="dialog"] > div {
 }
 
 .items-layout-grid .item-card .card-icon-wrapper {
-    width: 2.75rem !important;
-    height: 2.75rem !important;
-    min-height: 2.75rem !important;
-    max-height: 2.75rem !important;
+    width: 3.25rem !important;
+    height: 3.25rem !important;
+    min-height: 3.25rem !important;
+    max-height: 3.25rem !important;
     padding: 0.25rem !important;
-    border-radius: 0.75rem !important;
+    border-radius: 0.875rem !important;
     flex-shrink: 0 !important;
     margin: 0 auto !important;
 }
