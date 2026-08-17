@@ -52,7 +52,7 @@ async function generatePostCardCanvas({ boxPrice, totalValue, diff, isProfitable
     // 3. Logo
     const logoImg = new Image();
     logoImg.crossOrigin = "anonymous";
-    logoImg.src = '/favicon.png';
+    logoImg.src = '/favicon.svg';
 
     await new Promise(resolve => {
         logoImg.onload = resolve;
@@ -209,7 +209,7 @@ async function generateStoryCardCanvas({ boxPrice, totalValue, diff, isProfitabl
     // 3. Logo
     const logoImg = new Image();
     logoImg.crossOrigin = "anonymous";
-    logoImg.src = '/favicon.png';
+    logoImg.src = '/favicon.svg';
 
     await new Promise(resolve => {
         logoImg.onload = resolve;
@@ -414,7 +414,7 @@ async function generateStickerCardCanvas({ boxPrice, totalValue, diff, isProfita
     // 3. Logo
     const logoImg = new Image();
     logoImg.crossOrigin = "anonymous";
-    logoImg.src = '/favicon.png';
+    logoImg.src = '/favicon.svg';
 
     await new Promise(resolve => {
         logoImg.onload = resolve;
