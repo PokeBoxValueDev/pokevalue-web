@@ -40,6 +40,17 @@ input[type="number"] {
     bottom: max(1rem, env(safe-area-inset-bottom, 1rem)) !important;
 }
 
+/* Altura dinámica de objetos incluidos para que la página termine en el botón de Ko-fi (Above-the-fold) */
+#items-container {
+    max-height: clamp(230px, calc(100dvh - 350px), 580px);
+}
+
+@media (min-width: 640px) {
+    #items-container {
+        max-height: clamp(280px, calc(100dvh - 360px), 640px);
+    }
+}
+
 /* Transiciones suaves de vistas */
 .fade-in {
     animation: fadeIn 0.25s ease-in-out forwards;
