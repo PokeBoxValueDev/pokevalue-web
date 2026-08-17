@@ -9,7 +9,7 @@ export default {
     boxPriceLabel: "Box Price",
     boxPricePlaceholderPrefix: "e.g.",
     itemsIncluded: "Items included",
-    searchPlaceholder: "Search item...",
+    searchPlaceholder: "Search...",
     loadingItems: "Loading items...",
     btnCalculate: "Calculate Value",
     recentHistory: "Recent History",

@@ -9,7 +9,7 @@ export default {
     boxPriceLabel: "Precio de la Caja",
     boxPricePlaceholderPrefix: "Ej:",
     itemsIncluded: "Objetos incluidos",
-    searchPlaceholder: "Buscar objeto...",
+    searchPlaceholder: "Buscar...",
     loadingItems: "Cargando objetos...",
     btnCalculate: "Calcular Rentabilidad",
     recentHistory: "Historial Reciente",
