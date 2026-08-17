@@ -102,21 +102,28 @@ test('visual/harness - btn-share copies or shares text summary when clicked', as
     assert.ok(sharedData !== null || clipboardText !== null, 'btn-share click must trigger navigator.share or clipboard.writeText');
 });
 
-test('visual/harness - btn-reset-qty resets item quantity inputs to 0', () => {
+test('visual/harness - btn-reset-qty resets filters to all without clearing item quantities', () => {
     const btnResetQty = createMockElement('btn-reset-qty');
+    const searchInput = createMockElement('search-input');
+    searchInput.value = 'incursion';
     const input1 = { value: '5', dispatchEvent: () => {} };
     const input2 = { value: '3', dispatchEvent: () => {} };
 
     globalThis.document = {
-        getElementById: (id) => (id === 'btn-reset-qty' ? btnResetQty : null),
+        getElementById: (id) => {
+            if (id === 'btn-reset-qty') return btnResetQty;
+            if (id === 'search-input') return searchInput;
+            return null;
+        },
         querySelectorAll: (selector) => (selector === '.item-qty' ? [input1, input2] : [])
     };
 
     CalculatorController.init();
     btnResetQty.click();
 
-    assert.equal(input1.value, 0, 'input1 value must be reset to 0');
-    assert.equal(input2.value, 0, 'input2 value must be reset to 0');
+    assert.equal(searchInput.value, '', 'Search input should be cleared');
+    assert.equal(input1.value, '5', 'input1 quantity should be preserved');
+    assert.equal(input2.value, '3', 'input2 quantity should be preserved');
 });
 
 test('visual/harness - ThemeController toggles dark mode when theme-toggle-btn is clicked', async () => {

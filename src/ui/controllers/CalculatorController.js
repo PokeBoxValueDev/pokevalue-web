@@ -69,15 +69,15 @@ export class CalculatorController {
 
         if (btnResetQty) {
             btnResetQty.addEventListener('click', () => {
-                const allInputs = document.querySelectorAll('.item-qty');
-                allInputs.forEach(input => {
-                    input.value = 0;
-                    input.dispatchEvent(new Event('input'));
-                });
                 const searchInput = document.getElementById('search-input');
-                if (searchInput) searchInput.value = '';
+                if (searchInput) {
+                    searchInput.value = '';
+                    try {
+                        const evt = (typeof CustomEvent === 'function') ? new CustomEvent('input', { bubbles: true }) : { type: 'input' };
+                        searchInput.dispatchEvent(evt);
+                    } catch (_) {}
+                }
                 setCategoryFilter('all');
-                CalculatorController.updateLiveSummary();
             });
         }
 
