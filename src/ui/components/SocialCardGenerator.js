@@ -1,6 +1,6 @@
 /**
  * Genera una tarjeta visual PNG mediante HTML5 Canvas para compartir en redes sociales.
- * Soporta formato 'post' (paisaje/horizontal) y formato 'story' (vertical 9:16 para Instagram/WhatsApp/TikTok).
+ * Soporta formato 'post' (horizontal), 'story' (vertical 9:16) y 'sticker' (cuadrado 512x512 para Discord/WhatsApp).
  */
 import { t } from '../../i18n/i18n.js';
 
@@ -9,6 +9,9 @@ export async function generateSocialCardCanvas({ boxPrice, totalValue, diff, isP
 
     if (format === 'story') {
         return generateStoryCardCanvas({ boxPrice, totalValue, diff, isProfitable, grade, currencySymbol, items });
+    }
+    if (format === 'sticker') {
+        return generateStickerCardCanvas({ boxPrice, totalValue, diff, isProfitable, grade, currencySymbol, items });
     }
     return generatePostCardCanvas({ boxPrice, totalValue, diff, isProfitable, grade, currencySymbol, items });
 }
@@ -359,6 +362,147 @@ async function generateStoryCardCanvas({ boxPrice, totalValue, diff, isProfitabl
     ctx.fillStyle = '#ffffff';
     ctx.textAlign = 'center';
     ctx.fillText('pokeboxvalue.com', 360, 1192);
+
+    return new Promise((resolve) => {
+        canvas.toBlob((blob) => resolve(blob), 'image/png');
+    });
+}
+
+/**
+ * Sticker Cuadrado Ultranítido (512x512) para Discord / WhatsApp Stickers
+ */
+async function generateStickerCardCanvas({ boxPrice, totalValue, diff, isProfitable, grade, currencySymbol, items = [] }) {
+    const canvas = document.createElement('canvas');
+    canvas.width = 512;
+    canvas.height = 512;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return null;
+
+    // 1. Limpiar fondo transparente
+    if (typeof ctx.clearRect === 'function') {
+        ctx.clearRect(0, 0, 512, 512);
+    }
+
+    // 2. Fondo de tarjeta estilizada con sombra y esquinas redondeadas
+    const cardX = 16, cardY = 16, cardW = 480, cardH = 480, radius = 32;
+
+    const grad = ctx.createLinearGradient(cardX, cardY, cardX + cardW, cardY + cardH);
+    if (isProfitable) {
+        grad.addColorStop(0, '#064e3b'); // Emerald 900
+        grad.addColorStop(0.5, '#022c22'); // Emerald 950
+        grad.addColorStop(1, '#064e3b');
+    } else {
+        grad.addColorStop(0, '#881337'); // Rose 900
+        grad.addColorStop(0.5, '#4c0519'); // Rose 950
+        grad.addColorStop(1, '#881337');
+    }
+
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    if (typeof ctx.roundRect === 'function') {
+        ctx.roundRect(cardX, cardY, cardW, cardH, radius);
+    } else {
+        ctx.rect(cardX, cardY, cardW, cardH);
+    }
+    ctx.fill();
+
+    // Borde de acento
+    ctx.strokeStyle = isProfitable ? '#34d399' : '#fb7185';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+    // 3. Logo
+    const logoImg = new Image();
+    logoImg.crossOrigin = "anonymous";
+    logoImg.src = '/favicon.png';
+
+    await new Promise(resolve => {
+        logoImg.onload = resolve;
+        logoImg.onerror = resolve;
+        setTimeout(resolve, 250);
+    });
+
+    const hasLogo = logoImg.complete && logoImg.naturalHeight !== 0;
+    if (hasLogo) {
+        ctx.drawImage(logoImg, 44, 38, 40, 40);
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '900 24px sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText('PokeBoxValue', 94, 66);
+    } else {
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '900 24px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('PokeBoxValue', 256, 66);
+    }
+
+    // 4. Insignia Rango
+    const gradeLabel = t('grade' + grade) || (isProfitable ? 'Excelente compra' : 'Mala compra');
+    ctx.font = 'bold 16px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = isProfitable ? '#a7f3d0' : '#fecdd3';
+    ctx.fillText(gradeLabel, 256, 115);
+
+    // 5. Veredicto Grande
+    const mainTitle = isProfitable ? (t('titleProfitable') || '¡RENTA!') : (t('titleNotProfitable') || '¡NO RENTA!');
+    ctx.font = '900 30px sans-serif';
+    ctx.fillStyle = '#ffffff';
+    ctx.fillText(mainTitle, 256, 155);
+
+    // 6. Diferencia de Ahorro / Pérdida
+    const isCoins = currencySymbol === '🟡' || currencySymbol === 'coins';
+    const fmtBox = isCoins ? Math.round(boxPrice) : Number(boxPrice).toFixed(2);
+    const fmtTot = isCoins ? Math.round(totalValue) : Number(totalValue).toFixed(2);
+    const fmtDif = isCoins ? Math.round(diff) : Number(diff).toFixed(2);
+    const diffText = isProfitable ? `+${Math.abs(fmtDif)} ${currencySymbol}` : `-${Math.abs(fmtDif)} ${currencySymbol}`;
+
+    ctx.font = '900 44px sans-serif';
+    ctx.fillStyle = isProfitable ? '#34d399' : '#fb7185';
+    ctx.fillText(diffText, 256, 215);
+
+    // 7. Comparativa Precio vs Valor Real
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+    ctx.beginPath();
+    if (typeof ctx.roundRect === 'function') {
+        ctx.roundRect(44, 245, 424, 80, 16);
+    } else {
+        ctx.rect(44, 245, 424, 80);
+    }
+    ctx.fill();
+
+    ctx.font = '600 14px sans-serif';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+    ctx.textAlign = 'left';
+    ctx.fillText(t('resBoxPrice') || 'Precio Caja:', 64, 280);
+    ctx.fillText(t('resRealValue') || 'Valor Real:', 64, 310);
+
+    ctx.font = 'bold 15px sans-serif';
+    ctx.fillStyle = '#ffffff';
+    ctx.textAlign = 'right';
+    ctx.fillText(`${fmtBox} ${currencySymbol}`, 448, 280);
+    ctx.fillText(`${fmtTot} ${currencySymbol}`, 448, 310);
+
+    // 8. Objetos incluidos (resumen compacto)
+    const validItems = Array.isArray(items) ? items : [];
+    if (validItems.length > 0) {
+        ctx.font = 'bold 13px sans-serif';
+        ctx.fillStyle = '#ffffff';
+        ctx.textAlign = 'center';
+        let itemsStr = validItems.slice(0, 4).join(' • ');
+        if (ctx.measureText(itemsStr).width > 400) {
+            while (itemsStr.length > 5 && ctx.measureText(itemsStr + '...').width > 400) {
+                itemsStr = itemsStr.slice(0, -1);
+            }
+            itemsStr += '...';
+        }
+        ctx.fillText(itemsStr, 256, 365);
+    }
+
+    // 9. Marca de agua
+    ctx.font = 'bold 13px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.55)';
+    ctx.fillText('pokeboxvalue.com', 256, 455);
 
     return new Promise((resolve) => {
         canvas.toBlob((blob) => resolve(blob), 'image/png');

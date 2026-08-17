@@ -337,6 +337,7 @@ test('visual/harness - generateSocialCardCanvas layout calculates bounding box a
                     getContext: () => ({
                         createLinearGradient: () => ({ addColorStop: () => {} }),
                         fillRect: () => {},
+                        clearRect: () => {},
                         beginPath: () => {},
                         roundRect: () => {},
                         stroke: () => {},
@@ -360,11 +361,27 @@ test('visual/harness - generateSocialCardCanvas layout calculates bounding box a
         totalValue: 150,
         diff: 50,
         isProfitable: true,
-        grade: 'S',
-        currencySymbol: '€'
+        grade: 'A',
+        currencySymbol: '€',
+        items: ['Pase Incursión', 'Superincubadora']
     });
 
-    assert.ok(blob !== null, 'generateSocialCardCanvas must produce PNG blob');
+    assert.ok(blob, 'generateSocialCardCanvas must return a Blob');
+    assert.equal(blob.type, 'image/png', 'Blob must be of type image/png');
+
+    const stickerBlob = await generateSocialCardCanvas({
+        boxPrice: 100,
+        totalValue: 150,
+        diff: 50,
+        isProfitable: true,
+        grade: 'A',
+        currencySymbol: '🪙',
+        items: ['Pase Remoto'],
+        format: 'sticker'
+    });
+
+    assert.ok(stickerBlob, 'Sticker format must return a Blob');
+    assert.equal(stickerBlob.type, 'image/png', 'Sticker blob must be image/png');
 });
 
 test('visual/harness - I18nController detects browser language dynamically when no saved preference exists', async () => {

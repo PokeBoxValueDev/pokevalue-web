@@ -18,5 +18,28 @@
       "sizes": "512x512",
       "purpose": "any maskable"
     }
+  ],
+  "shortcuts": [
+    {
+      "name": "Nueva Calculadora",
+      "short_name": "Calcular",
+      "description": "Abrir la calculadora para valorar una caja",
+      "url": "./#calculator",
+      "icons": [{ "src": "favicon.svg", "sizes": "512x512" }]
+    },
+    {
+      "name": "Historial de Cajas",
+      "short_name": "Historial",
+      "description": "Ver cálculos anteriores y cajas guardadas",
+      "url": "./#history-section",
+      "icons": [{ "src": "favicon.svg", "sizes": "512x512" }]
+    },
+    {
+      "name": "Preguntas Frecuentes",
+      "short_name": "FAQ",
+      "description": "Metodología y preguntas frecuentes",
+      "url": "./#faq",
+      "icons": [{ "src": "favicon.svg", "sizes": "512x512" }]
+    }
   ]
 }

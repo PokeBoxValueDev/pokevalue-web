@@ -75,6 +75,7 @@ export default {
     btnShareText: "Texto",
     btnShareStory: "Story (9:16)",
     btnShareCard: "Tarjeta (16:9)",
+    btnShareSticker: "Sticker (Discord)",
     shareTitle: "PokeBoxValue",
     shareText: "Mira la rentabilidad de esta caja en PokeBoxValue:",
     shareNativeTextFallback: "PokeBoxValue - Calculadora de Cajas de Pokémon GO",

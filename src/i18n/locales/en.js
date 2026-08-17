@@ -75,6 +75,7 @@ export default {
     btnShareText: "Text",
     btnShareStory: "Story (9:16)",
     btnShareCard: "Card (16:9)",
+    btnShareSticker: "Sticker (Discord)",
     shareTitle: "PokeBoxValue",
     shareText: "Check out this Pokémon GO box value on PokeBoxValue:",
     shareNativeTextFallback: "PokeBoxValue - Pokémon GO Box Value Calculator",

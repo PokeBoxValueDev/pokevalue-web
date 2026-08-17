@@ -127,6 +127,19 @@ export class CalculatorController {
             });
         }
 
+        const btnShareSticker = document.getElementById('btn-share-sticker');
+        if (btnShareSticker) {
+            btnShareSticker.addEventListener('click', async () => {
+                if (isSharing) return;
+                isSharing = true;
+                try {
+                    await CalculatorController.handleCardShare('sticker');
+                } finally {
+                    isSharing = false;
+                }
+            });
+        }
+
         if (btnShareCard) {
             btnShareCard.addEventListener('click', async () => {
                 if (isSharing) return;
