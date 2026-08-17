@@ -324,7 +324,7 @@ export function renderItems(items) {
                 </div>
 
                 <!-- Lista / Grid de Objetos de la Categoría -->
-                <div class="category-items-grid space-y-2">
+                <div class="category-items-grid flex flex-col gap-2">
                     ${categoryItems.map(item => {
             let unitPriceStr = '';
 

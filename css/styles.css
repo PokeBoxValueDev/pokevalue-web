@@ -205,6 +205,10 @@ html.is-ios.dark [role="dialog"] > div {
     gap: 0.5rem !important;
 }
 
+.items-layout-grid .category-items-grid > * {
+    margin: 0 !important;
+}
+
 @media (min-width: 640px) {
     .items-layout-grid .category-items-grid {
         grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
