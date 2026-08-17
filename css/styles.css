@@ -35,6 +35,13 @@ input[type="number"] {
     appearance: textfield !important;
 }
 
+/* Prevención de zoom automático en Safari iOS en inputs (requiere font-size >= 16px en móviles) */
+@media screen and (max-width: 768px) {
+    input, select, textarea {
+        font-size: 16px !important;
+    }
+}
+
 /* Soporte de Safe Areas para iPhone y dispositivos con barra de gestos */
 #live-sticky-bar {
     bottom: max(1rem, env(safe-area-inset-bottom, 1rem)) !important;

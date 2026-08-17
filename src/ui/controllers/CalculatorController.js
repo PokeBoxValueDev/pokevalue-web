@@ -331,7 +331,6 @@ export class CalculatorController {
 
         CalculatorController.updateLiveSummary();
         CalculatorController.switchView('form');
-        if (priceInput) priceInput.focus();
     }
 
     static async handleTextShare() {
@@ -452,7 +451,6 @@ Objetos incluidos:${itemsSummaryText || ' No especificados'}`;
                 priceError.innerText = t('enterValidPrice');
                 priceError.classList.remove('hidden');
             }
-            priceInput.focus();
             return;
         }
 
