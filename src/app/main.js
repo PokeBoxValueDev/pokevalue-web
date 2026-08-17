@@ -15,11 +15,7 @@ import { t } from '../i18n/i18n.js';
 
 export async function initApp() {
     // 1. Detección automática de iOS (Aplica clase .is-ios si es iPhone, iPad o iPod)
-    const isIOSDevice = IOSDeviceDetector.applyIOSClassIfNeeded();
-    const iosBadge = document.getElementById('ios-badge');
-    if (iosBadge && isIOSDevice) {
-        iosBadge.classList.remove('hidden');
-    }
+    IOSDeviceDetector.applyIOSClassIfNeeded();
     IOSDeviceDetector.setupIOSInstallBanner();
 
     // 2. Versión de la App en Footer
