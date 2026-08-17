@@ -19,6 +19,15 @@ export default {
     alertNoItems: "Selecciona al menos un objeto.",
     btnResetQty: "Limpiar",
     btnInstallApp: "Instalar App",
+    selectedTrayTitle: "Objetos en tu Caja",
+    clearBox: "Vaciar",
+    viewList: "Lista",
+    viewGrid: "Cuadrícula",
+    boxNameLabel: "Nombre de la caja (opcional):",
+    boxNamePlaceholder: "Ej: Caja de Incursión, Pack Evento...",
+    btnSaveBox: "Guardar Caja",
+    btnBoxSaved: "¡Guardada!",
+    savedBoxTooltip: "Cargar datos en la calculadora",
 
     // Píldoras de Filtros Rápidos
     filterAll: "Todos",

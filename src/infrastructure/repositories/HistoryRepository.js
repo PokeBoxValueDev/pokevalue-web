@@ -40,6 +40,20 @@ export class HistoryRepository {
     }
 
     /**
+     * Guarda la lista completa de historial.
+     * @param {Array} history Array de registros.
+     */
+    static saveHistory(history) {
+        try {
+            if (typeof localStorage === 'undefined') return;
+            const trimmedHistory = (history || []).slice(0, MAX_HISTORY_ITEMS);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(trimmedHistory));
+        } catch (e) {
+            console.error('Error al guardar lista de historial:', e);
+        }
+    }
+
+    /**
      * Limpia completamente el historial del almacenamiento local.
      */
     static clearHistory() {

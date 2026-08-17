@@ -141,6 +141,145 @@ export function applyFilters() {
 }
 
 /**
+ * Muestra una animación flotante de feedback al interactuar (+5, +10, +1, -1)
+ */
+export function showFloatingFeedback(targetElement, text, isPositive = true) {
+    if (!targetElement || typeof document === 'undefined' || typeof document.createElement !== 'function') return;
+    try {
+        const rect = targetElement.getBoundingClientRect();
+        const badge = document.createElement('span');
+        badge.className = `floating-feedback ${isPositive ? 'text-indigo-600 dark:text-indigo-400' : 'text-rose-500'}`;
+        badge.textContent = text;
+        badge.style.left = `${rect.left + rect.width / 2}px`;
+        badge.style.top = `${rect.top}px`;
+        document.body.appendChild(badge);
+
+        setTimeout(() => {
+            if (badge.parentNode) {
+                badge.parentNode.removeChild(badge);
+            }
+        }, 650);
+    } catch (_) {}
+}
+
+/**
+ * Cambia la densidad de vista entre lista y cuadrícula.
+ */
+export function setLayoutMode(mode = 'list') {
+    if (typeof document === 'undefined') return;
+    const container = document.getElementById('items-container');
+    const btnList = document.getElementById('btn-layout-list');
+    const btnGrid = document.getElementById('btn-layout-grid');
+
+    const activeMode = mode === 'grid' ? 'grid' : 'list';
+
+    if (container) {
+        if (activeMode === 'grid') {
+            container.classList.add('items-layout-grid');
+        } else {
+            container.classList.remove('items-layout-grid');
+        }
+    }
+
+    if (btnList && btnGrid) {
+        if (activeMode === 'grid') {
+            btnGrid.className = 'layout-toggle-btn p-1.5 rounded-md text-indigo-600 dark:text-white bg-white dark:bg-gray-800 shadow-xs transition';
+            btnList.className = 'layout-toggle-btn p-1.5 rounded-md text-gray-400 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition';
+        } else {
+            btnList.className = 'layout-toggle-btn p-1.5 rounded-md text-indigo-600 dark:text-white bg-white dark:bg-gray-800 shadow-xs transition';
+            btnGrid.className = 'layout-toggle-btn p-1.5 rounded-md text-gray-400 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition';
+        }
+    }
+
+    try {
+        if (typeof localStorage !== 'undefined') {
+            localStorage.setItem('pokevalue_view_layout', activeMode);
+        }
+    } catch (_) {}
+}
+
+/**
+ * Actualiza la bandeja de chips de objetos seleccionados (1C).
+ */
+export function updateSelectedTray() {
+    if (typeof document === 'undefined') return;
+    const tray = document.getElementById('selected-items-tray');
+    const chipsList = document.getElementById('selected-chips-list');
+    const container = document.getElementById('items-container');
+    if (!tray || !chipsList || !container) return;
+
+    const selectedCards = [];
+    container.querySelectorAll('.item-card').forEach(card => {
+        const input = card.querySelector('.item-qty');
+        const qty = input ? (parseInt(input.value) || 0) : 0;
+        if (qty > 0) {
+            const id = card.getAttribute('data-card-id');
+            const name = card.getAttribute('data-item-name') || 'Objeto';
+            selectedCards.push({ id, name, qty, card, input });
+        }
+    });
+
+    if (selectedCards.length === 0) {
+        tray.classList.add('hidden');
+        chipsList.innerHTML = '';
+        return;
+    }
+
+    tray.classList.remove('hidden');
+    chipsList.innerHTML = selectedCards.map(item => `
+        <div class="selected-chip inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white dark:bg-gray-800 border border-indigo-200 dark:border-indigo-800/60 shadow-xs text-xs font-semibold text-gray-900 dark:text-white hover:border-indigo-400 transition group cursor-pointer" data-id="${item.id}">
+            <span class="px-1.5 py-0.2 rounded bg-indigo-600 text-white text-[10px] font-extrabold">${item.qty}x</span>
+            <span class="truncate max-w-[130px] sm:max-w-[180px]">${item.name}</span>
+            <button type="button" class="btn-remove-chip p-0.5 text-gray-400 hover:text-rose-500 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition cursor-pointer touch-manipulation" data-id="${item.id}" aria-label="Eliminar ${item.name}">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+    `).join('');
+
+    // Escuchador para borrar chips individuales
+    chipsList.querySelectorAll('.btn-remove-chip').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            IOSDeviceDetector.triggerHapticFeedback(10);
+            const id = btn.getAttribute('data-id');
+            const input = container.querySelector(`input[data-id="${id}"]`);
+            if (input) {
+                input.value = 0;
+                try {
+                    const evt = (typeof CustomEvent === 'function') ? new CustomEvent('input', { bubbles: true }) : { type: 'input' };
+                    input.dispatchEvent(evt);
+                } catch (_) {}
+                const card = container.querySelector(`.item-card[data-card-id="${id}"]`);
+                if (card) {
+                    card.classList.remove('bg-indigo-50/90', 'dark:bg-indigo-950/50', 'border-indigo-400', 'dark:border-indigo-500', 'shadow-md', 'ring-1', 'ring-indigo-400/30');
+                    card.classList.add('bg-gray-50/80', 'dark:bg-gray-700/50');
+                }
+                updateSelectedTray();
+                if (typeof document !== 'undefined' && typeof document.dispatchEvent === 'function') {
+                    try {
+                        const event = (typeof CustomEvent === 'function') ? new CustomEvent('pokevalue:itemsChanged') : { type: 'pokevalue:itemsChanged' };
+                        document.dispatchEvent(event);
+                    } catch (_) {}
+                }
+            }
+        });
+    });
+
+    // Escuchador para hacer scroll hasta la tarjeta del objeto
+    chipsList.querySelectorAll('.selected-chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+            const id = chip.getAttribute('data-id');
+            const card = container.querySelector(`.item-card[data-card-id="${id}"]`);
+            if (card) {
+                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                card.classList.add('ring-4', 'ring-indigo-500/50');
+                setTimeout(() => card.classList.remove('ring-4', 'ring-indigo-500/50'), 1000);
+            }
+        });
+    });
+}
+
+/**
  * Renderiza la lista de objetos agrupados por categoría.
  */
 export function renderItems(items) {
@@ -184,8 +323,8 @@ export function renderItems(items) {
                     </span>
                 </div>
 
-                <!-- Lista de Objetos de la Categoría -->
-                <div class="space-y-2">
+                <!-- Lista / Grid de Objetos de la Categoría -->
+                <div class="category-items-grid space-y-2">
                     ${categoryItems.map(item => {
             let unitPriceStr = '';
 
@@ -220,13 +359,13 @@ export function renderItems(items) {
     <div class="item-card flex items-center justify-between p-2.5 sm:p-3 bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-750 rounded-xl border border-gray-200/70 dark:border-gray-700/70 shadow-xs hover:shadow-sm transition-all duration-200 group" data-card-id="${item.id}" data-category="${catKey}" data-item-name="${name}" data-name-es="${nameEs}" data-name-en="${nameEn}">
         
         <!-- Icono SVG / Imagen del Item + Información -->
-        <div class="flex items-center gap-2.5 sm:gap-3 min-w-0 pr-1.5 flex-1">
+        <div class="card-info-container flex items-center gap-2.5 sm:gap-3 min-w-0 pr-1.5 flex-1">
             <div class="w-11 h-11 sm:w-13 sm:h-13 flex-shrink-0 flex items-center justify-center rounded-xl p-1 bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-850 border border-gray-200/80 dark:border-gray-600/80 shadow-xs">
                 ${svgContent}
             </div>
             <div class="min-w-0 flex-1">
                 <p class="text-xs sm:text-sm font-bold text-gray-900 dark:text-white leading-tight break-words whitespace-normal">${name}</p>
-                <div class="flex items-center flex-wrap gap-x-2 gap-y-1 mt-0.5">
+                <div class="card-quick-actions flex items-center flex-wrap gap-x-2 gap-y-1 mt-0.5">
                     <span class="text-[11px] sm:text-xs text-gray-500 dark:text-gray-400 font-medium whitespace-nowrap">${unitPriceStr}</span>
                     <div class="flex items-center gap-1">
                         <button type="button" class="btn-quick-add text-[10px] font-bold px-2 py-0.5 rounded bg-gray-200/80 hover:bg-indigo-600 hover:text-white dark:bg-gray-600 dark:hover:bg-indigo-500 text-gray-700 dark:text-gray-200 transition active:scale-90 cursor-pointer touch-manipulation" data-id="${item.id}" data-add="5" aria-label="Añadir 5 ${name}">+5</button>
@@ -237,7 +376,7 @@ export function renderItems(items) {
         </div>
 
         <!-- Controles de Cantidad (+ / -) con Touch Targets Accesibles -->
-        <div class="flex items-center gap-0.5 sm:gap-1 bg-white dark:bg-gray-800 border border-gray-200/90 dark:border-gray-600 rounded-xl p-0.5 sm:p-1 shadow-xs flex-shrink-0 ml-1">
+        <div class="card-actions-container flex items-center gap-0.5 sm:gap-1 bg-white dark:bg-gray-800 border border-gray-200/90 dark:border-gray-600 rounded-xl p-0.5 sm:p-1 shadow-xs flex-shrink-0 ml-1">
             <button type="button" 
                 class="btn-decrement w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center text-sm sm:text-base font-extrabold text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition active:scale-95 touch-manipulation" 
                 data-id="${item.id}"
@@ -297,6 +436,7 @@ export function renderItems(items) {
             }
         }
         updateCategoryCountBadges();
+        updateSelectedTray();
         // Disparar evento personalizado para actualizar la barra en vivo
         if (typeof document !== 'undefined' && typeof document.dispatchEvent === 'function') {
             try {
@@ -318,7 +458,10 @@ export function renderItems(items) {
             const input = container.querySelector(`input[data-id="${id}"]`);
             if (input) {
                 const currentVal = parseInt(input.value) || 0;
-                if (currentVal > 0) input.value = currentVal - 1;
+                if (currentVal > 0) {
+                    input.value = currentVal - 1;
+                    showFloatingFeedback(btn, '-1', false);
+                }
                 updateCardHighlight(input);
             }
         });
@@ -332,12 +475,13 @@ export function renderItems(items) {
             if (input) {
                 const currentVal = parseInt(input.value) || 0;
                 input.value = currentVal + 1;
+                showFloatingFeedback(btn, '+1', true);
                 updateCardHighlight(input);
             }
         });
     });
 
-    // Escuchadores de píldoras de incremento rápido (+1, +5, +10)
+    // Escuchadores de píldoras de incremento rápido (+5, +10)
     container.querySelectorAll('.btn-quick-add').forEach(btn => {
         btn.addEventListener('click', () => {
             IOSDeviceDetector.triggerHapticFeedback(15);
@@ -347,6 +491,7 @@ export function renderItems(items) {
             if (input) {
                 const currentVal = parseInt(input.value) || 0;
                 input.value = currentVal + toAdd;
+                showFloatingFeedback(btn, `+${toAdd}`, true);
                 updateCardHighlight(input);
             }
         });
@@ -369,7 +514,55 @@ export function renderItems(items) {
         }
     });
 
-    // Sincronizar contadores iniciales (0/N) y aplicar filtros
+    // Escuchador de vaciar bandeja de items seleccionados
+    const btnClearTray = (typeof document !== 'undefined') ? document.getElementById('btn-clear-tray') : null;
+    if (btnClearTray && typeof btnClearTray.addEventListener === 'function') {
+        btnClearTray.addEventListener('click', () => {
+            IOSDeviceDetector.triggerHapticFeedback(10);
+            container.querySelectorAll('.item-qty').forEach(inp => {
+                inp.value = 0;
+            });
+            container.querySelectorAll('.item-card').forEach(card => {
+                card.classList.remove('bg-indigo-50/90', 'dark:bg-indigo-950/50', 'border-indigo-400', 'dark:border-indigo-500', 'shadow-md', 'ring-1', 'ring-indigo-400/30');
+            });
+            updateCategoryCountBadges();
+            updateSelectedTray();
+            if (typeof document !== 'undefined' && typeof document.dispatchEvent === 'function') {
+                try {
+                    const event = (typeof CustomEvent === 'function') ? new CustomEvent('pokevalue:itemsChanged') : { type: 'pokevalue:itemsChanged' };
+                    document.dispatchEvent(event);
+                } catch (_) {}
+            }
+        });
+    }
+
+    // Escuchadores de cambio de layout (Lista vs Cuadrícula)
+    const btnList = (typeof document !== 'undefined') ? document.getElementById('btn-layout-list') : null;
+    const btnGrid = (typeof document !== 'undefined') ? document.getElementById('btn-layout-grid') : null;
+    if (btnList && typeof btnList.addEventListener === 'function') {
+        btnList.addEventListener('click', () => {
+            IOSDeviceDetector.triggerHapticFeedback(10);
+            setLayoutMode('list');
+        });
+    }
+    if (btnGrid && typeof btnGrid.addEventListener === 'function') {
+        btnGrid.addEventListener('click', () => {
+            IOSDeviceDetector.triggerHapticFeedback(10);
+            setLayoutMode('grid');
+        });
+    }
+
+    // Inicializar layout guardado
+    let savedLayout = 'list';
+    try {
+        if (typeof localStorage !== 'undefined') {
+            savedLayout = localStorage.getItem('pokevalue_view_layout') || 'list';
+        }
+    } catch (_) {}
+    setLayoutMode(savedLayout);
+
+    // Sincronizar contadores iniciales (0/N), bandeja y aplicar filtros
     updateCategoryCountBadges();
+    updateSelectedTray();
     applyFilters();
 }

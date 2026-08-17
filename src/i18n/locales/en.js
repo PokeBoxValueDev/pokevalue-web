@@ -19,6 +19,15 @@ export default {
     alertNoItems: "Please select at least one item.",
     btnResetQty: "Clear",
     btnInstallApp: "Install App",
+    selectedTrayTitle: "Items in your Box",
+    clearBox: "Clear",
+    viewList: "List",
+    viewGrid: "Grid",
+    boxNameLabel: "Box name (optional):",
+    boxNamePlaceholder: "E.g. Raid Box, Event Pack...",
+    btnSaveBox: "Save Box",
+    btnBoxSaved: "Saved!",
+    savedBoxTooltip: "Load into calculator",
 
     // Quick Category Filter Pills
     filterAll: "All",

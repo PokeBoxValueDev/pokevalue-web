@@ -145,6 +145,34 @@ export class CalculatorController {
             });
         }
 
+        const btnSaveCustomBox = document.getElementById('btn-save-custom-box');
+        const customBoxNameInput = document.getElementById('custom-box-name-input');
+        if (btnSaveCustomBox) {
+            btnSaveCustomBox.addEventListener('click', () => {
+                IOSDeviceDetector.triggerHapticFeedback(15);
+                const customName = (customBoxNameInput ? customBoxNameInput.value : '').trim();
+                const history = CalculatorController._historyRepository.getHistory();
+                if (history && history.length > 0) {
+                    history[0].boxName = customName || 'Caja Personalizada';
+                    history[0].isSaved = true;
+                    CalculatorController._historyRepository.saveHistory(history);
+                    renderHistory(CalculatorController.restoreFromHistory);
+
+                    const btnLabel = document.getElementById('btn-save-box-label');
+                    if (btnLabel) {
+                        btnLabel.textContent = t('btnBoxSaved') || '¡Guardada!';
+                        btnSaveCustomBox.classList.remove('bg-emerald-600', 'hover:bg-emerald-500');
+                        btnSaveCustomBox.classList.add('bg-emerald-700');
+                        setTimeout(() => {
+                            btnLabel.textContent = t('btnSaveBox') || 'Guardar Caja';
+                            btnSaveCustomBox.classList.remove('bg-emerald-700');
+                            btnSaveCustomBox.classList.add('bg-emerald-600', 'hover:bg-emerald-500');
+                        }, 1800);
+                    }
+                }
+            });
+        }
+
         // PWA Install prompt
         if (typeof window !== 'undefined' && typeof window.addEventListener === 'function') {
             window.addEventListener('beforeinstallprompt', (e) => {
@@ -507,11 +535,23 @@ Objetos incluidos:${itemsSummaryText || ' No especificados'}`;
             if (priceError) priceError.classList.add('hidden');
         }
 
+        function triggerInputEvent(input) {
+            try {
+                const EventClass = (typeof window !== 'undefined' && window.Event) || Event;
+                input.dispatchEvent(new EventClass('input', { bubbles: true }));
+            } catch (_) {
+                try {
+                    const evt = (typeof CustomEvent === 'function') ? new CustomEvent('input', { bubbles: true }) : { type: 'input' };
+                    input.dispatchEvent(evt);
+                } catch (_) {}
+            }
+        }
+
         // 3. Resetear todas las cantidades en el formulario
         const allInputs = document.querySelectorAll('.item-qty');
         allInputs.forEach(input => {
             input.value = 0;
-            input.dispatchEvent(new Event('input'));
+            triggerInputEvent(input);
         });
 
         // 4. Restaurar cantidades de los objetos desde item.quantities o fallback por nombres
@@ -520,7 +560,7 @@ Objetos incluidos:${itemsSummaryText || ' No especificados'}`;
                 allInputs.forEach(input => {
                     if (String(input.getAttribute('data-id')) === String(id)) {
                         input.value = qty;
-                        input.dispatchEvent(new Event('input'));
+                        triggerInputEvent(input);
                     }
                 });
             });
@@ -539,13 +579,18 @@ Objetos incluidos:${itemsSummaryText || ' No especificados'}`;
                             allInputs.forEach(input => {
                                 if (String(input.getAttribute('data-id')) === String(storeItem.id)) {
                                     input.value = qty;
-                                    input.dispatchEvent(new Event('input'));
+                                    triggerInputEvent(input);
                                 }
                             });
                         }
                     });
                 }
             });
+        }
+
+        const customBoxNameInput = document.getElementById('custom-box-name-input');
+        if (customBoxNameInput) {
+            customBoxNameInput.value = item.boxName || '';
         }
 
         CalculatorController.updateLiveSummary();
