@@ -195,14 +195,14 @@
       "svg": "<svg viewBox=\"0 0 64 64\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-10 h-10\"><defs><linearGradient id=\"shCap\" x1=\"0\" y1=\"12\" x2=\"0\" y2=\"36\"><stop offset=\"0%\" stop-color=\"#FF4081\"/><stop offset=\"100%\" stop-color=\"#C2185B\"/></linearGradient><linearGradient id=\"shStem\" x1=\"0\" y1=\"30\" x2=\"0\" y2=\"56\"><stop offset=\"0%\" stop-color=\"#FCE4EC\"/><stop offset=\"100%\" stop-color=\"#F8BBD0\"/></linearGradient></defs><path d=\"M28 32 C28 44, 36 44, 36 56 H28 C28 44, 22 44, 22 32 Z\" fill=\"url(#shStem)\"/><path d=\"M14 30 C14 14, 50 14, 50 30 C50 34, 14 34, 14 30 Z\" fill=\"url(#shCap)\" stroke=\"#FFF\" stroke-width=\"1.5\"/><path d=\"M32 20 Q38 22 36 26 Q32 28 28 25 Q28 22 32 20\" stroke=\"#FFF\" stroke-width=\"2\" fill=\"none\"/><circle cx=\"22\" cy=\"26\" r=\"2.5\" fill=\"#FFF\"/><circle cx=\"42\" cy=\"26\" r=\"2.5\" fill=\"#FFF\"/></svg>"
     },
     {
-      "id": "poke_balls_20",
-      "name_es": "20 Poké Balls",
-      "name_en": "20 Poké Balls",
+      "id": "poke_ball",
+      "name_es": "Poké Ball",
+      "name_en": "Poké Ball",
       "category": "consumibles",
       "pack_size": 1,
-      "pack_price_eur": 0.91,
-      "unit_price_eur": 0.91,
-      "unit_price_coins": 100,
+      "pack_price_eur": 0.045,
+      "unit_price_eur": 0.045,
+      "unit_price_coins": 5,
       "svg": "<svg viewBox=\"0 0 64 64\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" class=\"w-10 h-10\"><defs><radialGradient id=\"pbShine\" cx=\"35%\" cy=\"25%\" r=\"60%\"><stop offset=\"0%\" stop-color=\"#FF8A80\"/><stop offset=\"60%\" stop-color=\"#D50000\"/><stop offset=\"100%\" stop-color=\"#8E0000\"/></radialGradient></defs><circle cx=\"32\" cy=\"32\" r=\"24\" fill=\"#ECEFF1\" stroke=\"#263238\" stroke-width=\"3.5\"/><path d=\"M8 32 A24 24 0 0 1 56 32 Z\" fill=\"url(#pbShine)\"/><line x1=\"8\" y1=\"32\" x2=\"56\" y2=\"32\" stroke=\"#263238\" stroke-width=\"3.5\"/><circle cx=\"32\" cy=\"32\" r=\"8\" fill=\"#ECEFF1\" stroke=\"#263238\" stroke-width=\"3.5\"/><circle cx=\"32\" cy=\"32\" r=\"3.5\" fill=\"#FFF\" stroke=\"#90A4AE\" stroke-width=\"1\"/><ellipse cx=\"24\" cy=\"20\" rx=\"4\" ry=\"2\" fill=\"#FFF\" opacity=\"0.6\" transform=\"rotate(-20 24 20)\"/></svg>"
     },
     {
