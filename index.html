@@ -29,9 +29,9 @@
 
     <!-- CSS & Styles -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@v3.0.0/dist/cookieconsent.css">
-    <link rel="stylesheet" href="/css/styles.css?v=1.35.2">
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=1.35.2">
-    <link rel="apple-touch-icon" href="/favicon.svg?v=1.35.2">
+    <link rel="stylesheet" href="/css/styles.css?v=1.35.3">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=1.35.3">
+    <link rel="apple-touch-icon" href="/favicon.svg?v=1.35.3">
 
     <!-- Canonical & SEO Hreflang Tags -->
     <link rel="canonical" href="https://pokeboxvalue.com/es">
@@ -315,12 +315,12 @@
     
     <!-- Barra Superior Unificada: Precio de la Caja + Buscador Dinámico + Selector de Vista -->
     <div id="top-controls-bar" class="space-y-1.5">
-        <div class="flex items-end gap-2 relative">
+        <label for="box-price" class="block text-xs font-semibold text-gray-700 dark:text-gray-300">
+            <span data-i18n="boxPriceLabel">Precio de la Caja</span> (<span class="currency-label-full">EUR €</span>)
+        </label>
+        <div class="flex items-center gap-2 relative">
             <!-- Bloque Precio (se contrae suavemente al hacer foco en el buscador) -->
             <div id="box-price-container" class="flex-1 min-w-0 transition-all duration-300 ease-in-out">
-                <label for="box-price" class="block text-[11px] sm:text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1 truncate">
-                    <span data-i18n="boxPriceLabel">Precio Caja</span> (<span class="currency-label-full">EUR €</span>)
-                </label>
                 <input type="number" step="0.01" id="box-price" placeholder="Ej: 8.99" aria-label="Precio de la Caja" inputmode="decimal" pattern="[0-9]*"
                     class="w-full h-9 sm:h-10 px-2.5 sm:px-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm sm:text-base font-bold shadow-2xs box-border">
             </div>
