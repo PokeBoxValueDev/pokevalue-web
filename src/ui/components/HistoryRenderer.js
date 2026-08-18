@@ -41,8 +41,9 @@ export function renderHistory(onRestore) {
 
         const customNameHtml = item.boxName ? `
             <div class="flex items-center gap-1.5 font-bold text-xs sm:text-sm text-gray-900 dark:text-white mb-1">
-                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-500/30 text-[11px] font-bold">
-                    🏷️ ${item.boxName}
+                <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-500/30 text-[11px] font-bold">
+                    <svg class="w-3 h-3 text-amber-600 dark:text-amber-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path d="M17.707 9.293l-5-5A.997.997 0 0012 4H4a1 1 0 00-1 1v8c0 .266.105.52.293.707l5 5a1 1 0 001.414 0l8-8a1 1 0 000-1.414zM6 8a2 2 0 110-4 2 2 0 010 4z"/></svg>
+                    <span>${item.boxName}</span>
                 </span>
             </div>
         ` : '';
