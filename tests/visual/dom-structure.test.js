@@ -34,6 +34,7 @@ test('visual/dom - index.html contains all critical UI containers and IDs', () =
         'lang-select',
         'currency-select',
         'view-container',
+        'btn-guide',
         'btn-faq',
         'btn-legal',
         'btn-privacy',

@@ -16,7 +16,7 @@ export function renderView(viewName) {
 
     // Normalizar viewName (quitar barras, minúsculas, mapear alias)
     const normalizedView = (viewName || '').toLowerCase().replace(/^\/+|\/+$/g, '');
-    const canonicalKey = (normalizedView === 'terms' ? 'legal' : (normalizedView === 'faqs' ? 'faq' : normalizedView));
+    const canonicalKey = (normalizedView === 'terms' ? 'legal' : (normalizedView === 'faqs' ? 'faq' : (normalizedView === 'guia' ? 'guide' : normalizedView)));
 
     if (canonicalKey && VIEW_TEMPLATES && VIEW_TEMPLATES[canonicalKey]) {
         if (viewForm) {
@@ -66,7 +66,7 @@ export function renderView(viewName) {
 }
 
 /**
- * Gestor de Vistas y Páginas Secundarias (/faq, /legal, /privacy)
+ * Gestor de Vistas y Páginas Secundarias (/faq, /legal, /privacy, /guide)
  * Maneja la navegación y delegación de eventos en el DOM.
  */
 export function setupViews() {
@@ -74,12 +74,14 @@ export function setupViews() {
 
     // Delegación de eventos en document para asegurar la navegación en cualquier dispositivo
     document.addEventListener('click', (e) => {
-        const targetBtn = e.target && e.target.closest ? e.target.closest('#btn-legal, #btn-privacy, #btn-faq, #btn-cookies, [data-i18n="btnLegal"], [data-i18n="btnPrivacy"], [data-i18n="btnFaq"], [data-cc="show-preferencesModal"]') : null;
+        const targetBtn = e.target && e.target.closest ? e.target.closest('#btn-guide, #btn-legal, #btn-privacy, #btn-faq, #btn-cookies, [data-i18n="btnGuide"], [data-i18n="btnLegal"], [data-i18n="btnPrivacy"], [data-i18n="btnFaq"], [data-cc="show-preferencesModal"]') : null;
         if (targetBtn) {
             e.preventDefault();
             const id = targetBtn.id || targetBtn.getAttribute('data-i18n') || targetBtn.getAttribute('data-cc');
 
-            if (id === 'btn-legal' || id === 'btnLegal') {
+            if (id === 'btn-guide' || id === 'btnGuide') {
+                renderView('guide');
+            } else if (id === 'btn-legal' || id === 'btnLegal') {
                 renderView('legal');
             } else if (id === 'btn-privacy' || id === 'btnPrivacy') {
                 renderView('privacy');
@@ -95,7 +97,7 @@ export function setupViews() {
 
     // Cerrar vistas / volver a inicio al pulsar cualquier botón de volver o el logo
     document.addEventListener('click', (e) => {
-        const closeBtn = e.target && e.target.closest ? e.target.closest('#legal-modal button, #privacy-modal button:not(#btn-reopen-cookies), #view-legal button, #view-privacy button:not(#btn-reopen-cookies), #view-faq button, .btn-close-modal, .btn-back-home, #site-logo') : null;
+        const closeBtn = e.target && e.target.closest ? e.target.closest('#legal-modal button, #privacy-modal button:not(#btn-reopen-cookies), #view-legal button, #view-privacy button:not(#btn-reopen-cookies), #view-faq button, #view-guide button, .btn-close-modal, .btn-back-home, #site-logo') : null;
         if (closeBtn) {
             if (e && typeof e.preventDefault === 'function') e.preventDefault();
             renderView('');

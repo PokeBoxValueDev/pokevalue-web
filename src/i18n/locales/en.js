@@ -164,10 +164,36 @@ export default {
 
     // Footer & Donations
     coffeeBtn: "Buy me a coffee",
-    footerText: "PokeBoxValue is an independent fan-made project and is not affiliated, endorsed, or supported by Scopely, Niantic, The Pokémon Company, Nintendo, or GAME FREAK. Pokémon and item names are trademarks of their respective owners.",
+    footerText: "PokeBoxValue is an independent fan-made project and is not affiliated, sponsored, or endorsed by Scopely, Niantic, The Pokémon Company, Nintendo, or GAME FREAK. Pokémon and item names are trademarks of their respective owners.",
+    btnGuide: "Box Guide",
     btnFaq: "Frequently Asked Questions",
     btnLegal: "Legal Notice",
-    btnPrivacy: "Privacy & Cookies",
+    btnPrivacy: "Privacy Policy",
+
+    // Comprehensive Shop Guide (/guide)
+    guideTitle: "Comprehensive Pokémon GO Box Value & Savings Guide",
+    guideSubtitle: "Learn to analyze the real value of every shop item, maximize your PokéCoins, and avoid trap boxes.",
+    guideSection1Title: "🎯 1. Key Item Analysis & Return on Investment (ROI)",
+    guideSection1Desc: "Not all shop items carry the same strategic value. To evaluate a deal correctly, distinguish between premium items and filler consumables:",
+    guideItemRaidTitle: "🎟️ Raid Passes (Premium Battle & Remote)",
+    guideItemRaidDesc: "These are the highest value items. Premium Battle Passes cost 100 coins and Remote Raid Passes cost 195 coins (or 175 in a 3-pack). Any box offering passes below their unit base price delivers direct savings.",
+    guideItemIncubatorTitle: "🥚 Super Incubators & Egg Incubators",
+    guideItemIncubatorDesc: "Super Incubators cost 200 coins and cut hatch distance by 33%. They are critical during bonus Stardust events or shiny hatch events in 7km and 10km eggs.",
+    guideItemBoostTitle: "⭐ Star Pieces & Lucky Eggs",
+    guideItemBoostDesc: "They cost 80 coins each. Their value is maximized when activated during Community Days or events with 2x/3x Stardust or XP multipliers.",
+    guideItemFillerTitle: "⚠️ Filler Items (Poké Balls & Potions)",
+    guideItemFillerDesc: "Poké Balls, Potions, and Revives are easily obtained for free by spinning PokéStops or opening gifts. Boxes padded with these items are rarely good buys.",
+    guideSection2Title: "🔬 2. Case Studies: Analyzing Real Shop Deals",
+    guideCase1Title: "Example 1: Legendary Raid Pack (Cost: 650 Coins)",
+    guideCase1Desc: "Contents: 3 Remote Passes (585 coins) + 5 Premium Passes (500 coins) = 1,085 coins true value. Saves 435 coins (40.1% discount). Rating: Grade S (Excellent).",
+    guideCase2Title: "Example 2: Exploration Trap Box (Cost: 450 Coins)",
+    guideCase2Desc: "Contents: 1 Incubator (150 coins) + 50 Poké Balls (200 coins) + 5 Potions (100 coins). While nominal value sums to 450, true usable value is only 150 coins. Rating: Grade F (Poor Buy).",
+    guideSection3Title: "🪙 3. Gym Coin Management Strategies",
+    guideGym1: "Gym Rotation: Place defenders (Blissey, Chansey, Snorlax) across multiple gyms to hit the 50 daily coin cap.",
+    guideGym2: "Save for Major Events: Banking 1,500 monthly coins lets you afford Grade S boxes released during GO Fest or Pokémon GO Tour.",
+    guideGym3: "Check the Niantic Web Store: The official Pokémon GO Web Store frequently includes free bonus PokéCoins with coin bundles.",
+    guideContactTitle: "📬 4. Suggestions, New Items & Feedback",
+    guideContactDesc: "Spot a new box in the shop or a change in item prices? PokeBoxValue constantly updates its item dataset to provide the most transparent data.",
 
     // Modales
     legalTitle: "Legal Notice",

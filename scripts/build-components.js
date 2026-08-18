@@ -35,6 +35,7 @@ const resultHtml = fs.readFileSync(path.join(componentsDir, 'result.html'), 'utf
 const legalViewHtml = fs.readFileSync(path.join(viewsDir, 'legal.html'), 'utf8');
 const privacyViewHtml = fs.readFileSync(path.join(viewsDir, 'privacy.html'), 'utf8');
 const faqViewHtml = fs.readFileSync(path.join(viewsDir, 'faq.html'), 'utf8');
+const guideViewHtml = fs.readFileSync(path.join(viewsDir, 'guide.html'), 'utf8');
 
 // Generar módulo desacoplado de plantillas de vistas para renderizado dinámico bajo demanda
 const viewsDataContent = `/**
@@ -46,7 +47,9 @@ export const VIEW_TEMPLATES = {
     terms: ${JSON.stringify(legalViewHtml)},
     privacy: ${JSON.stringify(privacyViewHtml)},
     faq: ${JSON.stringify(faqViewHtml)},
-    faqs: ${JSON.stringify(faqViewHtml)}
+    faqs: ${JSON.stringify(faqViewHtml)},
+    guide: ${JSON.stringify(guideViewHtml)},
+    guia: ${JSON.stringify(guideViewHtml)}
 };
 `;
 fs.writeFileSync(viewsDataJsPath, viewsDataContent, 'utf8');

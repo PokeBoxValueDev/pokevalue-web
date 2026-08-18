@@ -128,7 +128,9 @@ export function runProductionBuild() {
         faq: fs.readFileSync(path.join(ROOT_DIR, 'src', 'components', 'views', 'faq.html'), 'utf8'),
         legal: fs.readFileSync(path.join(ROOT_DIR, 'src', 'components', 'views', 'legal.html'), 'utf8'),
         terms: fs.readFileSync(path.join(ROOT_DIR, 'src', 'components', 'views', 'legal.html'), 'utf8'),
-        privacy: fs.readFileSync(path.join(ROOT_DIR, 'src', 'components', 'views', 'privacy.html'), 'utf8')
+        privacy: fs.readFileSync(path.join(ROOT_DIR, 'src', 'components', 'views', 'privacy.html'), 'utf8'),
+        guide: fs.readFileSync(path.join(ROOT_DIR, 'src', 'components', 'views', 'guide.html'), 'utf8'),
+        guia: fs.readFileSync(path.join(ROOT_DIR, 'src', 'components', 'views', 'guide.html'), 'utf8')
     };
 
     const routes = [
@@ -140,6 +142,12 @@ export function runProductionBuild() {
         { path: 'faqs', lang: 'es', view: 'faq' },
         { path: 'es/faqs', lang: 'es', view: 'faq' },
         { path: 'en/faqs', lang: 'en', view: 'faq' },
+        { path: 'guide', lang: 'es', view: 'guide' },
+        { path: 'es/guide', lang: 'es', view: 'guide' },
+        { path: 'en/guide', lang: 'en', view: 'guide' },
+        { path: 'guia', lang: 'es', view: 'guide' },
+        { path: 'es/guia', lang: 'es', view: 'guide' },
+        { path: 'en/guia', lang: 'en', view: 'guide' },
         { path: 'legal', lang: 'es', view: 'legal' },
         { path: 'es/legal', lang: 'es', view: 'legal' },
         { path: 'en/legal', lang: 'en', view: 'legal' },

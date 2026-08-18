@@ -41,7 +41,12 @@ test('visual/views - renderView renders faq, legal and privacy without hidden cl
     assert.ok(viewContainer.innerHTML.includes('view-privacy'), 'Debe contener la sección view-privacy');
     assert.equal(viewContainer.querySelector('#view-privacy')?.classList.contains('hidden'), false, 'view-privacy no debe tener la clase hidden');
 
-    // 4. Cerrar vista / Volver a la calculadora
+    // 4. Abrir vista Guía
+    renderView('guide');
+    assert.ok(viewContainer.innerHTML.includes('view-guide'), 'Debe contener la sección view-guide');
+    assert.equal(viewContainer.querySelector('#view-guide')?.classList.contains('hidden'), false, 'view-guide no debe tener la clase hidden');
+
+    // 5. Cerrar vista / Volver a la calculadora
     renderView('');
     assert.equal(viewContainer.classList.contains('hidden'), true, 'view-container debe ocultarse');
     assert.equal(viewForm.classList.contains('hidden'), false, 'view-form debe volver a ser visible');
