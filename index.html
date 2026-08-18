@@ -29,9 +29,9 @@
 
     <!-- CSS & Styles -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@v3.0.0/dist/cookieconsent.css">
-    <link rel="stylesheet" href="/css/styles.css?v=1.36.8">
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=1.36.8">
-    <link rel="apple-touch-icon" href="/favicon.svg?v=1.36.8">
+    <link rel="stylesheet" href="/css/styles.css?v=1.37.0">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=1.37.0">
+    <link rel="apple-touch-icon" href="/favicon.svg?v=1.37.0">
 
     <!-- Canonical & SEO Hreflang Tags -->
     <link rel="canonical" href="https://pokeboxvalue.com/es">
@@ -509,17 +509,23 @@
     </div>
 
     <!-- Guardar Caja Personalizada (3C) -->
-    <div class="bg-white dark:bg-gray-800 p-3.5 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm flex flex-col sm:flex-row gap-2 items-center">
-        <div class="w-full sm:flex-1">
-            <label for="custom-box-name-input" class="sr-only" data-i18n="boxNameLabel">Nombre de la caja</label>
-            <input type="text" id="custom-box-name-input" data-i18n-placeholder="boxNamePlaceholder" placeholder="Ej: Caja de Incursión, Pack Evento..."
-                class="w-full px-3 py-2 text-xs border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+    <div class="bg-white dark:bg-gray-800 p-3.5 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm space-y-2">
+        <div class="flex flex-col sm:flex-row gap-2 items-center">
+            <div class="w-full sm:flex-1">
+                <label for="custom-box-name-input" class="sr-only" data-i18n="boxNameLabel">Nombre de la caja</label>
+                <input type="text" id="custom-box-name-input" data-i18n-placeholder="boxNamePlaceholder" placeholder="Ej: Caja de Incursión, Pack Evento..."
+                    class="w-full px-3 py-2 text-xs border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+            </div>
+            <button id="btn-save-custom-box" type="button" data-i18n="btnSaveBox"
+                class="w-full sm:w-auto px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg text-xs transition shadow-xs flex items-center justify-center gap-1.5 cursor-pointer touch-manipulation flex-shrink-0">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+                <span id="btn-save-box-label" data-i18n="btnSaveBox">Guardar Caja</span>
+            </button>
         </div>
-        <button id="btn-save-custom-box" type="button" data-i18n="btnSaveBox"
-            class="w-full sm:w-auto px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg text-xs transition shadow-xs flex items-center justify-center gap-1.5 cursor-pointer touch-manipulation flex-shrink-0">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
-            <span id="btn-save-box-label" data-i18n="btnSaveBox">Guardar Caja</span>
-        </button>
+        <div id="save-box-feedback" class="hidden p-2 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 rounded-lg text-emerald-800 dark:text-emerald-300 text-xs flex items-center gap-2 transition-all duration-200">
+            <svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            <span id="save-box-feedback-text">¡Nombre guardado en el historial!</span>
+        </div>
     </div>
 
     <!-- Botón Principal de Acción: Calcular otra -->

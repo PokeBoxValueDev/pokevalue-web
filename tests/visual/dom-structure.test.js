@@ -44,7 +44,8 @@ test('visual/dom - index.html contains all critical UI containers and IDs', () =
         'btn-live-view-result',
         'btn-install-pwa',
         'ios-install-banner',
-        'btn-close-ios-banner'
+        'btn-close-ios-banner',
+        'save-box-feedback'
     ];
 
     requiredIds.forEach(id => {

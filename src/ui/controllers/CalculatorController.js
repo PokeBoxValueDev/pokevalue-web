@@ -160,28 +160,47 @@ export class CalculatorController {
 
         const btnSaveCustomBox = document.getElementById('btn-save-custom-box');
         const customBoxNameInput = document.getElementById('custom-box-name-input');
-        if (btnSaveCustomBox) {
-            btnSaveCustomBox.addEventListener('click', () => {
-                IOSDeviceDetector.triggerHapticFeedback(15);
-                const customName = (customBoxNameInput ? customBoxNameInput.value : '').trim();
-                const history = CalculatorController._historyRepository.getHistory();
-                if (history && history.length > 0) {
-                    history[0].boxName = customName || 'Caja Personalizada';
-                    history[0].isSaved = true;
-                    CalculatorController._historyRepository.saveHistory(history);
-                    renderHistory(CalculatorController.restoreFromHistory);
+        const saveCustomBoxHandler = () => {
+            IOSDeviceDetector.triggerHapticFeedback(15);
+            const customName = (customBoxNameInput ? customBoxNameInput.value : '').trim();
+            const history = CalculatorController._historyRepository.getHistory();
+            if (history && history.length > 0) {
+                const finalName = customName || t('defaultBoxName') || 'Caja Personalizada';
+                history[0].boxName = finalName;
+                history[0].isSaved = true;
+                CalculatorController._historyRepository.saveHistory(history);
+                renderHistory(CalculatorController.restoreFromHistory);
 
-                    const btnLabel = document.getElementById('btn-save-box-label');
-                    if (btnLabel) {
-                        btnLabel.textContent = t('btnBoxSaved') || '¡Guardada!';
-                        btnSaveCustomBox.classList.remove('bg-emerald-600', 'hover:bg-emerald-500');
-                        btnSaveCustomBox.classList.add('bg-emerald-700');
-                        setTimeout(() => {
-                            btnLabel.textContent = t('btnSaveBox') || 'Guardar Caja';
-                            btnSaveCustomBox.classList.remove('bg-emerald-700');
-                            btnSaveCustomBox.classList.add('bg-emerald-600', 'hover:bg-emerald-500');
-                        }, 1800);
-                    }
+                const feedbackEl = document.getElementById('save-box-feedback');
+                const feedbackText = document.getElementById('save-box-feedback-text');
+                if (feedbackEl && feedbackText) {
+                    feedbackText.textContent = `${t('boxSavedConfirm') || '¡Caja guardada como'} «${finalName}» ${t('inHistory') || 'en el historial!'}`;
+                    feedbackEl.classList.remove('hidden');
+                }
+
+                const btnLabel = document.getElementById('btn-save-box-label');
+                if (btnLabel) {
+                    btnLabel.textContent = t('btnBoxSaved') || '¡Guardada!';
+                    btnSaveCustomBox.classList.remove('bg-emerald-600', 'hover:bg-emerald-500');
+                    btnSaveCustomBox.classList.add('bg-emerald-700');
+                    setTimeout(() => {
+                        btnLabel.textContent = t('btnSaveBox') || 'Guardar Caja';
+                        btnSaveCustomBox.classList.remove('bg-emerald-700');
+                        btnSaveCustomBox.classList.add('bg-emerald-600', 'hover:bg-emerald-500');
+                    }, 2200);
+                }
+            }
+        };
+
+        if (btnSaveCustomBox) {
+            btnSaveCustomBox.addEventListener('click', saveCustomBoxHandler);
+        }
+
+        if (customBoxNameInput) {
+            customBoxNameInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    saveCustomBoxHandler();
                 }
             });
         }
@@ -331,6 +350,7 @@ export class CalculatorController {
 
         CalculatorController.updateLiveSummary();
         CalculatorController.switchView('form');
+        renderHistory(CalculatorController.restoreFromHistory);
     }
 
     static async handleTextShare() {
@@ -515,8 +535,14 @@ Objetos incluidos:${itemsSummaryText || ' No especificados'}`;
         renderKeyMetrics(res.keyMetrics);
         renderBreakdown(res.categoryTotals, res.totalValue);
 
+        const customBoxNameInput = document.getElementById('custom-box-name-input');
+        const initialBoxName = (customBoxNameInput ? customBoxNameInput.value : '').trim();
+        const feedbackEl = document.getElementById('save-box-feedback');
+        if (feedbackEl) feedbackEl.classList.add('hidden');
+
         CalculatorController._historyRepository.saveCalculation({
             boxPrice,
+            boxName: initialBoxName || undefined,
             totalValue: res.totalValue,
             diff: res.diff,
             isProfitable: res.isProfitable,

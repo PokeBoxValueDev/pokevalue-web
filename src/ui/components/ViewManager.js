@@ -85,7 +85,7 @@ export function setupViews() {
                 renderView('privacy');
             } else if (id === 'btn-faq' || id === 'btnFaq') {
                 renderView('faq');
-            } else if (id === 'btn-cookies' || id === 'show-preferencesModal') {
+            } else if (id === 'btn-cookies' || id === 'btn-reopen-cookies' || id === 'show-preferencesModal') {
                 if (typeof window !== 'undefined' && typeof window.CookieConsent !== 'undefined' && typeof window.CookieConsent.showPreferences === 'function') {
                     window.CookieConsent.showPreferences();
                 }
@@ -95,7 +95,7 @@ export function setupViews() {
 
     // Cerrar vistas / volver a inicio al pulsar cualquier botón de volver o el logo
     document.addEventListener('click', (e) => {
-        const closeBtn = e.target && e.target.closest ? e.target.closest('#legal-modal button, #privacy-modal button, #view-legal button, #view-privacy button, #view-faq button, .btn-close-modal, .btn-back-home, #site-logo') : null;
+        const closeBtn = e.target && e.target.closest ? e.target.closest('#legal-modal button, #privacy-modal button:not(#btn-reopen-cookies), #view-legal button, #view-privacy button:not(#btn-reopen-cookies), #view-faq button, .btn-close-modal, .btn-back-home, #site-logo') : null;
         if (closeBtn) {
             if (e && typeof e.preventDefault === 'function') e.preventDefault();
             renderView('');
