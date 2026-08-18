@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pokeboxvalue-v1.39.1';
+const CACHE_NAME = 'pokeboxvalue-v1.40.0';
 const STATIC_ASSETS = [
     './',
     './index.html',

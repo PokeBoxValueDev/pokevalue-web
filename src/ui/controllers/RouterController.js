@@ -75,12 +75,12 @@ export class RouterController {
         // Delegación de eventos para navegación de vistas / enlaces de pie de página
         if (typeof document !== 'undefined' && typeof document.addEventListener === 'function') {
             document.addEventListener('click', (e) => {
-                const targetBtn = e.target && e.target.closest ? e.target.closest('#btn-guide, #btn-legal, #btn-privacy, #btn-faq, #btn-cookies, [data-i18n="btnGuide"], [data-i18n="btnLegal"], [data-i18n="btnPrivacy"], [data-i18n="btnFaq"], [data-cc="show-preferencesModal"]') : null;
+                const targetBtn = e.target && e.target.closest ? e.target.closest('#btn-guide, #btn-open-guide-seo, #btn-legal, #btn-privacy, #btn-faq, #btn-cookies, [data-i18n="btnGuide"], [data-i18n="btnReadFullGuide"], [data-i18n="btnLegal"], [data-i18n="btnPrivacy"], [data-i18n="btnFaq"], [data-cc="show-preferencesModal"]') : null;
                 if (targetBtn) {
                     e.preventDefault();
                     const id = targetBtn.id || targetBtn.getAttribute('data-i18n') || targetBtn.getAttribute('data-cc');
 
-                    if (id === 'btn-guide' || id === 'btnGuide') {
+                    if (id === 'btn-guide' || id === 'btnGuide' || id === 'btn-open-guide-seo' || id === 'btnReadFullGuide') {
                         RouterController.openModalRoute('guide');
                     } else if (id === 'btn-legal' || id === 'btnLegal') {
                         RouterController.openModalRoute('legal');

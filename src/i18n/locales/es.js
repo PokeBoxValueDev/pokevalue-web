@@ -116,10 +116,11 @@ export default {
     catConsumibles: "Consumibles",
     catOtros: "Otros Objetos",
 
-    // SEO / Guía Editorial y Análisis
-    seoTitle: "Guía de Optimización y Rentabilidad de Cajas de Pokémon GO",
-    seoDesc1: "PokeBoxValue es una herramienta analítica independiente diseñada para ayudar a la comunidad de entrenadores de Pokémon GO a maximizar el rendimiento de sus Pokémonedas. Analizamos el valor real de los lotes y cajas de la tienda del juego comparándolos con los precios oficiales individuales.",
-    seoDesc2: "Nuestra calculadora utiliza los precios base estándar de la tienda oficial para contrastar el coste total del paquete frente a la suma individual de sus objetos, calculando el ahorro neto exacto, el coste ponderado de pases e incubadoras y asignando una calificación transparente.",
+    // SEO / Descripción y Enlace a Guía
+    seoTitle: "Acerca de PokeBoxValue",
+    seoDesc1: "PokeBoxValue es una calculadora especializada diseñada para ayudar a los jugadores a analizar la rentabilidad de las cajas de objetos en Pokémon GO. Introduce el precio de la caja y selecciona los objetos que contiene para obtener un desglose detallado de su valor real en comparación con la compra de objetos individuales.",
+    seoDesc2: "Nuestra herramienta utiliza los precios base estándar de la tienda para calcular si estás consiguiendo un buen trato, mostrando métricas clave, porcentajes de descuento y asignando una calificación clara (Excelente, Buena, Aceptable o Mala) para que siempre tomes la mejor decisión con tus monedas.",
+    btnReadFullGuide: "Leer Guía Completa de Ahorro y Rentabilidad →",
     seoMethodTitle: "Metodología de Valoración y Rentabilidad",
     seoMethodText: "Calculamos el Valor Teórico Total sumando el coste oficial de cada objeto individual. El Ahorro Neto es la diferencia directa entre dicho valor y el precio de la caja. Si el ahorro supera el 25%, la caja se considera altamente rentable.",
     seoGradesTitle: "Escala de Calificaciones PokeBoxValue",

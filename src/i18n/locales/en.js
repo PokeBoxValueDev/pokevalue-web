@@ -116,10 +116,11 @@ export default {
     catConsumibles: "Consumables",
     catOtros: "Other Items",
 
-    // SEO / Guide and Analysis
-    seoTitle: "Pokémon GO Box Value & Optimization Guide",
-    seoDesc1: "PokeBoxValue is an independent analytical tool designed to help the Pokémon GO trainer community maximize their PokéCoins. We analyze the true value of in-game shop bundles and boxes compared to official individual item prices.",
-    seoDesc2: "Our calculator uses official store standard base prices to compare total box cost against the sum of its items, calculating exact net savings, effective pass/incubator unit costs, and assigning a transparent grade.",
+    // SEO / Description and Guide Link
+    seoTitle: "About PokeBoxValue",
+    seoDesc1: "PokeBoxValue is a dedicated calculator designed to help players analyze the true value of item boxes and bundles in Pokémon GO. Enter the box price and select the items included to get a detailed breakdown of its real worth compared to buying items individually.",
+    seoDesc2: "Our tool uses official in-game store standard prices to compute your net savings, calculate effective item unit prices, and rate each box with an intuitive grade (Excellent, Good, Fair, or Poor) so you always make the smartest choice with your coins.",
+    btnReadFullGuide: "Read the Complete Savings & Value Guide →",
     seoMethodTitle: "Valuation Methodology and Profitability",
     seoMethodText: "We calculate Total Theoretical Value by adding the official individual price of each item. Net Savings is the direct difference between that value and the box price. When savings exceed 25%, the box is considered highly profitable.",
     seoGradesTitle: "PokeBoxValue Grading Scale",
