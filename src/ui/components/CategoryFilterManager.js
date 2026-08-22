@@ -80,7 +80,7 @@ export function updateFilterPillsUI() {
             const activeStyle = CATEGORY_PILL_ACTIVE_CLASSES[cat] || CATEGORY_PILL_ACTIVE_CLASSES.all;
             pill.className = `category-pill whitespace-nowrap px-3.5 py-1.5 rounded-full transition cursor-pointer touch-manipulation ${activeStyle}`;
         } else {
-            pill.className = 'category-pill whitespace-nowrap px-3.5 py-1.5 rounded-full font-semibold transition bg-gray-100/90 dark:bg-gray-750 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer touch-manipulation';
+            pill.className = 'category-pill whitespace-nowrap px-3.5 py-1.5 rounded-full font-semibold transition bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer touch-manipulation';
         }
     });
 }

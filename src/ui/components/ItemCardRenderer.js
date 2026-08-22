@@ -61,18 +61,18 @@ export function setLayoutMode(mode) {
             const quickActions = card.querySelector('.card-quick-actions');
 
             if (activeMode === 'grid') {
-                card.className = 'item-card flex flex-col items-stretch justify-between p-2 sm:p-2.5 bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-750 rounded-xl border border-gray-200/70 dark:border-gray-700/70 shadow-2xs hover:shadow-xs transition-all duration-200 group text-center min-h-[140px]';
+                card.className = 'item-card flex flex-col items-stretch justify-between p-2 sm:p-2.5 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700/80 rounded-xl border border-gray-200/80 dark:border-gray-700/80 shadow-2xs hover:shadow-xs transition-all duration-200 group text-center min-h-[140px]';
                 if (infoContainer) infoContainer.className = 'card-info-container flex flex-col items-center gap-1.5 w-full min-w-0 pr-0 flex-1 justify-start';
-                if (iconWrapper) iconWrapper.className = 'card-icon-wrapper w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0 flex items-center justify-center rounded-xl p-1 bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-850 border border-gray-200/80 dark:border-gray-600/80 shadow-2xs mx-auto';
+                if (iconWrapper) iconWrapper.className = 'card-icon-wrapper w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0 flex items-center justify-center rounded-xl p-1 bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 border border-gray-200/80 dark:border-gray-600/80 shadow-2xs mx-auto';
                 if (textWrapper) textWrapper.className = 'card-text-wrapper min-w-0 w-full flex flex-col items-center justify-center';
                 if (itemTitle) itemTitle.className = 'card-item-title text-[11px] sm:text-xs font-bold text-gray-900 dark:text-white leading-tight line-clamp-2 min-h-[2.2em] flex items-center justify-center';
                 if (quickActions) quickActions.className = 'card-quick-actions flex items-center justify-center gap-1 mt-0.5';
                 if (priceLabel) priceLabel.className = 'card-price-label text-[10px] sm:text-[11px] text-gray-500 dark:text-gray-400 font-medium whitespace-nowrap';
                 if (actionsContainer) actionsContainer.className = 'card-actions-container flex items-center justify-center bg-white dark:bg-gray-800 border border-gray-200/90 dark:border-gray-600 rounded-xl p-0.5 shadow-2xs w-full max-w-[120px] mx-auto mt-1.5 flex-shrink-0';
             } else {
-                card.className = 'item-card flex items-center justify-between p-2.5 sm:p-3 bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-750 rounded-xl border border-gray-200/70 dark:border-gray-700/70 shadow-2xs hover:shadow-xs transition-all duration-200 group text-left min-h-0';
+                card.className = 'item-card flex items-center justify-between p-2.5 sm:p-3 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700/80 rounded-xl border border-gray-200/80 dark:border-gray-700/80 shadow-2xs hover:shadow-xs transition-all duration-200 group text-left min-h-0';
                 if (infoContainer) infoContainer.className = 'card-info-container flex items-center gap-2.5 sm:gap-3 min-w-0 pr-1.5 flex-1';
-                if (iconWrapper) iconWrapper.className = 'card-icon-wrapper w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 flex items-center justify-center rounded-xl p-1 bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-850 border border-gray-200/80 dark:border-gray-600/80 shadow-2xs';
+                if (iconWrapper) iconWrapper.className = 'card-icon-wrapper w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 flex items-center justify-center rounded-xl p-1 bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 border border-gray-200/80 dark:border-gray-600/80 shadow-2xs';
                 if (textWrapper) textWrapper.className = 'card-text-wrapper min-w-0 flex-1';
                 if (itemTitle) itemTitle.className = 'card-item-title text-xs sm:text-sm font-bold text-gray-900 dark:text-white leading-tight break-words whitespace-normal';
                 if (quickActions) quickActions.className = 'card-quick-actions flex items-center gap-2 mt-0.5';
@@ -185,9 +185,9 @@ export function renderItems(items = []) {
                         const nameEn = item.nameEn || item.name_en || name;
 
                         return `
-    <div class="item-card flex items-center justify-between p-2.5 sm:p-3 bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-750 rounded-xl border border-gray-200/70 dark:border-gray-700/70 shadow-xs hover:shadow-sm transition-all duration-200 group" data-card-id="${item.id}" data-category="${catKey}" data-item-name="${name}" data-name-es="${nameEs}" data-name-en="${nameEn}">
+    <div class="item-card flex items-center justify-between p-2.5 sm:p-3 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700/80 rounded-xl border border-gray-200/80 dark:border-gray-700/80 shadow-2xs hover:shadow-xs transition-all duration-200 group" data-card-id="${item.id}" data-category="${catKey}" data-item-name="${name}" data-name-es="${nameEs}" data-name-en="${nameEn}">
         <div class="card-info-container flex items-center gap-2.5 sm:gap-3 min-w-0 pr-1.5 flex-1">
-            <div class="card-icon-wrapper w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 flex items-center justify-center rounded-xl p-1 bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-850 border border-gray-200/80 dark:border-gray-600/80 shadow-xs">
+            <div class="card-icon-wrapper w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 flex items-center justify-center rounded-xl p-1 bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 border border-gray-200/80 dark:border-gray-600/80 shadow-2xs">
                 ${svgContent}
             </div>
             <div class="card-text-wrapper min-w-0 flex-1">
