@@ -23,3 +23,16 @@ test('contract/dependabot - Configuración de Dependabot presente y válida en .
     // 4. Validar programación periódica
     assert.ok(content.includes('interval: "weekly"'), 'Debe programarse con intervalo semanal');
 });
+
+test('contract/github-actions - update-fallback.yml se ejecuta 1 vez al día', () => {
+    const rootDir = process.cwd();
+    const workflowPath = path.join(rootDir, '.github', 'workflows', 'update-fallback.yml');
+
+    assert.ok(fs.existsSync(workflowPath), 'El archivo update-fallback.yml debe existir');
+    const content = fs.readFileSync(workflowPath, 'utf8');
+
+    // Validar que se ejecuta 1 vez al día (no cada 12 horas)
+    assert.ok(!content.includes('*/12'), 'No debe ejecutarse cada 12 horas');
+    assert.ok(/cron:\s*['"]\d+\s+\d+\s+\*\s+\*\s+\*['"]/.test(content), 'Debe tener una expresión cron diaria (1 vez al día)');
+});
+

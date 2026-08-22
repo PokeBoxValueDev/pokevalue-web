@@ -46,7 +46,7 @@ export function updateDOMTranslations() {
         // Reemplazar solo el texto para no borrar el icono de la taza (<img>)
         Array.from(kofiTextElement.childNodes).forEach(node => {
             if (node.nodeType === 3 && node.nodeValue.trim().length > 0) {
-                node.nodeValue = lang === 'es' ? ' Apoyar proyecto' : ' Support Project';
+                node.nodeValue = ` ${t('coffeeBtn')}`;
             }
         });
     }

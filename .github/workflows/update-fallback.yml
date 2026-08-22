@@ -2,7 +2,7 @@ name: Sync Items Fallback
 
 on:
   schedule:
-    - cron: '0 */12 * * *' # Ejecutar cada 12 horas
+    - cron: '0 3 * * *' # Ejecutar 1 vez al día (03:00 UTC)
   workflow_dispatch: # Permite lanzar la acción manualmente desde GitHub
 
 permissions:

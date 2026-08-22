@@ -58,6 +58,12 @@ input[type="number"] {
     }
 }
 
+@media (min-width: 1024px) {
+    #items-container {
+        max-height: clamp(340px, calc(100dvh - 320px), 720px);
+    }
+}
+
 /* Transiciones suaves de vistas */
 .fade-in {
     animation: fadeIn 0.25s ease-in-out forwards;

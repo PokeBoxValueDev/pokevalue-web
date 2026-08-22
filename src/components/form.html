@@ -1,6 +1,6 @@
 <!-- Formulario -->
 <section id="view-form"
-    class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-5 sm:p-6 space-y-4 border border-gray-100 dark:border-gray-700 transition-all duration-200">
+    class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-3.5 sm:p-6 space-y-4 border border-gray-100 dark:border-gray-700 transition-all duration-200">
     
     <!-- Barra Superior Unificada: Precio de la Caja + Buscador Dinámico + Selector de Vista -->
     <div id="top-controls-bar" class="space-y-1.5">
@@ -76,8 +76,8 @@
             </div>
         </div>
         
-        <div id="items-container" class="space-y-5 overflow-y-auto pr-1">
-            <div id="items-loading-skeleton" class="animate-pulse space-y-3 py-2">
+        <div id="items-container" class="space-y-5 md:space-y-0 md:grid md:grid-cols-2 md:gap-4 lg:gap-5 items-start overflow-y-auto pr-1">
+            <div id="items-loading-skeleton" class="animate-pulse space-y-3 py-2 col-span-full">
                 <span class="sr-only" data-i18n="loadingItems">Cargando objetos...</span>
                 <div class="flex items-center justify-between p-2.5 bg-gray-100 dark:bg-gray-700/50 rounded-xl">
                     <div class="flex items-center gap-3">
@@ -90,10 +90,12 @@
         </div>
     </div>
 
-    <button id="btn-calculate" data-i18n="btnCalculate" aria-label="Calcular Rentabilidad de la Caja"
-        class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl transition shadow-sm cursor-pointer touch-manipulation">
-        Calcular Rentabilidad
-    </button>
+    <div class="flex justify-center pt-1">
+        <button id="btn-calculate" data-i18n="btnCalculate" aria-label="Calcular Rentabilidad de la Caja"
+            class="w-full max-w-md bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl transition shadow-sm cursor-pointer touch-manipulation">
+            Calcular Rentabilidad
+        </button>
+    </div>
 
     <!-- Historial -->
     <!--#include "history.html"-->

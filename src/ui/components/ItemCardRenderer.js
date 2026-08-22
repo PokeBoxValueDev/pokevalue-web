@@ -1,193 +1,94 @@
 import { CURRENCY_CONFIG, CATEGORY_CONFIG, state } from '../../config/config.js';
 import { t } from '../../i18n/i18n.js';
 import { Category } from '../../domain/valueObjects/Category.js';
-import { IOSDeviceDetector } from '../ios/IOSDeviceDetector.js';
+import { bindClick, dispatchCustomEvent } from '../utils/DomUtils.js';
+import {
+    getCategoryTranslation,
+    toggleCategoryFilter,
+    setCategoryFilter,
+    getActiveCategories,
+    getActiveCategoryFilter,
+    updateFilterPillsUI,
+    applyFilters
+} from './CategoryFilterManager.js';
+import { updateSelectedTray, showFloatingFeedback } from './SelectedTrayRenderer.js';
 
-/**
- * Obtiene la traducción formateada de la categoría usando el diccionario actual.
- */
-export function getCategoryTranslation(catKey) {
-    if (!catKey) return '';
-    const i18nKey = Category.getI18nKey(catKey);
-    const translated = t(i18nKey);
-
-    if (translated && translated !== i18nKey) {
-        return translated;
-    }
-
-    const normKey = Category.normalizeKey(catKey);
-    return CATEGORY_CONFIG[normKey]?.label || catKey.toUpperCase();
-}
-
-const activeCategories = new Set(['all']);
-
-export function toggleCategoryFilter(category) {
-    if (category === 'all') {
-        activeCategories.clear();
-        activeCategories.add('all');
-    } else {
-        activeCategories.delete('all');
-        if (activeCategories.has(category)) {
-            activeCategories.delete(category);
-            if (activeCategories.size === 0) {
-                activeCategories.add('all');
-            }
-        } else {
-            activeCategories.add(category);
-        }
-    }
-    updateFilterPillsUI();
-    applyFilters();
-}
-
-export function setCategoryFilter(category) {
-    toggleCategoryFilter(category);
-}
-
-export function getActiveCategories() {
-    return Array.from(activeCategories);
-}
-
-export function getActiveCategoryFilter() {
-    return activeCategories.has('all') ? 'all' : Array.from(activeCategories).join(',');
-}
-
-const CATEGORY_PILL_ACTIVE_CLASSES = {
-    all: 'bg-indigo-600 text-white shadow-sm ring-1 ring-indigo-400/50 font-bold',
-    pases: 'bg-indigo-600 text-white shadow-sm ring-1 ring-indigo-400/50 font-bold',
-    incubadoras: 'bg-amber-600 text-white shadow-sm ring-1 ring-amber-400/50 font-bold',
-    potenciadores: 'bg-purple-600 text-white shadow-sm ring-1 ring-purple-400/50 font-bold',
-    mejoras: 'bg-emerald-600 text-white shadow-sm ring-1 ring-emerald-400/50 font-bold',
-    combates: 'bg-rose-600 text-white shadow-sm ring-1 ring-rose-400/50 font-bold',
-    consumibles: 'bg-cyan-600 text-white shadow-sm ring-1 ring-cyan-400/50 font-bold',
-    otros: 'bg-sky-600 text-white shadow-sm ring-1 ring-sky-400/50 font-bold'
+// Re-exportar para compatibilidad total con consumidores existentes y tests
+export {
+    getCategoryTranslation,
+    toggleCategoryFilter,
+    setCategoryFilter,
+    getActiveCategories,
+    getActiveCategoryFilter,
+    updateFilterPillsUI,
+    applyFilters,
+    updateSelectedTray,
+    showFloatingFeedback
 };
 
-export function updateFilterPillsUI() {
-    if (typeof document === 'undefined' || typeof document.querySelectorAll !== 'function') return;
-    const filterPills = document.querySelectorAll('.category-pill');
-    filterPills.forEach(pill => {
-        const cat = pill.getAttribute('data-category') || 'all';
-        if (activeCategories.has(cat)) {
-            const activeStyle = CATEGORY_PILL_ACTIVE_CLASSES[cat] || CATEGORY_PILL_ACTIVE_CLASSES.all;
-            pill.className = `category-pill whitespace-nowrap px-3 py-1 rounded-full transition cursor-pointer touch-manipulation ${activeStyle}`;
-        } else {
-            pill.className = 'category-pill whitespace-nowrap px-3 py-1 rounded-full font-medium transition bg-gray-100 dark:bg-gray-700/80 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer touch-manipulation';
-        }
-    });
-}
-
-export function applyFilters() {
-    const container = (typeof document !== 'undefined' && typeof document.getElementById === 'function') ? document.getElementById('items-container') : null;
-    const searchInput = (typeof document !== 'undefined' && typeof document.getElementById === 'function') ? document.getElementById('search-input') : null;
-    if (!container || typeof container.querySelectorAll !== 'function') return;
-
-    const rawSearch = (searchInput ? searchInput.value : '').toLowerCase().trim();
-    const searchTerm = rawSearch
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '');
-
-    const isAll = activeCategories.has('all');
-    let totalVisibleCards = 0;
-
-    container.querySelectorAll('.category-group').forEach(group => {
-        const groupCat = group.getAttribute('data-category');
-        let hasVisibleCards = false;
-
-        group.querySelectorAll('.item-card').forEach(card => {
-            const rawItemName = (card.getAttribute('data-item-name') || '').toLowerCase();
-            const nameEs = (card.getAttribute('data-name-es') || '').toLowerCase();
-            const nameEn = (card.getAttribute('data-name-en') || '').toLowerCase();
-            const cleanSearchTarget = `${rawItemName} ${nameEs} ${nameEn}`
-                .normalize('NFD')
-                .replace(/[\u0300-\u036f]/g, '');
-
-            const matchesCategory = isAll || activeCategories.has(groupCat);
-            const matchesSearch = !searchTerm || cleanSearchTarget.includes(searchTerm);
-
-            if (matchesCategory && matchesSearch) {
-                card.classList.remove('hidden');
-                hasVisibleCards = true;
-                totalVisibleCards++;
-            } else {
-                card.classList.add('hidden');
-            }
-        });
-
-        if (hasVisibleCards) {
-            group.classList.remove('hidden');
-        } else {
-            group.classList.add('hidden');
-        }
-    });
-
-    let noResultsEl = (typeof container.querySelector === 'function') ? container.querySelector('#no-search-results') : null;
-    if (totalVisibleCards === 0) {
-        if (!noResultsEl && typeof document !== 'undefined' && typeof document.createElement === 'function') {
-            noResultsEl = document.createElement('p');
-            noResultsEl.id = 'no-search-results';
-            noResultsEl.className = 'text-xs text-gray-400 py-4 text-center col-span-full';
-            noResultsEl.setAttribute('data-i18n', 'noItemsFound');
-            noResultsEl.textContent = t('noItemsFound') || 'No se encontraron objetos.';
-            if (typeof container.appendChild === 'function') {
-                container.appendChild(noResultsEl);
-            }
-        } else if (noResultsEl) {
-            noResultsEl.classList.remove('hidden');
-        }
-    } else if (noResultsEl) {
-        noResultsEl.classList.add('hidden');
-    }
-}
-
 /**
- * Muestra una animación flotante de feedback al interactuar (+5, +10, +1, -1)
+ * Aplica el modo de visualización: 'list' (Lista) o 'grid' (Cuadrícula).
+ * @param {'list'|'grid'} mode
  */
-export function showFloatingFeedback(targetElement, text, isPositive = true) {
-    if (!targetElement || typeof document === 'undefined' || typeof document.createElement !== 'function') return;
-    try {
-        const rect = targetElement.getBoundingClientRect();
-        const badge = document.createElement('span');
-        badge.className = `floating-feedback ${isPositive ? 'text-indigo-600 dark:text-indigo-400' : 'text-rose-500'}`;
-        badge.textContent = text;
-        badge.style.left = `${rect.left + rect.width / 2}px`;
-        badge.style.top = `${rect.top}px`;
-        document.body.appendChild(badge);
-
-        setTimeout(() => {
-            if (badge.parentNode) {
-                badge.parentNode.removeChild(badge);
-            }
-        }, 650);
-    } catch (_) {}
-}
-
-/**
- * Cambia la densidad de vista entre lista y cuadrícula.
- */
-export function setLayoutMode(mode = 'list') {
+export function setLayoutMode(mode) {
     if (typeof document === 'undefined') return;
     const container = document.getElementById('items-container');
     const btnList = document.getElementById('btn-layout-list');
     const btnGrid = document.getElementById('btn-layout-grid');
+    const isMobile = typeof window !== 'undefined' && (window.innerWidth < 640 || (typeof window.matchMedia === 'function' && window.matchMedia('(max-width: 639px)').matches));
 
-    const activeMode = mode === 'grid' ? 'grid' : 'list';
+    const activeMode = (mode === 'grid' || (isMobile && mode !== 'list')) ? 'grid' : 'list';
 
     if (container) {
-        if (activeMode === 'grid') {
-            container.classList.add('items-layout-grid');
-        } else {
-            container.classList.remove('items-layout-grid');
-        }
+        container.classList.remove('items-layout-list', 'items-layout-grid', 'layout-list', 'layout-grid');
+        container.classList.add(`items-layout-${activeMode}`, `layout-mode-${activeMode}`);
+
+        container.querySelectorAll('.category-items-grid').forEach(grid => {
+            if (activeMode === 'grid') {
+                grid.className = 'category-items-grid grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-2 sm:gap-2.5';
+            } else {
+                grid.className = 'category-items-grid flex flex-col gap-2';
+            }
+        });
+
+        container.querySelectorAll('.item-card').forEach(card => {
+            const infoContainer = card.querySelector('.card-info-container');
+            const iconWrapper = card.querySelector('.card-icon-wrapper');
+            const textWrapper = card.querySelector('.card-text-wrapper');
+            const itemTitle = card.querySelector('.card-item-title');
+            const priceLabel = card.querySelector('.card-price-label');
+            const actionsContainer = card.querySelector('.card-actions-container');
+            const quickActions = card.querySelector('.card-quick-actions');
+
+            if (activeMode === 'grid') {
+                card.className = 'item-card flex flex-col items-stretch justify-between p-2 sm:p-2.5 bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-750 rounded-xl border border-gray-200/70 dark:border-gray-700/70 shadow-2xs hover:shadow-xs transition-all duration-200 group text-center min-h-[140px]';
+                if (infoContainer) infoContainer.className = 'card-info-container flex flex-col items-center gap-1.5 w-full min-w-0 pr-0 flex-1 justify-start';
+                if (iconWrapper) iconWrapper.className = 'card-icon-wrapper w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0 flex items-center justify-center rounded-xl p-1 bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-850 border border-gray-200/80 dark:border-gray-600/80 shadow-2xs mx-auto';
+                if (textWrapper) textWrapper.className = 'card-text-wrapper min-w-0 w-full flex flex-col items-center justify-center';
+                if (itemTitle) itemTitle.className = 'card-item-title text-[11px] sm:text-xs font-bold text-gray-900 dark:text-white leading-tight line-clamp-2 min-h-[2.2em] flex items-center justify-center';
+                if (quickActions) quickActions.className = 'card-quick-actions flex items-center justify-center gap-1 mt-0.5';
+                if (priceLabel) priceLabel.className = 'card-price-label text-[10px] sm:text-[11px] text-gray-500 dark:text-gray-400 font-medium whitespace-nowrap';
+                if (actionsContainer) actionsContainer.className = 'card-actions-container flex items-center justify-center bg-white dark:bg-gray-800 border border-gray-200/90 dark:border-gray-600 rounded-xl p-0.5 shadow-2xs w-full max-w-[120px] mx-auto mt-1.5 flex-shrink-0';
+            } else {
+                card.className = 'item-card flex items-center justify-between p-2.5 sm:p-3 bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-750 rounded-xl border border-gray-200/70 dark:border-gray-700/70 shadow-2xs hover:shadow-xs transition-all duration-200 group text-left min-h-0';
+                if (infoContainer) infoContainer.className = 'card-info-container flex items-center gap-2.5 sm:gap-3 min-w-0 pr-1.5 flex-1';
+                if (iconWrapper) iconWrapper.className = 'card-icon-wrapper w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 flex items-center justify-center rounded-xl p-1 bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-850 border border-gray-200/80 dark:border-gray-600/80 shadow-2xs';
+                if (textWrapper) textWrapper.className = 'card-text-wrapper min-w-0 flex-1';
+                if (itemTitle) itemTitle.className = 'card-item-title text-xs sm:text-sm font-bold text-gray-900 dark:text-white leading-tight break-words whitespace-normal';
+                if (quickActions) quickActions.className = 'card-quick-actions flex items-center gap-2 mt-0.5';
+                if (priceLabel) priceLabel.className = 'card-price-label text-[11px] sm:text-xs text-gray-500 dark:text-gray-400 font-medium whitespace-nowrap';
+                if (actionsContainer) actionsContainer.className = 'card-actions-container flex items-center justify-center bg-white dark:bg-gray-800 border border-gray-200/90 dark:border-gray-600 rounded-xl p-0.5 sm:p-1 shadow-2xs flex-shrink-0 ml-1';
+            }
+        });
     }
 
     if (btnList && btnGrid) {
-        if (activeMode === 'grid') {
-            btnGrid.className = 'layout-toggle-btn p-1.5 rounded-md text-indigo-600 dark:text-white bg-white dark:bg-gray-800 shadow-xs transition';
-            btnList.className = 'layout-toggle-btn p-1.5 rounded-md text-gray-400 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition';
-        } else {
+        if (activeMode === 'list') {
             btnList.className = 'layout-toggle-btn p-1.5 rounded-md text-indigo-600 dark:text-white bg-white dark:bg-gray-800 shadow-xs transition';
             btnGrid.className = 'layout-toggle-btn p-1.5 rounded-md text-gray-400 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition';
+        } else {
+            btnGrid.className = 'layout-toggle-btn p-1.5 rounded-md text-indigo-600 dark:text-white bg-white dark:bg-gray-800 shadow-xs transition';
+            btnList.className = 'layout-toggle-btn p-1.5 rounded-md text-gray-400 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition';
         }
     }
 
@@ -199,101 +100,26 @@ export function setLayoutMode(mode = 'list') {
 }
 
 /**
- * Actualiza la bandeja de chips de objetos seleccionados (1C).
+ * Renderiza el catálogo de objetos de la tienda agrupados por categorías en el DOM.
+ * @param {Array} items - Lista de objetos de la tienda
  */
-export function updateSelectedTray() {
-    if (typeof document === 'undefined') return;
-    const tray = document.getElementById('selected-items-tray');
-    const chipsList = document.getElementById('selected-chips-list');
-    const container = document.getElementById('items-container');
-    if (!tray || !chipsList || !container) return;
-
-    const selectedCards = [];
-    container.querySelectorAll('.item-card').forEach(card => {
-        const input = card.querySelector('.item-qty');
-        const qty = input ? (parseInt(input.value) || 0) : 0;
-        if (qty > 0) {
-            const id = card.getAttribute('data-card-id');
-            const name = card.getAttribute('data-item-name') || 'Objeto';
-            const category = card.getAttribute('data-category') || 'pases';
-            selectedCards.push({ id, name, qty, category, card, input });
-        }
-    });
-
-    if (selectedCards.length === 0) {
-        tray.classList.add('hidden');
-        chipsList.innerHTML = '';
-        return;
-    }
-
-    tray.classList.remove('hidden');
-    chipsList.innerHTML = selectedCards.map(item => {
-        const catConfig = CATEGORY_CONFIG[item.category] || { color: 'bg-indigo-500', border: 'border-indigo-200/80 dark:border-indigo-800/60' };
-        const badgeColor = catConfig.color || 'bg-indigo-500';
-        const borderClass = catConfig.border || 'border-indigo-200/80 dark:border-indigo-800/60';
-        return `
-        <div class="selected-chip inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-white dark:bg-gray-800 border ${borderClass} shadow-2xs text-[11px] font-semibold text-gray-900 dark:text-white hover:opacity-90 transition cursor-pointer" data-id="${item.id}">
-            <span class="px-1 py-0.2 rounded ${badgeColor} text-white text-[9px] font-extrabold">${item.qty}x</span>
-            <span class="truncate max-w-[100px] sm:max-w-[150px]">${item.name}</span>
-            <button type="button" class="btn-remove-chip p-0.5 text-gray-400 hover:text-rose-500 rounded transition cursor-pointer touch-manipulation" data-id="${item.id}" aria-label="Eliminar ${item.name}">
-                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
-            </button>
-        </div>
-    `;
-    }).join('');
-
-    // Escuchador para borrar chips individuales
-    chipsList.querySelectorAll('.btn-remove-chip').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            IOSDeviceDetector.triggerHapticFeedback(10);
-            const id = btn.getAttribute('data-id');
-            const input = container.querySelector(`input[data-id="${id}"]`);
-            if (input) {
-                input.value = 0;
-                try {
-                    const evt = (typeof CustomEvent === 'function') ? new CustomEvent('input', { bubbles: true }) : { type: 'input' };
-                    input.dispatchEvent(evt);
-                } catch (_) {}
-                const card = container.querySelector(`.item-card[data-card-id="${id}"]`);
-                if (card) {
-                    card.classList.remove('bg-indigo-50/90', 'dark:bg-indigo-950/50', 'border-indigo-400', 'dark:border-indigo-500', 'shadow-md', 'ring-1', 'ring-indigo-400/30');
-                    card.classList.add('bg-gray-50/80', 'dark:bg-gray-700/50');
-                }
-                updateSelectedTray();
-                if (typeof document !== 'undefined' && typeof document.dispatchEvent === 'function') {
-                    try {
-                        const event = (typeof CustomEvent === 'function') ? new CustomEvent('pokevalue:itemsChanged') : { type: 'pokevalue:itemsChanged' };
-                        document.dispatchEvent(event);
-                    } catch (_) {}
-                }
-            }
-        });
-    });
-
-    // Escuchador para hacer scroll hasta la tarjeta del objeto
-    chipsList.querySelectorAll('.selected-chip').forEach(chip => {
-        chip.addEventListener('click', () => {
-            const id = chip.getAttribute('data-id');
-            const card = container.querySelector(`.item-card[data-card-id="${id}"]`);
-            if (card) {
-                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                card.classList.add('ring-4', 'ring-indigo-500/50');
-                setTimeout(() => card.classList.remove('ring-4', 'ring-indigo-500/50'), 1000);
-            }
-        });
-    });
-}
-
-/**
- * Renderiza la lista de objetos agrupados por categoría.
- */
-export function renderItems(items) {
-    const container = document.getElementById('items-container');
+export function renderItems(items = []) {
+    const container = typeof document !== 'undefined' ? document.getElementById('items-container') : null;
     if (!container) return;
 
     if (!items || items.length === 0) {
-        container.innerHTML = `<p class="text-xs text-gray-400 py-2 text-center" data-i18n="noItemsFound">${t('noItemsFound')}</p>`;
+        container.innerHTML = `
+            <div id="items-loading-skeleton" class="animate-pulse space-y-3 py-2 col-span-full">
+                <span class="sr-only" data-i18n="loadingItems">${t('loadingItems')}</span>
+                <div class="flex items-center justify-between p-2.5 bg-gray-100 dark:bg-gray-700/50 rounded-xl">
+                    <div class="flex items-center gap-3">
+                        <div class="w-14 h-14 bg-gray-200 dark:bg-gray-600 rounded-2xl"></div>
+                        <div class="h-4 w-32 bg-gray-200 dark:bg-gray-600 rounded"></div>
+                    </div>
+                    <div class="h-8 w-24 bg-gray-200 dark:bg-gray-600 rounded-lg"></div>
+                </div>
+            </div>
+        `;
         return;
     }
 
@@ -316,7 +142,6 @@ export function renderItems(items) {
 
         return `
             <div class="category-group p-2.5 sm:p-3 rounded-2xl border ${config.containerBorder || config.border || 'border-gray-200 dark:border-gray-700'} ${config.containerBg || 'bg-gray-50/40 dark:bg-gray-800/40'} shadow-2xs space-y-2.5 transition-all" data-category="${catKey}">
-                <!-- Cabecera / Banner estilizado a todo lo ancho con color de categoría -->
                 <div class="w-full flex items-center justify-between px-3 py-1.5 rounded-xl ${config.bg || 'bg-gray-100 dark:bg-gray-800'} border ${config.border || 'border-gray-200/80 dark:border-gray-700/80'} shadow-2xs">
                     <div class="flex items-center gap-2 min-w-0">
                         <span class="w-2.5 h-2.5 rounded-full ${config.color} shadow-xs flex-shrink-0"></span>
@@ -329,42 +154,38 @@ export function renderItems(items) {
                     </span>
                 </div>
 
-                <!-- Lista / Grid de Objetos de la Categoría -->
                 <div class="category-items-grid flex flex-col gap-2">
                     ${categoryItems.map(item => {
-            let unitPriceStr = '';
+                        let unitPriceStr = '';
+                        if (typeof item.calculateUnitPrice === 'function') {
+                            const unitPrice = item.calculateUnitPrice(state.currentCurrency, CURRENCY_CONFIG);
+                            const priceFormatted = isCoins ? Math.round(unitPrice) : unitPrice.toFixed(2);
+                            unitPriceStr = `${priceFormatted} <span class="currency-symbol">${curr.symbol}</span> / u.`;
+                        } else {
+                            if (isCoins) {
+                                const coins = item.unit_price_coins ?? Math.round((item.unit_price_eur || 0) * curr.rate);
+                                unitPriceStr = `${coins} <span class="currency-symbol">${curr.symbol}</span> / u.`;
+                            } else if (state.currentCurrency === 'USD' && item.unit_price_usd) {
+                                unitPriceStr = `${item.unit_price_usd.toFixed(2)} <span class="currency-symbol">${curr.symbol}</span> / u.`;
+                            } else {
+                                const price = (item.unit_price_eur || item.price_eur || 0) * curr.rate;
+                                unitPriceStr = `${price.toFixed(2)} <span class="currency-symbol">${curr.symbol}</span> / u.`;
+                            }
+                        }
 
-            if (typeof item.calculateUnitPrice === 'function') {
-                const unitPrice = item.calculateUnitPrice(state.currentCurrency, CURRENCY_CONFIG);
-                const priceFormatted = isCoins ? Math.round(unitPrice) : unitPrice.toFixed(2);
-                unitPriceStr = `${priceFormatted} <span class="currency-symbol">${curr.symbol}</span> / u.`;
-            } else {
-                if (isCoins) {
-                    const coins = item.unit_price_coins ?? Math.round((item.unit_price_eur || 0) * curr.rate);
-                    unitPriceStr = `${coins} <span class="currency-symbol">${curr.symbol}</span> / u.`;
-                } else if (state.currentCurrency === 'USD' && item.unit_price_usd) {
-                    unitPriceStr = `${item.unit_price_usd.toFixed(2)} <span class="currency-symbol">${curr.symbol}</span> / u.`;
-                } else {
-                    const price = (item.unit_price_eur || item.price_eur || 0) * curr.rate;
-                    unitPriceStr = `${price.toFixed(2)} <span class="currency-symbol">${curr.symbol}</span> / u.`;
-                }
-            }
+                        const name = typeof item.getLocalizedName === 'function'
+                            ? item.getLocalizedName(state.currentLang)
+                            : ((state.currentLang === 'en' && item.name_en) ? item.name_en : (item.name_es || item.name || t('defaultItem') || 'Objeto'));
 
-            const name = typeof item.getLocalizedName === 'function'
-                ? item.getLocalizedName(state.currentLang)
-                : ((state.currentLang === 'en' && item.name_en) ? item.name_en : (item.name_es || item.name || 'Objeto'));
+                        const svgContent = item.svg
+                            ? item.svg.replace(/class="[^"]*"/, 'class="w-full h-full object-contain filter drop-shadow-sm block mx-auto"').replace(/w-10 h-10/, 'w-full h-full')
+                            : (item.image ? `<img src="${item.image}" alt="${name}" class="w-full h-full object-contain filter drop-shadow-sm block mx-auto">` : '');
 
-            const svgContent = item.svg
-                ? item.svg.replace(/class="[^"]*"/, 'class="w-full h-full object-contain filter drop-shadow-sm block mx-auto"').replace(/w-10 h-10/, 'w-full h-full')
-                : (item.image ? `<img src="${item.image}" alt="${name}" class="w-full h-full object-contain filter drop-shadow-sm block mx-auto">` : '');
+                        const nameEs = item.nameEs || item.name_es || name;
+                        const nameEn = item.nameEn || item.name_en || name;
 
-            const nameEs = item.nameEs || item.name_es || name;
-            const nameEn = item.nameEn || item.name_en || name;
-
-            return `
+                        return `
     <div class="item-card flex items-center justify-between p-2.5 sm:p-3 bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-750 rounded-xl border border-gray-200/70 dark:border-gray-700/70 shadow-xs hover:shadow-sm transition-all duration-200 group" data-card-id="${item.id}" data-category="${catKey}" data-item-name="${name}" data-name-es="${nameEs}" data-name-en="${nameEn}">
-        
-        <!-- Icono + Información -->
         <div class="card-info-container flex items-center gap-2.5 sm:gap-3 min-w-0 pr-1.5 flex-1">
             <div class="card-icon-wrapper w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 flex items-center justify-center rounded-xl p-1 bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-850 border border-gray-200/80 dark:border-gray-600/80 shadow-xs">
                 ${svgContent}
@@ -377,19 +198,18 @@ export function renderItems(items) {
             </div>
         </div>
 
-        <!-- Controles de Cantidad Stepper (+ / -) -->
         <div class="card-actions-container flex items-center justify-center bg-white dark:bg-gray-800 border border-gray-200/90 dark:border-gray-600 rounded-xl p-0.5 sm:p-1 shadow-xs flex-shrink-0 ml-1">
             <div class="stepper-wrapper flex items-center gap-0.5 sm:gap-1">
                 <button type="button" 
                     class="btn-decrement w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center text-sm sm:text-base font-extrabold text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition active:scale-95 touch-manipulation" 
                     data-id="${item.id}"
-                    aria-label="Disminuir cantidad de ${name}">-</button>
+                    aria-label="${t('decrementQty') || 'Disminuir cantidad de'} ${name}">-</button>
                 
                 <input type="number" 
                     min="0" 
                     value="0" 
                     data-id="${item.id}"
-                    aria-label="Cantidad de ${name}"
+                    aria-label="${t('quantityOf') || 'Cantidad de'} ${name}"
                     inputmode="numeric"
                     pattern="[0-9]*"
                     class="item-qty w-7 sm:w-8 text-center text-xs sm:text-sm font-extrabold bg-transparent text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
@@ -397,12 +217,11 @@ export function renderItems(items) {
                 <button type="button" 
                     class="btn-increment w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center text-sm sm:text-base font-extrabold text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition active:scale-95 touch-manipulation" 
                     data-id="${item.id}"
-                    aria-label="Aumentar cantidad de ${name}">+</button>
+                    aria-label="${t('incrementQty') || 'Aumentar cantidad de'} ${name}">+</button>
             </div>
         </div>
-    </div>
-`;
-        }).join('')}
+    </div>`;
+                    }).join('')}
                 </div>
             </div>
         `;
@@ -441,23 +260,16 @@ export function renderItems(items) {
         }
         updateCategoryCountBadges();
         updateSelectedTray();
-        // Disparar evento personalizado para actualizar la barra en vivo
-        if (typeof document !== 'undefined' && typeof document.dispatchEvent === 'function') {
-            try {
-                const event = (typeof CustomEvent === 'function') ? new CustomEvent('pokevalue:itemsChanged') : { type: 'pokevalue:itemsChanged' };
-                document.dispatchEvent(event);
-            } catch (_) {}
-        }
+        dispatchCustomEvent('pokevalue:itemsChanged');
     }
 
-    // Escuchadores de botones + / - e inputs
+    // Escuchadores de inputs y steppers
     container.querySelectorAll('.item-qty').forEach(input => {
         input.addEventListener('input', () => updateCardHighlight(input));
     });
 
     container.querySelectorAll('.btn-decrement').forEach(btn => {
-        btn.addEventListener('click', () => {
-            IOSDeviceDetector.triggerHapticFeedback(10);
+        bindClick(btn, () => {
             const id = btn.getAttribute('data-id');
             const input = container.querySelector(`input[data-id="${id}"]`);
             if (input) {
@@ -468,12 +280,11 @@ export function renderItems(items) {
                 }
                 updateCardHighlight(input);
             }
-        });
+        }, { haptic: 10 });
     });
 
     container.querySelectorAll('.btn-increment').forEach(btn => {
-        btn.addEventListener('click', () => {
-            IOSDeviceDetector.triggerHapticFeedback(10);
+        bindClick(btn, () => {
             const id = btn.getAttribute('data-id');
             const input = container.querySelector(`input[data-id="${id}"]`);
             if (input) {
@@ -482,65 +293,44 @@ export function renderItems(items) {
                 showFloatingFeedback(btn, '+1', true);
                 updateCardHighlight(input);
             }
-        });
+        }, { haptic: 10 });
     });
 
-    // Escuchadores de búsqueda y filtros de categoría
-    const searchInput = (typeof document !== 'undefined' && typeof document.getElementById === 'function') ? document.getElementById('search-input') : null;
-    if (searchInput && typeof searchInput.addEventListener === 'function') {
-        searchInput.addEventListener('input', () => applyFilters());
-    }
+    // Escuchadores de búsqueda y píldoras de filtrado
+    if (typeof document !== 'undefined') {
+        const searchInput = typeof document.getElementById === 'function' ? document.getElementById('search-input') : null;
+        if (searchInput && typeof searchInput.addEventListener === 'function') {
+            searchInput.addEventListener('input', () => applyFilters());
+        }
 
-    const filterPills = (typeof document !== 'undefined' && typeof document.querySelectorAll === 'function') ? document.querySelectorAll('.category-pill') : [];
-    filterPills.forEach(pill => {
-        if (typeof pill.addEventListener === 'function') {
-            pill.addEventListener('click', () => {
-                IOSDeviceDetector.triggerHapticFeedback(10);
-                const cat = pill.getAttribute('data-category') || 'all';
-                toggleCategoryFilter(cat);
+        if (typeof document.querySelectorAll === 'function') {
+            document.querySelectorAll('.category-pill').forEach(pill => {
+                bindClick(pill, () => {
+                    const cat = pill.getAttribute('data-category') || 'all';
+                    toggleCategoryFilter(cat);
+                }, { haptic: 10 });
             });
         }
-    });
-
-    // Escuchador de vaciar bandeja de items seleccionados
-    const btnClearTray = (typeof document !== 'undefined') ? document.getElementById('btn-clear-tray') : null;
-    if (btnClearTray && typeof btnClearTray.addEventListener === 'function') {
-        btnClearTray.addEventListener('click', () => {
-            IOSDeviceDetector.triggerHapticFeedback(10);
-            container.querySelectorAll('.item-qty').forEach(inp => {
-                inp.value = 0;
-            });
-            container.querySelectorAll('.item-card').forEach(card => {
-                card.classList.remove('bg-indigo-50/90', 'dark:bg-indigo-950/50', 'border-indigo-400', 'dark:border-indigo-500', 'shadow-md', 'ring-1', 'ring-indigo-400/30');
-            });
-            updateCategoryCountBadges();
-            updateSelectedTray();
-            if (typeof document !== 'undefined' && typeof document.dispatchEvent === 'function') {
-                try {
-                    const event = (typeof CustomEvent === 'function') ? new CustomEvent('pokevalue:itemsChanged') : { type: 'pokevalue:itemsChanged' };
-                    document.dispatchEvent(event);
-                } catch (_) {}
-            }
-        });
     }
 
-    // Escuchadores de cambio de layout (Lista vs Cuadrícula)
-    const btnList = (typeof document !== 'undefined') ? document.getElementById('btn-layout-list') : null;
-    const btnGrid = (typeof document !== 'undefined') ? document.getElementById('btn-layout-grid') : null;
-    if (btnList && typeof btnList.addEventListener === 'function') {
-        btnList.addEventListener('click', () => {
-            IOSDeviceDetector.triggerHapticFeedback(10);
-            setLayoutMode('list');
+    // Escuchador de vaciado de bandeja
+    bindClick('btn-clear-tray', () => {
+        container.querySelectorAll('.item-qty').forEach(inp => {
+            inp.value = 0;
         });
-    }
-    if (btnGrid && typeof btnGrid.addEventListener === 'function') {
-        btnGrid.addEventListener('click', () => {
-            IOSDeviceDetector.triggerHapticFeedback(10);
-            setLayoutMode('grid');
+        container.querySelectorAll('.item-card').forEach(card => {
+            card.classList.remove('bg-indigo-50/90', 'dark:bg-indigo-950/50', 'border-indigo-400', 'dark:border-indigo-500', 'shadow-md', 'ring-1', 'ring-indigo-400/30');
         });
-    }
+        updateCategoryCountBadges();
+        updateSelectedTray();
+        dispatchCustomEvent('pokevalue:itemsChanged');
+    }, { haptic: 10 });
 
-    // Inicializar layout guardado o por defecto según dispositivo (Móvil = Cuadrícula, Desktop = Lista)
+    // Escuchadores de cambio de layout
+    bindClick('btn-layout-list', () => setLayoutMode('list'), { haptic: 10 });
+    bindClick('btn-layout-grid', () => setLayoutMode('grid'), { haptic: 10 });
+
+    // Inicializar layout guardado o por defecto según dispositivo
     let initialLayout = 'list';
     try {
         if (typeof localStorage !== 'undefined') {
@@ -555,7 +345,7 @@ export function renderItems(items) {
     } catch (_) {}
     setLayoutMode(initialLayout);
 
-    // Sincronizar contadores iniciales (0/N), bandeja y aplicar filtros
+    // Sincronizar contadores, bandeja y filtros
     updateCategoryCountBadges();
     updateSelectedTray();
     applyFilters();

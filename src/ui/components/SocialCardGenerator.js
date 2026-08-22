@@ -1,8 +1,9 @@
 /**
  * Genera una tarjeta visual PNG mediante HTML5 Canvas para compartir en redes sociales.
- * Soporta formato 'post' (horizontal), 'story' (vertical 9:16) y 'sticker' (cuadrado 512x512 para Discord/WhatsApp).
+ * Soporta formato 'post' (horizontal 16:9), 'story' (vertical 9:16) y 'sticker' (cuadrado 1:1).
  */
 import { t } from '../../i18n/i18n.js';
+import { loadCanvasImage, truncateText, canvasToBlob, drawRoundedRect, formatCanvasCurrency } from '../utils/CanvasHelper.js';
 
 export async function generateSocialCardCanvas({ boxPrice, totalValue, diff, isProfitable, grade, currencySymbol, items = [], format = 'post' }) {
     if (typeof document === 'undefined') return null;
@@ -28,106 +29,62 @@ async function generatePostCardCanvas({ boxPrice, totalValue, diff, isProfitable
 
     // 1. Fondo degradado
     const grad = ctx.createLinearGradient(0, 0, 600, 440);
-    if (isProfitable) {
-        grad.addColorStop(0, '#059669'); // Emerald 600
-        grad.addColorStop(1, '#064e3b'); // Emerald 900
-    } else {
-        grad.addColorStop(0, '#e11d48'); // Rose 600
-        grad.addColorStop(1, '#881337'); // Rose 900
-    }
+    grad.addColorStop(0, isProfitable ? '#059669' : '#e11d48');
+    grad.addColorStop(1, isProfitable ? '#064e3b' : '#881337');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, 600, 440);
 
     // 2. Borde decorativo
     ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
     ctx.lineWidth = 2;
-    if (typeof ctx.roundRect === 'function') {
-        ctx.beginPath();
-        ctx.roundRect(20, 20, 560, 400, 24);
-        ctx.stroke();
-    } else {
-        ctx.strokeRect(20, 20, 560, 400);
-    }
+    drawRoundedRect(ctx, 20, 20, 560, 400, 24);
+    ctx.stroke();
 
-    // 3. Logo
-    const logoImg = new Image();
-    logoImg.crossOrigin = "anonymous";
-    logoImg.src = '/favicon.svg';
+    // 3. Logo y Título
+    const logoImg = await loadCanvasImage('/favicon.svg', 250);
+    const hasLogo = logoImg.complete && logoImg.naturalHeight !== 0;
 
-    await new Promise(resolve => {
-        logoImg.onload = resolve;
-        logoImg.onerror = resolve;
-        setTimeout(resolve, 250);
-    });
-
-    // 4. Logo y Título
     ctx.fillStyle = '#ffffff';
     ctx.font = '900 30px sans-serif';
-
     const titleText = 'PokeBoxValue';
-    const textMetrics = ctx.measureText(titleText);
-    const textWidth = textMetrics.width;
-    const hasLogo = logoImg.complete && logoImg.naturalHeight !== 0;
+    const textWidth = ctx.measureText(titleText).width;
     const logoWidth = hasLogo ? 36 : 0;
     const gap = hasLogo ? 10 : 0;
-    const totalWidth = logoWidth + gap + textWidth;
-    const startX = (600 - totalWidth) / 2;
+    const startX = (600 - (logoWidth + gap + textWidth)) / 2;
 
     if (hasLogo) {
         ctx.drawImage(logoImg, startX, 36, 36, 36);
     }
-
     ctx.textAlign = 'left';
     ctx.fillText(titleText, startX + logoWidth + gap, 64);
 
-    // 5. Insignia Rango
-    const gradeLabel = t('grade' + grade) || (isProfitable ? 'Excelente compra' : 'Mala compra');
+    // 4. Insignia Rango
+    const gradeLabel = t('grade' + grade) || (isProfitable ? t('titleProfitable') : t('titleNotProfitable'));
     ctx.font = 'bold 18px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillStyle = isProfitable ? '#a7f3d0' : '#fecdd3';
     ctx.fillText(gradeLabel, 300, 96);
 
-    // 6. Contenedor de Lista de Objetos
+    // 5. Lista de Objetos
     const itemsListStr = Array.isArray(items) && items.length > 0 ? items.join(', ') : '';
-
     if (itemsListStr) {
         ctx.fillStyle = 'rgba(255, 255, 255, 0.12)';
-        ctx.beginPath();
-        if (typeof ctx.roundRect === 'function') {
-            ctx.roundRect(50, 110, 500, 40, 12);
-        } else {
-            ctx.rect(50, 110, 500, 40);
-        }
+        drawRoundedRect(ctx, 50, 110, 500, 40, 12);
         ctx.fill();
 
         ctx.font = '500 15px sans-serif';
         ctx.fillStyle = '#ffffff';
         ctx.textAlign = 'center';
-
-        let displayItems = itemsListStr;
-        if (ctx.measureText(displayItems).width > 470) {
-            while (displayItems.length > 5 && ctx.measureText(displayItems + '...').width > 470) {
-                displayItems = displayItems.slice(0, -1);
-            }
-            displayItems += '...';
-        }
-        ctx.fillText(displayItems, 300, 135);
+        ctx.fillText(truncateText(ctx, itemsListStr, 470), 300, 135);
     }
 
-    // 7. Panel de Valores
+    // 6. Panel de Valores
     const panelY = itemsListStr ? 162 : 120;
     const panelHeight = 165;
-
     ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
-    ctx.beginPath();
-    if (typeof ctx.roundRect === 'function') {
-        ctx.roundRect(50, panelY, 500, panelHeight, 20);
-    } else {
-        ctx.rect(50, panelY, 500, panelHeight);
-    }
+    drawRoundedRect(ctx, 50, panelY, 500, panelHeight, 20);
     ctx.fill();
 
-    // 8. Textos y Valores
     ctx.fillStyle = 'rgba(255, 255, 255, 0.75)';
     ctx.font = '17px sans-serif';
     ctx.textAlign = 'left';
@@ -135,22 +92,20 @@ async function generatePostCardCanvas({ boxPrice, totalValue, diff, isProfitable
     ctx.fillText(t('resRealValue') || 'Valor Real:', 80, panelY + 92);
     ctx.fillText(t(isProfitable ? 'resDiffSave' : 'resDiffLose') || (isProfitable ? 'Ahorras:' : 'Pierdes:'), 80, panelY + 140);
 
+    const fmtBox = formatCanvasCurrency(boxPrice, currencySymbol);
+    const fmtTot = formatCanvasCurrency(totalValue, currencySymbol);
+    const fmtDif = formatCanvasCurrency(diff, currencySymbol);
+
     ctx.fillStyle = '#ffffff';
     ctx.font = 'bold 20px sans-serif';
     ctx.textAlign = 'right';
-
-    const isCoins = currencySymbol === '🟡' || currencySymbol === 'coins';
-    const fmtBox = isCoins ? Math.round(boxPrice) : Number(boxPrice).toFixed(2);
-    const fmtTot = isCoins ? Math.round(totalValue) : Number(totalValue).toFixed(2);
-    const fmtDif = isCoins ? Math.round(diff) : Number(diff).toFixed(2);
-
     ctx.fillText(`${fmtBox} ${currencySymbol}`, 520, panelY + 44);
     ctx.fillText(`${fmtTot} ${currencySymbol}`, 520, panelY + 92);
 
     ctx.font = '900 26px sans-serif';
     ctx.fillStyle = isProfitable ? '#10b981' : '#f43f5e';
-    const diffText = isProfitable ? `+${Math.abs(fmtDif)} ${currencySymbol}` : `-${Math.abs(fmtDif)} ${currencySymbol}`;
-    ctx.fillText(diffText, 520, panelY + 140);
+    const diffSign = isProfitable ? '+' : '-';
+    ctx.fillText(`${diffSign}${Math.abs(fmtDif)} ${currencySymbol}`, 520, panelY + 140);
 
     // Separadores
     ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
@@ -162,19 +117,17 @@ async function generatePostCardCanvas({ boxPrice, totalValue, diff, isProfitable
     ctx.lineTo(520, panelY + 108);
     ctx.stroke();
 
-    // 9. Marca de agua
+    // 7. Marca de agua
     ctx.font = '14px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-    ctx.fillText(t('shareCanvasWatermark') || 'Calculado en pokeboxvalue.com', 300, 395);
+    ctx.fillText(t('shareCanvasWatermark') || 'pokeboxvalue.com | Calculadora de Cajas de Pokémon GO', 300, 395);
 
-    return new Promise((resolve) => {
-        canvas.toBlob((blob) => resolve(blob), 'image/png');
-    });
+    return canvasToBlob(canvas);
 }
 
 /**
- * Tarjeta Vertical 9:16 (720x1280) para Instagram Stories, TikTok y Estados de WhatsApp
+ * Tarjeta Vertical 9:16 (720x1280) para Instagram Stories, TikTok y Estados
  */
 async function generateStoryCardCanvas({ boxPrice, totalValue, diff, isProfitable, grade, currencySymbol, items = [] }) {
     const canvas = document.createElement('canvas');
@@ -183,106 +136,77 @@ async function generateStoryCardCanvas({ boxPrice, totalValue, diff, isProfitabl
     const ctx = canvas.getContext('2d');
     if (!ctx) return null;
 
-    // 1. Fondo Vertical con degradado enriquecido
+    // 1. Fondo Vertical
     const grad = ctx.createLinearGradient(0, 0, 0, 1280);
     if (isProfitable) {
-        grad.addColorStop(0, '#064e3b'); // Emerald 900
-        grad.addColorStop(0.35, '#047857'); // Emerald 700
-        grad.addColorStop(1, '#022c22'); // Emerald 950
+        grad.addColorStop(0, '#064e3b');
+        grad.addColorStop(0.35, '#047857');
+        grad.addColorStop(1, '#022c22');
     } else {
-        grad.addColorStop(0, '#881337'); // Rose 900
-        grad.addColorStop(0.35, '#be123c'); // Rose 700
-        grad.addColorStop(1, '#4c0519'); // Rose 950
+        grad.addColorStop(0, '#881337');
+        grad.addColorStop(0.35, '#be123c');
+        grad.addColorStop(1, '#4c0519');
     }
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, 720, 1280);
 
-    // 2. Borde exterior suave con esquinas redondeadas
+    // 2. Borde exterior
     ctx.strokeStyle = 'rgba(255, 255, 255, 0.18)';
     ctx.lineWidth = 3;
-    if (typeof ctx.roundRect === 'function') {
-        ctx.beginPath();
-        ctx.roundRect(32, 32, 656, 1216, 36);
-        ctx.stroke();
-    }
+    drawRoundedRect(ctx, 32, 32, 656, 1216, 36);
+    ctx.stroke();
 
-    // 3. Logo
-    const logoImg = new Image();
-    logoImg.crossOrigin = "anonymous";
-    logoImg.src = '/favicon.svg';
-
-    await new Promise(resolve => {
-        logoImg.onload = resolve;
-        logoImg.onerror = resolve;
-        setTimeout(resolve, 250);
-    });
-
-    // 4. Cabecera Top (Logo + PokeBoxValue)
+    // 3. Logo y Cabecera
+    const logoImg = await loadCanvasImage('/favicon.svg', 250);
     const hasLogo = logoImg.complete && logoImg.naturalHeight !== 0;
+
     ctx.fillStyle = '#ffffff';
     ctx.font = '900 42px sans-serif';
-    ctx.textAlign = 'center';
-
     if (hasLogo) {
-        ctx.drawImage(logoImg, 360 - 180, 80, 52, 52);
+        ctx.drawImage(logoImg, 180, 80, 52, 52);
         ctx.textAlign = 'left';
-        ctx.fillText('PokeBoxValue', 360 - 115, 120);
+        ctx.fillText('PokeBoxValue', 245, 120);
     } else {
+        ctx.textAlign = 'center';
         ctx.fillText('PokeBoxValue', 360, 120);
     }
 
     ctx.font = 'bold 16px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
-    ctx.fillText('CALCULADORA DE CAJAS POKÉMON GO', 360, 155);
+    ctx.fillText(t('storySubtitle') || 'CALCULADORA DE CAJAS POKÉMON GO', 360, 155);
 
-    // 5. Tarjeta Hero / Veredicto Principal (Glassmorphism)
+    // 4. Hero Card
     ctx.fillStyle = 'rgba(0, 0, 0, 0.35)';
-    ctx.beginPath();
-    if (typeof ctx.roundRect === 'function') {
-        ctx.roundRect(64, 200, 592, 280, 28);
-    } else {
-        ctx.rect(64, 200, 592, 280);
-    }
+    drawRoundedRect(ctx, 64, 200, 592, 280, 28);
     ctx.fill();
 
-    // Insignia de Calificación
-    const gradeLabel = t('grade' + grade) || (isProfitable ? 'Excelente compra' : 'Mala compra');
+    const gradeLabel = t('grade' + grade) || (isProfitable ? t('titleProfitable') : t('titleNotProfitable'));
     ctx.font = 'bold 22px sans-serif';
-    ctx.textAlign = 'center';
     ctx.fillStyle = isProfitable ? '#a7f3d0' : '#fecdd3';
     ctx.fillText(gradeLabel, 360, 250);
 
-    // Título Principal de la Oferta
     ctx.font = '900 36px sans-serif';
     ctx.fillStyle = '#ffffff';
-    const mainTitle = isProfitable ? (t('titleProfitable') || 'RENTA COMPRARLA') : (t('titleNotProfitable') || 'NO RENTA COMPRARLA');
+    const mainTitle = isProfitable ? (t('titleProfitable') || '¡OFERTA RENTABLE!') : (t('titleNotProfitable') || 'NO VALE LA PENA');
     ctx.fillText(mainTitle, 360, 310);
 
-    // Diferencia y Ahorro Destacado
-    const isCoins = currencySymbol === '🟡' || currencySymbol === 'coins';
-    const fmtBox = isCoins ? Math.round(boxPrice) : Number(boxPrice).toFixed(2);
-    const fmtTot = isCoins ? Math.round(totalValue) : Number(totalValue).toFixed(2);
-    const fmtDif = isCoins ? Math.round(diff) : Number(diff).toFixed(2);
-    const diffText = isProfitable ? `+${Math.abs(fmtDif)} ${currencySymbol}` : `-${Math.abs(fmtDif)} ${currencySymbol}`;
+    const fmtBox = formatCanvasCurrency(boxPrice, currencySymbol);
+    const fmtTot = formatCanvasCurrency(totalValue, currencySymbol);
+    const fmtDif = formatCanvasCurrency(diff, currencySymbol);
+    const diffSign = isProfitable ? '+' : '-';
 
     ctx.font = '900 56px sans-serif';
     ctx.fillStyle = isProfitable ? '#34d399' : '#fb7185';
-    ctx.fillText(diffText, 360, 395);
+    ctx.fillText(`${diffSign}${Math.abs(fmtDif)} ${currencySymbol}`, 360, 395);
 
     ctx.font = '600 18px sans-serif';
     ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-    const diffSublabel = isProfitable ? (t('resDiffSave') || 'Ahorro estimado') : (t('resDiffLose') || 'Pérdida estimada');
-    ctx.fillText(diffSublabel, 360, 435);
+    ctx.fillText(isProfitable ? (t('resDiffSave') || 'Ahorras:') : (t('resDiffLose') || 'Pierdes:'), 360, 435);
 
-    // 6. Panel de Comparativa Detallada (Precio vs Valor Real)
+    // 5. Comparativa Panel
     ctx.fillStyle = 'rgba(255, 255, 255, 0.12)';
-    ctx.beginPath();
-    if (typeof ctx.roundRect === 'function') {
-        ctx.roundRect(64, 510, 592, 170, 24);
-    } else {
-        ctx.rect(64, 510, 592, 170);
-    }
+    drawRoundedRect(ctx, 64, 510, 592, 170, 24);
     ctx.fill();
 
     ctx.font = '600 20px sans-serif';
@@ -304,40 +228,25 @@ async function generateStoryCardCanvas({ boxPrice, totalValue, diff, isProfitabl
     ctx.lineTo(620, 595);
     ctx.stroke();
 
-    // 7. Lista de Objetos de la Caja
+    // 6. Lista de Objetos
     ctx.font = 'bold 20px sans-serif';
     ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
     ctx.textAlign = 'center';
-    ctx.fillText(t('storyItemsTitle') || 'OBJETOS INCLUIDOS', 360, 725);
+    ctx.fillText(t('storyItemsTitle') || 'OBJETOS DE LA CAJA', 360, 725);
 
     const validItems = Array.isArray(items) ? items : [];
     const maxItemsToShow = 6;
-    const itemsToRender = validItems.slice(0, maxItemsToShow);
-
     let itemY = 765;
-    itemsToRender.forEach((itemText) => {
+
+    validItems.slice(0, maxItemsToShow).forEach((itemText) => {
         ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
-        ctx.beginPath();
-        if (typeof ctx.roundRect === 'function') {
-            ctx.roundRect(64, itemY, 592, 54, 16);
-        } else {
-            ctx.rect(64, itemY, 592, 54);
-        }
+        drawRoundedRect(ctx, 64, itemY, 592, 54, 16);
         ctx.fill();
 
         ctx.font = 'bold 18px sans-serif';
         ctx.fillStyle = '#ffffff';
         ctx.textAlign = 'left';
-        
-        let trimmed = itemText;
-        if (ctx.measureText(trimmed).width > 530) {
-            while (trimmed.length > 5 && ctx.measureText(trimmed + '...').width > 530) {
-                trimmed = trimmed.slice(0, -1);
-            }
-            trimmed += '...';
-        }
-        ctx.fillText(`• ${trimmed}`, 96, itemY + 34);
-
+        ctx.fillText(`• ${truncateText(ctx, itemText, 530)}`, 96, itemY + 34);
         itemY += 66;
     });
 
@@ -345,17 +254,13 @@ async function generateStoryCardCanvas({ boxPrice, totalValue, diff, isProfitabl
         ctx.font = 'italic 16px sans-serif';
         ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
         ctx.textAlign = 'center';
-        ctx.fillText(`+ ${validItems.length - maxItemsToShow} objetos más...`, 360, itemY + 20);
+        const moreItemsText = (t('moreItemsCount') || '+ {count} objetos más...').replace('{count}', validItems.length - maxItemsToShow);
+        ctx.fillText(moreItemsText, 360, itemY + 20);
     }
 
-    // 8. Footer / Marca de Agua Story
+    // 7. Footer
     ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
-    ctx.beginPath();
-    if (typeof ctx.roundRect === 'function') {
-        ctx.roundRect(160, 1160, 400, 52, 26);
-    } else {
-        ctx.rect(160, 1160, 400, 52);
-    }
+    drawRoundedRect(ctx, 160, 1160, 400, 52, 26);
     ctx.fill();
 
     ctx.font = 'bold 18px sans-serif';
@@ -363,13 +268,11 @@ async function generateStoryCardCanvas({ boxPrice, totalValue, diff, isProfitabl
     ctx.textAlign = 'center';
     ctx.fillText('pokeboxvalue.com', 360, 1192);
 
-    return new Promise((resolve) => {
-        canvas.toBlob((blob) => resolve(blob), 'image/png');
-    });
+    return canvasToBlob(canvas);
 }
 
 /**
- * Sticker Cuadrado Ultranítido (512x512) para Discord / WhatsApp Stickers
+ * Sticker Cuadrado (512x512) para Discord / WhatsApp
  */
 async function generateStickerCardCanvas({ boxPrice, totalValue, diff, isProfitable, grade, currencySymbol, items = [] }) {
     const canvas = document.createElement('canvas');
@@ -378,51 +281,26 @@ async function generateStickerCardCanvas({ boxPrice, totalValue, diff, isProfita
     const ctx = canvas.getContext('2d');
     if (!ctx) return null;
 
-    // 1. Limpiar fondo transparente
     if (typeof ctx.clearRect === 'function') {
         ctx.clearRect(0, 0, 512, 512);
     }
 
-    // 2. Fondo de tarjeta estilizada con sombra y esquinas redondeadas
     const cardX = 16, cardY = 16, cardW = 480, cardH = 480, radius = 32;
-
     const grad = ctx.createLinearGradient(cardX, cardY, cardX + cardW, cardY + cardH);
-    if (isProfitable) {
-        grad.addColorStop(0, '#064e3b'); // Emerald 900
-        grad.addColorStop(0.5, '#022c22'); // Emerald 950
-        grad.addColorStop(1, '#064e3b');
-    } else {
-        grad.addColorStop(0, '#881337'); // Rose 900
-        grad.addColorStop(0.5, '#4c0519'); // Rose 950
-        grad.addColorStop(1, '#881337');
-    }
-
+    grad.addColorStop(0, isProfitable ? '#064e3b' : '#881337');
+    grad.addColorStop(0.5, isProfitable ? '#022c22' : '#4c0519');
+    grad.addColorStop(1, isProfitable ? '#064e3b' : '#881337');
     ctx.fillStyle = grad;
-    ctx.beginPath();
-    if (typeof ctx.roundRect === 'function') {
-        ctx.roundRect(cardX, cardY, cardW, cardH, radius);
-    } else {
-        ctx.rect(cardX, cardY, cardW, cardH);
-    }
+    drawRoundedRect(ctx, cardX, cardY, cardW, cardH, radius);
     ctx.fill();
 
-    // Borde de acento
     ctx.strokeStyle = isProfitable ? '#34d399' : '#fb7185';
     ctx.lineWidth = 3;
     ctx.stroke();
 
-    // 3. Logo
-    const logoImg = new Image();
-    logoImg.crossOrigin = "anonymous";
-    logoImg.src = '/favicon.svg';
-
-    await new Promise(resolve => {
-        logoImg.onload = resolve;
-        logoImg.onerror = resolve;
-        setTimeout(resolve, 250);
-    });
-
+    const logoImg = await loadCanvasImage('/favicon.svg', 250);
     const hasLogo = logoImg.complete && logoImg.naturalHeight !== 0;
+
     if (hasLogo) {
         ctx.drawImage(logoImg, 44, 38, 40, 40);
         ctx.fillStyle = '#ffffff';
@@ -436,38 +314,28 @@ async function generateStickerCardCanvas({ boxPrice, totalValue, diff, isProfita
         ctx.fillText('PokeBoxValue', 256, 66);
     }
 
-    // 4. Insignia Rango
-    const gradeLabel = t('grade' + grade) || (isProfitable ? 'Excelente compra' : 'Mala compra');
+    const gradeLabel = t('grade' + grade) || (isProfitable ? t('titleProfitable') : t('titleNotProfitable'));
     ctx.font = 'bold 16px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillStyle = isProfitable ? '#a7f3d0' : '#fecdd3';
     ctx.fillText(gradeLabel, 256, 115);
 
-    // 5. Veredicto Grande
-    const mainTitle = isProfitable ? (t('titleProfitable') || '¡RENTA!') : (t('titleNotProfitable') || '¡NO RENTA!');
+    const mainTitle = isProfitable ? (t('titleProfitable') || '¡OFERTA RENTABLE!') : (t('titleNotProfitable') || 'NO VALE LA PENA');
     ctx.font = '900 30px sans-serif';
     ctx.fillStyle = '#ffffff';
     ctx.fillText(mainTitle, 256, 155);
 
-    // 6. Diferencia de Ahorro / Pérdida
-    const isCoins = currencySymbol === '🟡' || currencySymbol === 'coins';
-    const fmtBox = isCoins ? Math.round(boxPrice) : Number(boxPrice).toFixed(2);
-    const fmtTot = isCoins ? Math.round(totalValue) : Number(totalValue).toFixed(2);
-    const fmtDif = isCoins ? Math.round(diff) : Number(diff).toFixed(2);
-    const diffText = isProfitable ? `+${Math.abs(fmtDif)} ${currencySymbol}` : `-${Math.abs(fmtDif)} ${currencySymbol}`;
+    const fmtBox = formatCanvasCurrency(boxPrice, currencySymbol);
+    const fmtTot = formatCanvasCurrency(totalValue, currencySymbol);
+    const fmtDif = formatCanvasCurrency(diff, currencySymbol);
+    const diffSign = isProfitable ? '+' : '-';
 
     ctx.font = '900 44px sans-serif';
     ctx.fillStyle = isProfitable ? '#34d399' : '#fb7185';
-    ctx.fillText(diffText, 256, 215);
+    ctx.fillText(`${diffSign}${Math.abs(fmtDif)} ${currencySymbol}`, 256, 215);
 
-    // 7. Comparativa Precio vs Valor Real
     ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
-    ctx.beginPath();
-    if (typeof ctx.roundRect === 'function') {
-        ctx.roundRect(44, 245, 424, 80, 16);
-    } else {
-        ctx.rect(44, 245, 424, 80);
-    }
+    drawRoundedRect(ctx, 44, 245, 424, 80, 16);
     ctx.fill();
 
     ctx.font = '600 14px sans-serif';
@@ -482,30 +350,18 @@ async function generateStickerCardCanvas({ boxPrice, totalValue, diff, isProfita
     ctx.fillText(`${fmtBox} ${currencySymbol}`, 448, 280);
     ctx.fillText(`${fmtTot} ${currencySymbol}`, 448, 310);
 
-    // 8. Objetos incluidos (resumen compacto)
     const validItems = Array.isArray(items) ? items : [];
     if (validItems.length > 0) {
         ctx.font = 'bold 13px sans-serif';
         ctx.fillStyle = '#ffffff';
         ctx.textAlign = 'center';
-        let itemsStr = validItems.slice(0, 4).join(' • ');
-        if (ctx.measureText(itemsStr).width > 400) {
-            while (itemsStr.length > 5 && ctx.measureText(itemsStr + '...').width > 400) {
-                itemsStr = itemsStr.slice(0, -1);
-            }
-            itemsStr += '...';
-        }
-        ctx.fillText(itemsStr, 256, 365);
+        ctx.fillText(truncateText(ctx, validItems.slice(0, 4).join(' • '), 400), 256, 365);
     }
 
-    // 9. Marca de agua
     ctx.font = 'bold 13px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillStyle = 'rgba(255, 255, 255, 0.55)';
     ctx.fillText('pokeboxvalue.com', 256, 455);
 
-    return new Promise((resolve) => {
-        canvas.toBlob((blob) => resolve(blob), 'image/png');
-    });
+    return canvasToBlob(canvas);
 }
-

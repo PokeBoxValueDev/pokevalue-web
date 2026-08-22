@@ -9,6 +9,9 @@ import { HistoryRepository } from '../../infrastructure/repositories/HistoryRepo
 import { generateSocialCardCanvas } from '../components/SocialCardGenerator.js';
 import { setCategoryFilter } from '../components/ItemCardRenderer.js';
 import { renderView } from '../components/ViewManager.js';
+import { IOSDeviceDetector } from '../ios/IOSDeviceDetector.js';
+import { bindAsyncButton, bindClick, getElement } from '../utils/DomUtils.js';
+import { ShareService } from '../utils/ShareService.js';
 
 export class CalculatorController {
     static _valuationService = ValuationService;
@@ -16,7 +19,7 @@ export class CalculatorController {
     static _deferredPrompt = null;
 
     /**
-     * Inicializa el controlador permitiendo inyectar servicios y repositorios (Inyección de Dependencias)
+     * Inicializa el controlador permitiendo inyectar dependencias
      * @param {{ valuationService?: typeof ValuationService, historyRepository?: typeof HistoryRepository }} [dependencies]
      */
     static init({ valuationService = ValuationService, historyRepository = HistoryRepository } = {}) {
@@ -25,19 +28,12 @@ export class CalculatorController {
 
         if (typeof document === 'undefined') return;
 
-        const btnCalculate = document.getElementById('btn-calculate');
-        const priceInput = document.getElementById('box-price');
-        const priceError = document.getElementById('price-error');
-        const btnClearHistory = document.getElementById('btn-clear-history');
-        const btnResetQty = document.getElementById('btn-reset-qty');
-        const siteLogo = document.getElementById('site-logo');
-        const btnShare = document.getElementById('btn-share');
-        const btnShareStory = document.getElementById('btn-share-story');
-        const btnShareCard = document.getElementById('btn-share-card');
-        const btnReset = document.getElementById('btn-reset');
-        const btnLiveViewResult = document.getElementById('btn-live-view-result');
-        const btnInstallPwa = document.getElementById('btn-install-pwa');
+        const priceInput = getElement('box-price');
+        const priceError = getElement('price-error');
+        const customBoxNameInput = getElement('custom-box-name-input');
+        const btnInstallPwa = getElement('btn-install-pwa');
 
+        // Escuchar cambios de precio en tiempo real
         if (priceInput) {
             priceInput.addEventListener('input', () => {
                 const boxPrice = parseFloat(priceInput.value);
@@ -49,117 +45,53 @@ export class CalculatorController {
             });
         }
 
-        if (typeof document !== 'undefined' && typeof document.addEventListener === 'function') {
+        // Sincronización reactiva ante cambios en cantidades de objetos
+        if (typeof document.addEventListener === 'function') {
             document.addEventListener('pokevalue:itemsChanged', () => {
                 CalculatorController.updateLiveSummary();
             });
         }
 
-        if (btnLiveViewResult) {
-            btnLiveViewResult.addEventListener('click', () => {
-                CalculatorController.handleCalculate(priceInput, priceError);
-            });
-        }
+        // Vinculación de acciones principales mediante utilidades genéricas
+        const calculateAction = () => CalculatorController.handleCalculate(priceInput, priceError);
+        bindClick('btn-live-view-result', calculateAction);
+        bindClick('btn-calculate', calculateAction);
+        bindClick('btn-reset', () => CalculatorController.resetForm());
 
-        if (btnCalculate) {
-            btnCalculate.addEventListener('click', () => {
-                CalculatorController.handleCalculate(priceInput, priceError);
-            });
-        }
-
-        if (btnResetQty) {
-            btnResetQty.addEventListener('click', () => {
-                const searchInput = document.getElementById('search-input');
-                if (searchInput) {
-                    searchInput.value = '';
-                    try {
-                        const evt = (typeof CustomEvent === 'function') ? new CustomEvent('input', { bubbles: true }) : { type: 'input' };
-                        searchInput.dispatchEvent(evt);
-                    } catch (_) {}
-                }
-                setCategoryFilter('all');
-            });
-        }
-
-        if (btnClearHistory) {
-            btnClearHistory.addEventListener('click', () => {
-                CalculatorController._historyRepository.clearHistory();
-                renderHistory(CalculatorController.restoreFromHistory);
-            });
-        }
-
-        if (siteLogo) {
-            siteLogo.addEventListener('click', (e) => {
-                if (e && typeof e.preventDefault === 'function') e.preventDefault();
-                CalculatorController.switchView(false);
-                CalculatorController.resetForm();
-                renderView('');
-                if (typeof window !== 'undefined' && window.history && typeof window.history.pushState === 'function') {
-                    const currentLang = state.currentLang || 'es';
-                    window.history.pushState(null, '', `/${currentLang}`);
-                }
-            });
-        }
-
-        let isSharing = false;
-
-        if (btnShare) {
-            btnShare.addEventListener('click', async () => {
-                if (isSharing) return;
-                isSharing = true;
+        bindClick('btn-reset-qty', () => {
+            const searchInput = getElement('search-input');
+            if (searchInput) {
+                searchInput.value = '';
                 try {
-                    await CalculatorController.handleTextShare();
-                } finally {
-                    isSharing = false;
-                }
-            });
-        }
+                    const evt = (typeof CustomEvent === 'function') ? new CustomEvent('input', { bubbles: true }) : { type: 'input' };
+                    searchInput.dispatchEvent(evt);
+                } catch (_) {}
+            }
+            setCategoryFilter('all');
+        });
 
-        if (btnShareStory) {
-            btnShareStory.addEventListener('click', async () => {
-                if (isSharing) return;
-                isSharing = true;
-                try {
-                    await CalculatorController.handleCardShare('story');
-                } finally {
-                    isSharing = false;
-                }
-            });
-        }
+        bindClick('btn-clear-history', () => {
+            CalculatorController._historyRepository.clearHistory();
+            renderHistory(CalculatorController.restoreFromHistory);
+        });
 
-        const btnShareSticker = document.getElementById('btn-share-sticker');
-        if (btnShareSticker) {
-            btnShareSticker.addEventListener('click', async () => {
-                if (isSharing) return;
-                isSharing = true;
-                try {
-                    await CalculatorController.handleCardShare('sticker');
-                } finally {
-                    isSharing = false;
-                }
-            });
-        }
+        bindClick('site-logo', () => {
+            CalculatorController.switchView(false);
+            CalculatorController.resetForm();
+            renderView('');
+            if (typeof window !== 'undefined' && window.history && typeof window.history.pushState === 'function') {
+                const currentLang = state.currentLang || 'es';
+                window.history.pushState(null, '', `/${currentLang}`);
+            }
+        }, { preventDefault: true });
 
-        if (btnShareCard) {
-            btnShareCard.addEventListener('click', async () => {
-                if (isSharing) return;
-                isSharing = true;
-                try {
-                    await CalculatorController.handleCardShare('post');
-                } finally {
-                    isSharing = false;
-                }
-            });
-        }
+        // Botones de Compartir (Texto, Story 9:16, Sticker 1:1, Tarjeta 16:9) con protección de concurrencia
+        bindAsyncButton('btn-share', () => CalculatorController.handleTextShare());
+        bindAsyncButton('btn-share-story', () => CalculatorController.handleCardShare('story'));
+        bindAsyncButton('btn-share-sticker', () => CalculatorController.handleCardShare('sticker'));
+        bindAsyncButton('btn-share-card', () => CalculatorController.handleCardShare('post'));
 
-        if (btnReset) {
-            btnReset.addEventListener('click', () => {
-                CalculatorController.resetForm();
-            });
-        }
-
-        const btnSaveCustomBox = document.getElementById('btn-save-custom-box');
-        const customBoxNameInput = document.getElementById('custom-box-name-input');
+        // Guardar Caja Personalizada
         const saveCustomBoxHandler = () => {
             IOSDeviceDetector.triggerHapticFeedback(15);
             const customName = (customBoxNameInput ? customBoxNameInput.value : '').trim();
@@ -171,30 +103,29 @@ export class CalculatorController {
                 CalculatorController._historyRepository.saveHistory(history);
                 renderHistory(CalculatorController.restoreFromHistory);
 
-                const feedbackEl = document.getElementById('save-box-feedback');
-                const feedbackText = document.getElementById('save-box-feedback-text');
+                const feedbackEl = getElement('save-box-feedback');
+                const feedbackText = getElement('save-box-feedback-text');
                 if (feedbackEl && feedbackText) {
                     feedbackText.textContent = `${t('boxSavedConfirm') || '¡Caja guardada como'} «${finalName}» ${t('inHistory') || 'en el historial!'}`;
                     feedbackEl.classList.remove('hidden');
                 }
 
-                const btnLabel = document.getElementById('btn-save-box-label');
-                if (btnLabel) {
+                const btnLabel = getElement('btn-save-box-label');
+                const btnSaveBox = getElement('btn-save-custom-box');
+                if (btnLabel && btnSaveBox) {
                     btnLabel.textContent = t('btnBoxSaved') || '¡Guardada!';
-                    btnSaveCustomBox.classList.remove('bg-emerald-600', 'hover:bg-emerald-500');
-                    btnSaveCustomBox.classList.add('bg-emerald-700');
+                    btnSaveBox.classList.remove('bg-emerald-600', 'hover:bg-emerald-500');
+                    btnSaveBox.classList.add('bg-emerald-700');
                     setTimeout(() => {
                         btnLabel.textContent = t('btnSaveBox') || 'Guardar Caja';
-                        btnSaveCustomBox.classList.remove('bg-emerald-700');
-                        btnSaveCustomBox.classList.add('bg-emerald-600', 'hover:bg-emerald-500');
+                        btnSaveBox.classList.remove('bg-emerald-700');
+                        btnSaveBox.classList.add('bg-emerald-600', 'hover:bg-emerald-500');
                     }, 2200);
                 }
             }
         };
 
-        if (btnSaveCustomBox) {
-            btnSaveCustomBox.addEventListener('click', saveCustomBoxHandler);
-        }
+        bindClick('btn-save-custom-box', saveCustomBoxHandler);
 
         if (customBoxNameInput) {
             customBoxNameInput.addEventListener('keydown', (e) => {
@@ -233,11 +164,11 @@ export class CalculatorController {
     }
 
     static updateLiveSummary() {
-        const stickyBar = document.getElementById('live-sticky-bar');
-        const liveTotalVal = document.getElementById('live-total-val');
-        const liveDiffTag = document.getElementById('live-diff-tag');
-        const liveGradeBadge = document.getElementById('live-grade-badge');
-        const priceInput = document.getElementById('box-price');
+        const stickyBar = getElement('live-sticky-bar');
+        const liveTotalVal = getElement('live-total-val');
+        const liveDiffTag = getElement('live-diff-tag');
+        const liveGradeBadge = getElement('live-grade-badge');
+        const priceInput = getElement('box-price');
 
         if (!stickyBar || !liveTotalVal || !liveDiffTag || !liveGradeBadge || !priceInput) return;
 
@@ -292,9 +223,9 @@ export class CalculatorController {
     }
 
     static switchView(viewName) {
-        const viewForm = document.getElementById('view-form');
-        const viewResult = document.getElementById('view-result');
-        const stickyBar = document.getElementById('live-sticky-bar');
+        const viewForm = getElement('view-form');
+        const viewResult = getElement('view-result');
+        const stickyBar = getElement('live-sticky-bar');
 
         if (viewName === 'form') {
             if (viewResult) {
@@ -305,7 +236,7 @@ export class CalculatorController {
                 viewForm.classList.remove('hidden');
                 if (viewForm.style) viewForm.style.display = '';
             }
-            const btnCalculate = document.getElementById('btn-calculate');
+            const btnCalculate = getElement('btn-calculate');
             if (btnCalculate) btnCalculate.focus();
             CalculatorController.updateLiveSummary();
         } else if (viewName === 'result') {
@@ -318,7 +249,7 @@ export class CalculatorController {
                 if (viewResult.style) viewResult.style.display = '';
             }
             if (stickyBar) stickyBar.classList.add('translate-y-28', 'opacity-0', 'pointer-events-none');
-            const resTitle = document.getElementById('result-title');
+            const resTitle = getElement('result-title');
             if (resTitle) resTitle.focus();
         }
 
@@ -328,23 +259,22 @@ export class CalculatorController {
     }
 
     static resetForm() {
-        const priceInput = document.getElementById('box-price');
-        const priceError = document.getElementById('price-error');
+        const priceInput = getElement('box-price');
+        const priceError = getElement('price-error');
         if (priceInput) {
             priceInput.value = '';
             priceInput.classList.remove('border-rose-500', 'ring-2', 'ring-rose-500', 'focus:ring-rose-500');
         }
         if (priceError) priceError.classList.add('hidden');
 
-        const allInputs = document.querySelectorAll('.item-qty');
-        allInputs.forEach(input => {
+        document.querySelectorAll('.item-qty').forEach(input => {
             input.value = 0;
             if (typeof input.dispatchEvent === 'function') {
                 input.dispatchEvent(new Event('input'));
             }
         });
 
-        const searchInput = document.getElementById('search-input');
+        const searchInput = getElement('search-input');
         if (searchInput) searchInput.value = '';
         setCategoryFilter('all');
 
@@ -354,52 +284,7 @@ export class CalculatorController {
     }
 
     static async handleTextShare() {
-        if (!state.lastResult || !state.lastBoxPrice) return;
-
-        const curr = CURRENCY_CONFIG[state.currentCurrency] || { symbol: '€' };
-        const isProfitable = state.lastResult.isProfitable;
-        const statusTitle = isProfitable
-            ? (t('titleProfitable') || '¡Renta comprarla!')
-            : (t('titleNotProfitable') || 'No renta comprarla');
-
-        const isCoins = state.currentCurrency === 'POKECOINS';
-        const formattedPrice = isCoins ? `${Math.round(state.lastBoxPrice)} ${curr.symbol}` : `${state.lastBoxPrice.toFixed(2)} ${curr.symbol}`;
-        const formattedValue = isCoins ? `${Math.round(state.lastResult.totalValue)} ${curr.symbol}` : `${state.lastResult.totalValue.toFixed(2)} ${curr.symbol}`;
-        const diffSign = state.lastResult.diff >= 0 ? '+' : '-';
-        const formattedDiff = isCoins ? `${diffSign}${Math.round(Math.abs(state.lastResult.diff))} ${curr.symbol}` : `${diffSign}${Math.abs(state.lastResult.diff).toFixed(2)} ${curr.symbol}`;
-
-        let itemsSummaryText = '';
-        if (state.lastResult.itemSummary && state.lastResult.itemSummary.length > 0) {
-            itemsSummaryText = '\n' + state.lastResult.itemSummary.map(item => `  • ${item}`).join('\n');
-        }
-
-        const shareText = `PokeBoxValue - Resultado de la Caja:
-━━━━━━━━━━━━━━━━━━━━
-Status: ${statusTitle} (${state.lastResult.grade})
-• Precio Caja: ${formattedPrice}
-• Valor Real:  ${formattedValue} (${formattedDiff})
-━━━━━━━━━━━━━━━━━━━━
-Objetos incluidos:${itemsSummaryText || ' No especificados'}`;
-
-        const pageUrl = (typeof window !== 'undefined' && window.location && window.location.href) ? window.location.href : 'https://pokeboxvalue.com';
-
-        try {
-            if (navigator.share) {
-                await navigator.share({
-                    title: 'PokeBoxValue - Calculadora de Cajas',
-                    text: shareText,
-                    url: pageUrl
-                });
-            } else if (navigator.clipboard) {
-                const copyContent = pageUrl ? `${shareText}\n${pageUrl}` : shareText;
-                await navigator.clipboard.writeText(copyContent);
-                alert(t('linkCopied') || '¡Resultado copiado al portapapeles!');
-            }
-        } catch (err) {
-            if (err.name !== 'AbortError' && err.name !== 'InvalidStateError') {
-                console.error("Error compartiendo resultado:", err);
-            }
-        }
+        await ShareService.shareTextSummary();
     }
 
     static async handleCardShare(format = 'post') {
@@ -426,50 +311,24 @@ Objetos incluidos:${itemsSummaryText || ' No especificados'}`;
         if (!blob) return;
 
         const filename = format === 'story' ? 'pokeboxvalue-story-9x16.png' : 'pokeboxvalue-tarjeta.png';
-        const downloadBlob = (cardBlob) => {
-            const url = URL.createObjectURL(cardBlob);
-            const a = document.createElement('a');
-            a.style.display = 'none';
-            a.href = url;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            setTimeout(() => {
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-            }, 1000);
-        };
-
-        try {
-            const file = new File([blob], filename, { type: 'image/png' });
-            if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                await navigator.share({
-                    title: 'PokeBoxValue - Resultado',
-                    text: t('shareNativeCardText') || 'He calculado la rentabilidad de esta caja en PokeBoxValue:',
-                    files: [file]
-                });
-            } else {
-                downloadBlob(blob);
-            }
-        } catch (err) {
-            if (err.name !== 'AbortError' && err.name !== 'InvalidStateError') {
-                console.error("Error compartiendo tarjeta:", err);
-                downloadBlob(blob);
-            }
-        }
+        await ShareService.shareImageBlob(blob, filename);
     }
 
     static handleCalculate(priceInput, priceError) {
-        const boxPrice = parseFloat(priceInput.value);
+        const input = priceInput || getElement('box-price');
+        const errorEl = priceError || getElement('price-error');
+        if (!input) return;
 
-        priceInput.classList.remove('border-rose-500', 'ring-2', 'ring-rose-500', 'focus:ring-rose-500');
-        if (priceError) priceError.classList.add('hidden');
+        const boxPrice = parseFloat(input.value);
+
+        input.classList.remove('border-rose-500', 'ring-2', 'ring-rose-500', 'focus:ring-rose-500');
+        if (errorEl) errorEl.classList.add('hidden');
 
         if (isNaN(boxPrice) || boxPrice <= 0) {
-            priceInput.classList.add('border-rose-500', 'ring-2', 'ring-rose-500');
-            if (priceError) {
-                priceError.innerText = t('enterValidPrice');
-                priceError.classList.remove('hidden');
+            input.classList.add('border-rose-500', 'ring-2', 'ring-rose-500');
+            if (errorEl) {
+                errorEl.innerText = t('enterValidPrice');
+                errorEl.classList.remove('hidden');
             }
             if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -478,10 +337,10 @@ Objetos incluidos:${itemsSummaryText || ' No especificados'}`;
         }
 
         const quantities = {};
-        document.querySelectorAll('.item-qty').forEach(input => {
-            const qty = parseInt(input.value) || 0;
+        document.querySelectorAll('.item-qty').forEach(qtyInput => {
+            const qty = parseInt(qtyInput.value) || 0;
             if (qty > 0) {
-                quantities[input.getAttribute('data-id')] = qty;
+                quantities[qtyInput.getAttribute('data-id')] = qty;
             }
         });
 
@@ -503,12 +362,12 @@ Objetos incluidos:${itemsSummaryText || ' No especificados'}`;
 
         CalculatorController.switchView('result');
 
-        const resCard = document.getElementById('result-card');
-        const resTitle = document.getElementById('result-title');
-        const resDiffLabel = document.getElementById('res-diff-label');
-        const resDiffVal = document.getElementById('res-diff-val');
-        const resBoxPriceEl = document.getElementById('res-box-price');
-        const resRealValueEl = document.getElementById('res-real-value');
+        const resCard = getElement('result-card');
+        const resTitle = getElement('result-title');
+        const resDiffLabel = getElement('res-diff-label');
+        const resDiffVal = getElement('res-diff-val');
+        const resBoxPriceEl = getElement('res-box-price');
+        const resRealValueEl = getElement('res-real-value');
 
         if (resBoxPriceEl) animateValue(resBoxPriceEl, 0, boxPrice, 700, '', ` ${curr.symbol}`, decimals);
         if (resRealValueEl) animateValue(resRealValueEl, 0, res.totalValue, 850, '', ` ${curr.symbol}`, decimals);
@@ -535,9 +394,9 @@ Objetos incluidos:${itemsSummaryText || ' No especificados'}`;
         renderKeyMetrics(res.keyMetrics);
         renderBreakdown(res.categoryTotals, res.totalValue);
 
-        const customBoxNameInput = document.getElementById('custom-box-name-input');
+        const customBoxNameInput = getElement('custom-box-name-input');
         const initialBoxName = (customBoxNameInput ? customBoxNameInput.value : '').trim();
-        const feedbackEl = document.getElementById('save-box-feedback');
+        const feedbackEl = getElement('save-box-feedback');
         if (feedbackEl) feedbackEl.classList.add('hidden');
 
         CalculatorController._historyRepository.saveCalculation({
@@ -563,15 +422,13 @@ Objetos incluidos:${itemsSummaryText || ' No especificados'}`;
     static restoreFromHistory(item) {
         if (!item) return;
 
-        // 1. Mostrar vista de formulario si estábamos en la vista de resultados
         CalculatorController.switchView('form');
 
-        // 2. Restaurar precio de la caja
-        const priceInput = document.getElementById('box-price');
+        const priceInput = getElement('box-price');
         if (priceInput) {
             priceInput.value = item.boxPrice;
             priceInput.classList.remove('border-rose-500', 'focus:ring-rose-500');
-            const priceError = document.getElementById('box-price-error');
+            const priceError = getElement('box-price-error');
             if (priceError) priceError.classList.add('hidden');
         }
 
@@ -587,14 +444,12 @@ Objetos incluidos:${itemsSummaryText || ' No especificados'}`;
             }
         }
 
-        // 3. Resetear todas las cantidades en el formulario
         const allInputs = document.querySelectorAll('.item-qty');
         allInputs.forEach(input => {
             input.value = 0;
             triggerInputEvent(input);
         });
 
-        // 4. Restaurar cantidades de los objetos desde item.quantities o fallback por nombres
         if (item.quantities && Object.keys(item.quantities).length > 0) {
             Object.entries(item.quantities).forEach(([id, qty]) => {
                 allInputs.forEach(input => {
@@ -605,7 +460,6 @@ Objetos incluidos:${itemsSummaryText || ' No especificados'}`;
                 });
             });
         } else if (Array.isArray(item.items)) {
-            // Fallback para registros antiguos del historial sin objeto `quantities`
             item.items.forEach(summaryStr => {
                 const match = String(summaryStr).match(/^(\d+)x\s+(.+)$/);
                 if (match) {
@@ -628,7 +482,7 @@ Objetos incluidos:${itemsSummaryText || ' No especificados'}`;
             });
         }
 
-        const customBoxNameInput = document.getElementById('custom-box-name-input');
+        const customBoxNameInput = getElement('custom-box-name-input');
         if (customBoxNameInput) {
             customBoxNameInput.value = item.boxName || '';
         }

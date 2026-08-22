@@ -77,3 +77,45 @@ test('accessibility/responsive - Escalado de Texto al 200% (WCAG 1.4.4 Resize Te
     const formHtml = fs.readFileSync(path.resolve('src/components/form.html'), 'utf8');
     assert.ok(formHtml.includes('overflow-y-auto') || formHtml.includes('overflow-x-auto'), 'Los contenedores de objetos y categorías deben tener scroll fluido para textos grandes');
 });
+
+test('accessibility/responsive - Márgenes y Densidad Mobile-First en Main y Secciones', () => {
+    const htmlPath = path.resolve('index.html');
+    const html = fs.readFileSync(htmlPath, 'utf8');
+    const dom = new JSDOM(html);
+
+    const main = dom.window.document.querySelector('main');
+    assert.ok(main, 'Landmark main debe existir');
+    assert.ok(main.className.includes('px-2.5') && main.className.includes('sm:px-4'), 'main debe optimizar márgenes laterales en móvil (px-2.5 sm:px-4)');
+
+    const form = dom.window.document.getElementById('view-form');
+    assert.ok(form, 'Sección #view-form debe existir');
+    assert.ok(form.className.includes('p-3.5') && form.className.includes('sm:p-6'), 'view-form debe optimizar padding en móvil (p-3.5 sm:p-6)');
+});
+
+test('accessibility/responsive - Layout Adaptativo Multi-Columna y Tope de Ancho de Botones en Desktop', () => {
+    const htmlPath = path.resolve('index.html');
+    const html = fs.readFileSync(htmlPath, 'utf8');
+    const dom = new JSDOM(html);
+
+    // 1. Contenedor principal expandible con breakpoints md/lg/xl
+    const main = dom.window.document.querySelector('main');
+    assert.ok(main.className.includes('md:max-w-4xl'), 'main debe expandirse en pantallas medianas (md:max-w-4xl)');
+    assert.ok(main.className.includes('lg:max-w-5xl') || main.className.includes('xl:max-w-6xl'), 'main debe expandirse fluidamente en pantallas grandes');
+
+    // 2. Items container adopta grid de 2 columnas en desktop
+    const itemsContainer = dom.window.document.getElementById('items-container');
+    assert.ok(itemsContainer.className.includes('md:grid') && itemsContainer.className.includes('md:grid-cols-2'), 'items-container debe adoptar grid de 2 columnas en pantallas medianas/grandes');
+
+    // 3. Botones de acción principales tienen max-w-md para ergonomía
+    const btnCalculate = dom.window.document.getElementById('btn-calculate');
+    assert.ok(btnCalculate.className.includes('max-w-md'), 'btn-calculate debe tener tope de ancho (max-w-md)');
+
+    const btnReset = dom.window.document.getElementById('btn-reset');
+    assert.ok(btnReset.className.includes('max-w-md'), 'btn-reset debe tener tope de ancho (max-w-md)');
+
+    // 4. Vista de resultado organizada en 2 columnas en desktop
+    const viewResult = dom.window.document.getElementById('view-result');
+    assert.ok(viewResult.innerHTML.includes('md:grid-cols-2'), 'view-result debe usar layout en 2 columnas en desktop');
+});
+
+

@@ -63,7 +63,7 @@ export async function initApp() {
             container.innerHTML = `
                 <div class="col-span-full p-4 bg-rose-50 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400 rounded-xl text-sm text-center border border-rose-200 dark:border-rose-800">
                     <p data-i18n="errorLoadingItems">${t('errorLoadingItems') || 'Error al cargar los objetos de la tienda.'}</p>
-                    <button onclick="window.location.reload()" class="mt-2 text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Reintentar</button>
+                    <button onclick="window.location.reload()" data-i18n="btnRetry" class="mt-2 text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">${t('btnRetry') || 'Reintentar'}</button>
                 </div>
             `;
         }
