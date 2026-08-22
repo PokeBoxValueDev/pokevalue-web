@@ -54,6 +54,28 @@ export class HistoryRepository {
     }
 
     /**
+     * Elimina un registro individual del historial según su índice.
+     * @param {number} index Índice del elemento a eliminar.
+     * @returns {boolean} True si se eliminó con éxito.
+     */
+    static deleteCalculation(index) {
+        try {
+            if (typeof localStorage === 'undefined') return false;
+            const history = this.getHistory();
+            const numIndex = Number(index);
+            if (numIndex >= 0 && numIndex < history.length) {
+                history.splice(numIndex, 1);
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+                return true;
+            }
+            return false;
+        } catch (e) {
+            console.error('Error al eliminar elemento del historial:', e);
+            return false;
+        }
+    }
+
+    /**
      * Limpia completamente el historial del almacenamiento local.
      */
     static clearHistory() {

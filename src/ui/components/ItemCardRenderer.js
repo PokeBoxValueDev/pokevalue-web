@@ -251,11 +251,11 @@ export function renderItems(items = []) {
         const val = parseInt(input.value) || 0;
         if (card) {
             if (val > 0) {
-                card.classList.add('bg-indigo-50/90', 'dark:bg-indigo-950/50', 'border-indigo-400', 'dark:border-indigo-500', 'shadow-md', 'ring-1', 'ring-indigo-400/30');
-                card.classList.remove('bg-gray-50/80', 'dark:bg-gray-700/50');
+                card.classList.add('bg-indigo-50/90', 'dark:bg-indigo-950/60', 'border-indigo-400', 'dark:border-indigo-500', 'shadow-md', 'ring-2', 'ring-indigo-400/30', 'is-selected');
+                card.classList.remove('bg-white/90', 'dark:bg-gray-800/90');
             } else {
-                card.classList.remove('bg-indigo-50/90', 'dark:bg-indigo-950/50', 'border-indigo-400', 'dark:border-indigo-500', 'shadow-md', 'ring-1', 'ring-indigo-400/30');
-                card.classList.add('bg-gray-50/80', 'dark:bg-gray-700/50');
+                card.classList.remove('bg-indigo-50/90', 'dark:bg-indigo-950/60', 'border-indigo-400', 'dark:border-indigo-500', 'shadow-md', 'ring-2', 'ring-indigo-400/30', 'is-selected');
+                card.classList.add('bg-white/90', 'dark:bg-gray-800/90');
             }
         }
         updateCategoryCountBadges();

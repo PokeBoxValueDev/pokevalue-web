@@ -14,6 +14,7 @@ export default {
     btnCalculate: "Calculate Value",
     recentHistory: "Recent History",
     btnClear: "Clear",
+    btnDelete: "Delete",
     noItemsFound: "No items found.",
     enterValidPrice: "Please enter a valid box price.",
     alertNoItems: "Please select at least one item.",

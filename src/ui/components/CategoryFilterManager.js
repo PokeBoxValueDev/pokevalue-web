@@ -5,14 +5,14 @@ import { Category } from '../../domain/valueObjects/Category.js';
 export const activeCategories = new Set(['all']);
 
 export const CATEGORY_PILL_ACTIVE_CLASSES = {
-    all: 'bg-indigo-600 text-white shadow-sm ring-1 ring-indigo-400/50 font-bold',
-    pases: 'bg-indigo-600 text-white shadow-sm ring-1 ring-indigo-400/50 font-bold',
-    incubadoras: 'bg-amber-600 text-white shadow-sm ring-1 ring-amber-400/50 font-bold',
-    potenciadores: 'bg-purple-600 text-white shadow-sm ring-1 ring-purple-400/50 font-bold',
-    mejoras: 'bg-emerald-600 text-white shadow-sm ring-1 ring-emerald-400/50 font-bold',
-    combates: 'bg-rose-600 text-white shadow-sm ring-1 ring-rose-400/50 font-bold',
-    consumibles: 'bg-cyan-600 text-white shadow-sm ring-1 ring-cyan-400/50 font-bold',
-    otros: 'bg-sky-600 text-white shadow-sm ring-1 ring-sky-400/50 font-bold'
+    all: 'bg-indigo-600 text-white shadow-xs ring-2 ring-indigo-400/40 font-bold',
+    pases: 'bg-blue-600 text-white shadow-xs ring-2 ring-blue-400/40 font-bold',
+    incubadoras: 'bg-amber-500 text-white shadow-xs ring-2 ring-amber-400/40 font-bold',
+    potenciadores: 'bg-purple-600 text-white shadow-xs ring-2 ring-purple-400/40 font-bold',
+    mejoras: 'bg-emerald-600 text-white shadow-xs ring-2 ring-emerald-400/40 font-bold',
+    combates: 'bg-rose-600 text-white shadow-xs ring-2 ring-rose-400/40 font-bold',
+    consumibles: 'bg-cyan-600 text-white shadow-xs ring-2 ring-cyan-400/40 font-bold',
+    otros: 'bg-sky-600 text-white shadow-xs ring-2 ring-sky-400/40 font-bold'
 };
 
 /**
@@ -78,9 +78,9 @@ export function updateFilterPillsUI() {
         const cat = pill.getAttribute('data-category') || 'all';
         if (activeCategories.has(cat)) {
             const activeStyle = CATEGORY_PILL_ACTIVE_CLASSES[cat] || CATEGORY_PILL_ACTIVE_CLASSES.all;
-            pill.className = `category-pill whitespace-nowrap px-3 py-1 rounded-full transition cursor-pointer touch-manipulation ${activeStyle}`;
+            pill.className = `category-pill whitespace-nowrap px-3.5 py-1.5 rounded-full transition cursor-pointer touch-manipulation ${activeStyle}`;
         } else {
-            pill.className = 'category-pill whitespace-nowrap px-3 py-1 rounded-full font-medium transition bg-gray-100 dark:bg-gray-700/80 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer touch-manipulation';
+            pill.className = 'category-pill whitespace-nowrap px-3.5 py-1.5 rounded-full font-semibold transition bg-gray-100/90 dark:bg-gray-750 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer touch-manipulation';
         }
     });
 }

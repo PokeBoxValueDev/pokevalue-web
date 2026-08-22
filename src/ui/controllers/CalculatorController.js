@@ -374,7 +374,7 @@ export class CalculatorController {
 
         if (resCard && resTitle && resDiffLabel && resDiffVal) {
             if (res.isProfitable) {
-                resCard.className = 'p-6 rounded-xl text-center space-y-4 text-white bg-emerald-600 shadow-lg relative';
+                resCard.className = 'p-5 sm:p-7 rounded-3xl text-center space-y-4 text-white bg-gradient-to-br from-emerald-600 via-emerald-500 to-teal-600 shadow-xl shadow-emerald-950/20 dark:shadow-black/60 relative overflow-hidden border border-emerald-400/40';
                 resTitle.innerText = t('titleProfitable') || '¡Renta comprarla!';
                 resDiffLabel.innerText = t('resDiffSave') || 'Ahorras:';
                 animateValue(resDiffVal, 0, Math.abs(res.diff), 900, `+`, ` ${curr.symbol}`, decimals);
@@ -383,7 +383,7 @@ export class CalculatorController {
                     setTimeout(() => triggerConfetti(), 250);
                 }
             } else {
-                resCard.className = 'p-6 rounded-xl text-center space-y-4 text-white bg-rose-600 shadow-lg relative';
+                resCard.className = 'p-5 sm:p-7 rounded-3xl text-center space-y-4 text-white bg-gradient-to-br from-rose-600 via-rose-500 to-red-700 shadow-xl shadow-rose-950/20 dark:shadow-black/60 relative overflow-hidden border border-rose-400/40';
                 resTitle.innerText = t('titleNotProfitable') || 'No renta comprarla';
                 resDiffLabel.innerText = t('resDiffLose') || 'Pierdes:';
                 animateValue(resDiffVal, 0, Math.abs(res.diff), 900, `-`, ` ${curr.symbol}`, decimals);

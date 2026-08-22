@@ -95,4 +95,30 @@ describe('visual/custom-box-save - Custom Box Name and Saved Calculations', () =
 
         assert.equal(boxNameInput.value, 'Caja Especial Incursiones', 'Custom box name input must be populated on restore');
     });
+
+    it('renders swipe delete action wrapper and handles delete trigger', () => {
+        HistoryRepository.clearHistory();
+        HistoryRepository.saveCalculation({
+            boxPrice: 100,
+            totalValue: 200,
+            diff: 100,
+            isProfitable: true,
+            currencySymbol: '€',
+            items: [],
+            quantities: {}
+        });
+
+        renderHistory(CalculatorController.restoreFromHistory);
+
+        const historyContainer = document.getElementById('history-container');
+        const wrapper = historyContainer.querySelector('.history-item-wrapper');
+        assert.ok(wrapper, 'Debe renderizar un .history-item-wrapper para swipe to delete');
+
+        const deleteBtn = wrapper.querySelector('.btn-delete-row');
+        assert.ok(deleteBtn, 'Debe incluir el botón .btn-delete-row de acción deslizable');
+        assert.equal(deleteBtn.getAttribute('data-index'), '0');
+
+        const cardContent = wrapper.querySelector('.history-card-content');
+        assert.ok(cardContent, 'Debe incluir el contenedor frontal .history-card-content');
+    });
 });

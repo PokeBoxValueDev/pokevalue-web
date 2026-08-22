@@ -33,3 +33,25 @@ test('infrastructure/history - Se recupera con gracia ante JSON corrupto en loca
     const history = HistoryRepository.getHistory();
     assert.deepEqual(history, [], 'Ante JSON corrupto debe retornar un array vacío sin lanzar excepciones');
 });
+
+test('infrastructure/history - Elimina un cálculo individual por índice correctamente', () => {
+    const mockStorage = new Map();
+    globalThis.localStorage = {
+        getItem: (k) => mockStorage.get(k) || null,
+        setItem: (k, v) => mockStorage.set(k, String(v)),
+        removeItem: (k) => mockStorage.delete(k)
+    };
+
+    HistoryRepository.clearHistory();
+    HistoryRepository.saveCalculation({ boxPrice: 10, totalValue: 20, diff: 10, isProfitable: true, currencySymbol: '€', items: [] });
+    HistoryRepository.saveCalculation({ boxPrice: 20, totalValue: 40, diff: 20, isProfitable: true, currencySymbol: '€', items: [] });
+
+    assert.equal(HistoryRepository.getHistory().length, 2);
+    
+    // Eliminar el primer elemento (índice 0, que es el de boxPrice 20)
+    const success = HistoryRepository.deleteCalculation(0);
+    assert.equal(success, true);
+    const updated = HistoryRepository.getHistory();
+    assert.equal(updated.length, 1);
+    assert.equal(updated[0].boxPrice, 10);
+});
