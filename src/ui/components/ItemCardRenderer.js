@@ -12,6 +12,7 @@ import {
     applyFilters
 } from './CategoryFilterManager.js';
 import { updateSelectedTray, showFloatingFeedback } from './SelectedTrayRenderer.js';
+import { IOSDeviceDetector } from '../ios/IOSDeviceDetector.js';
 
 // Re-exportar para compatibilidad total con consumidores existentes y tests
 export {
@@ -294,6 +295,84 @@ export function renderItems(items = []) {
                 updateCardHighlight(input);
             }
         }, { haptic: 10 });
+    });
+
+    // Soporte de Gestos Táctiles Apple iOS en Tarjetas de Objetos (Swipe Right -> +1, Swipe Left -> -1)
+    container.querySelectorAll('.item-card').forEach(card => {
+        const input = card.querySelector('.item-qty');
+        if (!input) return;
+
+        let startX = 0;
+        let startY = 0;
+        let currentX = 0;
+        let isSwiping = false;
+
+        card.addEventListener('touchstart', (e) => {
+            if (e.touches.length !== 1) return;
+            // Si el toque fue en los botones del stepper o en el input numérico, dejar que actúen normalmente
+            if (e.target && typeof e.target.closest === 'function' && e.target.closest('.card-actions-container')) return;
+
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+            currentX = startX;
+            isSwiping = false;
+            card.style.transition = 'none';
+        }, { passive: true });
+
+        card.addEventListener('touchmove', (e) => {
+            if (e.touches.length !== 1) return;
+            if (e.target && typeof e.target.closest === 'function' && e.target.closest('.card-actions-container')) return;
+
+            currentX = e.touches[0].clientX;
+            const deltaX = currentX - startX;
+            const deltaY = e.touches[0].clientY - startY;
+
+            // Si el movimiento es predominantemente horizontal
+            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 8) {
+                isSwiping = true;
+                // Amortiguación elástica
+                const dampedDelta = deltaX * 0.38;
+                card.style.transform = `translateX(${dampedDelta}px)`;
+
+                // Pista visual durante el arrastre
+                if (deltaX > 25) {
+                    card.style.borderColor = '#10b981'; // Emerald hint (+1)
+                } else if (deltaX < -25) {
+                    card.style.borderColor = '#f43f5e'; // Rose hint (-1)
+                } else {
+                    card.style.borderColor = '';
+                }
+            }
+        }, { passive: true });
+
+        card.addEventListener('touchend', () => {
+            if (!isSwiping) {
+                card.style.borderColor = '';
+                return;
+            }
+            const deltaX = currentX - startX;
+            card.style.borderColor = '';
+            card.style.transition = 'transform 0.24s cubic-bezier(0.32, 0.72, 0, 1)';
+            card.style.transform = 'translateX(0px)';
+
+            if (deltaX > 38) {
+                // Deslizar a la DERECHA -> +1 unidad
+                const currentVal = parseInt(input.value) || 0;
+                input.value = currentVal + 1;
+                showFloatingFeedback(card, '+1', true);
+                IOSDeviceDetector.triggerHapticFeedback(12);
+                updateCardHighlight(input);
+            } else if (deltaX < -38) {
+                // Deslizar a la IZQUIERDA -> -1 unidad
+                const currentVal = parseInt(input.value) || 0;
+                if (currentVal > 0) {
+                    input.value = currentVal - 1;
+                    showFloatingFeedback(card, '-1', false);
+                    IOSDeviceDetector.triggerHapticFeedback(12);
+                    updateCardHighlight(input);
+                }
+            }
+        }, { passive: true });
     });
 
     // Escuchadores de búsqueda y píldoras de filtrado

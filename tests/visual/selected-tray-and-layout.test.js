@@ -153,4 +153,65 @@ describe('visual/selected-tray-and-layout - Selected Items Tray and Layout Densi
         const container = document.getElementById('items-container');
         assert.ok(container.classList.contains('items-layout-grid'), 'Mobile viewport must default to items-layout-grid');
     });
+
+    it('handles touch swipe right to increment (+1) and swipe left to decrement (-1)', () => {
+        const dom = new JSDOM(`
+            <!DOCTYPE html>
+            <html>
+            <body>
+                <div id="selected-items-tray" class="hidden">
+                    <button id="btn-clear-tray" type="button">Vaciar</button>
+                    <div id="selected-chips-list"></div>
+                </div>
+                <div id="items-container"></div>
+            </body>
+            </html>
+        `);
+
+        global.window = dom.window;
+        global.document = dom.window.document;
+        global.localStorage = {
+            _data: {},
+            getItem(key) { return this._data[key] || null; },
+            setItem(key, val) { this._data[key] = String(val); }
+        };
+
+        const rawData = JSON.parse(fs.readFileSync(path.resolve('src/assets/items-fallback.json'), 'utf8'));
+        const domainItems = ItemMapper.toDomainList(rawData);
+        state.setStoreData(domainItems);
+
+        renderItems(domainItems);
+
+        const card = document.querySelector('.item-card[data-card-id="pase_incursion_remota"]');
+        const input = card.querySelector('.item-qty');
+        assert.equal(input.value, '0');
+
+        // 1. Simular Swipe Right (+50px)
+        const touchStartEvt = new dom.window.CustomEvent('touchstart');
+        touchStartEvt.touches = [{ clientX: 100, clientY: 100 }];
+        card.dispatchEvent(touchStartEvt);
+
+        const touchMoveEvt = new dom.window.CustomEvent('touchmove');
+        touchMoveEvt.touches = [{ clientX: 160, clientY: 102 }];
+        card.dispatchEvent(touchMoveEvt);
+
+        const touchEndEvt = new dom.window.CustomEvent('touchend');
+        card.dispatchEvent(touchEndEvt);
+
+        assert.equal(input.value, '1', 'Swipe right must increment quantity to 1');
+
+        // 2. Simular Swipe Left (-50px)
+        const touchStartEvt2 = new dom.window.CustomEvent('touchstart');
+        touchStartEvt2.touches = [{ clientX: 200, clientY: 100 }];
+        card.dispatchEvent(touchStartEvt2);
+
+        const touchMoveEvt2 = new dom.window.CustomEvent('touchmove');
+        touchMoveEvt2.touches = [{ clientX: 140, clientY: 102 }];
+        card.dispatchEvent(touchMoveEvt2);
+
+        const touchEndEvt2 = new dom.window.CustomEvent('touchend');
+        card.dispatchEvent(touchEndEvt2);
+
+        assert.equal(input.value, '0', 'Swipe left must decrement quantity back to 0');
+    });
 });
