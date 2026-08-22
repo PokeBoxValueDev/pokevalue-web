@@ -42,9 +42,16 @@ input[type="number"] {
     }
 }
 
-/* Soporte de Safe Areas para iPhone y dispositivos con barra de gestos */
+/* Soporte de Cristal Esmerilado (Frosted Glass / Backdrop Blur) y Safe Areas para iOS / Safari */
 #live-sticky-bar {
     bottom: max(1rem, env(safe-area-inset-bottom, 1rem)) !important;
+    backdrop-filter: blur(18px) saturate(190%) !important;
+    -webkit-backdrop-filter: blur(18px) saturate(190%) !important;
+    background-color: rgba(255, 255, 255, 0.82) !important;
+}
+
+.dark #live-sticky-bar {
+    background-color: rgba(17, 24, 39, 0.82) !important;
 }
 
 /* Altura dinámica de objetos incluidos para que la página termine en el botón de Ko-fi (Above-the-fold) */
@@ -114,13 +121,17 @@ input[type="number"] {
 html.is-ios body {
     -webkit-tap-highlight-color: transparent !important;
     -webkit-touch-callout: none !important;
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif !important;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "SF Pro", "Helvetica Neue", sans-serif !important;
+    letter-spacing: -0.012em;
+    overscroll-behavior-y: contain !important;
+    -webkit-font-smoothing: antialiased;
 }
 
 html.is-ios header {
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
+    padding-top: max(0.5rem, env(safe-area-inset-top)) !important;
 }
 
 html.is-ios.dark header {
@@ -131,71 +142,131 @@ html.is-ios.dark header {
 
 html.is-ios #view-form,
 html.is-ios #view-result {
-    backdrop-filter: blur(24px) saturate(190%) !important;
-    -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
-    background-color: rgba(255, 255, 255, 0.75) !important;
-    border: 1px solid rgba(255, 255, 255, 0.5) !important;
-    border-radius: 2rem !important;
-    box-shadow: 0 25px 50px -12px rgba(99, 102, 241, 0.15) !important;
+    backdrop-filter: blur(28px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(28px) saturate(200%) !important;
+    background-color: rgba(255, 255, 255, 0.78) !important;
+    border: 1px solid rgba(255, 255, 255, 0.65) !important;
+    border-radius: 1.75rem !important;
+    box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.03) !important;
 }
 
 html.is-ios.dark #view-form,
 html.is-ios.dark #view-result {
-    background-color: rgba(17, 24, 39, 0.75) !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6) !important;
+    background-color: rgba(28, 28, 30, 0.78) !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    box-shadow: 0 24px 50px -10px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.05) !important;
 }
 
 html.is-ios .item-card {
     border-radius: 1.25rem !important;
-    transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s ease, border-color 0.2s ease !important;
+    transition: transform 0.18s cubic-bezier(0.32, 0.72, 0, 1), background-color 0.2s ease, border-color 0.2s ease !important;
+}
+
+html.is-ios .category-pill {
+    border-radius: 9999px !important;
+    font-weight: 600 !important;
+    transition: transform 0.16s cubic-bezier(0.32, 0.72, 0, 1), background-color 0.2s ease !important;
+}
+
+html.is-ios .category-pill:active {
+    transform: scale(0.94) !important;
 }
 
 html.is-ios .btn-increment,
 html.is-ios .btn-decrement {
-    border-radius: 9999px !important;
-    transition: transform 0.12s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    border-radius: 0.625rem !important;
+    transition: transform 0.14s cubic-bezier(0.32, 0.72, 0, 1), background-color 0.15s ease !important;
 }
 
 html.is-ios .btn-increment:active,
-html.is-ios .btn-decrement:active,
-html.is-ios button:active {
-    transform: scale(0.92) !important;
+html.is-ios .btn-decrement:active {
+    transform: scale(0.88) !important;
+}
+
+html.is-ios button:active,
+html.is-ios .layout-toggle-btn:active,
+html.is-ios .btn-close-modal:active,
+html.is-ios .selected-chip:active {
+    transform: scale(0.95) !important;
+    transition: transform 0.12s cubic-bezier(0.32, 0.72, 0, 1) !important;
 }
 
 html.is-ios #btn-calculate {
     border-radius: 1.25rem !important;
-    box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.4) !important;
+    box-shadow: 0 8px 25px -4px rgba(79, 70, 229, 0.45) !important;
     backdrop-filter: blur(20px) saturate(180%) !important;
     -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-    background-color: rgba(99, 102, 241, 0.85) !important; /* Translucent indigo */
+    background-color: #4f46e5 !important;
+    font-weight: 700 !important;
+    transition: transform 0.16s cubic-bezier(0.32, 0.72, 0, 1), box-shadow 0.2s ease !important;
 }
 
-/* iOS Glassmorphism for Quantity Controls and Buttons */
-html.is-ios .btn-quick-add {
-    backdrop-filter: blur(12px) !important;
-    -webkit-backdrop-filter: blur(12px) !important;
+html.is-ios #btn-calculate:active {
+    transform: scale(0.96) !important;
+    box-shadow: 0 4px 12px -2px rgba(79, 70, 229, 0.35) !important;
+}
+
+/* iOS Frosted Glass en Barra Flotante */
+html.is-ios #live-sticky-bar {
+    bottom: max(1rem, env(safe-area-inset-bottom, 1rem)) !important;
+    backdrop-filter: blur(28px) saturate(210%) !important;
+    -webkit-backdrop-filter: blur(28px) saturate(210%) !important;
+    background-color: rgba(255, 255, 255, 0.78) !important;
+    border: 1px solid rgba(255, 255, 255, 0.65) !important;
+    border-radius: 1.5rem !important;
+    box-shadow: 0 14px 40px -6px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.04) !important;
+}
+
+html.is-ios.dark #live-sticky-bar {
+    background-color: rgba(28, 28, 30, 0.82) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    box-shadow: 0 18px 45px -6px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.06) !important;
+}
+
+/* iOS Glassmorphism para Controles de Cantidad y Steppers */
+html.is-ios .item-card .card-actions-container {
+    border-radius: 0.875rem !important;
+    background: rgba(120, 120, 128, 0.09) !important;
+    border: 1px solid rgba(120, 120, 128, 0.12) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+}
+
+html.is-ios.dark .item-card .card-actions-container {
+    background: rgba(120, 120, 128, 0.22) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
 html.is-ios .btn-increment,
 html.is-ios .btn-decrement {
-    backdrop-filter: blur(12px) !important;
-    -webkit-backdrop-filter: blur(12px) !important;
-    background-color: rgba(255, 255, 255, 0.4) !important;
-}
-html.is-ios.dark .btn-increment,
-html.is-ios.dark .btn-decrement {
-    background-color: rgba(255, 255, 255, 0.1) !important;
+    background-color: rgba(255, 255, 255, 0.8) !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
 }
 
-/* iOS Glassmorphism for Modals (Menus) */
-html.is-ios [role="dialog"] > div {
+html.is-ios.dark .btn-increment,
+html.is-ios.dark .btn-decrement {
+    background-color: rgba(99, 99, 102, 0.65) !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* iOS Glassmorphism para Vistas y Modales */
+html.is-ios #view-legal,
+html.is-ios #view-privacy,
+html.is-ios #view-faq,
+html.is-ios #view-guide {
     backdrop-filter: blur(30px) saturate(200%) !important;
     -webkit-backdrop-filter: blur(30px) saturate(200%) !important;
     background-color: rgba(255, 255, 255, 0.85) !important;
+    border: 1px solid rgba(255, 255, 255, 0.6) !important;
+    border-radius: 1.75rem !important;
 }
-html.is-ios.dark [role="dialog"] > div {
-    background-color: rgba(17, 24, 39, 0.85) !important;
+
+html.is-ios.dark #view-legal,
+html.is-ios.dark #view-privacy,
+html.is-ios.dark #view-faq,
+html.is-ios.dark #view-guide {
+    background-color: rgba(28, 28, 30, 0.85) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
 }
 
 /* Micro-interacciones de feedback visual flotante (+1, +5, +10) */
